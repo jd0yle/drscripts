@@ -1,0 +1,97 @@
+<Genie>
+  <Windows WindowCount="27">
+    <Main Maximized="True" />
+    <MonoFont Family="Lucida Console" Size="10" Style="Regular" />
+    <InputFont Family="Lucida Console" Size="10" Style="Regular" />
+    <Game ID="main" Name="Game" Height="754" Width="1279" Left="0" Top="122" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Game>
+    <Window1 ID="inv" Name="Inventory" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window1>
+    <Window2 ID="familiar" Name="Familiar" IfClosed="main" Height="385" Width="575" Left="405" Top="0" Visible="False" TimeStamp="True" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window2>
+    <Window3 ID="thoughts" Name="Thoughts" Height="185" Width="637" Left="1279" Top="0" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False" IfClosed="game">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window3>
+    <Window4 ID="logons" Name="Arrivals" IfClosed="" Height="122" Width="300" Left="0" Top="0" Visible="True" TimeStamp="True" Colors="#804000, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window4>
+    <Window5 ID="death" Name="Deaths" IfClosed="main" Height="122" Width="294" Left="300" Top="0" Visible="True" TimeStamp="True" Colors="Red, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window5>
+    <Window6 ID="log" Name="Log" IfClosed="log" Height="199" Width="327" Left="1279" Top="677" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window6>
+    <Window7 ID="room" Name="Room" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window7>
+    <Window8 ID="talk" Name="Talk" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False" IfClosed="conversation">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window8>
+    <Window9 ID="whispers" Name="Whispers" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window9>
+    <Window10 ID="conversation" Name="Conversation" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window10>
+    <Window11 ID="raw" Name="Raw" IfClosed="" Height="545" Width="992" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window11>
+    <Window12 ID="experience" Name="Experience" Height="370" Width="637" Left="1279" Top="185" Visible="True" TimeStamp="False" Colors="White, Black" NameListOnly="False" IfClosed="main">
+      <Font Family="Lucida Console" Size="9" Style="Regular" />
+    </Window12>
+    <Window13 ID="assess" Name="Assess" IfClosed="main" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window13>
+    <Window14 ID="group" Name="Group" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window14>
+    <Window15 ID="atmospherics" Name="Atmospherics" Height="200" Width="300" Left="339" Top="355" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window15>
+    <Window16 ID="ooc" Name="OOC" IfClosed="log" Height="256" Width="405" Left="1490" Top="208" Visible="False" TimeStamp="True" Colors="Yellow, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window16>
+    <Window17 ID="percwindow" Name="percWindow" IfClosed="" Height="122" Width="341" Left="938" Top="0" Visible="True" TimeStamp="True" Colors="#00FF96, Black" NameListOnly="False">
+      <Font Family="Verdana" Size="9" Style="Regular" />
+    </Window17>
+    <Window18 ID="chatter" Name="Chatter" IfClosed="log" Height="247" Width="400" Left="565" Top="0" Visible="False" TimeStamp="True" Colors="#AAFFAA, Black" NameListOnly="False">
+      <Font Family="Verdana" Size="9" Style="Regular" />
+    </Window18>
+    <Window19 ID="objects" Name="Objects" Height="155" Width="310" Left="1606" Top="555" Visible="True" TimeStamp="False" Colors="#808040, Black" NameListOnly="False" IfClosed="main">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window19>
+    <Window20 ID="mobs" Name="Mobs" Height="166" Width="310" Left="1606" Top="710" Visible="True" TimeStamp="False" Colors="#FFFF00, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window20>
+    <Window21 ID="players" Name="Players" Height="122" Width="327" Left="1279" Top="555" Visible="True" TimeStamp="False" Colors="#FFAED7, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window21>
+    <Window22 ID="shop" Name="Shop" IfClosed="main" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window22>
+    <Window23 ID="time" Name="Time" IfClosed="conversation" Height="121" Width="256" Left="682" Top="0" Visible="True" TimeStamp="False" Colors="Silver, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window23>
+    <Window24 ID="weather" Name="Weather" Height="122" Width="256" Left="980" Top="91" Visible="False" TimeStamp="True" Colors="#FFFF80, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window24>
+    <Window25 ID="output" Name="Output" IfClosed="" Height="141" Width="100" Left="765" Top="97" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+    </Window25>
+    <Window26 ID="data" Name="Data" Height="200" Width="515" Left="1401" Top="0" Visible="False" TimeStamp="True" Colors="Aqua, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Verdana" Size="9" Style="Regular" />
+    </Window26>
+    <Window27 ID="fluffmuff" Name="FluffMuff" Height="295" Width="465" Left="0" Top="0" Visible="False" TimeStamp="True" Colors="#C8C8C8, Black" NameListOnly="False" IfClosed="">
+      <Font Family="Verdana" Size="9" Style="Regular" />
+    </Window27>
+  </Windows>
+  <Settings>
+  </Settings>
+  <ScriptBar Visible="True" Dock="Top" />
+  <IconBar Visible="True" Dock="Bottom" />
+  <HealthBar Visible="True" Magic="True" Dock="Bottom" />
+  <StatusBar Visible="True" />
+</Genie>
