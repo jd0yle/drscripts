@@ -18,7 +18,7 @@
     <Window4 ID="whispers" Name="Whispers" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window4>
-    <Window5 ID="thoughts" Name="Thoughts" IfClosed="game" Height="223" Width="427" Left="1489" Top="0" Visible="False" TimeStamp="True" Colors="White, Black" NameListOnly="False">
+    <Window5 ID="thoughts" Name="Thoughts" IfClosed="game" Height="223" Width="427" Left="1489" Top="0" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window5>
     <Window6 ID="chatter" Name="Chatter" IfClosed="log" Height="247" Width="400" Left="565" Top="0" Visible="False" TimeStamp="True" Colors="#AAFFAA, Black" NameListOnly="False">
@@ -90,7 +90,7 @@
     <Window28 ID="roomname" Name="RoomName" Height="93" Width="341" Left="642" Top="0" Visible="True" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Verdana" Size="9" Style="Regular" />
     </Window28>
-    <Window29 ID="gweths" Name="Gweths" Height="223" Width="427" Left="1489" Top="0" Visible="True" TimeStamp="True" Colors="WhiteSmoke, Black" NameListOnly="False">
+    <Window29 ID="gweths" Name="Gweths" Height="223" Width="427" Left="1489" Top="0" Visible="False" TimeStamp="True" Colors="WhiteSmoke, Black" NameListOnly="False">
       <Font Family="Verdana" Size="9" Style="Regular" />
     </Window29>
   </Windows>

@@ -1,10 +1,11 @@
-#debug 3
 include libsel.cmd
 
-#var startRoomId 248
+
 var startRoomId $roomid
 var endRoomId 261
 var currentRoomId 0
+
+if "$guild" = "Moon Mage" then var doBuffArt 1
 
 loop:
     if %currentRoomId = 0 then {
@@ -12,6 +13,13 @@ loop:
     } else {
         math currentRoomId add 1
     }
+
+    if $SpellTimer.ArtificersEye.duration < 5 then {
+        gosub prep art 100
+        waitfor You feel
+        gosub cast
+    }
+
     if %currentRoomId > %endRoomId then exit
     matchre percSigil YOU HAVE ARRIVED!
     match done MOVE FAILED

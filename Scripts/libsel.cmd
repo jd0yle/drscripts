@@ -1,4 +1,7 @@
 #Updated on May 27th
+
+var libselLoaded 1
+
 #############################################################################################################################################
 action clear
 gosub clear
@@ -13,10 +16,9 @@ put #var drag 0
 
 var todo
 #############################################################################################################################################
-#dico
 
-#var friends (Timothy|Kai|Copernicus|Macross|Arai|Xajzhi|Skurvy|Aydrian|Yachy|Sristal|Kristen|Ferra|Cez|Warneck|Dagat|Colporteur|Dagwood|Cookie|Jon|Mems|Jake|Alydenorek|Mofo|Ubo|Zonkar|Beastofburden|Illithi|Rathan|Aesrian|Thex|Raegath|Elbainian|Musparian|Gimpmule|Scheisse|Methadone|Sawbones|Zaul|Maoramachi|Solos|Seethe|Bobbybooshay|Kastr|Killr|Gator|Par|Zao|Vye|Rishlu|Gazer|Dasffion|Lotsamoney|Grubber|Jobag|Jettro|Tseng|Ameshi|And)
-var friends (Inauri|Asherasa)
+
+var friends (Inauri|Asherasa|Sorhhn|Xenris)
 var enemies (nonerightnow)
 var super.enemies (Nonerightnow)
 
@@ -166,22 +168,6 @@ action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
 goto end.of.file
 
 
-stow:
-var location stow1
-var todo $0
-stow1:
-matchre return ^Stow what\?
-matchre return ^You put your
-matchre return ^You stop as you realize
-matchre return ^You pick up
-matchre return ^But that is already in your inventory\.
-matchre location.unload ^You should unload the
-matchre location.unload ^You need to unload the
-matchre stowing too long to fit
-put stow %todo
-goto retry
-
-
 wear:
 var location wear1
 var todo $0
@@ -303,6 +289,7 @@ matchre return ^You see nothing else\.
 matchre return ^The future, however, remains a dark mystery to you\.
 matchre return ^You must be a real expert to predict the weather indoors\.
 matchre return ^You are a bit too distracted to be making predictions\.
+matchre return ^You consider your recent observations
 matchre return ^Roundtime
 put predict %todo
 goto retry
@@ -731,6 +718,9 @@ var todo $0
 turn1:
 matchre return ^Turn what\?
 matchre return ^You turn to the section
+matchre return ^You turn
+matchre return already at the contents
+matchre return ^But you're not
 put turn %todo
 goto retry
 
@@ -772,6 +762,7 @@ var todo $0
 invoke1:
 matchre return ^You don't have any
 matchre return ^A finely balanced tago suddenly leaps
+matchre return ^Roundtime
 put invoke %todo
 goto retry
 
@@ -1432,6 +1423,59 @@ climb3:
 gosub stand
 goto climb1
 
+
+open:
+var todo $0
+open1:
+var location open1
+matchre return ^You try, but the telescope seems as extended as it will ever be.
+matchre return ^You extend your telescope.
+matchre return ^You need to be holding the telescope first.
+put open %todo
+goto retry
+
+
+openTelescope:
+put open my telescope
+goto location
+
+close:
+var todo $0
+close1:
+var location close1
+matchre return ^You try, but the telescope won't collapse any further.
+matchre return ^You collapse your telescope.
+matchre return ^You need to be holding the telescope first.
+put close %todo
+goto retry
+
+
+center:
+var todo $0
+center1:
+var location center1
+matchre openTelescope ^You'll need to open
+matchre return ^You put your eye to the
+matchre return ^Center what
+matchre return ^What did you want
+put center %todo
+goto retry
+
+
+
+
+peer:
+var todo $0
+peer1:
+var location peer1
+matchre return ^You focus
+matchre return ^You peer aimlessly
+matchre return ^Roundtime
+put peer %todo
+goto retry
+
+
+
 ########################
 # MOVE #
 ########
@@ -1532,6 +1576,23 @@ if %r = 8 then var direction northwest
 gosub move %direction
 return
 
+
+stow:
+var location stow1
+var todo $0
+stow1:
+if ("%todo" = "right" && "$righthand" = "Empty") then return
+if ("%todo" = "left" && "$lefthand" = "Empty") then return
+matchre return ^Stow what\?
+matchre return ^You put your
+matchre return ^You stop as you realize
+matchre return ^You pick up
+matchre return ^But that is already in your inventory\.
+matchre location.unload ^You should unload the
+matchre location.unload ^You need to unload the
+matchre stowing too long to fit
+put stow %todo
+goto retry
 
 
 stowing:

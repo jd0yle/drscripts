@@ -1,5 +1,6 @@
 var lock 1
 if "$roomplayers" != "" then var lock 0
+if "$1" != "" then var lock 1
 
 if $roomid = 258 then {
     var obj house
