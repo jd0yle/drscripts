@@ -20,6 +20,9 @@ loop:
         gosub cast
     }
 
+    gosub percSigil
+    goto done
+
     if %currentRoomId > %endRoomId then exit
     matchre percSigil YOU HAVE ARRIVED!
     match done MOVE FAILED

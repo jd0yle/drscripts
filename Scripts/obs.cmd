@@ -76,7 +76,8 @@ waiting:
 obs:
     var skillset %skillsets(%skillsets.index)
 
-    if "%%skillsetPredState" = "powerful" OR "%%skillsetPredState" = "complete" then {
+    #if "%%skillsetPredState" = "powerful" OR "%%skillsetPredState" = "complete" then {
+    if "%%skillsetPredState" = "complete" then {
         var objIndex 0
         math skillsets.index add 1
         if %skillsets.index > %skillsets.len then var skillsets.index 0

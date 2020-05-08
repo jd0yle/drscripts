@@ -392,6 +392,7 @@ matchre return ^You make a holy gesture
 matchre return ^You raise your palms and face to the heavens
 matchre return ^I could not find what you were referring to\.
 matchre return ^You have difficulty manipulating the mana streams, causing the spell pattern to collapse at the last moment\.
+matchre return ^You have already fully prepared
 put cast %todo
 goto retry
 
@@ -421,9 +422,14 @@ goto retry
 
 
 release:
-var location release
+var location release1
+var todo $0
+release1:
 matchre return ^Type RELEASE HELP for more options\.
-put release
+matchre return ^You aren't harnessing any mana.
+matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
+matchre return ^You have no cyclic spell active to release.
+put release %todo
 goto retry
 
 
@@ -735,6 +741,7 @@ matchre return ^You are unable to sense additional information\.
 matchre return ^You take on a studious look\.
 matchre return ^You should try that where you can see the sky\.
 matchre return ^You feel it is too soon to grasp anything new in the skies above\.
+matchre return ^You scan
 matchre return ^Roundtime
 matchre return ^Why do you need to study this chart again\?
 put study %todo
