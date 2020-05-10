@@ -235,7 +235,6 @@ goto retry
 
 arr:
 arrange:
-Skinning.Arrange:
 pause .3
 Skinning.Arrange:
 var location Skinning.Arrange
