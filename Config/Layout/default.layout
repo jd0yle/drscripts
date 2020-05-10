@@ -36,7 +36,7 @@
     <Window10 ID="experience" Name="Experience" IfClosed="main" Height="339" Width="427" Left="1489" Top="223" Visible="True" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Lucida Console" Size="9" Style="Regular" />
     </Window10>
-    <Window11 ID="percwindow" Name="percWindow" IfClosed="" Height="223" Width="327" Left="1162" Top="0" Visible="True" TimeStamp="True" Colors="#00FF96, Black" NameListOnly="False">
+    <Window11 ID="percwindow" Name="percWindow" IfClosed="" Height="223" Width="327" Left="1162" Top="0" Visible="True" TimeStamp="False" Colors="#00FF96, Black" NameListOnly="False">
       <Font Family="Verdana" Size="9" Style="Regular" />
     </Window11>
     <Window12 ID="logons" Name="Arrivals" Height="93" Width="332" Left="0" Top="0" Visible="True" TimeStamp="True" Colors="#804000, Black" NameListOnly="True" IfClosed="">
