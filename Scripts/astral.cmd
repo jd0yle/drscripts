@@ -794,6 +794,7 @@ harnessCount100:
     goto harnessMana100%c
 
 enterAP100:
+    put lick inauri
     match wait_enterAP100 ...wait
     match wait_enterAP100 Sorry, you may only type
     match StartIsEnd You attempt to open an astral

@@ -29,7 +29,7 @@ var sigilTwo
 if "%command" = "list" then goto listLoopStart
 
 if "%command" = "get" then {
-    gosub findSigil %2
+    put .findSigil %2
     exit
 }
 
@@ -39,6 +39,7 @@ if "%command" = "make" then {
     var baseItem %4
     var sigilOne %5
     var sigilTwo %6
+    var sigilThree %7
     gosub enchant
 }
 
@@ -75,11 +76,37 @@ enchant:
     gosub cast %baseItem on brazier
     gosub stow my %cambrinth
 
-    gosub findSigil %sigilOne
+    put .findSigil %sigilOne
+    waitfor FOUND SIGIL
+    if ("$righthand" = "Empty") then {
+        echo MISSING %sigilOne SIGIL, CANNOT CONTINUE
+        exit
+    }
+    gosub study my book
+
+    gosub trace %baseItem on brazier
+    gosub stow
+    gosub get my unfocused burin
+    gosub scribe %baseItem on brazier with my burin
+
+    put .findSigil %sigilTwo
+    waitfor FOUND SIGIL
+    if ("$righthand" = "Empty") then {
+        echo MISSING %sigilTwo SIGIL, CANNOT CONTINUE
+        exit
+    }
+
+    gosub study my book
+
+    gosub trace %baseItem on brazier
+    gosub stow
+    gosub get my unfocused burin
+    gosub scribe %baseItem on brazier with my burin
 
 
 findSigil:
     var sigil $1
+findSigil1:
     gosub get my %colors(%colorsIndex) book
     if "$righthand" != "Empty" then {
         gosub turn my book to sigil %sigil
@@ -90,7 +117,7 @@ findSigil:
     } else {
         goto goNext
     }
-    gosub goNext
+    #gosub goNext
     goto goNext
 
 
@@ -98,12 +125,13 @@ goNext:
     gosub stow right
     math colorsIndex add 1
     if %colorsIndex > %len then goto done
-    return
+    goto findSigil1
 
 goPage:
     var page $1
     gosub turn my book to page %page
     put read my book
+    exit
     return
 
 

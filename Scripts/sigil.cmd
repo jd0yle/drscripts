@@ -8,7 +8,7 @@ var currentRoomId 0
 if "$guild" = "Moon Mage" then var doBuffArt 1
 
 loop:
-    if %currentRoomId = 0 then {
+    if (%currentRoomId = 0) then {
         var currentRoomId %startRoomId
     } else {
         math currentRoomId add 1
@@ -20,10 +20,10 @@ loop:
         gosub cast
     }
 
-    gosub percSigil
-    goto done
+    #gosub percSigil
+    #goto done
 
-    if %currentRoomId > %endRoomId then exit
+    #if %currentRoomId > %endRoomId then exit
     matchre percSigil YOU HAVE ARRIVED!
     match done MOVE FAILED
     put #walk %currentRoomId
@@ -58,7 +58,8 @@ improve:
     var sigilType $1
     improve1:
     var location improve1
-    matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION)
+    matchre done ^You lose track of your surroundings.
+    matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION|METHOD|FORM)
     match scribe Roundtime
     put perc sigil improve
     goto retry
@@ -73,7 +74,8 @@ percImproveType:
     var improveType none
     percImproveType1:
     var location percImproveType1
-    matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION)
+    matchre done ^You lose track of your surroundings.
+    matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION|METHOD|FORM)
     matchre improve You are unaware of any sigil's capable of that method of improvement in this area.
     match scribe Roundtime
     put perc sigil %type

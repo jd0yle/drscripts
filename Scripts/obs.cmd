@@ -1,10 +1,15 @@
+############################################################################
+# .obs
+# Selesthiel - justin@jmdoyle.com
+# Observes relevant objects on a timer, keeps buffed with PG and AUS
+############################################################################
 
 include libsel.cmd
 
-#debug 4
-
 ####### CONFIG #######
+
 var cambrinth yoakena globe
+
 ######################
 
 var checkPredState 1
@@ -13,7 +18,6 @@ var isObsOnCd 0
 
 var objects.magic Ismenia|Durgaulda|Dawgolesh|Toad
 var objects.lore forge|Amlothi|Verena|Phoenix
-#var objects.offense Er'qutra|Estrilda|Szeldia|forge|Spider
 var objects.offense Estrilda|Szeldia|forge|Spider
 var objects.defense Merewalda|Dawgolesh|Penhetia|Giant
 var objects.survival Morleena|Yoakena|Er'qutra|Ram
@@ -23,6 +27,10 @@ var lorePredState null
 var offensePredState null
 var defensePredState null
 var survivalPredState null
+
+var skillsets magic|lore|offense|defense|survival
+eval skillsets.len count("%skillsets", "|")
+var skillsets.index 0
 
 action var isObsOnCd 0 when ^You feel you have sufficiently pondered your latest observation
 action var isObsOnCd 1 when ^You have not pondered your last observation sufficiently.
@@ -38,12 +46,7 @@ action var offensePredState $1 when (\S+) understanding of the celestial influen
 action var defensePredState $1 when (\S+) understanding of the celestial influences over defensive combat.$
 action var survivalPredState $1 when (\S+) understanding of the celestial influences over survival.$
 
-#action math objIndex add 1 when ^What did you want to center the telescope on
 action math objIndex add 1 when ^You peer aimlessly through your telescope
-
-var skillsets magic|lore|offense|defense|survival
-eval skillsets.len count("%skillsets", "|")
-var skillsets.index 0
 
 var objIndex 0
 
@@ -54,20 +57,9 @@ loop:
     if %isObsOnCd = 0 then {
         gosub obs
     } else {
-        #gosub runestone
         gosub waiting
     }
     goto loop
-    #goto waiting
-
-runestone:
-    if ("$lefthandnoun" != "runestone") then {
-        gosub stow left
-        gosub get my sunstone runestone
-    }
-    gosub focus my runestone
-    pause 2
-    return
 
 waiting:
     pause 2
@@ -76,7 +68,6 @@ waiting:
 obs:
     var skillset %skillsets(%skillsets.index)
 
-    #if "%%skillsetPredState" = "powerful" OR "%%skillsetPredState" = "complete" then {
     if "%%skillsetPredState" = "complete" then {
         var objIndex 0
         math skillsets.index add 1
@@ -97,11 +88,9 @@ obs:
 
     gosub stow left
 
-    #gosub open my telescope
     gosub center my telescope on %objList(%objIndex)
     gosub peer my telescope
 
-    #math objIndex add 1
     return
 
 

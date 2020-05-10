@@ -6,8 +6,8 @@ var cambrinth yoakena globe
 
 ######################
 
-var combatSpells seer|maf|col|shadows|cv|psy
-var names SeersSense|ManifestForce|CageofLight|Shadows
+var combatSpells seer|maf|shadows|cv|psy|aus|art|mt
+var names SeersSense|ManifestForce|Shadows|ClearVision|PsychicShield|AuraSight|ArtificersEye|MachinistsTouch
 var index 0
 eval len count("%combatSpells", "|")
 

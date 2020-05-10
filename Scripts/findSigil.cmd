@@ -2,6 +2,10 @@ var sigil %1
 
 include libsel.cmd
 
+var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued
+var colorsIndex 0
+eval len count("%colors", "|")
+
 loop:
     gosub get my %colors(%colorsIndex) book
     if "$righthand" != "Empty" then {
@@ -30,5 +34,6 @@ goPage:
 
 
 done:
+    put #parse FOUND SIGIL
     echo "All done"
     exit

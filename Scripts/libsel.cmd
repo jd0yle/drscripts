@@ -18,7 +18,7 @@ var todo
 #############################################################################################################################################
 
 
-var friends (Inauri|Asherasa|Sorhhn|Xenris)
+var friends (Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch)
 var enemies (nonerightnow)
 var super.enemies (Nonerightnow)
 
@@ -28,6 +28,7 @@ var super.enemies (Nonerightnow)
 
 ########################################################################################################################################
 #################################################################################################################################
+## HE/2HE SWAPPING
 action var weapon_hand The when ^You draw out your .* sword from the .*, gripping it firmly in your right hand and balancing with your left\.$
 action var weapon_hand The when ^You deftly change your grip on your sword so it can be used as a two-handed edged weapon\.$
 action var weapon_hand The when ^You fiercely switch your grip so that your sword can be used as a two-handed edged weapon\.$
@@ -66,7 +67,7 @@ var weapon_hand NONERIGHTNOW
 #action var People.Room occupied when ^You notice \w+'s attempt to remain hidden
 #action var People.Room occupied when Appearing to have lost sight of its target
 #action var People.Room occupied when comes out of hiding\.$
-#ction var People.Room occupied when ^\w+ leaps from hiding
+#action var People.Room occupied when ^\w+ leaps from hiding
 #action var People.Room occupied when slips out of the shadows
 #action var People.Room occupied when Someone snipes
 #action var People.Room occupied when attempt to fire from hiding\.$
@@ -158,13 +159,13 @@ action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
 
 #action put STAND when eval $standing = 0
 
-   action send stand when ^You must stand first
-   action send stand when ^You might want to stand up first
-   action send stand when ^You had better stand up first
-   action send stand when ^You can't do that while lying down
-   action send stand when ^You'd have better luck standing up
+action send stand when ^You must stand first
+action send stand when ^You might want to stand up first
+action send stand when ^You had better stand up first
+action send stand when ^You can't do that while lying down
+action send stand when ^You'd have better luck standing up
 
-#Skip to the end of the file, don't execute this because we're including
+#Skip to the end of the file, don't execute this because this is just an include
 goto end.of.file
 
 
