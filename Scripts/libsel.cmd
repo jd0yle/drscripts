@@ -1,5 +1,3 @@
-#Updated on May 27th
-
 var libselLoaded 1
 
 #############################################################################################################################################
@@ -169,211 +167,148 @@ action send stand when ^You'd have better luck standing up
 goto end.of.file
 
 
-wear:
-var location wear1
+advance:
+var location advance1
 var todo $0
-wear1:
-matchre return ^You sling
-matchre return ^You attach
-matchre return ^You put
-matchre return ^You strap
-matchre return ^You work your way into
-matchre return ^You slide your left arm through
-matchre return ^You hang
-matchre return ^You slip
-matchre return ^You drape
-matchre return ^You slide
-matchre return ^You are already wearing that\.
-matchre return ^Wear what\?
-matchre return ^The contours of the
-matchre return ^You can't wear any more items like that\.
-matchre location.unload1 ^You should unload the
-matchre location.unload1 ^You need to unload the
-put wear %todo
+advance1:
+matchre return ^What do you want to advance towards\?
+matchre return ^You begin to advance on
+matchre return ^You are already advancing on
+matchre return ^You are already at melee with
+matchre return ^You begin to stealthily advance on
+matchre return ^You spin around to face
+matchre return ^You will have to retreat from your current melee first\.
+put advance %todo
 goto retry
 
-rem:
-remove:
-var location remove1
+
+advance2:
+if $hidden = 1 then put shiver
+pause
+put engage
+pause 2
+goto Attack1
+
+
+aim:
+var location aim1
 var todo $0
-remove1:
-matchre return ^You take
-matchre return ^You slide
-matchre return ^You sling
+aim1:
+matchre return ^You begin to target
+matchre return ^You shift your target to
+matchre return ^You are already targetting that\!
+matchre return ^You need both hands in order to aim\.
+matchre return ^At what are you trying to aim\?
+matchre return ^Your .+ isn't loaded\!
+matchre return ^But the .+ in your right hand isn't a ranged weapon\!
+matchre return ^You don't have a ranged weapon to aim with\!
+matchre return ^You are already targetting that!
+put aim %todo
+goto retry
+
+
+ask:
+var location ask1
+var todo $0
+ask1:
+matchre return ^To whom are you speaking\?
+matchre return ^With a sad look
+matchre return ^A pure white alfar avenger peers at you
+put ask %todo
+goto retry
+
+app:
+appraise:
+var location appraise1
+var todo $0
+appraise1:
+matchre return ^Taking stock of its
+matchre return ^It's dead
+matchre return ^Appraise what\?
 matchre return ^Roundtime
-matchre return ^You remove
-matchre return ^You pull off
-matchre return ^You pull your
-matchre return ^Remove what\?
-matchre return ^You count out
-matchre return ^You work your way out of
-matchre return ^You aren't wearing that\.
-matchre return ^What were you referring to\?
-matchre return ^You loosen the straps securing
-put remove %todo
-goto retry
-
-
-combine:
-var location combine1
-var todo $0
-combine1:
-matchre return ^You combine
-matchre return ^Roundtime
-matchre return ^Combine some
-matchre return ^Perhaps you should be holding that first\.
-put combine %todo
-goto retry
-
-
-get:
-var location get1
-var todo $0
-get1:
-matchre return ^You get
-matchre return ^You pull
-matchre return ^You pick up
-matchre return ^What were you referring to\?
-matchre return ^You are already holding that\.
-matchre return ^You need a free hand to pick that up\.
-matchre return ^But that is already in your inventory\.
-matchre return ^You fade in for a moment as you pick up
-matchre return ^You are not strong enough to pick that up\!
-put get %todo
-goto retry
-
-
-exhale:
-var location exhale1
-var todo $0
-exhale1:
-matchre return ^Roundtime
-matchre return ^You sound a series of bursts
-matchre return ^Your lungs are tired from having sounded a warhorn so recently\.
-put exhale %todo
-goto retry
-
-
-wield:
-var location wield1
-var todo $0
-wield1:
-matchre return ^You can only wield a weapon or a shield\!
-matchre return ^You need to have your
-matchre return ^You draw out your
-matchre return ^You're already holding
-put wield %todo
-goto retry
-
-
-juggle:
-var location juggle1
-var todo $0
-juggle1:
-matchre return ^Don't be silly\!
-matchre return ^What were you referring to\?
-matchre return ^But you're not holding
-matchre return ^It's easier to juggle if you start
-matchre return ^Roundtime
-matchre return ^Your injuries make juggling impossible\.
-put juggle %todo
-goto retry
-
-
-predict:
-var location predict1
-var todo $0
-predict1:
-matchre return ^You focus inwardly searching for insight into your future\.
-matchre return ^After a few moments, the mists of time begin to part\.
-matchre return ^You see nothing else\.
-matchre return ^The future, however, remains a dark mystery to you\.
-matchre return ^You must be a real expert to predict the weather indoors\.
-matchre return ^You are a bit too distracted to be making predictions\.
-matchre return ^You consider your recent observations
-matchre return ^Roundtime
-put predict %todo
-goto retry
-
-
-observe:
-var location observe1
-var todo $0
-observe1:
-matchre return ^You scan the skies for a few moments\.
-matchre return ^Your search for the constellation
-matchre return ^Roundtime
-put observe %todo
-goto retry
-
-
-read:
-var location read1
-var todo $0
-read1:
+matchre return ^You cannot appraise that when you are in combat\!
 matchre return ^I could not find what you were referring to\.
-matchre return ^The writing is too small\.  You'll have to hold the scroll to read it\.
-matchre return ^Roundtime
-put read %todo
+matchre return Roundtime:
+put appraise %todo
 goto retry
 
 
-prep_spell:
-if $Harness_Ability.LearningRate > 30 then goto return
-prep_spell1:
-if $mana < 80 then goto return
-prep:
-var location prep1
+arr:
+arrange:
+Skinning.Arrange:
+pause .3
+Skinning.Arrange:
+var location Skinning.Arrange
+matchre Skinning.Arrangep ^You properly arrange
+matchre Skinning.Arrangep ^Roundtime
+matchre return has already been arranged as much as you can manage\.
+matchre return ^Arrange what\?
+matchre return ^Try killing the
+matchre return The .+ cannot be skinned, so you can't arrange it either.
+put arrange
+goto retry
+
+
+attack:
 var todo $0
-prep1:
-matchre return ^You begin chanting a prayer
-matchre return ^You close your eyes and breathe deeply,
-matchre return ^You trace an arcane sigil in the air,
-matchre return ^Heatless orange flames blaze between your fingertips
-matchre return ^Your eyes darken to black as a starless night
-matchre return ^You raise your arms skyward, chanting
-matchre return ^You are already preparing
-matchre return ^Icy blue frost crackles up your arms
-matchre return ^You make a careless gesture as you chant the words
-matchre return ^Tiny tendrils of lightning jolt between your hands
-matchre return ^The wailing of lost souls accompanies your preparations
-matchre return ^Your skin briefly withers and tightens, becoming gaunt
-matchre return ^Images of streaking stars falling from the heavens flash across your vision
-matchre return ^A nagging sense of desperation guides your hands through the motions
-matchre return ^You hastily shout the arcane phrasings needed to prepare
-matchre return ^You deftly waggle your fingers in the precise motions needed to prepare
-matchre return ^With great force, you slap your hands together before you and slowly pull them apart,
-matchre return ^With no small amount of effort, you slowly recall the teachings
-matchre return ^You struggle against your bindings to prepare
-matchre return ^You raise one hand before you and concentrate
-matchre return ^As you begin to focus on preparing
-put prepare %todo
-goto retry
-
-harn:
-harness:
-#if $preparedspell = None then goto return
-var location harness1
-var todo $0
-harness1:
-matchre return ^Roundtime
-matchre return ^You tap into the mana
-matchre return ^Usage:
-matchre return ^Attunement:
-matchre return ^You strain, but cannot harness that much power\.
-matchre return ^You can't harness that much mana\!
-put harness %todo
+var location attack1
+if $stamina < 85 then pause 3
+pause .1
+attack1:
+if $stamina < 85 then pause 4
+if $standing = 0 then put stand
+matchre advance2 ^It would help if you were closer
+matchre advance2 ^You aren't close enough to attack\.
+matchre advance2 ^You are already advancing
+matchre return ^You don't have a weapon to draw with\!
+matchre return ^But you don't have a ranged weapon in your hand to fire with\!
+matchre return ^You must have both hands free to use the
+matchre return ^But your .* isn't loaded\!
+matchre return ^You need two hands to wield this weapon\!
+matchre return ^I could not find what you were referring to\.
+matchre return ^At what are you trying
+matchre return ^There is nothing else to face
+matchre return ^How can you snipe if you are not hidden\?
+matchre return ^What are you trying to throw?
+matchre return ^\[Roundtime
+matchre return ^Roundtime:
+matchre return is already quite dead\.
+matchre return ^The .* is already debilitated\!
+matchre return ^You must be hidden or invisible to ambush\!
+matchre return ^The khuj is too heavy for you to use like that\.
+matchre attack2 ^You should stand up first\.
+put %todo
 goto retry
 
 
-infuse:
-var location infuse1
-var todo $0
-infuse1:
-matchre return ^Roundtime
-matchre return ^You don't have enough harnessed to infuse that much\.
-put infuse %todo
+attack2:
+gosub stand
+var location attack1
+goto Attack1
+
+
+block.stop:
+var location block.stop
+matchre return ^Okay\.
+matchre return ^You stop trying to defend against
+matchre return ^You aren't trying to defend against a second foe\!
+put block stop
 goto retry
+
+
+bundle:
+var location bundle
+matchre return ^You try to stuff your eye into the bundle but can't seem to find a good spot\.
+matchre return ^You stuff your
+matchre return ^You bundle up your
+matchre bundle2 ^That's not going to work\.
+put bundle eye
+goto retry
+
+bundle2:
+if "$lefthand" != "Empty" then put stow left
+gosub get bundling rope
+goto bundle
 
 
 cast:
@@ -398,6 +333,18 @@ put cast %todo
 goto retry
 
 
+center:
+var todo $0
+center1:
+var location center1
+matchre openTelescope ^You'll need to open
+matchre return ^You put your eye to the
+matchre return ^Center what
+matchre return ^What did you want
+put center %todo
+goto retry
+
+
 charge:
 var location charge1
 var todo $0
@@ -406,6 +353,195 @@ matchre return ^Roundtime
 matchre return ^I could not find
 put charge %todo
 goto retry
+
+
+climb:
+var todo $0
+climb1:
+var location climb1
+if $stamina < 60 then pause 3
+if $standing = 0 then put stand
+matchre climb1 ^Roundtime
+matchre climb2 ^You are engaged
+matchre climb3 ^Stand up first\.
+matchre return ^Obvious
+matchre return ^  CLIMB
+matchre return ^CLIMB
+matchre return ^You begin to practice your climbing skills\.
+matchre return ^You should stop practicing your climbing skill before you do that\.
+matchre location.p ^You are too tired to climb that\.
+matchre location.p ^All this climbing back and forth is getting a bit tiresome
+put climb %todo
+goto retry
+climb2:
+gosub ret
+goto climb1
+climb3:
+gosub stand
+goto climb1
+
+
+close:
+var todo $0
+close1:
+var location close1
+matchre return ^You try, but the telescope won't collapse any further.
+matchre return ^You collapse your telescope.
+matchre return ^You need to be holding the telescope first.
+put close %todo
+goto retry
+
+
+combine:
+var location combine1
+var todo $0
+combine1:
+matchre return ^You combine
+matchre return ^Roundtime
+matchre return ^Combine some
+matchre return ^Perhaps you should be holding that first\.
+put combine %todo
+goto retry
+
+
+coll:
+collect:
+var location collect1
+var todo $0
+collect1:
+matchre return ^Roundtime
+matchre return ^You really need to have at least one hand free to forage properly\.
+matchre return ^You cannot collect anything while in combat\!
+matchre return ^The room is too cluttered to find anything here\!
+put collect %todo
+goto retry
+
+
+count:
+var location Count1
+var todo $0
+count1:
+matchre return ^You take a quick count of potential threats in the area\.\.\.
+matchre return ^You count up the items in your
+matchre return ^That doesn't tell you much of anything.
+put count %todo
+goto retry
+
+
+dance:
+var location dance1
+var todo $0
+dance1:
+matchre return ^You slowly center yourself
+matchre return ^Roundtime
+matchre return ^Your mind and body are focused on a Dance\.
+matchre return ^You push out your chest as you feel your eyes taking on a new and distant focus\.
+matchre return ^You are off center, and have trouble focusing\.
+matchre return ^You slowly relax, letting the power of the dance fade from your core\.
+matchre return ^Stop what\?
+put dance %todo
+goto retry
+
+
+dodge:
+var location Dodge
+matchre return ^You are already in a position
+matchre return ^But you are already dodging\!
+matchre return ^You move into a position
+matchre return ^You need two hands to wield this weapon\!
+matchre return ^Roundtime
+put Dodge
+goto retry
+
+
+drag:
+var location drag1
+var todo $0
+drag1:
+matchre return ^I could not find what you were referring to\.
+matchre return ^Don't be silly\!
+matchre return ^Roundtime
+put drag %todo
+goto retry
+
+
+drop:
+var location drop1
+var todo $0
+drop1:
+matchre return ^You drop
+matchre return ^What were you referring to\?
+matchre return ^But you aren't holding that\.
+put drop %todo
+goto retry
+
+
+dump.junk:
+var location dump.junk
+matchre return ^\[You have marked this room to be cleaned by the janitor\.  It should arrive shortly.\]
+matchre return ^The janitor was recently summoned to this room\.  Please wait \d+ seconds\.
+matchre return ^You should just kick yourself in the shin\.  There is no junk here\.
+put dump junk
+goto retry
+
+
+eat:
+var location eat1
+var todo $0
+eat1:
+matchre return ^You'd be better off trying to drink
+matchre return ^What were you referring to\?
+matchre return ^You eat
+matchre return ^You can't drink a
+matchre return ^You drink
+put %todo
+goto retry
+
+
+empty:
+if "$lefthand" != "Empty" then gosub drop $lefthand
+if "$righthand" != "Empty" then gosub drop $righthand
+return
+
+
+exhale:
+var location exhale1
+var todo $0
+exhale1:
+matchre return ^Roundtime
+matchre return ^You sound a series of bursts
+matchre return ^Your lungs are tired from having sounded a warhorn so recently\.
+put exhale %todo
+goto retry
+
+
+EXP:
+var location EXP1
+var todo $0
+EXP1:
+matchre return ^EXP HELP for more information
+matchre return ^Overall state of mind:
+put EXP %todo
+goto retry
+
+
+flee:
+var todo $0
+flee1:
+var location flee1
+matchre return ^You assess your combat situation and realize you don't see anything engaged with you
+matchre return ^Your attempt to flee has failed
+matchre return ^Your fate is sealed
+matchre return ^You melt into the background, convinced that your misdirect was successful
+matchre return ^You manage to free yourself from engagement
+matchre return ^How do you expect to flee with your
+matchre flee2 ^You should stand up first\.
+put flee %todo
+goto retry
+flee2:
+gosub stand
+goto flee1
+
 
 foc:
 focus:
@@ -422,179 +558,149 @@ put focus %todo
 goto retry
 
 
-release:
-var location release1
+forage:
+if $Foraging.LearningRate > 33 then return
+forage1:
+var location forage2
 var todo $0
-release1:
-matchre return ^Type RELEASE HELP for more options\.
-matchre return ^You aren't harnessing any mana.
-matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
-matchre return ^You have no cyclic spell active to release.
-put release %todo
-goto retry
-
-
-rel.shadow:
-var location rel.shadow
-matchre return ^You gesture, completing the pattern to unravel the mystical bonds binding the shadowling to this plane\.
-matchre return ^You gesture, attempting to unravel the pattern binding the shadowling to this plane\.
-matchre return ^That would be a neat trick.  Try finding a shadowling first\.
-put release shadowling
-goto retry
-
-
-release.spell:
-if $preparedspell = None then return
-var location release.spell
-matchre return ^You let your concentration lapse and feel the spell's energies dissipate\.
-matchre return ^You aren't preparing a spell\.
-put release spell
-goto retry
-
-
-release.mana:
-var location release.mana
-matchre return ^You release the mana you were holding\.
-matchre return ^You aren't holding any mana\.
-put release mana
-goto retry
-
-
-rel:
-var location rel
-matchre return ^You release a
-matchre return ^You release the mana you were holding\.
-matchre return ^You aren't holding any mana\.
-put release
-goto retry
-
-perc:
-perceive:
-pow:
-power:
-var location power1
-var todo $0
-power1:
+forage2:
 matchre return ^Roundtime
-matchre return ^Something in the area is interfering
-matchre return ^I could not find who you were referring to\.
-put PERCEIVE %todo
+matchre return ^You really need to have at least one hand free to forage properly\.
+matchre return ^You cannot forage while in combat\!
+matchre return ^The room is too cluttered to find anything here\!
+put forage %todo
 goto retry
 
 
-tend:
-var location tend1
+gesture:
+var location gesture1
 var todo $0
-tend1:
-matchre return ^That area has already been tended to\.
-matchre return ^You work carefully at tending your wound\.
-matchre return ^Doing your best
-matchre return too injured for you to do that\.
-matchre return ^That area is not bleeding\.
+gesture1:
+matchre return ^you gesture\.
 matchre return ^Roundtime:
-matchre return ^You realize you cannot handle so severe an injury while in combat\!
-matchre return ^Your task is made more difficult by being in combat\.
-put tend %todo
+matchre return ^As you intone a quiet prayer to Meraud, your hands begin to glow with a faint silvery nimbus\.
+put gesture %todo
 goto retry
 
 
-unwrap:
-var location unwrap1
+get:
+var location get1
 var todo $0
-unwrap1:
-matchre return ^You may undo the affects of TENDing to an injured area by using the UNWRAP command to remove the bandages\.
-matchre return ^That area is not tended\.
-matchre return ^The bandages binding your
-matchre return ^You unwrap your bandages\.
-matchre return ^\[Roundtime:
-put unwrap my %todo
+get1:
+matchre return ^You get
+matchre return ^You pull
+matchre return ^You pick up
+matchre return ^What were you referring to\?
+matchre return ^You are already holding that\.
+matchre return ^You need a free hand to pick that up\.
+matchre return ^But that is already in your inventory\.
+matchre return ^You fade in for a moment as you pick up
+matchre return ^You are not strong enough to pick that up\!
+put get %todo
 goto retry
 
 
-look:
-var location look1
+harn:
+harness:
+#if $preparedspell = None then goto return
+var location harness1
 var todo $0
-look1:
-matchre return ^You are
-matchre return ^You have
-matchre return ^You see
-matchre return ^(He|She) is
-matchre return ^I could not find what you were referring to\.
-put look %todo
-goto retry
-
-
-search:
-var location search
+harness1:
 matchre return ^Roundtime
-matchre return ^You search around for a moment
-put search
+matchre return ^You tap into the mana
+matchre return ^Usage:
+matchre return ^Attunement:
+matchre return ^You strain, but cannot harness that much power\.
+matchre return ^You can't harness that much mana\!
+put harness %todo
 goto retry
 
 
-teach:
-var location teach1
-var todo $0
-teach1:
-matchre return ^You begin to lecture
-matchre return is already listening to you\.
-matchre return is listening to someone else\.
-matchre return is not paying attention to you\.
-matchre return ^You have already offered to
-matchre return already trying to teach someone else
-matchre return is already trying to teach you something
-matchre return ^That person is too busy teaching their own students to listen to your lesson\.
-matchre return ^You cannot listen to a teacher and teach at the same time
-matchre return ^I could not find who you were referring to\.
-matchre return isn't teaching you anymore\.
-put Teach %todo
+health:
+var location health
+   matchre return.p ^Your body feels
+   matchre return.p ^Your spirit feels
+   put health
 goto retry
 
 
-listen:
-var location listen1
-var todo $0
-listen1:
-matchre return ^You begin to listen
-matchre return ^Your teacher appears to have left\.
-matchre return ^You are already listening to someone\.
-matchre return ^Who do you want to listen to
-matchre return ^I could not find who you were referring to\.
-matchre return isn't teaching a class\.
-matchre return isn't teaching you anymore\.
-matchre return has closed the class to new students\.
-matchre return ^You cannot teach a skill and be a student at the same time\!
-put listen %todo
-goto retry
-
-
-stop:
-var location stop1
-var todo $0
-stop1:
-matchre return ^You stop teaching\.
-matchre return ^But you aren't teaching anyone\.
-matchre return ^You stop listening to
-matchre return ^But you aren't listening to anyone\.
-matchre return ^You stop trying to teach
-matchre return ^You stop practicing your climbing skills\.
-matchre return ^You weren't practicing your climbing skills anyway\.
-put stop %todo
-goto retry
-
-
-dance:
-var location dance1
-var todo $0
-dance1:
-matchre return ^You slowly center yourself
+hide:
+var location hide
+matchre return reveals you, ruining your hiding attempt
+matchre return discovers you, ruining your hiding place\!
+matchre return notices your attempt to hide\!
+matchre return ^Eh\?  But you're already hidden
+matchre return ^You melt into the background
+matchre return ^You slip into a hiding
+matchre return ^You blend in with your surroundings
+matchre return ^You can't hide in all this armor\!
 matchre return ^Roundtime
-matchre return ^Your mind and body are focused on a Dance\.
-matchre return ^You push out your chest as you feel your eyes taking on a new and distant focus\.
-matchre return ^You are off center, and have trouble focusing\.
-matchre return ^You slowly relax, letting the power of the dance fade from your core\.
-matchre return ^Stop what\?
-put dance %todo
+put hide
+goto retry
+
+
+hunt:
+var todo $0
+hunt1:
+var location hunt1
+matchre return ^Roundtime
+matchre return ^You take note
+matchre return ^You move to hunt down your prey\.
+matchre return ^Your prey seems to have completely vanished\.
+matchre return ^You don't have that target currently available\.
+matchre hunt2 ^You'll need to disengage first\.
+matchre hunt3 ^You'll need to be standing up, first\.
+put hunt %todo
+goto retry
+hunt2:
+gosub ret
+goto hunt1
+hunt3:
+gosub stand
+goto hunt1
+
+
+info:
+var location info
+matchre return ^Wealth:
+matchre return ^Concentration :
+matchre return ^Debt:
+put info
+goto retry
+
+
+infuse:
+var location infuse1
+var todo $0
+infuse1:
+matchre return ^Roundtime
+matchre return ^You don't have enough harnessed to infuse that much\.
+put infuse %todo
+goto retry
+
+
+invoke:
+var location invoke1
+var todo $0
+invoke1:
+matchre return ^You don't have any
+matchre return ^A finely balanced tago suddenly leaps
+matchre return ^Roundtime
+put invoke %todo
+goto retry
+
+
+juggle:
+var location juggle1
+var todo $0
+juggle1:
+matchre return ^Don't be silly\!
+matchre return ^What were you referring to\?
+matchre return ^But you're not holding
+matchre return ^It's easier to juggle if you start
+matchre return ^Roundtime
+matchre return ^Your injuries make juggling impossible\.
+put juggle %todo
 goto retry
 
 
@@ -635,15 +741,447 @@ put khri stop
 goto retry
 
 
-ask:
-var location ask1
-var todo $0
-ask1:
-matchre return ^To whom are you speaking\?
-matchre return ^With a sad look
-matchre return ^A pure white alfar avenger peers at you
-put ask %todo
+kick:
+var location kick
+matchre kick ^You take a step back and run up to the
+matchre kick1 ^You can't do that from your position\.
+matchre kick1 ^You throw a glorious temper tantrum\!
+matchre return ^I could not find what you were referring to\.
+put kick pile
 goto retry
+kick1:
+gosub stand
+var location kick
+goto kick
+
+
+lean:
+var location lean1
+var todo $0
+lean1:
+matchre return ^You lean
+matchre return ^You shift your weight\.
+matchre return ^I could not find what you were referring to\.
+put lean %todo
+goto retry
+
+
+listen:
+var location listen1
+var todo $0
+listen1:
+matchre return ^You begin to listen
+matchre return ^Your teacher appears to have left\.
+matchre return ^You are already listening to someone\.
+matchre return ^Who do you want to listen to
+matchre return ^I could not find who you were referring to\.
+matchre return isn't teaching a class\.
+matchre return isn't teaching you anymore\.
+matchre return has closed the class to new students\.
+matchre return ^You cannot teach a skill and be a student at the same time\!
+put listen %todo
+goto retry
+
+
+load:
+var location load1
+var todo $0
+load1:
+matchre return ^Roundtime
+matchre return ^Your .+ is already loaded
+matchre return ^What weapon are you trying to load\?
+matchre return ^You don't have the proper ammunition readily available for your
+matchre return ^You can't load .+, silly\!
+put load %todo
+goto retry
+
+
+look:
+var location look1
+var todo $0
+look1:
+matchre return ^You are
+matchre return ^You have
+matchre return ^You see
+matchre return ^(He|She) is
+matchre return ^I could not find what you were referring to\.
+put look %todo
+goto retry
+
+
+mark:
+var location mark1
+var todo $0
+mark1:
+matchre return ^You carefully size up
+matchre return ^It's dead
+matchre return ^As you consider
+matchre return ^Roundtime
+matchre return ^Mark what\?
+matchre return ^You begin to
+put mark all %todo
+goto retry
+
+
+mind:
+var location mind1
+mind1:
+matchre return ^EXP HELP for more information
+matchre return ^Overall state of mind:
+put mind
+goto retry
+
+
+observe:
+var location observe1
+var todo $0
+observe1:
+matchre return ^You scan the skies for a few moments\.
+matchre return ^Your search for the constellation
+matchre return ^Roundtime
+put observe %todo
+goto retry
+
+
+open:
+var todo $0
+open1:
+var location open1
+matchre return ^You try, but the telescope seems as extended as it will ever be.
+matchre return ^You extend your telescope.
+matchre return ^You need to be holding the telescope first.
+put open %todo
+goto retry
+
+
+openTelescope:
+put open my telescope
+goto location
+
+
+parry:
+var location parry
+matchre return ^You are already in a position
+matchre return ^Roundtime:
+matchre return ^You are already in a position to parry\.
+matchre return ^You need two hands to wield this weapon\!
+matchre return ^You move into a position
+put parry
+goto retry
+
+
+peer:
+var todo $0
+peer1:
+var location peer1
+matchre return ^You focus
+matchre return ^You peer aimlessly
+matchre return ^Roundtime
+put peer %todo
+goto retry
+
+
+perc:
+perceive:
+pow:
+power:
+var location power1
+var todo $0
+power1:
+matchre return ^Roundtime
+matchre return ^Something in the area is interfering
+matchre return ^I could not find who you were referring to\.
+put PERCEIVE %todo
+goto retry
+
+
+poke:
+var location poke1
+var todo $0
+poke1:
+matchre return ^You poke a hole in your
+matchre return ^You toss a piece of
+matchre return ^You poke a piece of
+matchre return ^You tear up the empty envelope and toss it away\.
+matchre return ^What were you referring to\?
+matchre return ^Going around poking things isn't going to get you far\.
+matchre return ^You can't tear up the envelope while there's still paper inside\.
+matchre return ^You must be either wearing or holding a plain paper envelope before you can do that\!
+put poke %todo
+goto retry
+
+
+pray:
+var location pray1
+var todo $0
+pray1:
+matchre return ^You begin to pray
+matchre return ^You bow your head
+matchre return ^You pray fervently\.
+matchre return ^You want to pray here\?
+matchre return ^As you utter your prayer
+matchre return ^You kneel down and begin to pray\.
+matchre return ^You continue praying for guidance\.
+matchre return ^You beseech your God for mercy\.
+matchre return ^You begin to pray, kneeling before the altar\.
+matchre return ^Your fervent prayers are met with a sense of peace and security\.
+matchre return ^The soft sound of your prayers wraps itself around you and brings you a sense of tranquility\.
+put pray %todo
+goto retry
+
+
+pre.skin:
+if %skin = 0 then goto Return
+if %current.stance != custom then gosub stance custom
+gosub stowing
+gosub get my skinning knife
+return
+
+
+predict:
+var location predict1
+var todo $0
+predict1:
+matchre return ^You focus inwardly searching for insight into your future\.
+matchre return ^After a few moments, the mists of time begin to part\.
+matchre return ^You see nothing else\.
+matchre return ^The future, however, remains a dark mystery to you\.
+matchre return ^You must be a real expert to predict the weather indoors\.
+matchre return ^You are a bit too distracted to be making predictions\.
+matchre return ^You consider your recent observations
+matchre return ^Roundtime
+put predict %todo
+goto retry
+
+
+prep_spell:
+if $Harness_Ability.LearningRate > 30 then goto return
+prep_spell1:
+if $mana < 80 then goto return
+prep:
+var location prep1
+var todo $0
+prep1:
+matchre return ^You begin chanting a prayer
+matchre return ^You close your eyes and breathe deeply,
+matchre return ^You trace an arcane sigil in the air,
+matchre return ^Heatless orange flames blaze between your fingertips
+matchre return ^Your eyes darken to black as a starless night
+matchre return ^You raise your arms skyward, chanting
+matchre return ^You are already preparing
+matchre return ^Icy blue frost crackles up your arms
+matchre return ^You make a careless gesture as you chant the words
+matchre return ^Tiny tendrils of lightning jolt between your hands
+matchre return ^The wailing of lost souls accompanies your preparations
+matchre return ^Your skin briefly withers and tightens, becoming gaunt
+matchre return ^Images of streaking stars falling from the heavens flash across your vision
+matchre return ^A nagging sense of desperation guides your hands through the motions
+matchre return ^You hastily shout the arcane phrasings needed to prepare
+matchre return ^You deftly waggle your fingers in the precise motions needed to prepare
+matchre return ^With great force, you slap your hands together before you and slowly pull them apart,
+matchre return ^With no small amount of effort, you slowly recall the teachings
+matchre return ^You struggle against your bindings to prepare
+matchre return ^You raise one hand before you and concentrate
+matchre return ^As you begin to focus on preparing
+put prepare %todo
+goto retry
+
+
+put:
+var location put1
+var todo $0
+put1:
+matchre return ^You drop
+matchre return ^You put
+matchre return ^You reverently place
+matchre return ^As you start to place
+matchre return ^What were you referring to\?
+matchre return ^You briefly twist the top
+matchre return ^As you put the wax label
+put put %todo
+goto retry
+
+
+read:
+var location read1
+var todo $0
+read1:
+matchre return ^I could not find what you were referring to\.
+matchre return ^The writing is too small\.  You'll have to hold the scroll to read it\.
+matchre return ^Roundtime
+put read %todo
+goto retry
+
+
+rel:
+release:
+var location release1
+var todo $0
+release1:
+matchre return ^Type RELEASE HELP for more options\.
+matchre return ^You aren't harnessing any mana.
+matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
+matchre return ^You have no cyclic spell active to release.
+put release %todo
+goto retry
+
+
+rel.shadow:
+var location rel.shadow
+matchre return ^You gesture, completing the pattern to unravel the mystical bonds binding the shadowling to this plane\.
+matchre return ^You gesture, attempting to unravel the pattern binding the shadowling to this plane\.
+matchre return ^That would be a neat trick.  Try finding a shadowling first\.
+put release shadowling
+goto retry
+
+
+release.spell:
+if $preparedspell = None then return
+var location release.spell
+matchre return ^You let your concentration lapse and feel the spell's energies dissipate\.
+matchre return ^You aren't preparing a spell\.
+put release spell
+goto retry
+
+
+release.mana:
+var location release.mana
+matchre return ^You release the mana you were holding\.
+matchre return ^You aren't holding any mana\.
+put release mana
+goto retry
+
+
+
+rem:
+remove:
+var location remove1
+var todo $0
+remove1:
+matchre return ^You take
+matchre return ^You slide
+matchre return ^You sling
+matchre return ^Roundtime
+matchre return ^You remove
+matchre return ^You pull off
+matchre return ^You pull your
+matchre return ^Remove what\?
+matchre return ^You count out
+matchre return ^You work your way out of
+matchre return ^You aren't wearing that\.
+matchre return ^What were you referring to\?
+matchre return ^You loosen the straps securing
+put remove %todo
+goto retry
+
+ret:
+retreat:
+var location retreat
+matchre retreat ^You retreat from combat\.
+matchre retreat ^You retreat back to pole range\.
+matchre retreat ^You stop advancing
+matchre retreat ^You sneak back out
+matchre retreat ^You must stand first\.
+matchre retreat ^You try to back out
+matchre return ^You are already as far away as you can get\!
+matchre return revealing your hiding place\!
+put retreat
+goto retry
+
+
+2retreat:
+var location 2retreat
+matchre return ^You stop advancing
+matchre return ^You retreat from combat\.
+matchre return ^You retreat back to pole range\.
+matchre return ^You sneak back out
+matchre return ^You are already as far away as you can get\!
+matchre return ^You try to
+matchre return revealing your hiding place\!
+put retreat
+goto retry
+
+ret2:
+if $monstercount > 0 then
+{
+  put retreat;retreat
+  pause .2
+}
+return
+
+
+
+rub:
+var location rub1
+var todo $0
+rub1:
+matchre rub1 ^You rub Mythos gently, trying to massage any sore muscles\.
+matchre return ^As you rub the orb, it glows slightly more intensely and you feel a strange tugging, as if something has been moved from you to the orb\.
+matchre return The strange tugging sensation is gone, leading you to believe that your sacrifice is properly prepared\.
+matchre return ^You rub the orb and feel a strange tugging, but nothing really seems to happen\.
+matchre return ^You run your fingers over the bones\.
+matchre return ^Rub what\?
+put rub %todo
+goto retry
+
+
+search:
+var location search
+matchre return ^Roundtime
+matchre return ^You search around for a moment
+put search
+goto retry
+
+
+sell:
+var location sell1
+var todo $0
+sell1:
+matchre return ^"Hmm\?" says Scupper, "What are you talking about\?"
+matchre return ^You ask Scupper to buy a lumpy bundle\.
+matchre return ^Scupper separates the bundle and sorts through it carefully
+matchre return ^Sell what\?
+matchre return ^I could not find what you were referring to\.
+put sell %todo
+goto retry
+
+
+Skinning:
+var location Skinning
+matchre return ^.*can't be skinned
+matchre return ^Skin what\?
+matchre return ^Living creatures often object to being flayed alive\.
+matchre return ^There isn't another
+matchre return ^You hideously bungle the attempt
+matchre return ^Somehow managing to do EVERYTHING wrong
+matchre return ^Some days it just doesn't pay to wake up\.
+matchre return ^Despite your best efforts,
+matchre return ^You bumble the attempt
+matchre return ^You claw
+matchre return ^You fumble and make an improper cut
+matchre return ^Your .* twists and slips in your grip
+matchre return ^The .+ cannot be skinned.
+matchre pre.skin ^You will need a more appropriate tool for skinning
+matchre pre.skin ^You must have one hand free to skin\.
+matchre pre.skin ^You'll need to have a bladed instrument to skin with\.
+matchre Skinning ^You approach \w+'s kill
+matchre Skinning.Empty ^You struggle with the
+matchre Skinning.Empty ^Roundtime
+matchre Skinning.Empty ^A heartbreaking slip
+matchre Skinning.Empty ^You skillfully peel
+matchre Skinning.Empty ^You skin
+matchre Skinning.Empty ^You work diligently at skinning
+matchre Skinning.Empty ^You work hard at peeling
+matchre Skinning.Empty ^You skillfully peel
+matchre Skinning.Empty ^You slice away a bloody trophy
+matchre Skinning.Empty ^Some greater force guides your hand
+matchre Skinning.Empty ^Moving with impressive skill and grace
+matchre Skinning.Empty ^Working deftly
+put skin
+goto retry
+Skinning.Empty:
+gosub stowing
+return
 
 
 stance:
@@ -669,225 +1207,6 @@ put stance set %todo
 goto retry
 
 
-count:
-var location Count1
-var todo $0
-count1:
-matchre return ^You take a quick count of potential threats in the area\.\.\.
-matchre return ^You count up the items in your
-matchre return ^That doesn't tell you much of anything.
-put count %todo
-goto retry
-
-
-forage:
-if $Foraging.LearningRate > 33 then return
-forage1:
-var location forage2
-var todo $0
-forage2:
-matchre return ^Roundtime
-matchre return ^You really need to have at least one hand free to forage properly\.
-matchre return ^You cannot forage while in combat\!
-matchre return ^The room is too cluttered to find anything here\!
-put forage %todo
-goto retry
-
-coll:
-collect:
-var location collect1
-var todo $0
-collect1:
-matchre return ^Roundtime
-matchre return ^You really need to have at least one hand free to forage properly\.
-matchre return ^You cannot collect anything while in combat\!
-matchre return ^The room is too cluttered to find anything here\!
-put collect %todo
-goto retry
-
-
-kick:
-var location kick
-matchre kick ^You take a step back and run up to the
-matchre kick1 ^You can't do that from your position\.
-matchre kick1 ^You throw a glorious temper tantrum\!
-matchre return ^I could not find what you were referring to\.
-put kick pile
-goto retry
-kick1:
-gosub stand
-var location kick
-goto kick
-
-turn:
-var location turn1
-var todo $0
-turn1:
-matchre return ^Turn what\?
-matchre return ^You turn to the section
-matchre return ^You turn
-matchre return already at the contents
-matchre return ^But you're not
-put turn %todo
-goto retry
-
-
-study:
-var location study1
-var todo $0
-study1:
-matchre return ^You study your
-matchre return ^You've already started to make something
-matchre return ^You are unable to sense additional information\.
-matchre return ^You take on a studious look\.
-matchre return ^You should try that where you can see the sky\.
-matchre return ^You feel it is too soon to grasp anything new in the skies above\.
-matchre return ^You scan
-matchre return ^Roundtime
-matchre return ^Why do you need to study this chart again\?
-put study %todo
-goto retry
-
-
-poke:
-var location poke1
-var todo $0
-poke1:
-matchre return ^You poke a hole in your
-matchre return ^You toss a piece of
-matchre return ^You poke a piece of
-matchre return ^You tear up the empty envelope and toss it away\.
-matchre return ^What were you referring to\?
-matchre return ^Going around poking things isn't going to get you far\.
-matchre return ^You can't tear up the envelope while there's still paper inside\.
-matchre return ^You must be either wearing or holding a plain paper envelope before you can do that\!
-put poke %todo
-goto retry
-
-invoke:
-var location invoke1
-var todo $0
-invoke1:
-matchre return ^You don't have any
-matchre return ^A finely balanced tago suddenly leaps
-matchre return ^Roundtime
-put invoke %todo
-goto retry
-
-
-drop:
-var location drop1
-var todo $0
-drop1:
-matchre return ^You drop
-matchre return ^What were you referring to\?
-matchre return ^But you aren't holding that\.
-put drop %todo
-goto retry
-
-
-aim:
-var location aim1
-var todo $0
-aim1:
-matchre return ^You begin to target
-matchre return ^You shift your target to
-matchre return ^You are already targetting that\!
-matchre return ^You need both hands in order to aim\.
-matchre return ^At what are you trying to aim\?
-matchre return ^Your .+ isn't loaded\!
-matchre return ^But the .+ in your right hand isn't a ranged weapon\!
-matchre return ^You don't have a ranged weapon to aim with\!
-matchre return ^You are already targetting that!
-put aim %todo
-goto retry
-
-tar:
-target:
-var location target1
-var todo $0
-target1:
-matchre return ^You begin to weave
-matchre return ^Your target pattern is already formed
-matchre return ^You must be preparing a spell in order to target it\!
-matchre return ^You don't need to target the spell you're preparing\.
-matchre target2 ^You are not engaged to anything, so you must specify a target to focus on\!
-matchre target2 ^There is no need to target
-put target %todo
-goto retry
-target2:
-put face next
-goto target1
-
-load:
-var location load1
-var todo $0
-load1:
-matchre return ^Roundtime
-matchre return ^Your .+ is already loaded
-matchre return ^What weapon are you trying to load\?
-matchre return ^You don't have the proper ammunition readily available for your
-matchre return ^You can't load .+, silly\!
-put load %todo
-goto retry
-
-
-unload:
-var location unload
-matchre return ^You unload the
-matchre return ^You remain concealed by your surroundings, convinced that your unloading
-matchre return ^Roundtime:
-matchre return ^But your
-matchre return ^You don't have a
-matchre return ^You can't unload such a weapon\.
-matchre return ^Your
-put unload
-goto retry
-
-
-pray:
-var location pray1
-var todo $0
-pray1:
-matchre return ^You begin to pray
-matchre return ^You bow your head
-matchre return ^You pray fervently\.
-matchre return ^You want to pray here\?
-matchre return ^As you utter your prayer
-matchre return ^You kneel down and begin to pray\.
-matchre return ^You continue praying for guidance\.
-matchre return ^You beseech your God for mercy\.
-matchre return ^You begin to pray, kneeling before the altar\.
-matchre return ^Your fervent prayers are met with a sense of peace and security\.
-matchre return ^The soft sound of your prayers wraps itself around you and brings you a sense of tranquility\.
-put pray %todo
-goto retry
-
-
-rub:
-var location rub1
-var todo $0
-rub1:
-matchre rub1 ^You rub Mythos gently, trying to massage any sore muscles\.
-matchre return ^As you rub the orb, it glows slightly more intensely and you feel a strange tugging, as if something has been moved from you to the orb\.
-matchre return The strange tugging sensation is gone, leading you to believe that your sacrifice is properly prepared\.
-matchre return ^You rub the orb and feel a strange tugging, but nothing really seems to happen\.
-matchre return ^You run your fingers over the bones\.
-matchre return ^Rub what\?
-put rub %todo
-goto retry
-
-
-tap:
-var location tap1
-var todo $0
-tap1:
-matchre return ^You tap
-matchre stand1 ^Roundtime
-put tap %todo
-goto retry
-
-
 stand:
 if standing then return
 var location stand1
@@ -901,27 +1220,6 @@ matchre stand1 ^The weight of all your possessions prevents you from standing\.
 matchre stand1 ^Roundtime
 put stand
 goto retry
-
-
-hunt:
-var todo $0
-hunt1:
-var location hunt1
-matchre return ^Roundtime
-matchre return ^You take note
-matchre return ^You move to hunt down your prey\.
-matchre return ^Your prey seems to have completely vanished\.
-matchre return ^You don't have that target currently available\.
-matchre hunt2 ^You'll need to disengage first\.
-matchre hunt3 ^You'll need to be standing up, first\.
-put hunt %todo
-goto retry
-hunt2:
-gosub ret
-goto hunt1
-hunt3:
-gosub stand
-goto hunt1
 
 
 start.humming:
@@ -964,103 +1262,70 @@ put steal %todo
 goto retry
 
 
-put:
-var location put1
+stop:
+var location stop1
 var todo $0
-put1:
-matchre return ^You drop
-matchre return ^You put
-matchre return ^You reverently place
-matchre return ^As you start to place
-matchre return ^What were you referring to\?
-matchre return ^You briefly twist the top
-matchre return ^As you put the wax label
-put put %todo
+stop1:
+matchre return ^You stop teaching\.
+matchre return ^But you aren't teaching anyone\.
+matchre return ^You stop listening to
+matchre return ^But you aren't listening to anyone\.
+matchre return ^You stop trying to teach
+matchre return ^You stop practicing your climbing skills\.
+matchre return ^You weren't practicing your climbing skills anyway\.
+put stop %todo
 goto retry
 
 
-lean:
-var location lean1
+stow:
+var location stow1
 var todo $0
-lean1:
-matchre return ^You lean
-matchre return ^You shift your weight\.
-matchre return ^I could not find what you were referring to\.
-put lean %todo
+stow1:
+if ("%todo" = "right" && "$righthand" = "Empty") then return
+if ("%todo" = "left" && "$lefthand" = "Empty") then return
+matchre return ^Stow what\?
+matchre return ^You put your
+matchre return ^You stop as you realize
+matchre return ^You pick up
+matchre return ^But that is already in your inventory\.
+matchre location.unload ^You should unload the
+matchre location.unload ^You need to unload the
+matchre stowing too long to fit
+put stow %todo
 goto retry
 
 
-eat:
-var location eat1
-var todo $0
-eat1:
-matchre return ^You'd be better off trying to drink
-matchre return ^What were you referring to\?
-matchre return ^You eat
-matchre return ^You can't drink a
-matchre return ^You drink
-put %todo
-goto retry
+stowing:
+if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
+if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
 
+if matchre("$lefthand","(%pelts.keep)") then gosub bundle
+if matchre("$righthand","(%pelts.keep)") then gosub bundle
+if matchre("$lefthand","(%pelts.empty)") then gosub drop $lefthand
+if matchre("$righthand","(%pelts.empty)") then gosub drop $righthand
 
-gesture:
-var location gesture1
-var todo $0
-gesture1:
-matchre return ^you gesture\.
-matchre return ^Roundtime:
-matchre return ^As you intone a quiet prayer to Meraud, your hands begin to glow with a faint silvery nimbus\.
-put gesture %todo
-goto retry
+if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
+if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
 
-ret:
-retreat:
-var location retreat
-matchre retreat ^You retreat from combat\.
-matchre retreat ^You retreat back to pole range\.
-matchre retreat ^You stop advancing
-matchre retreat ^You sneak back out
-matchre retreat ^You must stand first\.
-matchre retreat ^You try to back out
-matchre return ^You are already as far away as you can get\!
-matchre return revealing your hiding place\!
-put retreat
-goto retry
-
-
-2retreat:
-var location 2retreat
-matchre return ^You stop advancing
-matchre return ^You retreat from combat\.
-matchre return ^You retreat back to pole range\.
-matchre return ^You sneak back out
-matchre return ^You are already as far away as you can get\!
-matchre return ^You try to
-matchre return revealing your hiding place\!
-put retreat
-goto retry
-
-ret2:
-if $monstercount > 0 then
-{
-  put retreat;retreat
-  pause .2
-}
+if $lefthand != Empty then gosub stow left
+if $righthand != Empty then gosub stow Right
 return
 
 
-advance:
-var location advance1
+study:
+var location study1
 var todo $0
-advance1:
-matchre return ^What do you want to advance towards\?
-matchre return ^You begin to advance on
-matchre return ^You are already advancing on
-matchre return ^You are already at melee with
-matchre return ^You begin to stealthily advance on
-matchre return ^You spin around to face
-matchre return ^You will have to retreat from your current melee first\.
-put advance %todo
+study1:
+matchre return ^You study your
+matchre return ^You've already started to make something
+matchre return ^You are unable to sense additional information\.
+matchre return ^You take on a studious look\.
+matchre return ^You should try that where you can see the sky\.
+matchre return ^You feel it is too soon to grasp anything new in the skies above\.
+matchre return ^You scan
+matchre return ^Roundtime
+matchre return ^Why do you need to study this chart again\?
+put study %todo
 goto retry
 
 
@@ -1099,280 +1364,10 @@ put swap
 matchwait
 
 
-block.stop:
-var location block.stop
-matchre return ^Okay\.
-matchre return ^You stop trying to defend against
-matchre return ^You aren't trying to defend against a second foe\!
-put block stop
-goto retry
-
-
-dump.junk:
-var location dump.junk
-matchre return ^\[You have marked this room to be cleaned by the janitor\.  It should arrive shortly.\]
-matchre return ^The janitor was recently summoned to this room\.  Please wait \d+ seconds\.
-matchre return ^You should just kick yourself in the shin\.  There is no junk here\.
-put dump junk
-goto retry
-
-
-flee:
-var todo $0
-flee1:
-var location flee1
-matchre return ^You assess your combat situation and realize you don't see anything engaged with you
-matchre return ^Your attempt to flee has failed
-matchre return ^Your fate is sealed
-matchre return ^You melt into the background, convinced that your misdirect was successful
-matchre return ^You manage to free yourself from engagement
-matchre return ^How do you expect to flee with your
-matchre flee2 ^You should stand up first\.
-put flee %todo
-goto retry
-flee2:
-gosub stand
-goto flee1
-
-app:
-appraise:
-var location appraise1
-var todo $0
-appraise1:
-matchre return ^Taking stock of its
-matchre return ^It's dead
-matchre return ^Appraise what\?
-matchre return ^Roundtime
-matchre return ^You cannot appraise that when you are in combat\!
-matchre return ^I could not find what you were referring to\.
-matchre return Roundtime:
-put appraise %todo
-goto retry
-
-
-mark:
-var location mark1
-var todo $0
-mark1:
-matchre return ^You carefully size up
-matchre return ^It's dead
-matchre return ^As you consider
-matchre return ^Roundtime
-matchre return ^Mark what\?
-matchre return ^You begin to
-put mark all %todo
-goto retry
-
-
-Attack:
-var todo $0
-var location attack1
-if $stamina < 85 then pause 3
-pause .1
-Attack1:
-if $stamina < 85 then pause 4
-if $standing = 0 then put stand
-matchre advance2 ^It would help if you were closer
-matchre advance2 ^You aren't close enough to attack\.
-matchre advance2 ^You are already advancing
-matchre return ^You don't have a weapon to draw with\!
-matchre return ^But you don't have a ranged weapon in your hand to fire with\!
-matchre return ^You must have both hands free to use the
-matchre return ^But your .* isn't loaded\!
-matchre return ^You need two hands to wield this weapon\!
-matchre return ^I could not find what you were referring to\.
-matchre return ^At what are you trying
-matchre return ^There is nothing else to face
-matchre return ^How can you snipe if you are not hidden\?
-matchre return ^What are you trying to throw?
-matchre return ^\[Roundtime
-matchre return ^Roundtime:
-matchre return is already quite dead\.
-matchre return ^The .* is already debilitated\!
-matchre return ^You must be hidden or invisible to ambush\!
-matchre return ^The khuj is too heavy for you to use like that\.
-matchre attack2 ^You should stand up first\.
-put %todo
-goto retry
-
-advance2:
-if $hidden = 1 then put shiver
-pause
-put engage
-pause 2
-goto Attack1
-
-attack2:
-gosub stand
-var location attack1
-goto Attack1
-
-arr:
-arrange:
-Skinning.Arrangep:
-pause .3
-Skinning.Arrange:
-var location Skinning.Arrange
-matchre Skinning.Arrangep ^You properly arrange
-matchre Skinning.Arrangep ^Roundtime
-matchre return has already been arranged as much as you can manage\.
-matchre return ^Arrange what\?
-matchre return ^Try killing the
-matchre return The .+ cannot be skinned, so you can't arrange it either.
-put arrange
-goto retry
-
-
-pre.skin:
-if %skin = 0 then goto Return
-if %current.stance != custom then gosub stance custom
-gosub stowing
-gosub get my skinning knife
-return
-
-
-Skinning:
-var location Skinning
-matchre return ^.*can't be skinned
-matchre return ^Skin what\?
-matchre return ^Living creatures often object to being flayed alive\.
-matchre return ^There isn't another
-matchre return ^You hideously bungle the attempt
-matchre return ^Somehow managing to do EVERYTHING wrong
-matchre return ^Some days it just doesn't pay to wake up\.
-matchre return ^Despite your best efforts,
-matchre return ^You bumble the attempt
-matchre return ^You claw
-matchre return ^You fumble and make an improper cut
-matchre return ^Your .* twists and slips in your grip
-matchre return ^The .+ cannot be skinned.
-matchre pre.skin ^You will need a more appropriate tool for skinning
-matchre pre.skin ^You must have one hand free to skin\.
-matchre pre.skin ^You'll need to have a bladed instrument to skin with\.
-matchre Skinning ^You approach \w+'s kill
-matchre Skinning.Empty ^You struggle with the
-matchre Skinning.Empty ^Roundtime
-matchre Skinning.Empty ^A heartbreaking slip
-matchre Skinning.Empty ^You skillfully peel
-matchre Skinning.Empty ^You skin
-matchre Skinning.Empty ^You work diligently at skinning
-matchre Skinning.Empty ^You work hard at peeling
-matchre Skinning.Empty ^You skillfully peel
-matchre Skinning.Empty ^You slice away a bloody trophy
-matchre Skinning.Empty ^Some greater force guides your hand
-matchre Skinning.Empty ^Moving with impressive skill and grace
-matchre Skinning.Empty ^Working deftly
-put skin
-goto retry
-Skinning.Empty:
-gosub stowing
-return
-
-
-bundle:
-var location bundle
-matchre return ^You try to stuff your eye into the bundle but can't seem to find a good spot\.
-matchre return ^You stuff your
-matchre return ^You bundle up your
-matchre bundle2 ^That's not going to work\.
-put bundle eye
-goto retry
-
-bundle2:
-if "$lefthand" != "Empty" then put stow left
-gosub get bundling rope
-goto bundle
-
-
-sell:
-var location sell1
-var todo $0
-sell1:
-matchre return ^"Hmm\?" says Scupper, "What are you talking about\?"
-matchre return ^You ask Scupper to buy a lumpy bundle\.
-matchre return ^Scupper separates the bundle and sorts through it carefully
-matchre return ^Sell what\?
-matchre return ^I could not find what you were referring to\.
-put sell %todo
-goto retry
-
-Dodge:
-var location Dodge
-matchre return ^You are already in a position
-matchre return ^But you are already dodging\!
-matchre return ^You move into a position
-matchre return ^You need two hands to wield this weapon\!
-matchre return ^Roundtime
-put Dodge
-goto retry
-
-
-Parry:
-var location Parry
-matchre return ^You are already in a position
-matchre return ^Roundtime:
-matchre return ^You are already in a position to parry\.
-matchre return ^You need two hands to wield this weapon\!
-matchre return ^You move into a position
-put Parry
-goto retry
-
-
-EXP:
-var location EXP1
-var todo $0
-EXP1:
-matchre return ^EXP HELP for more information
-matchre return ^Overall state of mind:
-put EXP %todo
-goto retry
-
-
-INFO:
-var location INFO
-matchre return ^Wealth:
-matchre return ^Concentration :
-matchre return ^Debt:
-put INFO
-goto retry
-
-
-health:
-var location health
-   matchre return.p ^Your body feels
-   matchre return.p ^Your spirit feels
-   put health
-goto retry
-
-
-mind:
-var location mind1
-mind1:
-matchre return ^EXP HELP for more information
-matchre return ^Overall state of mind:
-put mind
-goto retry
-
-
 shiver:
 var location shiver
 matchre return ^A shiver runs up your spine\.
 put shiver
-goto retry
-
-
-HIDE:
-var location HIDE
-matchre return reveals you, ruining your hiding attempt
-matchre return discovers you, ruining your hiding place\!
-matchre return notices your attempt to hide\!
-matchre return ^Eh\?  But you're already hidden
-matchre return ^You melt into the background
-matchre return ^You slip into a hiding
-matchre return ^You blend in with your surroundings
-matchre return ^You can't hide in all this armor\!
-matchre return ^Roundtime
-put HIDE
 goto retry
 
 
@@ -1395,98 +1390,148 @@ put stop stalk
 goto retry
 
 
-drag:
-var location drag1
+tap:
+var location tap1
 var todo $0
-drag1:
-matchre return ^I could not find what you were referring to\.
-matchre return ^Don't be silly\!
-matchre return ^Roundtime
-put drag %todo
+tap1:
+matchre return ^You tap
+matchre stand1 ^Roundtime
+put tap %todo
 goto retry
 
 
-climb:
+tar:
+target:
+var location target1
 var todo $0
-climb1:
-var location climb1
-if $stamina < 60 then pause 3
-if $standing = 0 then put stand
-matchre climb1 ^Roundtime
-matchre climb2 ^You are engaged
-matchre climb3 ^Stand up first\.
-matchre return ^Obvious
-matchre return ^  CLIMB
-matchre return ^CLIMB
-matchre return ^You begin to practice your climbing skills\.
-matchre return ^You should stop practicing your climbing skill before you do that\.
-matchre location.p ^You are too tired to climb that\.
-matchre location.p ^All this climbing back and forth is getting a bit tiresome
-put climb %todo
+target1:
+matchre return ^You begin to weave
+matchre return ^Your target pattern is already formed
+matchre return ^You must be preparing a spell in order to target it\!
+matchre return ^You don't need to target the spell you're preparing\.
+matchre target2 ^You are not engaged to anything, so you must specify a target to focus on\!
+matchre target2 ^There is no need to target
+put target %todo
 goto retry
-climb2:
-gosub ret
-goto climb1
-climb3:
-gosub stand
-goto climb1
+target2:
+put face next
+goto target1
 
 
-open:
+teach:
+var location teach1
 var todo $0
-open1:
-var location open1
-matchre return ^You try, but the telescope seems as extended as it will ever be.
-matchre return ^You extend your telescope.
-matchre return ^You need to be holding the telescope first.
-put open %todo
-goto retry
-
-
-openTelescope:
-put open my telescope
-goto location
-
-close:
-var todo $0
-close1:
-var location close1
-matchre return ^You try, but the telescope won't collapse any further.
-matchre return ^You collapse your telescope.
-matchre return ^You need to be holding the telescope first.
-put close %todo
+teach1:
+matchre return ^You begin to lecture
+matchre return is already listening to you\.
+matchre return is listening to someone else\.
+matchre return is not paying attention to you\.
+matchre return ^You have already offered to
+matchre return already trying to teach someone else
+matchre return is already trying to teach you something
+matchre return ^That person is too busy teaching their own students to listen to your lesson\.
+matchre return ^You cannot listen to a teacher and teach at the same time
+matchre return ^I could not find who you were referring to\.
+matchre return isn't teaching you anymore\.
+put Teach %todo
 goto retry
 
 
-center:
+tend:
+var location tend1
 var todo $0
-center1:
-var location center1
-matchre openTelescope ^You'll need to open
-matchre return ^You put your eye to the
-matchre return ^Center what
-matchre return ^What did you want
-put center %todo
+tend1:
+matchre return ^That area has already been tended to\.
+matchre return ^You work carefully at tending your wound\.
+matchre return ^Doing your best
+matchre return too injured for you to do that\.
+matchre return ^That area is not bleeding\.
+matchre return ^Roundtime:
+matchre return ^You realize you cannot handle so severe an injury while in combat\!
+matchre return ^Your task is made more difficult by being in combat\.
+put tend %todo
+goto retry
+
+
+turn:
+var location turn1
+var todo $0
+turn1:
+matchre return ^Turn what\?
+matchre return ^You turn to the section
+matchre return ^You turn
+matchre return already at the contents
+matchre return ^But you're not
+put turn %todo
+goto retry
+
+
+unload:
+var location unload
+matchre return ^You unload the
+matchre return ^You remain concealed by your surroundings, convinced that your unloading
+matchre return ^Roundtime:
+matchre return ^But your
+matchre return ^You don't have a
+matchre return ^You can't unload such a weapon\.
+matchre return ^Your
+put unload
+goto retry
+
+
+unwrap:
+var location unwrap1
+var todo $0
+unwrap1:
+matchre return ^You may undo the affects of TENDing to an injured area by using the UNWRAP command to remove the bandages\.
+matchre return ^That area is not tended\.
+matchre return ^The bandages binding your
+matchre return ^You unwrap your bandages\.
+matchre return ^\[Roundtime:
+put unwrap my %todo
+goto retry
+
+
+wear:
+var location wear1
+var todo $0
+wear1:
+matchre return ^You sling
+matchre return ^You attach
+matchre return ^You put
+matchre return ^You strap
+matchre return ^You work your way into
+matchre return ^You slide your left arm through
+matchre return ^You hang
+matchre return ^You slip
+matchre return ^You drape
+matchre return ^You slide
+matchre return ^You are already wearing that\.
+matchre return ^Wear what\?
+matchre return ^The contours of the
+matchre return ^You can't wear any more items like that\.
+matchre location.unload1 ^You should unload the
+matchre location.unload1 ^You need to unload the
+put wear %todo
+goto retry
+
+
+wield:
+var location wield1
+var todo $0
+wield1:
+matchre return ^You can only wield a weapon or a shield\!
+matchre return ^You need to have your
+matchre return ^You draw out your
+matchre return ^You're already holding
+put wield %todo
 goto retry
 
 
 
-
-peer:
-var todo $0
-peer1:
-var location peer1
-matchre return ^You focus
-matchre return ^You peer aimlessly
-matchre return ^Roundtime
-put peer %todo
-goto retry
-
-
-
-########################
-# MOVE #
-########
+########################################################################
+#                            MOVE
+########################################################################
 
 automove:
 var toroom $1
@@ -1585,47 +1630,11 @@ gosub move %direction
 return
 
 
-stow:
-var location stow1
-var todo $0
-stow1:
-if ("%todo" = "right" && "$righthand" = "Empty") then return
-if ("%todo" = "left" && "$lefthand" = "Empty") then return
-matchre return ^Stow what\?
-matchre return ^You put your
-matchre return ^You stop as you realize
-matchre return ^You pick up
-matchre return ^But that is already in your inventory\.
-matchre location.unload ^You should unload the
-matchre location.unload ^You need to unload the
-matchre stowing too long to fit
-put stow %todo
-goto retry
 
 
-stowing:
-if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
-if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
-
-if matchre("$lefthand","(%pelts.keep)") then gosub bundle
-if matchre("$righthand","(%pelts.keep)") then gosub bundle
-if matchre("$lefthand","(%pelts.empty)") then gosub drop $lefthand
-if matchre("$righthand","(%pelts.empty)") then gosub drop $righthand
-
-if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
-if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
-
-if $lefthand != Empty then gosub stow left
-if $righthand != Empty then gosub stow Right
-return
-
-
-empty:
-if "$lefthand" != "Empty" then gosub drop $lefthand
-if "$righthand" != "Empty" then gosub drop $righthand
-return
-
-
+########################################################################
+#                            UTIL
+########################################################################
 
 retry:
 matchre location ^\.\.\.wait
