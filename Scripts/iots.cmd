@@ -4,7 +4,7 @@ include libsel.cmd
 
 var ritualFocus staff
 var isFocusWorn 1
-var defaultMana 630
+var defaultMana 600
 
 ######################
 
@@ -33,6 +33,10 @@ action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 action var isPlanetUp 0 when ^checkPlanetUpFalse ^Your search for the planet (\S+) turns up fruitless\.$
 action var isPlanetUp 1 when ^The planet (\S+) is too faint for you to pick out with your naked eye.
 action var isPlanetUp 1 when ^You focus your enhanced sight
+action var isPlanetUp 1 when ^You learned something useful from your observation.
+action var isPlanetUp 1 when ^You are unable to make use of this latest observation.
+action var isPlanetUp 1 when ^You see nothing regarding the future.
+
 
 if (!contains("%stats", "%stat")) then {
     put #echo #FF0000 [.iots] ERROR: `%stat` not a valid option, must be one of: %stats

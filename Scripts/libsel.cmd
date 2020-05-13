@@ -207,6 +207,15 @@ put aim %todo
 goto retry
 
 
+align:
+var location align1
+var todo $0
+align1:
+matchre return ^You focus internally
+matchre return ^Roundtime: 2 sec.
+put align %todo
+goto retry
+
 ask:
 var location ask1
 var todo $0
@@ -595,6 +604,7 @@ matchre return ^You need a free hand to pick that up\.
 matchre return ^But that is already in your inventory\.
 matchre return ^You fade in for a moment as you pick up
 matchre return ^You are not strong enough to pick that up\!
+matchre return ^That is far too dangerous
 put get %todo
 goto retry
 
@@ -808,6 +818,16 @@ put look %todo
 goto retry
 
 
+lower:
+var location lower1
+var todo $0
+lower1:
+matchre return ^There is no point in lowering
+matchre return ^You lower
+put lower %todo
+goto retry
+
+
 mark:
 var location mark1
 var todo $0
@@ -982,6 +1002,7 @@ matchre return ^With no small amount of effort, you slowly recall the teachings
 matchre return ^You struggle against your bindings to prepare
 matchre return ^You raise one hand before you and concentrate
 matchre return ^As you begin to focus on preparing
+matchre prep1 ^Are you sure you want to do that\?  You'll interrupt your research\!
 put prepare %todo
 goto retry
 
@@ -997,6 +1018,7 @@ matchre return ^As you start to place
 matchre return ^What were you referring to\?
 matchre return ^You briefly twist the top
 matchre return ^As you put the wax label
+matchre return ^You glance down
 put put %todo
 goto retry
 
@@ -1051,6 +1073,13 @@ put release mana
 goto retry
 
 
+roll:
+var location roll1
+var todo $0
+roll1:
+matchre return ^Roundtime
+put roll %todo
+goto retry
 
 rem:
 remove:
@@ -1121,6 +1150,16 @@ matchre return ^You rub the orb and feel a strange tugging, but nothing really s
 matchre return ^You run your fingers over the bones\.
 matchre return ^Rub what\?
 put rub %todo
+goto retry
+
+
+scribe:
+var location scribe1
+var todo $0
+scribe1:
+matchre return ^You lean in towards
+matchre return ^Roundtime
+put scribe %todo
 goto retry
 
 
@@ -1282,6 +1321,14 @@ var todo $0
 stow1:
 if ("%todo" = "right" && "$righthand" = "Empty") then return
 if ("%todo" = "left" && "$lefthand" = "Empty") then return
+if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "satinwood telescope")) then {
+    gosub put my telescope in my telescope case
+    return
+}
+if ("%todo" = "right" && "$righthand" = "sunstone runestone") then {
+    gosub put my sunstone runestone in my telescope case
+    return
+}
 matchre return ^Stow what\?
 matchre return ^You put your
 matchre return ^You stop as you realize
@@ -1295,8 +1342,8 @@ goto retry
 
 
 stowing:
-if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
-if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
+if matchre("$lefthand","(partisan|lumpy bundle|staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
+if matchre("$righthand","(partisan|lumpy bundle|staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
 
 if matchre("$lefthand","(%pelts.keep)") then gosub bundle
 if matchre("$righthand","(%pelts.keep)") then gosub bundle
@@ -1461,8 +1508,20 @@ matchre return ^You turn to the section
 matchre return ^You turn
 matchre return already at the contents
 matchre return ^But you're not
+matchre return ^The book is already
 put turn %todo
 goto retry
+
+
+trace:
+var location trace1
+var todo $0
+trace1:
+matchre return ^Recalling the intricacies of the sigil
+matchre return ^Roundtime
+put trace %todo
+goto retry
+
 
 
 unload:
@@ -1488,6 +1547,16 @@ matchre return ^The bandages binding your
 matchre return ^You unwrap your bandages\.
 matchre return ^\[Roundtime:
 put unwrap my %todo
+goto retry
+
+
+wave:
+var location wave1
+var todo $0
+wave1:
+matchre return ^You slowly wave the
+matchre return ^I do not understand
+put wave %todo
 goto retry
 
 

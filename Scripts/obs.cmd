@@ -14,12 +14,12 @@ var cambrinth yoakena globe
 
 var checkPredState 1
 var isObsOnCd 0
+var doPred 0
 
-
-var objects.magic Ismenia|Durgaulda|Dawgolesh|Toad
-var objects.lore forge|Amlothi|Verena|Phoenix
+var objects.magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
+var objects.lore forge|Amlothi|Verena|Phoenix|Xibar
 var objects.offense Estrilda|Szeldia|forge|Spider
-var objects.defense Merewalda|Dawgolesh|Penhetia|Giant
+var objects.defense Merewalda|Dawgolesh|Penhetia|Giant|Katamba
 var objects.survival Morleena|Yoakena|Er'qutra|Ram
 
 var magicPredState null
@@ -48,11 +48,31 @@ action var survivalPredState $1 when (\S+) understanding of the celestial influe
 
 action math objIndex add 1 when ^You peer aimlessly through your telescope
 
+var doResearch 1
+action var doResearch 1 when ^You make definite progress in your
+action var doResearch 1 when ^Distracted by your
+action var doResearch 1 when ^Breakthrough
+action var doResearch 1 when ^You decide to stop researching
+
+action var doResearch 0 when ^You are already busy at research
+action var doResearch 0 when ^You continue to flex the mana streams
+action var doResearch 0 when ^You tentatively reach out and begin manipulating the mana streams
+action var doResearch 0 when ^Though it is taking much of your attention, you feel your research is going well.
+
+var researchTopics.list warding|sorcery|augmentation|stream|utility|fundamental
+var researchTopics.skills Warding|Sorcery|Augmentation|Attunement|Utility|Primary_Magic
+var researchTopics.index 0
+eval researchTopics.length count("%researchTopics.list", "|")
+
 var objIndex 0
 
 loop:
     if "%magicPredState" = "null" then gosub predState
     gosub checkBuffs
+    if (%doResearch = 1) then {
+        gosub startResearch
+    }
+
     if %checkPredState = 1 then gosub predState
     if %isObsOnCd = 0 then {
         gosub obs
@@ -62,8 +82,39 @@ loop:
     goto loop
 
 waiting:
-    pause 2
+    if (1 = 0 && $Sorcery.LearningRate < 34) then {
+        if ("$righthandnoun" != "runestone" && "$lefthandnoun" != "runestone") then {
+            gosub stow right
+            gosub get my sunstone runestone
+        }
+        gosub focus my runestone
+    } else {
+        pause 2
+    }
     return
+
+
+startResearch:
+    var idx 0
+    var researchTopics.index 0
+
+    startResearchLoop:
+        echo $%researchTopics.skills(%idx).LearningRate < $%researchTopics.skills(%researchTopics.index).LearningRate
+        if ($%researchTopics.skills(%idx).LearningRate < $%researchTopics.skills(%researchTopics.index).LearningRate) then {
+            var researchTopics.index %idx
+        }
+        math idx add 1
+        if (%idx <= %researchTopics.length) then goto startResearchLoop
+
+
+    pause
+    put research %researchTopics.list(%researchTopics.index) 300
+    pause
+    return
+
+
+
+
 
 obs:
     var skillset %skillsets(%skillsets.index)
@@ -72,14 +123,18 @@ obs:
         var objIndex 0
         math skillsets.index add 1
         if %skillsets.index > %skillsets.len then var skillsets.index 0
-         return
+        return
     }
 
     var objList %objects.%skillset
 
     eval len count("%objList", "|")
 
-    if (%objIndex > %len) then var objIndex 0
+    if (%objIndex > %len) then {
+        var objIndex 0
+        math skillsets.index add 1
+        if %skillsets.index > %skillsets.len then var skillsets.index 0
+    }
 
     if ("$righthandnoun" != "telescope") then {
         if ("$righthand" != "Empty") then gosub stow right
@@ -91,18 +146,41 @@ obs:
     gosub center my telescope on %objList(%objIndex)
     gosub peer my telescope
 
+    if (%isObsOnCd = 1) then {
+        gosub put my tele in my tele case
+        gosub get my bones
+        put align %skillset
+        if (contains("$roomplayers", "Inauri")) then {
+            pause
+            pause
+            #put roll bones at inauri
+            gosub roll bones at $charactername
+            pause
+            gosub put bones in my bag
+        } else {
+            pause
+            pause
+            put roll bones at selesthiel
+            pause
+            gosub put bones in my bag
+        }
+    }
+
     return
 
 
 predState:
     gosub predict state all
     var checkPredState 0
+    var objIndex 0
+    math skillsets.index add 1
+    if %skillsets.index > %skillsets.len then var skillsets.index 0
     return
 
 
 checkBuffs:
-    var buffs cv|pg|aus
-    var buffVars ClearVision|PiercingGaze|AuraSight
+    var buffs pg|aus|gaf
+    var buffVars PiercingGaze|AuraSight|GaugeFlow
 
     var i 0
     eval len count("%buffs", "|")

@@ -13,6 +13,8 @@ include libsel.cmd
 # .enchant list
 ##################################################
 
+var cambrinth Yoakena globe
+
 var command %1
 
 var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued
@@ -48,16 +50,35 @@ if "%command" = "make" then {
 gosub stow left
 gosub stow right
 
+action goto enchantScribe when ^The.* structure looks ready for additional scribing
+action goto enchantScribe when ^You do not see anything that would prevent scribing additional sigils onto
+action goto enchantScribe when free of problems that would impede further sigil scribing.
+
+
+var useLoop 0
+var useMeditate 0
+var useFocus 0
+action var useLoop 1 when ^You notice many of the scribed sigils are slowly merging back into
+action var useMeditate 1 when ^The traced sigil pattern blurs before your eyes, making it difficult to follow
+action var useFocus 1 when struggles to accept the sigil
+
+gosub analyze %baseItem on brazier
 
 enchant:
+    gosub get my brazier
+    gosub lower ground
+
     gosub get my artificing book
-    gosub turn my artificing book to chapter %chapter
-    gosub turn my artificing book to page %page
-    gosub read my artificing book
-    gosub study my artificing book
+    gosub turn my book to chapter %chapter
+    gosub turn my book to page %page
+    #gosub read my book
+    gosub study my book
     gosub stow my book
 
-    gosub get my %baseItem
+    put analyze %baseItem on brazier
+    pause
+
+    gosub get my %baseItem from my sack
     gosub put my %baseItem on brazier
     gosub put my %baseItem on brazier
 
@@ -100,8 +121,46 @@ enchant:
 
     gosub trace %baseItem on brazier
     gosub stow
-    gosub get my unfocused burin
+    gosub enchantScribe
+
+
+    exit
+
+enchantScribe:
+    if ("$righthandnoun" != "burin" && "$righthand" != "Empty") then gosub stow right
+    if ("$righthandnoun" != "burin") then gosub get my unfocused burin
+
+    if (%useLoop = 1) then gosub useLoopTool
+    if (%useMeditate = 1) then gosub useMeditate
+    if (%useFocus = 1) then gosub useFocus
+
+    var useLoop 0
+    var useMeditate 0
+    var useFocus 0
+
     gosub scribe %baseItem on brazier with my burin
+    goto enchantScribe
+
+
+useLoopTool:
+    if ("$righthandnoun" != "loop" && "$righthand" != "Empty") then gosub stow right
+    if ("$righthandnoun" != "loop") then gosub get my loop
+    gosub push %baseItem on brazier with my loop
+    gosub stow my loop
+    return
+
+useMeditate:
+    gosub meditate fount on brazier
+    return
+
+useFocus:
+    gosub focus %baseItem on brazier
+    return
+
+
+
+
+
 
 
 findSigil:

@@ -14,41 +14,22 @@ var warding maf
 
 var spells.abbr maf|aus|pg
 var spells.names ManifestForce|AuraSight|PiercingGaze
-var spells.prepAt 20|20|20|20
-var spells.addMana 20|20|20|20
-var spells.addTimes 20|20|20|20
+
 var index 0
-eval spells.len count("%spells.abbr", "|")
+eval len count("%spells.abbr", "|")
 
-init:
-    var index 0
-    initLoop:
-    var curr %spells(%index).abbr
-    if (!%spells.%curr.prepAt) then var %spells.%curr.prepAt 20
-    if (!%spells.%curr.addMana) then var %spells.%curr.addMana 20
-    if (!%spells.%curr.addTimes) then var %spells.%curr.prepAt 4
-    math index add 1
-    if (%index <= %spells.len) then goto initLoop
 
-temp:
-    var index 0
-    tempLoop:
-    var curr %spells(%index).abbr
-    echo %spells.%curr.prepAt
-    echo %spells.%curr.addMana
-    echo %spells.%curr.addTimes
-    math index add 1
-    if (%index <= %spells.len) then goto tempLoop
-
-exit
 
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 
 loop:
-    if (%index > %len) then var index 0
+    if (%index > %len) then {
+        var index 0
+        gosub perc
+    }
 
     if ($mana < 80) then gosub waitMana
-    gosub buff %combatSpells(%index)
+    gosub buff %spells.abbr(%index)
 
     math index add 1
     goto loop
@@ -60,7 +41,7 @@ loop:
 
     if ("$preparedspell" != "None") then gosub release spell
 
-    if ("%combatSpells(%index)" = "col") then {
+    if ("%spells.abbr(%index)" = "col") then {
         if ($Time.isYavashUp = 1) then var target yavash
         if ($Time.isXibarUp = 1) then var target xibar
         if ($Time.isKatambaUp = 1) then var target katamba
