@@ -216,6 +216,18 @@ matchre return ^Roundtime: 2 sec.
 put align %todo
 goto retry
 
+
+ana:
+analyze:
+var location analyze1
+var todo $0
+analyze1:
+matchre return ^Roundtime
+matchre return ^Analyze what
+put analyze %todo
+goto retry
+
+
 ask:
 var location ask1
 var todo $0
@@ -814,6 +826,8 @@ matchre return ^You have
 matchre return ^You see
 matchre return ^(He|She) is
 matchre return ^I could not find what you were referring to\.
+matchre return ^On the
+matchre return ^There is nothing
 put look %todo
 goto retry
 
@@ -841,6 +855,21 @@ matchre return ^You begin to
 put mark all %todo
 goto retry
 
+
+meditate:
+var location meditate1
+var todo $0
+meditate1:
+matchre libAwake ^You attempt to meditate, but have trouble concentrating.
+matchre return ^You lean in close
+matchre return ^Return
+put meditate %todo
+goto retry
+
+
+libAwake:
+put awake
+goto %location
 
 mind:
 var location mind1
@@ -956,7 +985,7 @@ gosub stowing
 gosub get my skinning knife
 return
 
-
+pred:
 predict:
 var location predict1
 var todo $0
@@ -1007,6 +1036,16 @@ put prepare %todo
 goto retry
 
 
+push:
+var location push1
+var todo $0
+push1:
+matchre return ^You wave the loop near
+matchre return ^Roundtime
+put push %todo
+goto retry
+
+
 put:
 var location put1
 var todo $0
@@ -1019,6 +1058,8 @@ matchre return ^What were you referring to\?
 matchre return ^You briefly twist the top
 matchre return ^As you put the wax label
 matchre return ^You glance down
+matchre return ^With a flick
+matchre return ^Roundtime
 put put %todo
 goto retry
 
@@ -1158,6 +1199,7 @@ var location scribe1
 var todo $0
 scribe1:
 matchre return ^You lean in towards
+matchre return ^You need another
 matchre return ^Roundtime
 put scribe %todo
 goto retry

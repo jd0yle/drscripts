@@ -6,58 +6,35 @@ var cambrinth yoakena globe
 
 ######################
 
-var combatSpells seer|maf|shadows|cv|psy|aus|art|mt
-var names SeersSense|ManifestForce|Shadows|ClearVision|PsychicShield|AuraSight|ArtificersEye|MachinistsTouch
-var index 0
-eval len count("%combatSpells", "|")
+var target %1
+var spell %2
+var isFullyPrepped 0
+var stowedItemNoun null
 
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 
-loop:
-    if (%index > %len) then goto done
-    if ($SpellTimer.%names(%index).active = 0) then {
-        if (%mana < 80) then gosub waitMana
-        gosub buff %combatSpells(%index)
-    }
-    math index add 1
-    goto loop
+if ("$righthand" != "Empty" && "$lefthand" != "Empty") then {
+    var stowedItemNoun $lefthandnoun
+    gosub stow left
+}
 
- buff:
-    var spell $1
-    var target $charactername
-    var isFullyPrepped 0
+if ("$preparedspell" != "None") then gosub release spell
+gosub prep %1 20
+gosub get my %cambrinth
+gosub charge my %cambrinth 20
+gosub charge my %cambrinth 20
+gosub charge my %cambrinth 20
+gosub charge my %cambrinth 20
+gosub focus my %cambrinth
+gosub invoke my %cambrinth
+goto waitPrep
 
-    if ("$preparedspell" != "None") then gosub release spell
+waitPrep:
+pause 1
+if %isFullyPrepped != 1 then goto waitPrep
+gosub cast %target
+gosub stow my %cambrinth
 
-    if ("%combatSpells(%index)" = "col") then {
-        if ($Time.isYavashUp = 1) then var target yavash
-        if ($Time.isXibarUp = 1) then var target xibar
-        if ($Time.isKatambaUp = 1) then var target katamba
-        if ("%target" = "$charactername") then return
-    }
-    gosub prep %spell 20
-    gosub get %cambrinth
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub focus my %cambrinth
-    gosub invoke my %cambrinth
-    if (%isFullyPrepped != 1) then gosub waitForPrep
-    gosub cast %target
-    return
+if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
 
-waitForPrep:
-    pause 1
-    if (%isFullyPrepped = 1) then return
-    goto waitForPrep
-
-waitMana:
-    pause 1
-    if ($mana > 80) then return
-    goto waitMana
-
-
- done:
-     gosub stow my %cambrinth
-     exit
+put #parse CAST DONE

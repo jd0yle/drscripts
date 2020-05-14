@@ -15,9 +15,8 @@ loop:
     }
 
     if $SpellTimer.ArtificersEye.duration < 5 then {
-        gosub prep art 100
-        waitfor You feel
-        gosub cast
+        put .cast art
+        waitforre ^CAST DONE
     }
 
     #gosub percSigil
@@ -26,7 +25,11 @@ loop:
     #if %currentRoomId > %endRoomId then exit
     matchre percSigil YOU HAVE ARRIVED!
     match done MOVE FAILED
-    put #walk %currentRoomId
+    if ($roomid != %currentRoomId) then {
+        put #walk %currentRoomId
+    } else {
+        goto percSigil
+    }
     matchwait
 
 
@@ -60,7 +63,7 @@ improve:
     var location improve1
     matchre done ^You lose track of your surroundings.
     matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION|METHOD|FORM)
-    match scribe Roundtime
+    match scribeSigil Roundtime
     put perc sigil improve
     goto retry
 
@@ -77,14 +80,14 @@ percImproveType:
     matchre done ^You lose track of your surroundings.
     matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION|METHOD|FORM)
     matchre improve You are unaware of any sigil's capable of that method of improvement in this area.
-    match scribe Roundtime
+    match scribeSigil Roundtime
     put perc sigil %type
     goto retry
 
 
 
-scribe:
-    var location scribe
+scribeSigil:
+    var location scribeSigil
     if "$righthandnoun" != "burin" then {
         gosub stow right
         gosub get my unfocused burin
@@ -97,8 +100,8 @@ scribe:
     }
 
     match done You should probably seek knowledge of a sigil before trying to scribe one.
-    match scribe You carefully scribe the sigil
-    match scribe Remnants of the sigil pattern linger, allowing for additional scribing.
+    match scribeSigil You carefully scribe the sigil
+    match scribeSigil Remnants of the sigil pattern linger, allowing for additional scribing.
     put scribe sigil
     goto retry
     matchwait

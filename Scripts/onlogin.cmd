@@ -1,3 +1,4 @@
+include libsel.cmd
 
 send sort boots
 pause .2
@@ -13,3 +14,5 @@ var titleList Shadow Mage|Dikka'staho Ashu|Shadow Reaver|Monk|Ascetic|Fate Reave
 eval len count("%titleList", "|")
 random 0 %len
 #put title pre choose moon %titleList(%r)
+
+if ($standing != 1) then gosub stand

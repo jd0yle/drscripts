@@ -2,7 +2,7 @@ var sigil %1
 
 include libsel.cmd
 
-var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued
+var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey
 var colorsIndex 0
 eval len count("%colors", "|")
 
@@ -35,5 +35,4 @@ goPage:
 
 done:
     put #parse FOUND SIGIL
-    echo "All done"
     exit

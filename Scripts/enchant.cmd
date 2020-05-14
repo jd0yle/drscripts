@@ -17,7 +17,7 @@ var cambrinth Yoakena globe
 
 var command %1
 
-var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued
+var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey
 var colorsIndex 0
 eval len count("%colors", "|")
 
@@ -27,6 +27,56 @@ var page
 var baseItem
 var sigilOne
 var sigilTwo
+
+
+
+# artificing book
+
+var useLoop 0
+var useMeditate 0
+var useFocus 0
+
+var doBook 1
+var doFount 1
+var doImbue 0
+var doScribe 0
+var doSigil 0
+var doStoreProducts 0
+var doItem 1
+
+var sigilsNeeded null
+
+action var doScribe 1 when The.* structure looks ready for additional scribing
+action var doScribe 1 when You do not see anything that would prevent scribing additional sigils onto
+action var doScribe 1 when free of problems that would impede further sigil scribing.
+action var doScribe 1 when The.* appears free of problems that would impede further sigil scribing.
+action var doScribe 1; var useMeditate 1 when ^The sigil pattern has shifted and the fount requires alignment through meditation before scribing can continue.
+
+action var useLoop 1 when ^You notice many of the scribed sigils are slowly merging back into
+action var useMeditate 1 when ^The traced sigil pattern blurs before your eyes, making it difficult to follow
+action var useFocus 1 when struggles to accept the sigil
+
+action var doImbue 1 when ^Once finished you sense an imbue spell will be required to continue enchanting.
+action var doImbue 1 when ^The.* requires an application of an imbue spell to advance the enchanting process.
+action var doImbue 0 when ^Sparkles of light cascade over
+action var doImbue 0 when ^The spell is channeled through the
+
+action var doFount 1 when ^You need another mana fount to continue
+action var doFount 0 when ^On the brazier you see.*fount.*
+action var doFount 0 when ^That is far too dangerous to remove
+
+action var doSigil 1;var sigilToScribe $1 when ^You need another (\S+).* sigil to continue the enchanting process
+action var doSigil 0 when with your finger and prepare to begin scribing it more permanently
+
+action var doStoreProducts 1 when With the enchanting process completed, you believe it is safe to collect your things once more.
+
+action var sigilsNeeded %sigilsNeeded|$2 when (primary|secondary) sigil \((\S+)\)$
+
+
+
+
+gosub stow left
+gosub stow right
 
 if "%command" = "list" then goto listLoopStart
 
@@ -45,91 +95,131 @@ if "%command" = "make" then {
     gosub enchant
 }
 
-# artificing book
-
-gosub stow left
-gosub stow right
-
-action goto enchantScribe when ^The.* structure looks ready for additional scribing
-action goto enchantScribe when ^You do not see anything that would prevent scribing additional sigils onto
-action goto enchantScribe when free of problems that would impede further sigil scribing.
-
-
-var useLoop 0
-var useMeditate 0
-var useFocus 0
-action var useLoop 1 when ^You notice many of the scribed sigils are slowly merging back into
-action var useMeditate 1 when ^The traced sigil pattern blurs before your eyes, making it difficult to follow
-action var useFocus 1 when struggles to accept the sigil
-
-gosub analyze %baseItem on brazier
-
 enchant:
-    gosub get my brazier
-    gosub lower ground
+    gosub setBrazier
+    gosub analyze %baseItem on brazier
+    gosub look on brazier
 
+enchantLoop:
+    echo doScribe: %doScribe  doImbue: %doImbue  doFount: %doFount  doSigil: %doSigil
+    if (%doBook = 1) then {
+        gosub setArtificingBook
+        var doBook 0
+        gosub checkSigils
+    }
+
+    if (%doScribe = 1 || %doImbue = 1 || %doSigil = 1 || %doStoreProducts = 1) then var doItem 0
+
+    if (%doScribe != 1 && %doImbue != 1 && %doSigil != 1 && %doStoreProducts != 1 && %doItem = 1) then {
+        gosub setBaseItem
+        var doItem 0
+    }
+
+    if (%doFount = 1) then {
+        gosub setFount
+    }
+
+    if (%doSigil = 1) then {
+        gosub stow right
+        gosub stow left
+        put .findSigil %sigilToScribe
+        waitfor FOUND SIGIL
+        if ("$righthand" = "Empty") then {
+            echo MISSING %sigilToScribe SIGIL, CANNOT CONTINUE
+            exit
+        }
+        gosub study my book
+        gosub trace %baseItem on brazier
+        gosub stow
+    }
+
+    if (%doImbue != 1) then {
+        gosub enchantScribe
+    }
+
+    if (%doImbue = 1) then {
+        gosub stow right
+        put .cast imbue "%baseItem on brazier"
+        waitforre ^CAST DONE
+    }
+
+    if (%doStoreProducts = 1) then {
+        gosub stow fount
+        gosub stow brazier
+        gosub get %baseItem
+        gosub focus my %baseItem
+        exit
+    }
+
+    goto enchantLoop
+
+
+checkSigils:
+    eval len count("%sigilsNeeded", "|")
+    var index 0
+    gosub stow right
+    gosub stow left
+checkSigilsLoop:
+    if (%index > %len) then return
+    if ("%sigilsNeeded(%index)" != "null") then {
+        put .findSigil %sigilsNeeded(%index)
+        waitfor FOUND SIGIL
+        if ("$righthand" = "Empty") then {
+            echo MISSING %sigilToScribe SIGIL, CANNOT CONTINUE
+            exit
+        }
+        gosub stow right
+    }
+    math index add 1
+    goto checkSigilsLoop
+
+
+setArtificingBook:
+    gosub stow right
     gosub get my artificing book
     gosub turn my book to chapter %chapter
     gosub turn my book to page %page
     #gosub read my book
     gosub study my book
     gosub stow my book
+    return
 
-    put analyze %baseItem on brazier
-    pause
 
+setBaseItem:
     gosub get my %baseItem from my sack
+    if ("$righthand" = "Empty") then {
+        gosub get my %baseItem
+    }
+    if ("$righthand" = "Empty") then {
+        put #echo FF0000 Can't find %baseItem! Do you have one?
+        exit
+    }
     gosub put my %baseItem on brazier
     gosub put my %baseItem on brazier
+    return
 
+
+setBrazier:
+    gosub stow right
+    gosub stow left
+    gosub get my brazier
+    if ("$righthandnoun" != "brazier") then {
+        if ("$lefthandnoun" = "brazier") then {
+            gosub swap
+        } else if ("$righthand" = "Empty") then {
+            gosub get brazier
+        }
+    }
+    gosub lower ground
+    return
+
+
+setFount:
     gosub get my fount
-    gosub wave my fount at %baseItem
-
-    gosub get my %cambrinth
-    gosub prep imbue 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub focus my %cambrinth
-    gosub invoke my %cambrinth
-    pause 5
-    gosub cast %baseItem on brazier
-    gosub stow my %cambrinth
-
-    put .findSigil %sigilOne
-    waitfor FOUND SIGIL
-    if ("$righthand" = "Empty") then {
-        echo MISSING %sigilOne SIGIL, CANNOT CONTINUE
-        exit
-    }
-    gosub study my book
-
-    gosub trace %baseItem on brazier
-    gosub stow
-    gosub get my unfocused burin
-    gosub scribe %baseItem on brazier with my burin
-
-    put .findSigil %sigilTwo
-    waitfor FOUND SIGIL
-    if ("$righthand" = "Empty") then {
-        echo MISSING %sigilTwo SIGIL, CANNOT CONTINUE
-        exit
-    }
-
-    gosub study my book
-
-    gosub trace %baseItem on brazier
-    gosub stow
-    gosub enchantScribe
-
-
-    exit
+    gosub wave fount at %baseItem on brazier
+    return
 
 enchantScribe:
-    if ("$righthandnoun" != "burin" && "$righthand" != "Empty") then gosub stow right
-    if ("$righthandnoun" != "burin") then gosub get my unfocused burin
-
     if (%useLoop = 1) then gosub useLoopTool
     if (%useMeditate = 1) then gosub useMeditate
     if (%useFocus = 1) then gosub useFocus
@@ -138,7 +228,12 @@ enchantScribe:
     var useMeditate 0
     var useFocus 0
 
+    if ("$righthandnoun" != "burin" && "$righthand" != "Empty") then gosub stow right
+    if ("$righthandnoun" != "burin") then gosub get my unfocused burin
+
     gosub scribe %baseItem on brazier with my burin
+    if (%doImbue = 1 || %doSigil = 1) then return
+    return
     goto enchantScribe
 
 
@@ -155,42 +250,6 @@ useMeditate:
 
 useFocus:
     gosub focus %baseItem on brazier
-    return
-
-
-
-
-
-
-
-findSigil:
-    var sigil $1
-findSigil1:
-    gosub get my %colors(%colorsIndex) book
-    if "$righthand" != "Empty" then {
-        gosub turn my book to sigil %sigil
-        matchre goPage (\d+) -- %sigil
-        matchre goNext You can turn the book
-        put read my book
-        matchwait
-    } else {
-        goto goNext
-    }
-    #gosub goNext
-    goto goNext
-
-
-goNext:
-    gosub stow right
-    math colorsIndex add 1
-    if %colorsIndex > %len then goto done
-    goto findSigil1
-
-goPage:
-    var page $1
-    gosub turn my book to page %page
-    put read my book
-    exit
     return
 
 
@@ -220,12 +279,14 @@ listDone:
 
     listDoneLoop:
         echo %list(%idx)
+        put #log >sigils.txt %list(%idx)
         math idx add 1
         if %idx > %listLen then goto exit
     goto listDoneLoop
 
 
 exit:
+   echo %listLen sigils
     exit
 
 
