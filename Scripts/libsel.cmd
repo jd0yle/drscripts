@@ -335,6 +335,7 @@ cast:
 var location cast1
 var todo $0
 cast1:
+if ("$preparedspell" = "None") then return
 matchre return ^You gesture
 matchre return ^You don't have a spell prepared\!
 matchre return ^Your spell pattern collapses
@@ -1010,6 +1011,7 @@ prep:
 var location prep1
 var todo $0
 prep1:
+matchre return ^You have already
 matchre return ^You begin chanting a prayer
 matchre return ^You close your eyes and breathe deeply,
 matchre return ^You trace an arcane sigil in the air,
@@ -1200,6 +1202,7 @@ var todo $0
 scribe1:
 matchre return ^You lean in towards
 matchre return ^You need another
+matchre return ^That tool does not seem
 matchre return ^Roundtime
 put scribe %todo
 goto retry
@@ -1361,14 +1364,19 @@ stow:
 var location stow1
 var todo $0
 stow1:
+if ("%todo" = "" && "$righthand" = "Empty") then return
 if ("%todo" = "right" && "$righthand" = "Empty") then return
 if ("%todo" = "left" && "$lefthand" = "Empty") then return
 if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "satinwood telescope")) then {
     gosub put my telescope in my telescope case
     return
 }
-if ("%todo" = "right" && "$righthand" = "sunstone runestone") then {
+if (contains("%todo", "sunstone runestone") || "%todo" = "right" && "$righthand" = "sunstone runestone") then {
     gosub put my sunstone runestone in my telescope case
+    return
+}
+if (contains("%todo", "compendium") || "%todo" = "right" && "$righthand" = "compendium") then {
+    gosub put my compendium in my thigh bag
     return
 }
 matchre return ^Stow what\?

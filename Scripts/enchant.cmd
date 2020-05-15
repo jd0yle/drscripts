@@ -1,36 +1,26 @@
 include libsel.cmd
-#debug 3
 
 ##################################################
 # USAGE
-# .enchant <command> [args]
-# Commands:
-#     make  Enchants an item
-#     get:  Flips to the page of a sigil book containing <sigil>
-#     list: Lists all sigils in your sigil books
+# .enchant [args]
 # .enchant make <chapter> <page> <baseItem> <sigilOne> [sigilTwo]
-# .enchant get <sigilType>
-# .enchant list
 ##################################################
 
-var cambrinth Yoakena globe
+####### CONFIG #######
 
-var command %1
+var cambrinth yoakena globe
+
+######################
 
 var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey
 var colorsIndex 0
 eval len count("%colors", "|")
 
-var sigilCollection
 var chapter
 var page
 var baseItem
 var sigilOne
 var sigilTwo
-
-
-
-# artificing book
 
 var useLoop 0
 var useMeditate 0
@@ -72,33 +62,29 @@ action var doStoreProducts 1 when With the enchanting process completed, you bel
 
 action var sigilsNeeded %sigilsNeeded|$2 when (primary|secondary) sigil \((\S+)\)$
 
-
-
+action goto alreadyEnchanted when ^The.* is already enchanted, and further manipulation could damage it.
 
 gosub stow left
 gosub stow right
 
-if "%command" = "list" then goto listLoopStart
+var chapter %1
+var page %2
+var baseItem %3
+var sigilOne %4
+var sigilTwo %5
+var sigilThree %6
+gosub enchant
 
-if "%command" = "get" then {
-    put .findSigil %2
-    exit
-}
-
-if "%command" = "make" then {
-    var chapter %2
-    var page %3
-    var baseItem %4
-    var sigilOne %5
-    var sigilTwo %6
-    var sigilThree %7
-    gosub enchant
-}
 
 enchant:
+    if ($SpellTimer.ArtificersEye.duration < 10) then {
+        put .cast art
+        waitforre ^CAST DONE
+    }
     gosub setBrazier
     gosub analyze %baseItem on brazier
     gosub look on brazier
+
 
 enchantLoop:
     echo doScribe: %doScribe  doImbue: %doImbue  doFount: %doFount  doSigil: %doSigil
@@ -216,8 +202,9 @@ setBrazier:
 
 setFount:
     gosub get my fount
-    gosub wave fount at %baseItem on brazier
+    gosub wave my fount at %baseItem on brazier
     return
+
 
 enchantScribe:
     if (%useLoop = 1) then gosub useLoopTool
@@ -253,43 +240,6 @@ useFocus:
     return
 
 
-
-
-listLoopStart:
-    var list Sigils
-    action var list %list|$1 when \d+ -- (\S+),.*
-    goto listLoop
-
-
-listLoop:
-    gosub get my %colors(%colorsIndex) book
-    gosub turn my book to index
-    put read my book
-    gosub stow right
-    math colorsIndex add 1
-    if %colorsIndex > %len then goto listDone
-    goto listLoop
-
-
-listDone:
-    echo %list
-    var sigilCollection %list
-    eval listLen count("%list", "|")
-    var idx 0
-
-    listDoneLoop:
-        echo %list(%idx)
-        put #log >sigils.txt %list(%idx)
-        math idx add 1
-        if %idx > %listLen then goto exit
-    goto listDoneLoop
-
-
-exit:
-   echo %listLen sigils
-    exit
-
-
-done:
-    echo "All done"
+alreadyEnchanted:
+    echo %baseItem is already enchanted!
     exit
