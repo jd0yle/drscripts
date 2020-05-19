@@ -6,7 +6,12 @@ if_3 then {
 }
 
 include libsel.cmd
-
+pause
+put awake
+pause
+put awake
+pause
+send awake
 gosub stop teach
 gosub stop listen
 gosub teach %class to %target

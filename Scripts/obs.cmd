@@ -59,8 +59,8 @@ action var doResearch 0 when ^You continue to flex the mana streams
 action var doResearch 0 when ^You tentatively reach out and begin manipulating the mana streams
 action var doResearch 0 when ^Though it is taking much of your attention, you feel your research is going well.
 
-var researchTopics.list warding|sorcery|augmentation|stream|utility|fundamental
-var researchTopics.skills Warding|Sorcery|Augmentation|Attunement|Utility|Primary_Magic
+var researchTopics.list warding|augmentation|stream|utility|fundamental
+var researchTopics.skills Warding|Augmentation|Attunement|Utility|Primary_Magic
 var researchTopics.index 0
 eval researchTopics.length count("%researchTopics.list", "|")
 

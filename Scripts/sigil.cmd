@@ -1,11 +1,20 @@
 include libsel.cmd
 
+####### CONFIG #######
+var burin abstract burin
+######################
 
 var startRoomId $roomid
 var endRoomId 261
 var currentRoomId 0
 
 if "$guild" = "Moon Mage" then var doBuffArt 1
+
+action var sigilType $1; echo FOUND A %sigilType when ^In your mind's eye you see the definition of an? (\S+) sigil before you.
+action var sigilType $1; echo FOUND A %sigilType when ^After much scrutiny you are certain an? (\S+) sigil has revealed itself.
+action var sigilType $1; echo FOUND A %sigilType when ^Though the seemingly mundane lighting you focus intently on a lurking (\S+) sigil.
+
+
 
 loop:
     if (%currentRoomId = 0) then {
@@ -38,9 +47,10 @@ percSigil:
     matchre improve ^Sorting through the imagery, you find the designs of an almost imperceptible (\S+) sigil.
     matchre improve ^Almost obscured by the surround, you make out the details of a (\S+) sigil.
     matchre improve ^You have perceived a|an \S+ (\S+) sigil
-    matchre improve ^In your mind's eye you see the definition of a (\S+) sigil before you.
+    matchre improve ^In your mind's eye you see the definition of an? (\S+) sigil before you.
     matchre improve ^You are already working to improve the sigil discovered here.
     matchre improve ^You recall having already
+    matchre imprive ^After much scrutiny you are certain an? \S+ sigil has revealed itself.
     matchre percSigil ^You scour the area
     matchre percSigil ^Back and forth you walk
     matchre percSigil ^You clear your mind
@@ -90,7 +100,7 @@ scribeSigil:
     var location scribeSigil
     if "$righthandnoun" != "burin" then {
         gosub stow right
-        gosub get my unfocused burin
+        gosub get my %burin
         pause
     }
     if "$lefthandnoun" != "scrolls" then {

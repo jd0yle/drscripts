@@ -30,7 +30,7 @@ gosub get my %cambrinth
 gosub charge my %cambrinth 20
 gosub charge my %cambrinth 20
 gosub charge my %cambrinth 20
-#gosub charge my %cambrinth 20
+gosub charge my %cambrinth 20
 gosub focus my %cambrinth
 gosub invoke my %cambrinth
 goto waitPrep

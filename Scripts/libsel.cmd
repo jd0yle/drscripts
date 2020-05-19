@@ -224,6 +224,7 @@ var todo $0
 analyze1:
 matchre return ^Roundtime
 matchre return ^Analyze what
+matchre return ^You fail to find any holes
 put analyze %todo
 goto retry
 
@@ -833,6 +834,16 @@ put look %todo
 goto retry
 
 
+loot:
+var location loot1
+var todo $0
+loot1:
+matchre return ^You search
+matchre return ^I could not
+put loot %todo
+goto retry
+
+
 lower:
 var location lower1
 var todo $0
@@ -1033,6 +1044,7 @@ matchre return ^With no small amount of effort, you slowly recall the teachings
 matchre return ^You struggle against your bindings to prepare
 matchre return ^You raise one hand before you and concentrate
 matchre return ^As you begin to focus on preparing
+matchre return ^You trace an angular sigil
 matchre prep1 ^Are you sure you want to do that\?  You'll interrupt your research\!
 put prepare %todo
 goto retry
@@ -1052,6 +1064,8 @@ put:
 var location put1
 var todo $0
 put1:
+matchre return ^You add
+matchre return ^You rearrange
 matchre return ^You drop
 matchre return ^You put
 matchre return ^You reverently place
@@ -1072,6 +1086,8 @@ var todo $0
 read1:
 matchre return ^I could not find what you were referring to\.
 matchre return ^The writing is too small\.  You'll have to hold the scroll to read it\.
+matchre return ^You page through
+matchre return ^On this page
 matchre return ^Roundtime
 put read %todo
 goto retry
@@ -1263,7 +1279,7 @@ matchre Skinning.Empty ^Working deftly
 put skin
 goto retry
 Skinning.Empty:
-gosub stowing
+#gosub stowing
 return
 
 
@@ -1364,6 +1380,7 @@ stow:
 var location stow1
 var todo $0
 stow1:
+echo STOWING todo=%todo
 if ("%todo" = "" && "$righthand" = "Empty") then return
 if ("%todo" = "right" && "$righthand" = "Empty") then return
 if ("%todo" = "left" && "$lefthand" = "Empty") then return
@@ -1371,11 +1388,11 @@ if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "satinwood
     gosub put my telescope in my telescope case
     return
 }
-if (contains("%todo", "sunstone runestone") || "%todo" = "right" && "$righthand" = "sunstone runestone") then {
+if (contains("%todo", "sunstone runestone") || ("%todo" = "right" && "$righthand" = "sunstone runestone")) then {
     gosub put my sunstone runestone in my telescope case
     return
 }
-if (contains("%todo", "compendium") || "%todo" = "right" && "$righthand" = "compendium") then {
+if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = "compendium")) then {
     gosub put my compendium in my thigh bag
     return
 }
@@ -1404,7 +1421,7 @@ if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|
 if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
 
 if $lefthand != Empty then gosub stow left
-if $righthand != Empty then gosub stow Right
+if $righthand != Empty then gosub stow right
 return
 
 

@@ -9,6 +9,7 @@ include libsel.cmd
 ####### CONFIG #######
 
 var cambrinth yoakena globe
+var burin abstract burin
 
 ######################
 
@@ -216,7 +217,7 @@ enchantScribe:
     var useFocus 0
 
     if ("$righthandnoun" != "burin" && "$righthand" != "Empty") then gosub stow right
-    if ("$righthandnoun" != "burin") then gosub get my unfocused burin
+    if ("$righthandnoun" != "burin") then gosub get my %burin
 
     gosub scribe %baseItem on brazier with my burin
     if (%doImbue = 1 || %doSigil = 1) then return

@@ -1,6 +1,10 @@
 include libsel.cmd
 
 action goto buffInauri when ^Inauri whispers, "MT
+action put exit when eval $health < 20
+action put exit when eval $dead = 1
+#action send stand when eval $standing = 0
+
 
 var nextAlarmAt 0
 timer start

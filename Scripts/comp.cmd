@@ -3,7 +3,7 @@ include libsel.cmd
 var numberOfCompendiums third
 var container thigh bag
 
-var timesStudied 0
+var timeStudied 0
 
 if ($righthandnoun != compendium && $righthand != Empty) then gosub stow right
 
@@ -14,7 +14,7 @@ loop:
     }
     gosub studyPages
     gosub put my compendium in my %container
-    var timesStudied 0
+    var timeStudied 0
     goto loop
 
 

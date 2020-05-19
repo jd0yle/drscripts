@@ -2,11 +2,30 @@ var sigil %1
 
 include libsel.cmd
 
-var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey
+var types abolition|congruence|induction|permutation|rarefaction|antipode|ascension|clarification|decay|integration|metamorphosis|nurture|paradox|unity|evolution
+eval typesLength count("%types", "|")
+
+var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey|twilight-blue|blue|black|copper-hued|red
 var colorsIndex 0
 eval len count("%colors", "|")
 
 if (%sigil = list) then goto listLoopStart
+
+var index 0
+findLoop:
+    if ("%types(%index)" = "%sigil") then {
+        gosub get my %colors(%index) book
+        gosub turn my book to contents
+        gosub turn my book to page 1
+        gosub read my book
+        goto done
+    }
+    math index add 1
+    if (%index > %len) then {
+        echo Couldn't find %sigil
+        exit
+    }
+    goto findLoop
 
 loop:
     gosub get my %colors(%colorsIndex) book
@@ -14,6 +33,7 @@ loop:
         gosub turn my book to sigil %sigil
         matchre goPage (\d+) -- %sigil
         matchre goNext You can turn the book
+        matchre goNext You page
         put read my book
         matchwait
     } else {

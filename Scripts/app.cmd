@@ -4,7 +4,7 @@ var nextAlarmAt 0
 timer start
 
 loop:
-    if (%t > %nextAlarmAt) then {
+    if (%t > %nextAlarmAt && $Appraisal.LearningRate < 34) then {
         evalmath nextAlarmAt %t + 90
         gosub app my bundle
     }
