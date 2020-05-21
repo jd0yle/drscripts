@@ -45,14 +45,16 @@ if (!contains("%stats", "%stat")) then {
 
 gosub stowing
 
-if ($SpellTimer.AuraSight.active != 1) then {
-    put .cast aus
-    waitforre ^CAST DONE
-}
+if (0) then {
+    if ($SpellTimer.AuraSight.active != 1) then {
+        put .cast aus
+        waitforre ^CAST DONE
+    }
 
-if ($SpellTimer.PiercingGaze.active != 1) then {
-    put .cast pg
-    waitforre ^CAST DONE
+    if ($SpellTimer.PiercingGaze.active != 1) then {
+        put .cast pg
+        waitforre ^CAST DONE
+    }
 }
 
 echo %%stat

@@ -70,7 +70,7 @@ loop:
     if "%magicPredState" = "null" then gosub predState
     gosub checkBuffs
     if (%doResearch = 1) then {
-        gosub startResearch
+        #gosub startResearch
     }
 
     if %checkPredState = 1 then gosub predState

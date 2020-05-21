@@ -225,6 +225,7 @@ analyze1:
 matchre return ^Roundtime
 matchre return ^Analyze what
 matchre return ^You fail to find any holes
+matchre return ^You must be closer
 put analyze %todo
 goto retry
 
@@ -297,6 +298,7 @@ matchre return is already quite dead\.
 matchre return ^The .* is already debilitated\!
 matchre return ^You must be hidden or invisible to ambush\!
 matchre return ^The khuj is too heavy for you to use like that\.
+matchre return ^Wouldn't it be better
 matchre attack2 ^You should stand up first\.
 put %todo
 goto retry
@@ -338,6 +340,7 @@ var todo $0
 cast1:
 if ("$preparedspell" = "None") then return
 matchre return ^You gesture
+matchre return ^Your target pattern dissipates
 matchre return ^You don't have a spell prepared\!
 matchre return ^Your spell pattern collapses
 matchre return ^With a wave of your hand,
@@ -702,6 +705,16 @@ put infuse %todo
 goto retry
 
 
+inv:
+inventory:
+var location inventory1
+var todo $0
+inventory1:
+matchre return ^\[Use INVENTORY HELP for more options\.\]$
+put inventory %todo
+goto retry
+
+
 invoke:
 var location invoke1
 var todo $0
@@ -948,10 +961,24 @@ power:
 var location power1
 var todo $0
 power1:
+matchre return ^You are already
 matchre return ^Roundtime
 matchre return ^Something in the area is interfering
 matchre return ^I could not find who you were referring to\.
 put PERCEIVE %todo
+goto retry
+
+
+perf:
+perform:
+var location perform1
+var todo $0
+perform1:
+matchre return ^You bend over the
+matchre return ^This corpse has already
+matchre return ^This ritual may only be performed
+matchre return ^Roundtime
+put perform %todo
 goto retry
 
 
@@ -1172,6 +1199,7 @@ matchre retreat ^You must stand first\.
 matchre retreat ^You try to back out
 matchre return ^You are already as far away as you can get\!
 matchre return revealing your hiding place\!
+matchre return ^You try to back away from
 put retreat
 goto retry
 
@@ -1245,7 +1273,7 @@ put sell %todo
 goto retry
 
 
-Skinning:
+skinning:
 var location Skinning
 matchre return ^.*can't be skinned
 matchre return ^Skin what\?
@@ -1380,7 +1408,6 @@ stow:
 var location stow1
 var todo $0
 stow1:
-echo STOWING todo=%todo
 if ("%todo" = "" && "$righthand" = "Empty") then return
 if ("%todo" = "right" && "$righthand" = "Empty") then return
 if ("%todo" = "left" && "$lefthand" = "Empty") then return
@@ -1524,6 +1551,7 @@ matchre return ^You must be preparing a spell in order to target it\!
 matchre return ^You don't need to target the spell you're preparing\.
 matchre target2 ^You are not engaged to anything, so you must specify a target to focus on\!
 matchre target2 ^There is no need to target
+matchre return ^This spell cannot be targeted\.$
 put target %todo
 goto retry
 target2:

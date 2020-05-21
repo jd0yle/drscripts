@@ -6,6 +6,13 @@ var cambrinth yoakena globe
 
 ######################
 
+var useCambrinth 1
+
+if ("%1" = "n") then {
+    var useCambrinth 0
+    shift
+}
+
 var spell %1
 
 if_2 then {
@@ -25,14 +32,21 @@ if ("$righthand" != "Empty" && "$lefthand" != "Empty") then {
 }
 
 if ("$preparedspell" != "None") then gosub release spell
-gosub prep %1 30
-gosub get my %cambrinth
-gosub charge my %cambrinth 20
-gosub charge my %cambrinth 20
-gosub charge my %cambrinth 20
-gosub charge my %cambrinth 20
-gosub focus my %cambrinth
-gosub invoke my %cambrinth
+gosub prep %1 20
+if (%useCambrinth = 1) then {
+    gosub get my %cambrinth
+    gosub charge my %cambrinth 20
+    gosub charge my %cambrinth 20
+    gosub charge my %cambrinth 20
+    gosub charge my %cambrinth 10
+    gosub focus my %cambrinth
+    gosub invoke my %cambrinth
+} else {
+    gosub harness 20
+    gosub harness 20
+    gosub harness 20
+    gosub harness 10
+}
 goto waitPrep
 
 waitPrep:

@@ -126,7 +126,7 @@ enchantLoop:
 
     if (%doImbue = 1) then {
         gosub stow right
-        put .cast imbue "%baseItem on brazier"
+        put .cast n imbue "%baseItem on brazier"
         waitforre ^CAST DONE
     }
 

@@ -5,6 +5,7 @@ action put exit when eval $health < 20
 action put exit when eval $dead = 1
 #action send stand when eval $standing = 0
 
+action put .teach $1 Inauri when ^Inauri whispers, "teach (\S+)
 
 var nextAlarmAt 0
 timer start
