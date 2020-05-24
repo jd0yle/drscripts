@@ -1,6 +1,20 @@
-var sigil %1
-
 include libsel.cmd
+####################################################################################################
+# .findSigil
+# Selesthiel - justin@jmdoyle.com
+# USAGE
+# .findSigil [args]
+# .findSigil [sigilType] [list] [store]
+# sigilType: The type of sigil to find...
+# list: Compile a list of the number of each type of sigil
+# store: Put loose sigils into their appropriate sigil books
+#
+# Parse out FOUND SIGIL when completed
+#
+# NOTE: This assumes you have you 15 sigil books with the colors in the `colors` array!
+####################################################################################################
+
+var sigil %1
 
 var types abolition|congruence|induction|permutation|rarefaction|antipode|ascension|clarification|decay|integration|metamorphosis|nurture|paradox|unity|evolution
 eval typesLength count("%types", "|")
@@ -66,8 +80,6 @@ done:
 listLoopStart:
     var list Sigils
     action var list %list|$1 when \d+ -- (\S+),.*
-
-    var types abolition|congruence|induction|permutation|rarefaction|antipode|ascension|clarification|decay|evolution|integration|metamorphosis|nurture|paradox|unity
     eval typesLength count("%types", "|")
     var typesIndex 0
 

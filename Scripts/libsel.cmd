@@ -1,4 +1,20 @@
 var libselLoaded 1
+####################################################################################################
+# libsel.cmd
+# Selesthiel - justin@jmdoyle.com
+# USAGE
+# include libsel.cmd
+#
+# gosub <verb> [options]
+#
+# gosub stow right
+# gosub prep burn 20
+#
+# Has a label for each verb. invoking `gosub <verb>` will automatically retry in the case of RT, or stand
+# (as appropriate), etc...
+# stow, stow right, stow left will not try send any commands if your hand is Empty
+# NOTE: This assumes you have you 15 sigil books with the colors in the `colors` array!
+####################################################################################################
 
 #############################################################################################################################################
 action clear

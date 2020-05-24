@@ -3,7 +3,7 @@ include libsel.cmd
 ##################################################
 # USAGE
 # .enchant [args]
-# .enchant make <chapter> <page> <baseItem> <sigilOne> [sigilTwo]
+# .enchant make <chapter> <page> <baseItem>
 ##################################################
 
 ####### CONFIG #######
