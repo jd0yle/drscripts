@@ -5,11 +5,13 @@ include libsel.cmd
 var types abolition|congruence|induction|permutation|rarefaction|antipode|ascension|clarification|decay|integration|metamorphosis|nurture|paradox|unity|evolution
 eval typesLength count("%types", "|")
 
-var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey|twilight-blue|blue|black|copper-hued|red
+var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey|twilight-blue|blue|black|copper-hued|red|white
 var colorsIndex 0
 eval len count("%colors", "|")
 
 if (%sigil = list) then goto listLoopStart
+
+if (%sigil = store) then goto colorLoop
 
 var index 0
 findLoop:
@@ -43,6 +45,7 @@ loop:
 
 
 goNext:
+    gosub put my book in my shadows
     gosub stow right
     math colorsIndex add 1
     if %colorsIndex > %len then goto done
@@ -80,6 +83,7 @@ listLoop:
     gosub get my %colors(%colorsIndex) book
     gosub turn my book to index
     put read my book
+    gosub put my book in my shadows
     gosub stow right
     math colorsIndex add 1
     if %colorsIndex > %len then goto listDone
@@ -92,8 +96,6 @@ listDone:
     var idx 0
 
     listDoneLoop:
-        #echo %list(%idx)
-        put #log >sigils.txt %list(%idx)
         math %list(%idx) add 1
         math idx add 1
         if %idx > %listLen then goto echoTypes
@@ -107,6 +109,23 @@ echoTypes:
         math typesIndex add 1
         if (%typesIndex > %typesLength) then exit
         goto echoTypesLoop
+
+
+colorloop:
+    gosub get my %colors(%colorsIndex) book
+colorloop1:
+    gosub get my %types(%colorsIndex) sigil
+    if ("$lefthand" = "Empty") then {
+        gosub put my book in my shadows
+        gosub stow right
+        math index add 1
+        if (%colorsIndex > %colorsLength) then exit
+        goto colorloop
+    }
+    gosub put my sigil in my book
+    if ("$lefthand" != "Empty") then gosub put my sigil in my shadows
+    goto colorloop1
+
 
 exit:
    #echo %listLen sigils

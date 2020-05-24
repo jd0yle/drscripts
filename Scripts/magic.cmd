@@ -1,71 +1,50 @@
 include libsel.cmd
 
 
-####### CONFIG #######
-
-var cambrinth yoakena globe
-
-######################
-
-var utility pg|seer|shadows
-var aug seer
-var warding maf
-
-
-
-#var spells.abbr maf|aus|pg
-#var spells.names ManifestForce|AuraSight|PiercingGaze
-var spells.abbr ease|maf
-var spells.names EaseBurden|ManifestForce
-
-var index 0
-eval len count("%spells.abbr", "|")
+var isFullyPrepped 0
 
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 
+var nextPercAt 0
+timer start
+
 loop:
-    if (%index > %len) then {
-        var index 0
-        gosub perc mana
+    if (%t > %nextPercAt) then {
+         gosub perc mana
+         evalmath nextPercAt (60 + %t)
     }
 
-    if ($mana < 80) then gosub waitMana
-    gosub buff %spells.abbr(%index)
-
-    math index add 1
-    goto loop
-
- buff:
-    var spell $1
-    var target $charactername
+    if ($preparedspell != None) then gosub release spell
     var isFullyPrepped 0
+    gosub prep symbiosis
+    gosub prep psy 20
+    gosub charge my arm 10
+    gosub focus my arm
+    gosub invoke my arm
+    if (%isFullyPrepped != 1) then gosub waitForPrep
+    gosub cast
 
-    if ("$preparedspell" != "None") then gosub release spell
-
-    if ("%spells.abbr(%index)" = "col") then {
-        if ($Time.isYavashUp = 1) then var target yavash
-        if ($Time.isXibarUp = 1) then var target xibar
-        if ($Time.isKatambaUp = 1) then var target katamba
-        if ("%target" = "$charactername") then return
-    }
-    gosub prep %spell
-    if ("$charactername" != "Qizhmur") then {
-        if ("$righthand" != "%cambrinth") then gosub get %cambrinth
-        gosub charge my %cambrinth 20
-        gosub charge my %cambrinth 20
-            gosub charge my %cambrinth 20
-        gosub focus my %cambrinth
-        gosub invoke my %cambrinth
-    }
-    if ("$charactername" != "Qizhmur") then {
-        if (%isFullyPrepped != 1) then gosub waitForPrep
-    } else {
-        gosub app my rapier
-    }
-
-    gosub cast %target
+    if ($preparedspell != None) then gosub release spell
     var isFullyPrepped 0
-    return
+    gosub prep symbiosis
+    gosub prep sm 20
+    gosub charge my arm 10
+    gosub focus my arm
+    gosub invoke my arm
+    if (%isFullyPrepped != 1) then gosub waitForPrep
+    gosub cast
+
+    if ($preparedspell != None) then gosub release spell
+    var isFullyPrepped 0
+    gosub prep symbiosis
+    gosub prep cv 20
+    gosub charge my arm 10
+    gosub focus my arm
+    gosub invoke my arm
+    if (%isFullyPrepped != 1) then gosub waitForPrep
+    gosub cast
+
+goto loop
 
 waitForPrep:
     pause 1

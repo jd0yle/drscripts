@@ -9,7 +9,7 @@ include libsel.cmd
 ####### CONFIG #######
 
 var cambrinth yoakena globe
-var burin abstract burin
+var burin silversteel burin
 
 ######################
 
@@ -229,7 +229,8 @@ useLoopTool:
     if ("$righthandnoun" != "loop" && "$righthand" != "Empty") then gosub stow right
     if ("$righthandnoun" != "loop") then gosub get my loop
     gosub push %baseItem on brazier with my loop
-    gosub stow my loop
+    #gosub stow my loop
+    gosub put my loop in my shadows
     return
 
 useMeditate:

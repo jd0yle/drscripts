@@ -3,8 +3,10 @@ include libsel.cmd
 #debug 3
 
 ####### CONFIG #######
-var burin abstract burin
+var burin silversteel burin
 ######################
+
+var sigilsToIgnore abolotion|congruence|induction|permutation|clarification|decay|integration|metamorphosis|paradox
 
 var startRoomId $roomid
 var endRoomId 261
@@ -87,7 +89,15 @@ loop:
 
 roomLoop:
     if (%isRoomEmpty = 1) then return
+    if (contains("%sigilsToIgnore", "%sigilType")) then {
+        var sigilType null
+        var improveTypes null
+        var doImprove 0
+        var doScribe 0
+        gosub perc sigil
+    }
     if (%doScribe = 1) then {
+            put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
             gosub scribeSigil
             goto roomLoop
     }

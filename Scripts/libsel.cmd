@@ -237,8 +237,14 @@ ask1:
 matchre return ^To whom are you speaking\?
 matchre return ^With a sad look
 matchre return ^A pure white alfar avenger peers at you
+matchre ask.retreat ^You cannot do that while focusing on combat!
+matchre return hands it to you\.$
 put ask %todo
 goto retry
+
+ask.retreat:
+gosub retreat
+goto %location
 
 app:
 appraise:
@@ -413,6 +419,7 @@ var location close1
 matchre return ^You try, but the telescope won't collapse any further.
 matchre return ^You collapse your telescope.
 matchre return ^You need to be holding the telescope first.
+matchre return ^You close your
 put close %todo
 goto retry
 
@@ -923,6 +930,7 @@ var location open1
 matchre return ^You try, but the telescope seems as extended as it will ever be.
 matchre return ^You extend your telescope.
 matchre return ^You need to be holding the telescope first.
+matchre return ^You open your
 put open %todo
 goto retry
 
@@ -1050,6 +1058,8 @@ var location prep1
 var todo $0
 prep1:
 matchre return ^You have already
+matchre return ^You recall
+matchre return ^But you've already
 matchre return ^You begin chanting a prayer
 matchre return ^You close your eyes and breathe deeply,
 matchre return ^You trace an arcane sigil in the air,
@@ -1129,6 +1139,7 @@ matchre return ^Type RELEASE HELP for more options\.
 matchre return ^You aren't harnessing any mana.
 matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
 matchre return ^You have no cyclic spell active to release.
+matchre return disappears\.$
 put release %todo
 goto retry
 
@@ -1197,6 +1208,7 @@ matchre retreat ^You stop advancing
 matchre retreat ^You sneak back out
 matchre retreat ^You must stand first\.
 matchre retreat ^You try to back out
+matchre retreat ^You try to sneak
 matchre return ^You are already as far away as you can get\!
 matchre return revealing your hiding place\!
 matchre return ^You try to back away from
@@ -1341,6 +1353,7 @@ stand1:
 matchre return ^You stand back up\.
 matchre return ^You swim back up
 matchre return ^You are already standing\.
+matchre return ^You climb off
 matchre stand1 ^You are so unbalanced you cannot manage to stand\.
 matchre stand1 ^You are overburdened and cannot manage to stand\.
 matchre stand1 ^The weight of all your possessions prevents you from standing\.
@@ -1431,6 +1444,7 @@ matchre return ^But that is already in your inventory\.
 matchre location.unload ^You should unload the
 matchre location.unload ^You need to unload the
 matchre stowing too long to fit
+matchre stowing too wide to fit
 put stow %todo
 goto retry
 
@@ -1546,6 +1560,7 @@ var location target1
 var todo $0
 target1:
 matchre return ^You begin to weave
+matchre return ^You deftly remove
 matchre return ^Your target pattern is already formed
 matchre return ^You must be preparing a spell in order to target it\!
 matchre return ^You don't need to target the spell you're preparing\.

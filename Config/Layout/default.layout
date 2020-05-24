@@ -6,7 +6,7 @@
     <Game ID="main" Name="Game" Height="783" Width="1162" Left="0" Top="93" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Game>
-    <Window1 ID="log" Name="Log" Height="653" Width="327" Left="1162" Top="223" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False" IfClosed="log">
+    <Window1 ID="log" Name="Log" Height="680" Width="327" Left="1162" Top="196" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False" IfClosed="log">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window1>
     <Window2 ID="conversation" Name="Conversation" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
@@ -18,7 +18,7 @@
     <Window4 ID="whispers" Name="Whispers" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window4>
-    <Window5 ID="thoughts" Name="Thoughts" IfClosed="game" Height="223" Width="427" Left="1489" Top="0" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False">
+    <Window5 ID="thoughts" Name="Thoughts" IfClosed="game" Height="196" Width="427" Left="1489" Top="0" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window5>
     <Window6 ID="chatter" Name="Chatter" IfClosed="log" Height="247" Width="400" Left="565" Top="0" Visible="False" TimeStamp="True" Colors="#AAFFAA, Black" NameListOnly="False">
@@ -33,10 +33,10 @@
     <Window9 ID="familiar" Name="Familiar" IfClosed="main" Height="385" Width="575" Left="405" Top="0" Visible="False" TimeStamp="True" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window9>
-    <Window10 ID="experience" Name="Experience" IfClosed="main" Height="339" Width="427" Left="1489" Top="223" Visible="True" TimeStamp="False" Colors="White, Black" NameListOnly="False">
+    <Window10 ID="experience" Name="Experience" IfClosed="main" Height="366" Width="427" Left="1489" Top="196" Visible="True" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Lucida Console" Size="9" Style="Regular" />
     </Window10>
-    <Window11 ID="percwindow" Name="percWindow" IfClosed="" Height="223" Width="327" Left="1162" Top="0" Visible="True" TimeStamp="False" Colors="#00FF96, Black" NameListOnly="False">
+    <Window11 ID="percwindow" Name="percWindow" IfClosed="" Height="196" Width="327" Left="1162" Top="0" Visible="True" TimeStamp="False" Colors="#00FF96, Black" NameListOnly="False">
       <Font Family="Verdana" Size="9" Style="Regular" />
     </Window11>
     <Window12 ID="logons" Name="Arrivals" Height="93" Width="332" Left="0" Top="0" Visible="True" TimeStamp="True" Colors="#804000, Black" NameListOnly="True" IfClosed="">

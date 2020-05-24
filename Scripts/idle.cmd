@@ -13,7 +13,7 @@ timer start
 loop:
     if (%t > %nextAlarmAt) then {
         evalmath nextAlarmAt %t + 240
-        gosub look my blade
+        gosub look my blades
     }
     pause 2
     goto loop

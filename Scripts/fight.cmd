@@ -51,6 +51,8 @@ action send circle when ^Analyze what
 
 action send get my scimitar when ^Wouldn't it be better if you used a melee weapon\?$
 
+action goto newBundle when ^Where did you intend to put that\?  You don't have any bundles or they're all full or too tightly packed!
+
 timer start
 
 
@@ -84,8 +86,10 @@ loop:
     gosub pickupLoot
     gosub checkStances
     gosub buffs
+
+    gosub huntApp
+
     gosub checkWeaponSkills
-    gosub huntHide
 
     if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
         if ($Time.isDay != 1) then {
@@ -99,7 +103,8 @@ loop:
         }
         gosub prep %tmSpell %tmPrep
         gosub target
-        pause 7
+        gosub checkHide
+        pause 4
         gosub cast
         goto loop
     }
@@ -112,6 +117,7 @@ loop:
             pause 4
             gosub cast
         }
+        gosub checkHide
         gosub attack throw
         if ("$righthand" != "Empty") then {
             gosub attack throw
@@ -126,9 +132,13 @@ loop:
     if $monstercount > 0 then {
         gosub analyze
         var lastAnalyzeTimeAt %t
+    } else {
+        pause 10
     }
 
     if (evalmath(%t - %lastAnalyzeTime) > 60) then gosub analyze
+
+    #gosub checkHide
 
     if %doAnalyze = 0 then {
         gosub doAnalyzedAttacks
@@ -138,7 +148,8 @@ loop:
 
 doAnalyzedAttacks:
     if ($monstercount < 2) then {
-        pause 4
+        gosub attack circle
+        gosub attack bob
         return
     }
     eval attacks replace("%attacks", " and", ",")
@@ -156,6 +167,7 @@ doAnalyzedAttacks:
         pause 4
         gosub cast
     }
+    gosub checkHide
 
     attackLoop:
         gosub attack %attacks(%index)
@@ -176,13 +188,13 @@ buffs:
     }
 
     if ($SpellTimer.SeersSense.active = 0) then {
-        put .cast seer
+        put .cast n seer
         waitforre ^CAST DONE
         return
     }
 
     if ($SpellTimer.ManifestForce.active = 0) then {
-        put .cast maf
+        put .cast n maf
         waitforre ^CAST DONE
         return
     }
@@ -192,19 +204,19 @@ buffs:
 
 buffCol:
     if ($Time.isKatambaUp = 1) then {
-        put .cast col katamba
+        put .cast n col katamba
         waitforre ^CAST DONE
         return
     }
 
     if ($Time.isXibarUp = 1) then {
-        put .cast col xibar
+        put .cast n col xibar
         waitforre ^CAST DONE
         return
     }
 
     if ($Time.isYavashUp = 1) then {
-        put .cast col yavash
+        put .cast n col yavash
         waitforre ^CAST DONE
         return
     }
@@ -212,8 +224,8 @@ buffCol:
 
 
 checkWeaponSkills:
-    echo Checking Weapons... %weapons.skills(%weapons.index) : $%weapons.skills(%weapons.index).LearningRate Target: %weapons.targetLearningRate
-    echo Checking timer... %changeWeaponAt < %t
+    #echo Checking Weapons... %weapons.skills(%weapons.index) : $%weapons.skills(%weapons.index).LearningRate Target: %weapons.targetLearningRate
+    #echo Checking timer... %changeWeaponAt < %t
 
     if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate) then {
         # By default, don't switch weapons faster than once every 30 seconds.
@@ -229,6 +241,8 @@ checkWeaponSkills:
                 if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
             }
             var weapons.lastChangeAt %t
+            #put /oct insert %weapons.skills(%weapons.index)
+            #put /oct activate %weapons.skills(%weapons.index)
         }
     }
 
@@ -243,13 +257,13 @@ checkWeaponSkills:
 
 
 checkStances:
-    if ($Shield_Usage.LearningRate < 33 || $Parry_Ability.LearningRate > 32)) then {
-        if ("%stance.current" != "shield") then {
+    if ($Shield_Usage.LearningRate < 33 || $Parry_Ability.LearningRate > 32 || $health < 100) then {
+        if ("%stance.current" != "shield" || "$stance" != "shield") then {
             gosub stance shield
             var stance.current shield
         }
     } else {
-        if ("%stance.current" != "parry") then {
+        if ("%stance.current" != "parry" || "$stance" != "parry") then {
             gosub stance parry
             var stance.current parry
         }
@@ -257,17 +271,20 @@ checkStances:
     return
 
 
-huntHide:
+checkHide:
+    if (%t > %nextHideAt && $Stealth.LearningRate < 33) then {
+        gosub hide
+        evalmath nextHideAt 30 + %t
+        echo nextHideAt: %nextHideAt
+    }
+    return
+
+
+huntApp:
     if (%t > %nextHuntAt && $Perception.LearningRate < 33) then {
         gosub hunt
         evalmath nextHuntAt 120 + %t
         echo nextHuntAt: %nextHuntAt
-        return
-    }
-    if (%t > %nextHideAt && $Stealth.LearningRate < 33) then {
-        gosub hide
-        evalmath nextHideAt 90 + %t
-        echo nextHideAt: %nextHideAt
         return
     }
     if (%t > %nextAppAt && $Appraisal.LearningRate < 33) then {
@@ -335,3 +352,39 @@ pickupLootAtFeet:
 #    var item $1
 #    gosub stow %item
 #    goto pickupLootAtFeet
+
+newBundle:
+    if ($charactername = Selesthiel) then {
+        put .ret
+        if ($preparedspell != None) then gosub release spell
+        gosub prep ss
+
+        var storedItem $righthandnoun
+        gosub stow right
+        if ("$lefthand" != "Empty") then gosub stow left
+
+        pause 10
+        gosub cast
+        pause
+        gosub ask servant for haversack
+        gosub open my haversack
+        gosub remove my bundle
+        gosub put my bundle in my haversack
+        gosub close my haversack
+        pause
+        put give haversack to servant
+        pause
+        gosub release servant
+        gosub get my rope
+        gosub get my %storedItem
+        gosub bundle my %storedItem with my rope
+        pause
+        put tie my bundle
+        pause
+        put tie my bundle
+        pause
+        gosub wear my bundle
+        put adjust my bundle
+        put #script abort ret
+        goto loop
+    }

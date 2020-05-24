@@ -2,8 +2,8 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var ritualFocus staff
-var isFocusWorn 1
+var ritualFocus wand
+var isFocusWorn 0
 var defaultMana 600
 
 ######################
