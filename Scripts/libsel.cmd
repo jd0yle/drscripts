@@ -368,6 +368,7 @@ matchre return ^Your spell pattern collapses
 matchre return ^With a wave of your hand,
 matchre return ^You wave your hand\.
 matchre return ^With a flick of your wrist,
+matchre return ^You whisper the final word of your spell
 matchre return You draw your
 matchre return ^Your secondary spell pattern dissipates
 matchre return ^You can't cast .+ on yourself\!
@@ -573,6 +574,15 @@ put EXP %todo
 goto retry
 
 
+fire:
+var todo $0
+fire1:
+var location fire1
+matchre return Roundtime
+put fire %todo
+goto retry
+
+
 flee:
 var todo $0
 flee1:
@@ -635,6 +645,8 @@ get:
 var location get1
 var todo $0
 get1:
+matchre return ^You deftly remove
+matchre return ^You must unload the
 matchre return ^You get
 matchre return ^You pull
 matchre return ^You pick up
@@ -1343,6 +1355,10 @@ stance:
 var location stance1
 var todo $0
 var current.stance $0
+if ("$righthandnoun" = "crossbow" && "%todo" != "shield") then {
+    var todo shield
+    var current.stance shield
+}
 stance1:
 matchre return ^You are now set to use your
 matchre return ^Your (attack|evasion|parry|shield) ability is now set at
@@ -1453,6 +1469,7 @@ if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = 
     return
 }
 matchre return ^Stow what\?
+matchre return ^You carefully
 matchre return ^You put your
 matchre return ^You stop as you realize
 matchre return ^You pick up

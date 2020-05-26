@@ -4,10 +4,10 @@
     <MonoFont Family="Lucida Console" Size="10" Style="Regular" />
     <InputFont Family="Lucida Console" Size="10" Style="Regular" />
     <Game ID="main" Name="Game" Height="783" Width="1162" Left="0" Top="93" TimeStamp="False" Colors="White, Black" NameListOnly="False">
-      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+      <Font Family="Microsoft Sans Serif" Size="9" Style="Regular" />
     </Game>
     <Window1 ID="log" Name="Log" Height="680" Width="327" Left="1162" Top="196" Visible="True" TimeStamp="True" Colors="White, Black" NameListOnly="False" IfClosed="log">
-      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+      <Font Family="Microsoft Sans Serif" Size="9" Style="Regular" />
     </Window1>
     <Window2 ID="conversation" Name="Conversation" IfClosed="log" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
@@ -34,13 +34,13 @@
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window9>
     <Window10 ID="experience" Name="Experience" IfClosed="main" Height="366" Width="427" Left="1489" Top="196" Visible="True" TimeStamp="False" Colors="White, Black" NameListOnly="False">
-      <Font Family="Lucida Console" Size="9" Style="Regular" />
+      <Font Family="Lucida Console" Size="8.25" Style="Regular" />
     </Window10>
     <Window11 ID="percwindow" Name="percWindow" IfClosed="" Height="196" Width="327" Left="1162" Top="0" Visible="True" TimeStamp="False" Colors="#00FF96, Black" NameListOnly="False">
-      <Font Family="Verdana" Size="9" Style="Regular" />
+      <Font Family="Verdana" Size="8.25" Style="Regular" />
     </Window11>
     <Window12 ID="logons" Name="Arrivals" Height="93" Width="332" Left="0" Top="0" Visible="True" TimeStamp="True" Colors="#804000, Black" NameListOnly="True" IfClosed="">
-      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+      <Font Family="Microsoft Sans Serif" Size="9" Style="Regular" />
     </Window12>
     <Window13 ID="death" Name="Deaths" IfClosed="main" Height="93" Width="310" Left="332" Top="0" Visible="True" TimeStamp="True" Colors="Red, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
@@ -52,10 +52,10 @@
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
     </Window15>
     <Window16 ID="mobs" Name="Mobs" IfClosed="" Height="314" Width="206" Left="1710" Top="562" Visible="True" TimeStamp="False" Colors="#FFFF00, Black" NameListOnly="False">
-      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+      <Font Family="Microsoft Sans Serif" Size="9" Style="Regular" />
     </Window16>
     <Window17 ID="players" Name="Players" IfClosed="" Height="314" Width="221" Left="1489" Top="562" Visible="True" TimeStamp="False" Colors="#FFAED7, Black" NameListOnly="False">
-      <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />
+      <Font Family="Microsoft Sans Serif" Size="9" Style="Regular" />
     </Window17>
     <Window18 ID="shop" Name="Shop" IfClosed="main" Height="200" Width="300" Left="10" Top="10" Visible="False" TimeStamp="False" Colors="White, Black" NameListOnly="False">
       <Font Family="Microsoft Sans Serif" Size="10" Style="Regular" />

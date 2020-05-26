@@ -1,5 +1,7 @@
 include libsel.cmd
 
+var ritualFocus S'kra totem
+
 var doPredictions %1
 
 var isFullyPrepped 0
@@ -25,15 +27,15 @@ put sit
 if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
 
 gosub prep rtr 690
-gosub remove my staff
-put invoke my staff
+gosub get my %ritualFocus
+put invoke my %ritualFocus
 goto prepWait
 
 prepWait:
 pause 1
 if (%isFullyPrepped != 1) then goto prepWait
 gosub cast
-gosub wear my staff
+gosub stow my %ritualFocus
 goto rtrObserve
 
 

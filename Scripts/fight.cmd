@@ -17,8 +17,10 @@ action (invFeet) var toLoot %toLoot|$1 when (%lootables)
 action (invFeet) off
 
 if ($charactername = Selesthiel) then {
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown
-    var weapons.items Empty|Empty|haralun scimitar|Empty
+    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
+    var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
+    #var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown
+    #var weapons.items Empty|Empty|haralun scimitar|Empty
     var tmSpell pd
     var tmPrep 20
 }
@@ -92,7 +94,7 @@ loop:
     gosub checkWeaponSkills
 
     if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
-        if ($Time.isDay != 1) then {
+        if ($Time.isDay != 1 && $charactername = Selesthiel) then {
             if ($SpellTimer.StarlightSphere.active != 1) then {
                 gosub prep sls 15
                 pause 20
@@ -126,7 +128,22 @@ loop:
     }
 
     if ("%weapons.skills(%weapons.index)" = "Crossbow") then {
-
+        gosub get my bolt
+        gosub retreat
+        gosub load
+        gosub stow left
+        gosub retreat
+        gosub aim
+        gosub prep mb 20
+        gosub retreat
+        pause 2
+        gosub retreat
+        pause 2
+        gosub retreat
+        pause 2
+        gosub cast
+        gosub fire
+        goto loop
     }
 
     if $monstercount > 0 then {
@@ -180,6 +197,12 @@ buffs:
     if ($charactername != Selesthiel) then {
         if ($SpellTimer.ManifestForce.active = 0) then {
             gosub prep maf 3
+            pause 10
+            gosub cast
+            return
+        }
+        if ($SpellTimer.Obfuscation.active = 0) then {
+            gosub prep obf 3
             pause 10
             gosub cast
             return
@@ -257,7 +280,7 @@ checkWeaponSkills:
 
 
 checkStances:
-    if ($Shield_Usage.LearningRate < 33 || $Parry_Ability.LearningRate > 32 || $health < 100) then {
+    if ($Shield_Usage.LearningRate < 33 || $Parry_Ability.LearningRate > 32 || $health < 100 || %weapons.skills(%weapons.index) = Crossbow || "$righthandnoun" = "crossbow") then {
         if ("%stance.current" != "shield" || "$stance" != "shield") then {
             gosub stance shield
             var stance.current shield
@@ -272,7 +295,8 @@ checkStances:
 
 
 checkHide:
-    if (%t > %nextHideAt && $Stealth.LearningRate < 33) then {
+    #if (%t > %nextHideAt && $Stealth.LearningRate < 33) then {
+    if ($Stealth.LearningRate < 33) then {
         gosub hide
         evalmath nextHideAt 30 + %t
         echo nextHideAt: %nextHideAt

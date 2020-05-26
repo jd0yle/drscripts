@@ -13,36 +13,42 @@ loop:
          gosub perc mana
          evalmath nextPercAt (60 + %t)
     }
+    if ($Warding.LearningRate < 34) then {
+        if ($preparedspell != None) then gosub release spell
+        var isFullyPrepped 0
+        gosub prep symbiosis
+        gosub prep psy 20
+        gosub charge my arm 20
+        gosub focus my arm
+        gosub invoke my arm
+        if (%isFullyPrepped != 1) then gosub waitForPrep
+        gosub cast
+    }
 
-    if ($preparedspell != None) then gosub release spell
-    var isFullyPrepped 0
-    gosub prep symbiosis
-    gosub prep psy 20
-    gosub charge my arm 10
-    gosub focus my arm
-    gosub invoke my arm
-    if (%isFullyPrepped != 1) then gosub waitForPrep
-    gosub cast
+    if ($Utility.LearningRate < 34) then {
+        if ($preparedspell != None) then gosub release spell
+        var isFullyPrepped 0
+        gosub prep symbiosis
+        gosub prep sm 20
+        gosub charge my arm 10
+        gosub focus my arm
+        gosub invoke my arm
+        if (%isFullyPrepped != 1) then gosub waitForPrep
+        gosub cast
+    }
 
-    if ($preparedspell != None) then gosub release spell
-    var isFullyPrepped 0
-    gosub prep symbiosis
-    gosub prep sm 20
-    gosub charge my arm 10
-    gosub focus my arm
-    gosub invoke my arm
-    if (%isFullyPrepped != 1) then gosub waitForPrep
-    gosub cast
-
-    if ($preparedspell != None) then gosub release spell
-    var isFullyPrepped 0
-    gosub prep symbiosis
-    gosub prep cv 20
-    gosub charge my arm 10
-    gosub focus my arm
-    gosub invoke my arm
-    if (%isFullyPrepped != 1) then gosub waitForPrep
-    gosub cast
+    if ($Augmentation.LearningRate < 34) then {
+        if ($preparedspell != None) then gosub release spell
+        var isFullyPrepped 0
+        gosub prep symbiosis
+        gosub prep cv 20
+        gosub charge my arm 10
+        gosub focus my arm
+        gosub invoke my arm
+        if (%isFullyPrepped != 1) then gosub waitForPrep
+        gosub cast
+    }
+    pause .5
 
 goto loop
 

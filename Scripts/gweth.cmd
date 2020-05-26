@@ -1,7 +1,11 @@
+var channelIsClosed null
+action var channelIsClosed 1 when ^With a moment of focus you close your mind to the \S+ channel\.$
+
+
 touch:
   matchre channel (A chorus of foreign thoughts joins your own.|Since you already have telepathy, nothing more happens.)
   match exit crumble
-  put touch my gwe
+  put touch my gweth
   matchwait
 
 channel:
@@ -10,10 +14,13 @@ channel:
   eval len count("%channels", "|")
 listen:
   if (%channelsIndex > %len) then goto exit
+
   if ("%channels(%channelsIndex)" <> "null") then {
     put esp listen %channels(%channelsIndex)
+    waitforre ^With a moment of focus
   }
-  math channelsIndex add 1
+  if (%channelIsClosed != 1) then math channelsIndex add 1
+  var channelIsClosed null
   goto listen
 
 exit:

@@ -2,9 +2,9 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var ritualFocus wand
+var ritualFocus S'kra totem
 var isFocusWorn 0
-var defaultMana 600
+var defaultMana 700
 
 ######################
 
@@ -36,6 +36,7 @@ action var isPlanetUp 1 when ^You focus your enhanced sight
 action var isPlanetUp 1 when ^You learned something useful from your observation.
 action var isPlanetUp 1 when ^You are unable to make use of this latest observation.
 action var isPlanetUp 1 when ^You see nothing regarding the future.
+action var isPlanetUp 1 when ^Clouds obscure the sky
 
 
 if (!contains("%stats", "%stat")) then {
