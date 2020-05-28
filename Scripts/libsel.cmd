@@ -1474,6 +1474,7 @@ matchre return ^You put your
 matchre return ^You stop as you realize
 matchre return ^You pick up
 matchre return ^But that is already in your inventory\.
+matchre return ^You hang your
 matchre location.unload ^You should unload the
 matchre location.unload ^You need to unload the
 matchre stowing too long to fit
@@ -1789,25 +1790,31 @@ matchre move.error ^You can't go there\.
 matchre move.error ^You can't swim in that direction\.
 put %todo
 goto retry
+
 stand.then.move:
 gosub stand
 goto move1
+
 pause.then.move:
 pause .2
 goto moving
+
 retreat.then.move:
 gosub retreat
 goto moving
+
 move.error:
 echo * Bad move direction, will try next command in 1 second. *
 pause
 goto moving
+
 Dig.then.move:
 pause .1
 put dig %move.direction
 pause .5
 pause .5
 goto moving
+
 stow.then.move:
 var todo.saved %todo
 gosub stowing

@@ -17,7 +17,7 @@ action var offensePredState $1 when (\S+) understanding of the celestial influen
 action var defensePredState $1 when (\S+) understanding of the celestial influences over defensive combat.$
 action var survivalPredState $1 when (\S+) understanding of the celestial influences over survival.$
 
-#goto rtrWait
+#action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait
 
 gosub stow right
 gosub stow left

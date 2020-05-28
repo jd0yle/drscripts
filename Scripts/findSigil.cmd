@@ -130,7 +130,7 @@ colorloop1:
     if ("$lefthand" = "Empty") then {
         gosub put my book in my shadows
         gosub stow right
-        math index add 1
+        math colorsIndex add 1
         if (%colorsIndex > %colorsLength) then exit
         goto colorloop
     }

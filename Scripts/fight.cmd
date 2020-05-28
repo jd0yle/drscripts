@@ -1,12 +1,46 @@
 include libsel.cmd
+####################################################################################################
+# .fight
+# Selesthiel - Justin Doyle - justin@jmdoyle.com
+# 2020/05/07
+#
+# USAGE
+# .fight
+#
+# DEPENDENCIES: libsel.cmd, cast.cmd, loot.cmd
+####################################################################################################
 
+####################################################################################################
+# CONFIG
+if ($charactername = Selesthiel) then {
+    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
+    #var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
+    var weapons.items Empty|Empty|assassin's blade|Empty|competition crossbow
+    var useSls 1
+    var tmSpell pd
+    var tmPrep 20
+    var debil.use 1
+    var debil.spell mb
+    var debil.prepAt 20
+}
+
+if ($charactername = Qizhmur) then {
+    var weapons.skills Targeted_Magic|Brawling|Small_Edged
+    var weapons.items Empty|Empty|scimitar
+    var useSls 0
+    var tmSpell stra
+    var tmPrep 1
+    var debil.use 0
+    var debil.spell pv
+    var debil.prepAt 1
+}
+####################################################################################################
 
 var attacks
 var doAnalyze 1
 var lastAnalyzeTime 0
 
 var nextHuntAt 0
-var nextHideAt 0
 var nextAppAt 0
 
 var stance.current null
@@ -15,22 +49,6 @@ var lootables throwing blade|arrow|bolt|quadrello|brazier
 var toLoot null
 action (invFeet) var toLoot %toLoot|$1 when (%lootables)
 action (invFeet) off
-
-if ($charactername = Selesthiel) then {
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
-    var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
-    #var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown
-    #var weapons.items Empty|Empty|haralun scimitar|Empty
-    var tmSpell pd
-    var tmPrep 20
-}
-
-if ($charactername = Qizhmur) then {
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged
-    var weapons.items Empty|Empty|scimitar
-    var tmSpell stra
-    var tmPrep 1
-}
 
 var weapons.index 0
 eval weapons.length count("%weapons.skills", "|")
@@ -59,8 +77,10 @@ timer start
 
 
 init:
+    put #class combat on
     var weapons.lowestLearningRateIndex 0
 
+    ## Start with the weapon with the lowest learning rate
     initLoop:
         if ($%weapons.skills(%weapons.index).LearningRate < $%weapons.skills(%weapons.lowestLearningRateIndex).LearningRate) then {
             var weapons.lowestLearningRateIndex %weapons.index
@@ -88,13 +108,11 @@ loop:
     gosub pickupLoot
     gosub checkStances
     gosub buffs
-
     gosub huntApp
-
     gosub checkWeaponSkills
 
     if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
-        if ($Time.isDay != 1 && $charactername = Selesthiel) then {
+        if (%useSls = 1 && $Time.isDay != 1) then {
             if ($SpellTimer.StarlightSphere.active != 1) then {
                 gosub prep sls 15
                 pause 20
@@ -114,8 +132,8 @@ loop:
     if ("%weapons.skills(%weapons.index)" = "Light_Thrown") then {
         if (!contains("$righthand", "throwing blade")) then gosub stow right
         gosub get throwing blades
-        if ("$charactername" = "Selesthiel" && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
-            gosub prep mb
+        if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
+            gosub prep %debil.spell %debil.prepAt
             pause 4
             gosub cast
         }
@@ -134,7 +152,7 @@ loop:
         gosub stow left
         gosub retreat
         gosub aim
-        gosub prep mb 20
+        if (%debil.use = 1) then gosub prep %debil.spell %debil.prepAt
         gosub retreat
         pause 2
         gosub retreat
@@ -154,8 +172,6 @@ loop:
     }
 
     if (evalmath(%t - %lastAnalyzeTime) > 60) then gosub analyze
-
-    #gosub checkHide
 
     if %doAnalyze = 0 then {
         gosub doAnalyzedAttacks
@@ -178,9 +194,8 @@ doAnalyzedAttacks:
     eval length count("%attacks", "|")
     var index 0
 
-    #echo %attacks
-    if ("$charactername" = "Selesthiel" && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
-        gosub prep mb
+    if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
+        gosub prep %debil.spell %debil.prepAt
         pause 4
         gosub cast
     }
@@ -247,9 +262,6 @@ buffCol:
 
 
 checkWeaponSkills:
-    #echo Checking Weapons... %weapons.skills(%weapons.index) : $%weapons.skills(%weapons.index).LearningRate Target: %weapons.targetLearningRate
-    #echo Checking timer... %changeWeaponAt < %t
-
     if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate) then {
         # By default, don't switch weapons faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 120 seconds before swapping
@@ -264,8 +276,6 @@ checkWeaponSkills:
                 if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
             }
             var weapons.lastChangeAt %t
-            #put /oct insert %weapons.skills(%weapons.index)
-            #put /oct activate %weapons.skills(%weapons.index)
         }
     }
 
@@ -278,7 +288,9 @@ checkWeaponSkills:
 
     return
 
-
+##
+# Assumes, all other things being equal, that shield stance is preferable
+##
 checkStances:
     if ($Shield_Usage.LearningRate < 33 || $Parry_Ability.LearningRate > 32 || $health < 100 || %weapons.skills(%weapons.index) = Crossbow || "$righthandnoun" = "crossbow") then {
         if ("%stance.current" != "shield" || "$stance" != "shield") then {
@@ -295,11 +307,9 @@ checkStances:
 
 
 checkHide:
-    #if (%t > %nextHideAt && $Stealth.LearningRate < 33) then {
     if ($Stealth.LearningRate < 33) then {
         gosub hide
         evalmath nextHideAt 30 + %t
-        echo nextHideAt: %nextHideAt
     }
     return
 
@@ -364,18 +374,6 @@ pickupLootAtFeet:
         if (%invIndex > %invLength) then return
         goto pickupLootAtFeetLoop
 
-
-#pickupLootAtFeet:
-#    matchre return ^You aren't wearing anything like that.
-#    matchre stowItem (throwing blade|arrow|bolt|quadrello|brazier)
-#    matchre return ^\[Use INVENTORY HELP for more options\.\]$
-#    put inv atfeet
-#    goto retry
-#
-#stowItem:
-#    var item $1
-#    gosub stow %item
-#    goto pickupLootAtFeet
 
 newBundle:
     if ($charactername = Selesthiel) then {

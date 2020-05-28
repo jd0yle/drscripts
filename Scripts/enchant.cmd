@@ -10,6 +10,12 @@ include libsel.cmd
 
 var cambrinth yoakena globe
 var burin silversteel burin
+var brazier silversteel brazier
+var loop augmenting loop
+
+var enchantingContainer shadows
+var defaultContainer steelsilk backpack
+
 
 ######################
 
@@ -64,6 +70,8 @@ action var doStoreProducts 1 when With the enchanting process completed, you bel
 action var sigilsNeeded %sigilsNeeded|$2 when (primary|secondary) sigil \((\S+)\)$
 
 action goto alreadyEnchanted when ^The.* is already enchanted, and further manipulation could damage it.
+
+put store default %enchantingContainer
 
 gosub stow left
 gosub stow right
@@ -133,7 +141,8 @@ enchantLoop:
     if (%doStoreProducts = 1) then {
         gosub stow fount
         gosub stow brazier
-        gosub get %baseItem
+        put store default %defaultContainer
+        gosub get my %baseItem
         gosub focus my %baseItem
         exit
     }
@@ -189,7 +198,7 @@ setBaseItem:
 setBrazier:
     gosub stow right
     gosub stow left
-    gosub get my brazier
+    gosub get my %brazier
     if ("$righthandnoun" != "brazier") then {
         if ("$lefthandnoun" = "brazier") then {
             gosub swap
@@ -227,7 +236,7 @@ enchantScribe:
 
 useLoopTool:
     if ("$righthandnoun" != "loop" && "$righthand" != "Empty") then gosub stow right
-    if ("$righthandnoun" != "loop") then gosub get my loop
+    if ("$righthandnoun" != "loop") then gosub get my %loop
     gosub push %baseItem on brazier with my loop
     #gosub stow my loop
     gosub put my loop in my shadows
@@ -243,5 +252,6 @@ useFocus:
 
 
 alreadyEnchanted:
+    put store default %defaultContainer
     echo %baseItem is already enchanted!
     exit

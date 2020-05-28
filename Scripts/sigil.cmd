@@ -6,7 +6,7 @@ include libsel.cmd
 var burin silversteel burin
 ######################
 
-var sigilsToIgnore abolotion|congruence|induction|permutation|clarification|decay|integration|metamorphosis|paradox
+var sigilsToIgnore abolotion|congruence|induction|permutation|clarification|decay|integration|metamorphosis|paradox|nurture|evolution|rarefaction
 
 var startRoomId $roomid
 var endRoomId 261
@@ -25,13 +25,13 @@ action var isRoomEmpty 1; echo isRoomEmpty: %isRoomEmpty when ^Having recently b
 action var isRoomEmpty 1; echo isRoomEmpty: %isRoomEmpty when ^You lose track of your surroundings.
 
 
-action var sigilType $1; echo FOUND A %sigilType when ^In your mind's eye you see the definition of an? (\S+) sigil before you.
-action var sigilType $1; echo FOUND A %sigilType when ^After much scrutiny you are certain an? (\S+) sigil has revealed itself.
-action var sigilType $1; echo FOUND A %sigilType when ^Though the seemingly mundane lighting you focus intently on a lurking (\S+) sigil.
-action var sigilType $1; echo FOUND A %sigilType when ^Sorting through the imagery, you find the designs of .* (\S+) sigil\.$
-action var sigilType $1; echo FOUND A %sigilType when ^You recall having already identified the (\S+) (secondary|primary) sigil
-action var sigilType $1; echo FOUND A %sigilType when ^Almost obscured by the surround, you make out the details of an? (\S+) sigil.
-action var sigilType $1; echo FOUND A %sigilType when ^Subtleties in the surroundings reveal themselves as the origins of an? (\S+) sigil.
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^In your mind's eye you see the definition of an? (\S+) sigil before you.
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^After much scrutiny you are certain an? (\S+) sigil has revealed itself.
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^Though the seemingly mundane lighting you focus intently on a lurking (\S+) sigil.
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^Sorting through the imagery, you find the designs of .* (\S+) sigil\.$
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^You recall having already identified the (\S+) (secondary|primary) sigil
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^Almost obscured by the surround, you make out the details of an? (\S+) sigil.
+action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^Subtleties in the surroundings reveal themselves as the origins of an? (\S+) sigil.
 
 
 
@@ -97,7 +97,7 @@ roomLoop:
         gosub perc sigil
     }
     if (%doScribe = 1) then {
-            put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
+            #put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
             gosub scribeSigil
             goto roomLoop
     }
