@@ -1,7 +1,3 @@
-put #class racial on
-put #class rp on
-put #class combat off
-put #class joust off
 action goto exit when closes to .+ range on you
 
 
@@ -81,6 +77,6 @@ move.failed:
 
 return:
     return
-	
+
 exit:
 exit

@@ -1,10 +1,4 @@
 #debuglevel 10
-put #class racial on
-put #class rp on
-put #class arrive off
-put #class combat off
-put #class joust off
-
 # automapper.cmd version 7.1
 # last changed: Dec 31, 2019
 
@@ -14,7 +8,7 @@ put #class joust off
 # Added missing script label
 # Fixed wait time for ice
 #
-# 2019-09-25 - Shroom - Robustified Shard gate logic - should take detour if rejected by guard (requires .sharddetour script) 
+# 2019-09-25 - Shroom - Robustified Shard gate logic - should take detour if rejected by guard (requires .sharddetour script)
 # Cleaned up the ice skate logic
 # 2019-08-6 Shroom - Added several missing matches
 # Dasffion - Added in a waiteval for depth on climbing to allow the script to catch up on type aheads.
@@ -31,11 +25,11 @@ put #class joust off
 # 2018-7-28 - Added missing match for closed shop. Cleaned up some RegEx thanks to Ataeleos
 
 # 2017-11-13 - Shroom - Synced changes and updates from TF and Prime versions -  To make compatible across both instances
-# Added ICE SKATE support for Ice Road - Checks for ice skates and wears them during ice road, also checks your footwear and puts it back on after 
+# Added ICE SKATE support for Ice Road - Checks for ice skates and wears them during ice road, also checks your footwear and puts it back on after
 # Added support for Stowing foot item when you have an item stuck at your feet
 # Added missing web catch - Noobs were getting stuck on the web to Leth
 # Modified handling of dropping invisibility depending on guild
-# Added catches for getting thrown in Jail to properly abort automapper 
+# Added catches for getting thrown in Jail to properly abort automapper
 
 # 2016-12-01 - Shroom - Added updates and optimizations
 # Added more catches for stunned or tripping over roots
@@ -189,26 +183,26 @@ wave:
 wave_do:
      var depth 0
      if_1 gosub move %1
-     if %typeahead < 1 then 
-	 {	
+     if %typeahead < 1 then
+	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
      if_2 gosub move %2
-     if %typeahead < 2 then 
-	 {	
+     if %typeahead < 2 then
+	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
      if_3 gosub move %3
-     if %typeahead < 3 then 
-	 {	
+     if %typeahead < 3 then
+	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
      if_4 gosub move %4
-     if %typeahead < 4 then 
-	 {	
+     if %typeahead < 4 then
+	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
@@ -327,7 +321,7 @@ move.power:
      matchre MOVE.DONE ^\s*\[Roundtime\s*\:?
      matchre MOVE.DONE ^\s*\(Roundtime\s*\:?
      matchre MOVE.DONE ^Something in the area is interfering
-	 matchre MOVE.DONE ^You feel an extremely pervasive ward 
+	 matchre MOVE.DONE ^You feel an extremely pervasive ward
      put perceive
      matchwait
 move.room:
@@ -377,7 +371,7 @@ skate.no:
      var slow_on_ice 1
      var wearingskates 0
      action (mapper) on
-     echo **** No ice skate support for you! 
+     echo **** No ice skate support for you!
      echo **** Collecting rocks in every room like the other peasants
      return
 skate.yes:
