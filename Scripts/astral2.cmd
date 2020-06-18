@@ -30,13 +30,26 @@ if (matchre("%destination", "rolagi|crossing|cross")) then {
 } else if (matchre("%destination", "besoge|kresh|merkresh|mriss") then {
    var pillar Secrets
    var destShardName Besoge
+} else if (matchre("%destination", "shard|marendin") then {
+   var pillar Secrets
+   var destShardName Marendin
 } else if (matchre("%destination", "tabelrem|muspari") then {
    var pillar Nightmares
    var destShardName Tabelrem
+} else if (matchre("%destination", "taniendar|haven|riverhaven") then {
+   var pillar Introspection
+   var destShardName Taniendar
 } else if (matchre("%destination", "auilusi|aesry") then {
    var pillar Tradition
    var destShardName Auilusi
+} else if (matchre("%destination", "ratha|Erekinzil|taisgath") then {
+   var pillar Fortune
+   var destShardName Erekinzil
+} else if (matchre("%destination", "theren") then {
+ var pillar Introspection
+ var destShardName Dinegavren
 }
+
 
 echo %destShardName %pillar
 
@@ -57,6 +70,13 @@ top:
     gosub harness 30
     gosub harness 30
     gosub harness 30
+    if (contains("$roomplayers", "Inauri")) then {
+        #gosub get my bean
+        #pause
+        #put throw bean at inauri
+        pause
+        put lick inauri
+    }
     gosub cast grazhir
 
 loop:
@@ -71,13 +91,13 @@ loop:
     if (%moveToEnd = 1) then {
         gosub perc
         gosub perc
-        move %directionToEnd
+        gosub move %directionToEnd
     }
 
     if (%moveToAxis = 1) then {
         gosub perc
         gosub perc
-        move %directionToAxis
+        gosub move %directionToAxis
     }
 
     if (contains("$roomname", "Astral Plane, Pillar of")) then {

@@ -228,7 +228,7 @@ var location align1
 var todo $0
 align1:
 matchre return ^You focus internally
-matchre return ^Roundtime: 2 sec.
+matchre return ^Roundtime
 put align %todo
 goto retry
 
@@ -321,6 +321,7 @@ matchre return ^The .* is already debilitated\!
 matchre return ^You must be hidden or invisible to ambush\!
 matchre return ^The khuj is too heavy for you to use like that\.
 matchre return ^Wouldn't it be better
+matchre return sphere
 matchre attack2 ^You should stand up first\.
 put %todo
 goto retry
@@ -362,7 +363,12 @@ var todo $0
 cast1:
 if ("$preparedspell" = "None") then return
 matchre return ^You gesture
+matchre return ^Disregarding the pain
+matchre return ^The blood on your palm bubbles slightly
+matchre return ^Lacking properly ritualized blood
 matchre return ^Your target pattern dissipates
+matchre return ^You mutter incoherently to yourself
+matchre return ^You cup your hand before
 matchre return ^You don't have a spell prepared\!
 matchre return ^Your spell pattern collapses
 matchre return ^With a wave of your hand,
@@ -377,6 +383,9 @@ matchre return ^You raise your palms and face to the heavens
 matchre return ^I could not find what you were referring to\.
 matchre return ^You have difficulty manipulating the mana streams, causing the spell pattern to collapse at the last moment\.
 matchre return ^You have already fully prepared
+matchre return ^You attempt to quiet your mind
+matchre return ^The mental strain of this pattern
+matchre return ^Return
 put cast %todo
 goto retry
 
@@ -650,14 +659,32 @@ matchre return ^You must unload the
 matchre return ^You get
 matchre return ^You pull
 matchre return ^You pick up
+matchre return ^You carefully pull
 matchre return ^What were you referring to\?
 matchre return ^You are already holding that\.
 matchre return ^You need a free hand to pick that up\.
-matchre return ^But that is already in your inventory\.
+matchre get.remove ^But that is already in your inventory\.
 matchre return ^You fade in for a moment as you pick up
 matchre return ^You are not strong enough to pick that up\!
 matchre return ^That is far too dangerous
+matchre get.remove ^But that is already in your inventory
 put get %todo
+goto retry
+
+get.remove:
+gosub remove %todo
+goto location
+
+
+give:
+var location give1
+var todo $0
+give1:
+matchre return ^Randal looks over
+matchre return ^You hand
+matchre return ^What is it
+matchre return ^Randal
+put give %todo
 goto retry
 
 
@@ -926,8 +953,16 @@ matchre return ^Return
 put meditate %todo
 goto retry
 
-
+awake:
 libAwake:
+var location awake1
+var todo $0
+awake1:
+matchre return ^But you are not sleeping!
+matchre return ^You awaken from
+put awake %todo
+goto retry
+
 put awake
 goto %location
 
@@ -1010,6 +1045,9 @@ perform:
 var location perform1
 var todo $0
 perform1:
+matchre return ^A skinned creature is worthless
+matchre return ^You've already performed
+matchre return ^The blood on your palm bubbles slightly
 matchre return ^You bend over the
 matchre return ^This corpse has already
 matchre return ^This ritual may only be performed
@@ -1087,8 +1125,11 @@ var todo $0
 prep1:
 matchre return ^You have already
 matchre return ^You recall
+matchre return ^You have no idea how
 matchre return ^But you've already
 matchre return ^You begin chanting a prayer
+matchre return ^You mutter incoherently to yourself
+matchre return ^You trace a hasty sigil in the air
 matchre return ^You close your eyes and breathe deeply,
 matchre return ^You trace an arcane sigil in the air,
 matchre return ^Heatless orange flames blaze between your fingertips
@@ -1167,6 +1208,8 @@ matchre return ^Type RELEASE HELP for more options\.
 matchre return ^You aren't harnessing any mana.
 matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
 matchre return ^You have no cyclic spell active to release.
+matchre return ^You release
+matchre return ^But you haven't prepared
 matchre return disappears\.$
 put release %todo
 goto retry
@@ -1495,8 +1538,13 @@ if matchre("$righthand","(%pelts.empty)") then gosub drop $righthand
 if matchre("$lefthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
 if matchre("$righthand","(partisan|lumpy bundle|quarter staff|copperwood longbow|slender khuj|longbow)") then gosub wear my $1
 
+if $lefthand != Empty then gosub wear left
+if $righthand != Empty then gosub wear right
+
 if $lefthand != Empty then gosub stow left
 if $righthand != Empty then gosub stow right
+
+
 return
 
 
@@ -1720,6 +1768,7 @@ matchre return ^You drape
 matchre return ^You slide
 matchre return ^You are already wearing that\.
 matchre return ^Wear what\?
+matchre return ^You can't wear that!
 matchre return ^The contours of the
 matchre return ^You can't wear any more items like that\.
 matchre location.unload1 ^You should unload the

@@ -15,7 +15,7 @@ if ("$charactername" = "Selesthiel") then {
     pause .2
     send sort my robe
 
-    var titleList Shadow Mage|Dikka'staho Ashu|Shadow Reaver|Monk|Ascetic|Fate Reaver
+    var titleList Shadow Mage|Monk|Ascetic|Precursor|Dissident|Divine Soldier|Arcane Researcher|Student|Scholar|Researcher|Judge|Diplomat|Professor|Sibilant
     eval len count("%titleList", "|")
     random 0 %len
     #put title pre choose moon %titleList(%r)

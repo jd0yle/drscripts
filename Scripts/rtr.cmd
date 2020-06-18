@@ -26,7 +26,7 @@ put sit
 
 if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
 
-gosub prep rtr 690
+gosub prep rtr 725
 gosub get my %ritualFocus
 put invoke my %ritualFocus
 goto prepWait
@@ -35,7 +35,7 @@ prepWait:
 pause 1
 if (%isFullyPrepped != 1) then goto prepWait
 gosub cast
-gosub stow my %ritualFocus
+gosub stow right
 goto rtrObserve
 
 
@@ -50,25 +50,25 @@ rtrObserve:
 
 rtrPred:
     if (%doPredictions) then {
-        if ("$righthand" != "Empty" && "$righthandnoun" != "bones") then gosub stow right
-        if ("$righthandnoun" != "bones") then gosub get my bones
-        put pred state all
+        gosub pred state all
         if ("%lorePredState" != "no") then {
             gosub align lore
-            gosub roll bones at $charactername
+            gosub predict future $charactername
         } else if ("%offensePredState" != "no") then {
             gosub align offense
-            gosub roll bones at $charactername
+            gosub predict future $charactername
         } else if ("%survivalPredState" != "no") then {
             gosub align survival
-            gosub roll bones at $charactername
+            gosub predict future $charactername
         } else if ("%defensePredState" != "no") then {
             gosub align defense
-            gosub roll bones at $charactername
+            gosub predict future $charactername
         } else if ("%magicPredState" != "no") then {
             gosub align magic
-            gosub roll bones at $charactername
+            gosub predict future $charactername
         }
+        echo predictionCount: $predictionCount
+        put title pre choose moonm harbi
     }
     gosub rtrWait
     return
@@ -79,9 +79,9 @@ rtrWait:
     goto rtrWait
 
 rtrDone:
-    put stand
+    gosub stand
     echo RTR Complete
-    put pred state all
+    put #parse RTR DONE
     exit
 
 

@@ -1,18 +1,30 @@
-
 action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait
 
 start:
   goto pickTopic
   goto exit
-prep:
 gaugeCheckx:
-
-  if ($SpellTimer.GaugeFlow.active = 0 || $SpellTimer.GaugeFlow.duration < 15) then {
-     put .cast n gaf
-     waitforre ^CAST DONE
-  }
-  goto research
-
+  match research You sense the Gauge Flow spell
+  match prep Roundtime:
+  put perc
+  matchwait
+prep:
+  pause
+  put prep gaf 20
+cambCharge:
+  put charge my viper 20
+  waitfor Roundtime:
+  pause
+cambInvoke:
+  match cast You reach for its
+  matchre cambInvoke (Sorry|...wait)
+  put invoke my viper spell
+  matchwait
+cast:
+  pause 20
+  put cast
+  pause
+  goto gaugeCheckx
 
 wait:
   pause 60
@@ -23,8 +35,7 @@ pickTopic:
   match streams Mana Stream
   match utility Utility
   match sorcery Sorcerous
-  #match checkPrimary You're not researching
-  match checkSorcery You're not researching
+  match checkPrimary You're not researching
   put research status
   matchwait
 
@@ -49,7 +60,7 @@ checkAug:
   goto augmentation
 
 checkSorcery:
-  if $Sorcery.LearningRate > 20 then goto checkWard
+  if $Sorcery.LearningRate > 20 then goto exit
   goto sorcery
 
 research:

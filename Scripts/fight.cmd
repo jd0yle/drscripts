@@ -14,9 +14,8 @@ include libsel.cmd
 # CONFIG
 if ($charactername = Selesthiel) then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
-    #var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
-    var weapons.items Empty|Empty|assassin's blade|Empty|competition crossbow
-    var useSls 1
+    var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
+    var useSls 0
     var tmSpell pd
     var tmPrep 20
     var debil.use 1
@@ -25,16 +24,33 @@ if ($charactername = Selesthiel) then {
 }
 
 if ($charactername = Qizhmur) then {
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged
-    var weapons.items Empty|Empty|scimitar
+    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Heavy_Thrown|Large_Blunt
+    var weapons.items Empty|Empty|scimitar|hand mallet|throwing hammer|throwing hammer
     var useSls 0
     var tmSpell stra
     var tmPrep 1
     var debil.use 0
     var debil.spell pv
     var debil.prepAt 1
+    var creature rat
+}
+
+if ($charactername = Nyarlathotep) then {
+    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Small_Blunt|Polearms
+    var weapons.items Empty|Empty|silver-edged scimitar|Empty|light crossbow|granite mace|bone-white scythe
+    var useSls 0
+    var useQe 0
+    var tmSpell acs
+    var tmPrep 1
+    var debil.use 1
+    var debil.spell pv
+    var debil.prepAt 1
 }
 ####################################################################################################
+
+if_1 then var creature %1
+
+var doAppraisal 0
 
 var attacks
 var doAnalyze 1
@@ -42,13 +58,9 @@ var lastAnalyzeTime 0
 
 var nextHuntAt 0
 var nextAppAt 0
+var nextPercAt 0
 
 var stance.current null
-
-var lootables throwing blade|arrow|bolt|quadrello|brazier
-var toLoot null
-action (invFeet) var toLoot %toLoot|$1 when (%lootables)
-action (invFeet) off
 
 var weapons.index 0
 eval weapons.length count("%weapons.skills", "|")
@@ -56,9 +68,6 @@ var weapons.lastChangeAt 0
 var weapons.targetLearningRate 5
 
 var lootables throwing blade|coin
-
-
-#action var attacks $2; goto doAnalyzedAttacks when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 
 action send adv when ^You must be closer to use tactical abilities on your opponent.
 action var doAnalyze 1 when ^Utilizing \S+ tactics
@@ -68,8 +77,6 @@ action var doAnalyze 1 when You fail to find any
 action var doAnalyze 1 when ^ then lies still\.$
 
 action send circle when ^Analyze what
-
-action send get my scimitar when ^Wouldn't it be better if you used a melee weapon\?$
 
 action goto newBundle when ^Where did you intend to put that\?  You don't have any bundles or they're all full or too tightly packed!
 
@@ -99,10 +106,17 @@ init:
 
 loop:
     if $monsterdead > 0 then {
-        if ($guild = Necromancer && $Thanatology.LearningRate < 33) then gosub perform preserve on rat
+        if ($guild = Necromancer && $Thanatology.LearningRate < 33) then gosub perform preserve on %creature
         gosub Skinning
         gosub loot
+    }
 
+    if ($charactername = Nyarlathotep) then {
+        if ($Debilitation.LearningRate > 33) then {
+            var useDebil 0
+        } else {
+            var useDebil 1
+        }
     }
 
     gosub pickupLoot
@@ -111,57 +125,71 @@ loop:
     gosub huntApp
     gosub checkWeaponSkills
 
-    if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
-        if (%useSls = 1 && $Time.isDay != 1) then {
-            if ($SpellTimer.StarlightSphere.active != 1) then {
-                gosub prep sls 15
-                pause 20
-                gosub cast heart
-            } else {
-                math weapons.index add 1
+    if $monstercount > 0 then {
+        if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
+            if (%useSls = 1 && $Time.isDay != 1) then {
+                if ($SpellTimer.StarlightSphere.active != 1) then {
+                    gosub prep sls 15
+                    pause 20
+                    gosub cast heart
+                } else {
+                    math weapons.index add 1
+                }
             }
-        }
-        gosub prep %tmSpell %tmPrep
-        gosub target
-        gosub checkHide
-        pause 4
-        gosub cast
-        goto loop
-    }
-
-    if ("%weapons.skills(%weapons.index)" = "Light_Thrown") then {
-        if (!contains("$righthand", "throwing blade")) then gosub stow right
-        gosub get throwing blades
-        if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
-            gosub prep %debil.spell %debil.prepAt
+            gosub prep %tmSpell %tmPrep
+            gosub target
+            gosub checkHide
             pause 4
             gosub cast
+            goto loop
         }
-        gosub checkHide
-        gosub attack throw
-        if ("$righthand" != "Empty") then {
-            gosub attack throw
-        }
-        goto loop
-    }
 
-    if ("%weapons.skills(%weapons.index)" = "Crossbow") then {
-        gosub get my bolt
-        gosub retreat
-        gosub load
-        gosub stow left
-        gosub retreat
-        gosub aim
-        if (%debil.use = 1) then gosub prep %debil.spell %debil.prepAt
-        gosub retreat
-        pause 2
-        gosub retreat
-        pause 2
-        gosub retreat
-        pause 2
-        gosub cast
-        gosub fire
-        goto loop
+        if ("%weapons.skills(%weapons.index)" = "Light_Thrown" || "%weapons.skills(%weapons.index)" = "Heavy_Thrown") then {
+            if ("%weapons.items(%weapons.index)" != "Empty") then {
+                if ("$righthand" != "%weapons.items(%weapons.index)" ) then gosub get my %weapons.items(%weapons.index)
+                gosub attack lob
+                gosub get %weapons.items(%weapons.index)
+                goto loop
+            } else {
+                if (!contains("$righthand", "throwing blade")) then gosub stow right
+                gosub get throwing blades
+                if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
+                    gosub prep %debil.spell %debil.prepAt
+                    pause 4
+                    gosub cast
+                }
+                gosub checkHide
+                gosub attack throw
+                if ("$righthand" != "Empty") then {
+                    gosub attack throw
+                }
+                goto loop
+            }
+        }
+
+        if ("%weapons.skills(%weapons.index)" = "Crossbow") then {
+            gosub get my bolt
+            gosub retreat
+            gosub load
+            gosub stow left
+            gosub retreat
+            gosub aim
+            if (%debil.use = 1) then gosub prep %debil.spell %debil.prepAt
+            gosub retreat
+            pause 2
+            gosub retreat
+            pause 2
+            gosub retreat
+            pause 2
+            gosub cast
+            gosub hide
+            gosub fire
+            goto loop
+        }
+    } else {
+        gosub collect dirt
+        gosub kick pile
+        pause
     }
 
     if $monstercount > 0 then {
@@ -209,15 +237,40 @@ doAnalyzedAttacks:
 
 
 buffs:
-    if ($charactername != Selesthiel) then {
+    if ($charactername = Selesthiel) then {
+        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3) then {
+            put .cast n seer
+            waitforre ^CAST DONE
+            return
+        }
+
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 3) then {
+            put .cast n maf
+            waitforre ^CAST DONE
+            return
+        }
+
+        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 3) then gosub buffCol
+
+        return
+    }
+    if ($charactername = Qizhmur) then {
+        #es, substratum, tw, sw, ys, maf
+        #mof rit
         if ($SpellTimer.ManifestForce.active = 0) then {
             gosub prep maf 3
             pause 10
             gosub cast
             return
         }
-        if ($SpellTimer.Obfuscation.active = 0) then {
+        if ($SpellTimer.Obfuscation.active != 1) then {
             gosub prep obf 3
+            pause 10
+            gosub cast
+            return
+        }
+        if ($SpellTimer.EaseBurden.active != 1) then {
+            gosub prep ease 1
             pause 10
             gosub cast
             return
@@ -225,19 +278,77 @@ buffs:
         return
     }
 
-    if ($SpellTimer.SeersSense.active = 0) then {
-        put .cast n seer
-        waitforre ^CAST DONE
+     if ($charactername = Nyarlathotep) then {
+        if ($SpellTimer.ManifestForce.active = 0) then {
+            gosub prep maf 5
+            pause 10
+            gosub cast
+            return
+        }
+        if ($SpellTimer.Obfuscation.active != 1) then {
+            gosub prep obf 5
+            pause 10
+            gosub cast
+            return
+        }
+        if (1 = 0 && $SpellTimer.EaseBurden.active != 1) then {
+            gosub prep ease 5
+            pause 10
+            gosub cast
+            return
+        }
+        if ($SpellTimer.IvoryMask.active != 1) then {
+            gosub prep ivm 5
+            pause 10
+            gosub cast
+            return
+        }
+        if (($SpellTimer.QuickentheEarth.active != 1) && (%useQe = 1)) then {
+            echo useQe = %useQe
+            gosub prep qe 1
+            gosub stow left
+            gosub get my dirt
+            gosub perform cut
+            pause 15
+            gosub cast
+            return
+        }
         return
     }
 
-    if ($SpellTimer.ManifestForce.active = 0) then {
-        put .cast n maf
-        waitforre ^CAST DONE
+    if ($charactername = Discordia) then {
+        #es, substratum, tw, sw, ys, maf
+        #mof rit
+        if ($SpellTimer.Substratum.active = 0) then {
+            put .cast n substratum
+            waitforre ^CAST DONE
+            return
+        }
+        if ($SpellTimer.SureFooting.active = 0) then {
+            put .cast n suf
+            waitforre ^CAST DONE
+            return
+        }
+        if ($SpellTimer.Tailwind.active = 0) then {
+            put .cast n tw
+            waitforre ^CAST DONE
+            return
+        }
+        if ($SpellTimer.EtherealShield.active = 0) then {
+            put .cast n es
+            waitforre ^CAST DONE
+            return
+        }
+        if ($SpellTimer.SwirlingWinds.active = 0) then {
+            put .cast n sw
+            waitforre ^CAST DONE
+            return
+        }
+
         return
     }
 
-    if ($SpellTimer.CageofLight.active = 0) then gosub buffCol
+
     return
 
 buffCol:
@@ -266,7 +377,7 @@ checkWeaponSkills:
         # By default, don't switch weapons faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 120 seconds before swapping
         var timeBetweenWeaponSwaps 30
-        if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 120
+        if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
         evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
         if (%t > %changeWeaponAt) then {
             math weapons.index add 1
@@ -321,7 +432,7 @@ huntApp:
         echo nextHuntAt: %nextHuntAt
         return
     }
-    if (%t > %nextAppAt && $Appraisal.LearningRate < 33) then {
+    if (%doAppraisal = 1 && %t > %nextAppAt && $Appraisal.LearningRate < 33) then {
         gosub retreat
         gosub retreat
         gosub app my bundle
@@ -330,6 +441,11 @@ huntApp:
         pause
         put adv
         pause 5
+        return
+    }
+    if (%t > %nextPercAt && $Attunement.LearningRate < 33) then {
+        gosub perc mana
+        evalmath nextPercAt 90 + %t
         return
     }
 

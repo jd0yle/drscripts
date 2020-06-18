@@ -87,7 +87,9 @@ iotsCast:
         gosub stow my %ritualFocus
     }
 
+    pause
     put invoke circle
+    put #parse IOTS DONE
     exit
 
 
@@ -108,4 +110,5 @@ findPlanet:
 
 noPlanet:
     put #echo #BB7700 No planets are up for %stat (%planets)
+    put #parse IOTS DONE
     exit

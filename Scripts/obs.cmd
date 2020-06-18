@@ -68,7 +68,7 @@ var objIndex 0
 
 loop:
     if "%magicPredState" = "null" then gosub predState
-    gosub checkBuffs
+    #gosub checkBuffs
     if (%doResearch = 1) then {
         #gosub startResearch
     }
@@ -147,23 +147,12 @@ obs:
     gosub peer my telescope
 
     if (%isObsOnCd = 1) then {
-        gosub put my tele in my tele case
-        gosub get my bones
-        put align %skillset
-        if (contains("$roomplayers", "Inauri")) then {
-            pause
-            pause
-            #put roll bones at inauri
-            gosub roll bones at $charactername
-            pause
-            gosub put bones in my bag
-        } else {
-            pause
-            pause
-            put roll bones at selesthiel
-            pause
-            gosub put bones in my bag
-        }
+       # gosub put my tele in my tele case
+       # gosub align %skillset
+       # gosub predict future $charactername
+       # echo predictionCount: $predictionCount
+      #  put title pre choose moonm harbin
+        pause
     }
 
     return

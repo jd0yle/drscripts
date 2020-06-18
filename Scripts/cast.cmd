@@ -32,13 +32,16 @@ if ("$righthand" != "Empty" && "$lefthand" != "Empty") then {
 }
 
 if ("$preparedspell" != "None") then gosub release spell
+
+if ("%spell" = "bc" || "%spell" = "dc") then goto ritualSpell
+
 gosub prep %1 20
 if (%useCambrinth = 1) then {
     gosub get my %cambrinth
     gosub charge my %cambrinth 20
     gosub charge my %cambrinth 20
     gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 10
+    gosub charge my %cambrinth 20
     gosub focus my %cambrinth
     gosub invoke my %cambrinth
 } else {
@@ -50,11 +53,23 @@ if (%useCambrinth = 1) then {
 goto waitPrep
 
 waitPrep:
-pause 1
-if %isFullyPrepped != 1 then goto waitPrep
-gosub cast %target
-gosub stow my %cambrinth
+    pause 1
+    if %isFullyPrepped != 1 then goto waitPrep
+    gosub cast %target
+    gosub stow my %cambrinth
+    goto done
 
-if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
 
-put #parse CAST DONE
+ritualSpell:
+    gosub get my totem
+    if (%spell = bc) then gosub prep bc 700
+    if (%spell = dc) then gosub prep dc 600
+    gosub invoke my totem
+    gosub cast
+    gosub stow my totem
+    goto done
+
+done:
+    if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
+    put #parse CAST DONE
+    exit
