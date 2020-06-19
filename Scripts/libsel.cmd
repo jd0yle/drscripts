@@ -1033,9 +1033,13 @@ var location power1
 var todo $0
 power1:
 matchre return ^You are already
+matchre return ^Your resolve collapses
+matchre return ^You stop for a moment
 matchre return ^Roundtime
 matchre return ^Something in the area is interfering
 matchre return ^I could not find who you were referring to\.
+matchre return ^Your focus expires
+matchre return ^You lost track of your surroundings
 put PERCEIVE %todo
 goto retry
 
@@ -1174,6 +1178,7 @@ matchre return ^You add
 matchre return ^You rearrange
 matchre return ^You drop
 matchre return ^You put
+matchre return  looks completely full\.$
 matchre return ^You reverently place
 matchre return ^As you start to place
 matchre return ^What were you referring to\?

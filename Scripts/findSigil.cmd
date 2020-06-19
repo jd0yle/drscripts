@@ -21,11 +21,11 @@ eval typesLength count("%types", "|")
 
 var colors shadowy-black|platinum-hued|fiery-red|icy-blue|bone-white|pitch-black|gold-hued|blood-red|ash-grey|twilight-blue|blue|black|copper-hued|red|white
 var colorsIndex 0
-eval len count("%colors", "|")
+eval colorsLength count("%colors", "|")
 
 if (%sigil = list) then goto listLoopStart
 
-if (%sigil = store) then goto colorLoop
+if (%sigil = store) then goto storeLoop
 
 var index 0
 findLoop:
@@ -98,7 +98,7 @@ listLoop:
     gosub put my book in my shadows
     gosub stow right
     math colorsIndex add 1
-    if %colorsIndex > %len then goto listDone
+    if %colorsIndex > %colorsLength then goto listDone
     goto listLoop
 
 
@@ -118,26 +118,38 @@ echoTypes:
     var typesIndex 0
     echoTypesLoop:
         echo %types(%typesIndex) %%types(%typesIndex)
+        put #var sigilCounts.%types(%typesIndex) %%types(%typesIndex)
         math typesIndex add 1
-        if (%typesIndex > %typesLength) then exit
+        if (%typesIndex > %typesLength) then goto doneList
         goto echoTypesLoop
 
 
-colorloop:
+storeLoop:
     gosub get my %colors(%colorsIndex) book
-colorloop1:
+storeLoop1:
     gosub get my %types(%colorsIndex) sigil
     if ("$lefthand" = "Empty") then {
         gosub put my book in my shadows
         gosub stow right
         math colorsIndex add 1
-        if (%colorsIndex > %colorsLength) then exit
-        goto colorloop
+        if (%colorsIndex > %colorsLength) then goto doneStore
+        goto storeLoop
     }
     gosub put my sigil in my book
-    if ("$lefthand" != "Empty") then gosub put my sigil in my shadows
-    goto colorloop1
+    if ("$lefthand" != "Empty") then {
+        gosub put my sigil in my haversack
+        gosub put my book in my shadows
+        gosub stow right
+        math colorsIndex add 1
+        if (%colorsIndex > %colorsLength) then goto doneStore
+        goto storeLoop
+    }
+    goto storeLoop1
 
+
+doneList:
+doneStore:
+    put #parse FINDSIGIL DONE
 
 exit:
    #echo %listLen sigils

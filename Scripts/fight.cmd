@@ -101,6 +101,9 @@ init:
     var weapons.targetLearningRate $%weapons.skills(%weapons.index).LearningRate
     math weapons.targetLearningRate add 5
     if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+
+    var weapons.index 4
+
     goto loop
 
 
@@ -168,18 +171,20 @@ loop:
         }
 
         if ("%weapons.skills(%weapons.index)" = "Crossbow") then {
+            var crossbowRetreat 0
+            gosub stance shield
             gosub get my bolt
-            gosub retreat
+            if %crossbowRetreat = 1 then gosub retreat
             gosub load
             gosub stow left
-            gosub retreat
+            if %crossbowRetreat = 1 then gosub retreat
             gosub aim
             if (%debil.use = 1) then gosub prep %debil.spell %debil.prepAt
-            gosub retreat
+            if %crossbowRetreat = 1 then gosub retreat
             pause 2
-            gosub retreat
+            if %crossbowRetreat = 1 then gosub retreat
             pause 2
-            gosub retreat
+            if %crossbowRetreat = 1 then gosub retreat
             pause 2
             gosub cast
             gosub hide

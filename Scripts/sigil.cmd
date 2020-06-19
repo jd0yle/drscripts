@@ -1,12 +1,20 @@
 include libsel.cmd
 
+var ignoreScribing 0
+if ("%1" = "noscribe") then {
+    var ignoreScribing 1
+}
+
 #debug 3
 
 ####### CONFIG #######
 var burin silversteel burin
 ######################
 
-var sigilsToIgnore abolotion|congruence|induction|permutation|clarification|decay|integration|metamorphosis|paradox|nurture|evolution|rarefaction
+var sigilsToIgnore abolition|congruence|permutation|clarification|decay|integration|metamorphosis|nurture|evolution|rarefaction
+
+var primary abolition|congruence|induction|permutation|rarefaction
+var secondary antipode|ascension|clarification|decay|evolution|integration|metamorphosis|nurture|paradox|unity
 
 var startRoomId $roomid
 var endRoomId 261
@@ -20,6 +28,8 @@ var improveTypes null
 var doImprove 0
 var doScribe 0
 var alreadyImproving 0
+
+var reIndexSigils 1
 
 action var isRoomEmpty 1; echo isRoomEmpty: %isRoomEmpty when ^Having recently been searched
 action var isRoomEmpty 1; echo isRoomEmpty: %isRoomEmpty when ^You lose track of your surroundings.
@@ -82,6 +92,13 @@ loop:
         put #walk %currentRoomId
         waitfor YOU HAVE ARRIVED
     }
+    if (%reIndexSigils = 1 && %ignoreScribing != 1) then {
+        put .findSigil store
+        waitforre ^FINDSIGIL DONE
+        put .findSigil list
+        waitforre ^FINDSIGIL DONE
+        var reIndexSigils 0
+    }
     gosub roomLoop
     goto loop
 
@@ -89,14 +106,36 @@ loop:
 
 roomLoop:
     if (%isRoomEmpty = 1) then return
-    if (contains("%sigilsToIgnore", "%sigilType")) then {
+
+    if (%ignoreScribing = 1) then {
+        gosub perc sigil
+        if ("%sigilType" != "null") then {
+            #put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
+            if (contains("%secondary", "%sigilType")) then return
+            var sigilType null
+            var improveTypes null
+            var doImprove 0
+            var doScribe 0
+        }
+        goto roomLoop
+    }
+
+    if ($sigilCounts.%sigilType > 10) then {
+        #put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
+        var doReturn 1
+        if (contains("%primary", "%sigilType")) then var doReturn 0
         var sigilType null
         var improveTypes null
         var doImprove 0
         var doScribe 0
-        gosub perc sigil
+        if (%doReturn = 1) then {
+            return
+        } else {
+            gosub perc sigil
+        }
     }
     if (%doScribe = 1) then {
+            var reIndexSigils 1
             #put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
             gosub scribeSigil
             goto roomLoop
