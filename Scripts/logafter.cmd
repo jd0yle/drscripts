@@ -8,7 +8,7 @@ waiting:
     math waitTime subtract 2
     put #var timeTillSleep %waitTime
     if (%waitTime <= 0) then {
-        put #script abort all except logafter
+        #put #script abort all except logafter
         pause
         put .idle
         pause

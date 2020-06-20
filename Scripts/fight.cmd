@@ -102,7 +102,7 @@ init:
     math weapons.targetLearningRate add 5
     if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 
-    var weapons.index 4
+    #var weapons.index 4
 
     goto loop
 
@@ -192,7 +192,7 @@ loop:
             goto loop
         }
     } else {
-        gosub collect dirt
+        gosub collect rocks
         gosub kick pile
         pause
     }

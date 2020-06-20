@@ -1,9 +1,12 @@
 
-echo %0
 
-# (?!quartz gargoyle)quartz\w
 
-if matchre("a quartz gargoyle", "quartz (?!gargoyle)") then echo it matches a quartz gargoyle
+put .idle
 
-if matchre("crystal-clear quartz,", "quartz.(?!gargoyle)") then echo it matches gems
+pause 2
 
+put #script abort all except test
+
+pause 2
+
+echo OK

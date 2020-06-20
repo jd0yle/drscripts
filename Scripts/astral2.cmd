@@ -42,6 +42,9 @@ if (matchre("%destination", "rolagi|crossing|cross")) then {
 } else if (matchre("%destination", "auilusi|aesry") then {
    var pillar Tradition
    var destShardName Auilusi
+} else if (matchre("%destination", "asharshpar'i|leth") then {
+   var pillar Heavens
+   var destShardName Asharshpar'i
 } else if (matchre("%destination", "ratha|Erekinzil|taisgath") then {
    var pillar Fortune
    var destShardName Erekinzil
