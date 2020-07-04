@@ -66,6 +66,9 @@ eval researchTopics.length count("%researchTopics.list", "|")
 
 var objIndex 0
 
+timer start
+var nextAppAt 0
+
 loop:
     if "%magicPredState" = "null" then gosub predState
     #gosub checkBuffs
@@ -154,7 +157,10 @@ obs:
       #  put title pre choose moonm harbin
         pause
     }
-
+    if (%t > %nextAppAt) then {
+        gosub app my gem pouch
+        evalmath nextAppAt (90 + %t)
+    }
     return
 
 

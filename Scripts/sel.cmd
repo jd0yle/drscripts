@@ -4,11 +4,11 @@ var labels First_Aid|Warding|Astrology
 eval length count("%labels", "|")
 var index 0
 
-var highestRateIndex 0
+var lowestRateIndex 0
 
 put #script abort all except sel
 put .idle
-put .logafter
+#put .logafter
 
 gosub put my comp in my bag
 gosub put my telescope in my telescope case
@@ -19,13 +19,14 @@ gosub release symbi
 
 
 initloop:
-    if ($%labels(%index).LearningRate > $%labels(%highestRateIndex).LearningRate) then var highestRateIndex index
+    if ($%labels(%index).LearningRate < $%labels(%lowestRateIndex).LearningRate) then var lowestRateIndex %index
     math index add 1
     if (%index > length) then goto initDone
     goto initloop
 
 initDone:
-    var index %highestRateIndex
+    var index %lowestRateIndex
+    #var index 1
     timer start
     var nextCheckAt
     var scriptRunning 0

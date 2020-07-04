@@ -1,8 +1,10 @@
 include libsel.cmd
 
-action put exit when eval $health < 20
+action put exit when eval $health < 50
 action put exit when eval $dead = 1
-action put exit when eval $bleeding = 1
+#action put exit when eval $bleeding = 1
+#action put exit when eval $stunned = 1
+
 
 action put #script abort all except idle; put exit when ^Inauri whispers, "!quit
 action put #script abort all except idle when ^Inauri whispers, "!stop
