@@ -11,6 +11,7 @@ loop:
     if ("$righthandnoun" != "compendium") then {
         gosub stow right
         gosub get my %numberOfCompendiums compendium
+        if ($Appraisal.LearningRate < 33) then gosub app my gem pouch
     }
     gosub studyPages
     gosub put my compendium in my %container

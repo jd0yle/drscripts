@@ -281,16 +281,24 @@ goto retry
 arr:
 arrange:
 pause .3
+var location arrange
 Skinning.Arrange:
-var location Skinning.Arrange
-matchre Skinning.Arrangep ^You properly arrange
-matchre Skinning.Arrangep ^Roundtime
 matchre return has already been arranged as much as you can manage\.
 matchre return ^Arrange what\?
 matchre return ^Try killing the
 matchre return The .+ cannot be skinned, so you can't arrange it either.
 put arrange
 goto retry
+
+
+arranging:
+var todo $0
+var location arranging1
+arranging1:
+matchre arranging1 ^You properly arrange
+matchre arranging1 ^Roundtime
+goto Skinning.Arrange
+
 
 
 attack:
@@ -1040,6 +1048,7 @@ matchre return ^Something in the area is interfering
 matchre return ^I could not find who you were referring to\.
 matchre return ^Your focus expires
 matchre return ^You lost track of your surroundings
+matchre return ^You are too distracted
 put PERCEIVE %todo
 goto retry
 
@@ -1360,7 +1369,7 @@ matchre return ^I could not find what you were referring to\.
 put sell %todo
 goto retry
 
-
+skin:
 skinning:
 var location Skinning
 matchre return ^.*can't be skinned

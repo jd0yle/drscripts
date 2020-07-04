@@ -12,6 +12,7 @@ loop:
     if (%t > %nextPercAt) then {
          gosub perc mana
          evalmath nextPercAt (60 + %t)
+         if ($Appraisal.LearningRate < 33) then gosub app my gem pouch
     }
     if ($Warding.LearningRate < 34) then {
         if ($preparedspell != None) then gosub release spell

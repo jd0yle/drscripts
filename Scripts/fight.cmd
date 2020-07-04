@@ -15,7 +15,7 @@ include libsel.cmd
 if ($charactername = Selesthiel) then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
     var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
-    var useSls 0
+    var useSls 1
     var tmSpell pd
     var tmPrep 20
     var debil.use 1
@@ -110,7 +110,9 @@ init:
 loop:
     if $monsterdead > 0 then {
         if ($guild = Necromancer && $Thanatology.LearningRate < 33) then gosub perform preserve on %creature
-        gosub Skinning
+        #gosub Skinning
+        #gosub arrange
+        gosub skin
         gosub loot
     }
 
