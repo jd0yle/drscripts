@@ -48,7 +48,7 @@ if (%useCambrinth = 1) then {
     gosub harness 20
     gosub harness 20
     gosub harness 20
-    gosub harness 10
+    gosub harness 20
 }
 goto waitPrep
 

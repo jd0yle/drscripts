@@ -71,13 +71,13 @@ var nextAppAt 0
 
 loop:
     if "%magicPredState" = "null" then gosub predState
-    #gosub checkBuffs
     if (%doResearch = 1) then {
         #gosub startResearch
     }
 
     if %checkPredState = 1 then gosub predState
     if %isObsOnCd = 0 then {
+        gosub checkBuffs
         gosub obs
     } else {
         gosub waiting

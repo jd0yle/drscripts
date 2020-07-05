@@ -15,7 +15,7 @@ include libsel.cmd
 if ($charactername = Selesthiel) then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
     var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
-    var useSls 1
+    var useSls 0
     var tmSpell pd
     var tmPrep 20
     var debil.use 1
@@ -189,7 +189,7 @@ loop:
             if %crossbowRetreat = 1 then gosub retreat
             pause 2
             gosub cast
-            gosub hide
+            gosub checkHide
             gosub fire
             goto loop
         }

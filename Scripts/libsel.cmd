@@ -668,6 +668,7 @@ matchre return ^You get
 matchre return ^You pull
 matchre return ^You pick up
 matchre return ^You carefully pull
+matchre return ^You need a free hand
 matchre return ^What were you referring to\?
 matchre return ^You are already holding that\.
 matchre return ^You need a free hand to pick that up\.

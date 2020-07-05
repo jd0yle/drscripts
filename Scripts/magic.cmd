@@ -12,14 +12,14 @@ loop:
     if (%t > %nextPercAt) then {
          gosub perc mana
          evalmath nextPercAt (60 + %t)
-         if ($Appraisal.LearningRate < 33) then gosub app my gem pouch
+         if ($Appraisal.LearningRate < 33) then gosub app my bun
     }
     if ($Warding.LearningRate < 34) then {
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep psy 20
-        gosub charge my arm 20
+        gosub charge my arm 30
         gosub focus my arm
         gosub invoke my arm
         if (%isFullyPrepped != 1) then gosub waitForPrep
@@ -43,7 +43,7 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep cv 20
-        gosub charge my arm 10
+        gosub charge my arm 20
         gosub focus my arm
         gosub invoke my arm
         if (%isFullyPrepped != 1) then gosub waitForPrep

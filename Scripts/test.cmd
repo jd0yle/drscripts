@@ -1,12 +1,13 @@
+include libsel.cmd
 
 
 
-put .idle
+action goto putAway when eval $lefthand != Empty
 
-pause 2
+waiting:
+    pause 2
+    goto waiting
 
-put #script abort all except test
-
-pause 2
-
-echo OK
+putAway:
+    gosub put my $lefthandnoun in my white back
+    goto waiting
