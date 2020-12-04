@@ -2,9 +2,9 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var ritualFocus S'kra totem
+var ritualFocus inauri plush
 var isFocusWorn 0
-var defaultMana 700
+var defaultMana 750
 
 ######################
 
@@ -37,6 +37,7 @@ action var isPlanetUp 1 when ^You learned something useful from your observation
 action var isPlanetUp 1 when ^You are unable to make use of this latest observation.
 action var isPlanetUp 1 when ^You see nothing regarding the future.
 action var isPlanetUp 1 when ^Clouds obscure the sky
+action var isPlanetUp 1 when ^Too many futures cloud your mind
 
 
 if (!contains("%stats", "%stat")) then {

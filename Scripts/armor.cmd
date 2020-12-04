@@ -2,7 +2,14 @@ include libsel.cmd
 
 var act %1
 
-var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|shield
+if ("$charactername" = "Selesthiel") then {
+    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|shield
+}
+
+if ("$charactername" = "Qizhmur") then {
+    var armor leathers|gloves|buckler|cowl|shield|helm|mask
+}
+
 eval length count("%armor", "|")
 var index 0
 
@@ -29,7 +36,7 @@ armorLoop:
     gosub %verbOne my %armor(%index)
     gosub %verbTwo my %armor(%index)
     math index add 1
-    if (%index > %length) then exit
+    if (%index > %length) then goto done
     goto armorLoop
 
 
@@ -49,3 +56,7 @@ getArmorFromRepairLoop:
     gosub give my ticket to randal
     gosub wear right
     goto getArmorFromRepairLoop
+
+done:
+    put #parse ARMOR DONE
+    exit

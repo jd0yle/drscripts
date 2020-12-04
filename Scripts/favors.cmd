@@ -23,10 +23,10 @@ favorLoop:
 
 
 getFavorOrb:
-    gosub get my prayer chain
+    #gosub get my prayer chain
     gosub get my bead
-    gosub stow chain
-    gosub put my bead on altar
+    #gosub stow chain
+    gosub put my bead on mistwood altar
     gosub pray
     waitforre ^An overwhelming sense of contentment fills you
     gosub get orb
@@ -34,7 +34,7 @@ getFavorOrb:
 
 
 placeOrb:
-    gosub put my orb on altar
+    gosub put my orb on mistwood altar
     var orbIsReady 0
     return
 

@@ -1,3 +1,4 @@
+include var_mobs.cmd
 include libsel.cmd
 ####################################################################################################
 # .fight
@@ -10,45 +11,77 @@ include libsel.cmd
 # DEPENDENCIES: libsel.cmd, cast.cmd, loot.cmd
 ####################################################################################################
 
+# DEFAULTS
+var arrangeForPart 0
+var debil.use 0
+var useApp 1
+var useBuffs 1
+var useHunt 1
+var usePerc 1
+var useQe 0
+var useRog 0
+var useSls 0
+var useStealth 1
+
+
 ####################################################################################################
 # CONFIG
+var opts %1
+
+if ("%opts" = "backtrain") then {
+    var arrangeForPart 0
+    var debil.use 0
+    var forceShield 1
+    var useApp 0
+    var useBuffs 0
+    var useHunt 0
+    var usePerc 0
+    var useQe 0
+    var useRog 0
+    var useSls 0
+    var useStealth 0
+}
+
 if ($charactername = Selesthiel) then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
-    var weapons.items Empty|Empty|haralun scimitar|Empty|competition crossbow
+    var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
     var useSls 0
     var tmSpell pd
-    var tmPrep 20
+    var tmPrep 30
     var debil.use 1
     var debil.spell mb
     var debil.prepAt 20
+    var ignoreCoL 0
+    var arrangeForPart 1
 }
 
-if ($charactername = Qizhmur) then {
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Heavy_Thrown|Large_Blunt
-    var weapons.items Empty|Empty|scimitar|hand mallet|throwing hammer|throwing hammer
-    var useSls 0
-    var tmSpell stra
-    var tmPrep 1
-    var debil.use 0
-    var debil.spell pv
-    var debil.prepAt 1
-    var creature rat
-}
-
-if ($charactername = Nyarlathotep) then {
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Small_Blunt|Polearms
-    var weapons.items Empty|Empty|silver-edged scimitar|Empty|light crossbow|granite mace|bone-white scythe
-    var useSls 0
-    var useQe 0
+if ($charactername = Qizhmur && "%opts" != "backtrain") then {
+    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown
+    var weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|triple-weighted bola
     var tmSpell acs
-    var tmPrep 1
+    var tmPrep 10
+    var useIvm 0
     var debil.use 1
     var debil.spell pv
-    var debil.prepAt 1
+    var debil.prepAt 2
+    var useRog 0
+    var necroRitual dissection
+    var useQe 0
+    var arrangeForPart 0
 }
+
+if ($charactername = Qizhmur && "%opts" = "backtrain") then {
+    var weapons.skills Crossbow|Staves
+    var weapons.items spiritwood lockbow|white nightstick
+    var useBuffs 0
+    var debil.use 1
+    var debil.spell pv
+    var debil.prepAt 2
+    var necroRitual dissection
+}
+
 ####################################################################################################
 
-if_1 then var creature %1
 
 var doAppraisal 0
 
@@ -59,6 +92,7 @@ var lastAnalyzeTime 0
 var nextHuntAt 0
 var nextAppAt 0
 var nextPercAt 0
+var nextRogCastAt 0
 
 var stance.current null
 
@@ -66,6 +100,12 @@ var weapons.index 0
 eval weapons.length count("%weapons.skills", "|")
 var weapons.lastChangeAt 0
 var weapons.targetLearningRate 5
+
+var stances.list shield|parry
+var stances.skills Shield_Usage|Parry_Ability
+var stances.targetLearningRate 5
+eval stances.length count("%stances.list", "|")
+var stances.index 0
 
 var lootables throwing blade|coin
 
@@ -83,8 +123,16 @@ action goto newBundle when ^Where did you intend to put that\?  You don't have a
 timer start
 
 
+###############################
+###      init
+###############################
 init:
     put #class combat on
+
+    gosub sortWeaponRanks
+    echo %weapons.skills
+    echo %weapons.items
+
     var weapons.lowestLearningRateIndex 0
 
     ## Start with the weapon with the lowest learning rate
@@ -101,125 +149,119 @@ init:
     var weapons.targetLearningRate $%weapons.skills(%weapons.index).LearningRate
     math weapons.targetLearningRate add 5
     if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
-
-    #var weapons.index 4
-
     goto loop
 
 
+
+###############################
+###      loop
+###############################
 loop:
-    if $monsterdead > 0 then {
-        if ($guild = Necromancer && $Thanatology.LearningRate < 33) then gosub perform preserve on %creature
-        #gosub Skinning
-        #gosub arrange
-        gosub skin
-        gosub loot
-    }
-
-    if ($charactername = Nyarlathotep) then {
-        if ($Debilitation.LearningRate > 33) then {
-            var useDebil 0
-        } else {
-            var useDebil 1
-        }
-    }
-
+    if ($standing != 1) then gosub stand
+    gosub checkDeadMob
     gosub pickupLoot
     gosub checkStances
     gosub buffs
     gosub huntApp
     gosub checkWeaponSkills
 
-    if $monstercount > 0 then {
-        if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
-            if (%useSls = 1 && $Time.isDay != 1) then {
-                if ($SpellTimer.StarlightSphere.active != 1) then {
-                    gosub prep sls 15
-                    pause 20
-                    gosub cast heart
-                } else {
-                    math weapons.index add 1
-                }
-            }
-            gosub prep %tmSpell %tmPrep
-            gosub target
-            gosub checkHide
-            pause 4
+    if ("$charactername" = "Selesthiel") then {
+        #put .almanac noloop
+        #waitforre ^ALMANAC DONE$
+    }
+
+    if ($monstercount = 1) then {
+        if ("$charactername" = "Qizhmur" && $mana > 80 && $Utility.LearningRate < 10) then {
+            gosub prep eotb 10
+            gosub stow right
+            gosub get camb orb
+            gosub swap
+            gosub charge my camb orb 20
+            gosub invoke my camb orb
+            pause 15
             gosub cast
+            gosub release eotb
+            gosub stow my camb orb
             goto loop
         }
+        if ("$charactername" = "Qizhmur" && $mana > 80 && $Warding.LearningRate < 10) then {
+            gosub prep maf 10
+            gosub stow right
+            gosub get camb orb
+            gosub swap
+            gosub charge my camb orb 20
+            gosub invoke my camb orb
+            pause 15
+            gosub cast
+            gosub release eotb
+            gosub stow my camb orb
+            goto loop
+        }
+        if ("$charactername" = "Qizhmur" && $mana > 80 && $Augmentation.LearningRate < 10) then {
+            gosub prep obf 10
+            gosub stow right
+            gosub get camb orb
+            gosub swap
+            gosub charge my camb orb 20
+            gosub invoke my camb orb
+            pause 15
+            gosub cast
+            gosub release eotb
+            gosub stow my camb orb
+            goto loop
+        }
+        if ("$charactername" = "Qizhmur" && $mana > 80 && $Perception.LearningRate < 5) then {
+            gosub hunt
+            goto loop
+        }
+        gosub attack circle
+        gosub attack bob
+        goto loop
+    }
 
-        if ("%weapons.skills(%weapons.index)" = "Light_Thrown" || "%weapons.skills(%weapons.index)" = "Heavy_Thrown") then {
-            if ("%weapons.items(%weapons.index)" != "Empty") then {
-                if ("$righthand" != "%weapons.items(%weapons.index)" ) then gosub get my %weapons.items(%weapons.index)
-                gosub attack lob
-                gosub get %weapons.items(%weapons.index)
-                goto loop
+    if ($monstercount > 0) then {
+        var continue = 1
+        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
+            if ($mana > 80) then {
+                gosub attackTm
             } else {
-                if (!contains("$righthand", "throwing blade")) then gosub stow right
-                gosub get throwing blades
-                if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
-                    gosub prep %debil.spell %debil.prepAt
-                    pause 4
-                    gosub cast
-                }
-                gosub checkHide
-                gosub attack throw
-                if ("$righthand" != "Empty") then {
-                    gosub attack throw
-                }
-                goto loop
+                pause 2
+            }
+            var continue 0
+        }
+        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Light_Thrown" || "%weapons.skills(%weapons.index)" = "Heavy_Thrown") then {
+            gosub attackThrownWeapon
+            var continue 0
+        }
+        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then {
+            gosub attackCrossbow
+            var continue 0
+        }
+        if (%continue = 1) then {
+            gosub analyze
+            var lastAnalyzeTimeAt %t
+            if (evalmath(%t - %lastAnalyzeTime) > 60) then gosub analyze
+            if (%doAnalyze = 0) then {
+                gosub attackAnalyzed
             }
         }
 
-        if ("%weapons.skills(%weapons.index)" = "Crossbow") then {
-            var crossbowRetreat 0
-            gosub stance shield
-            gosub get my bolt
-            if %crossbowRetreat = 1 then gosub retreat
-            gosub load
-            gosub stow left
-            if %crossbowRetreat = 1 then gosub retreat
-            gosub aim
-            if (%debil.use = 1) then gosub prep %debil.spell %debil.prepAt
-            if %crossbowRetreat = 1 then gosub retreat
-            pause 2
-            if %crossbowRetreat = 1 then gosub retreat
-            pause 2
-            if %crossbowRetreat = 1 then gosub retreat
-            pause 2
-            gosub cast
-            gosub checkHide
-            gosub fire
-            goto loop
-        }
-    } else {
-        gosub collect rocks
+        goto loop
+    }
+
+    gosub collect dirt
+    if (contains("$roomobjs", "a pile of")) then {
         gosub kick pile
-        pause
     }
 
-    if $monstercount > 0 then {
-        gosub analyze
-        var lastAnalyzeTimeAt %t
-    } else {
-        pause 10
-    }
-
-    if (evalmath(%t - %lastAnalyzeTime) > 60) then gosub analyze
-
-    if %doAnalyze = 0 then {
-        gosub doAnalyzedAttacks
-    }
     goto loop
 
 
-doAnalyzedAttacks:
-    if ($monstercount < 2) then {
-        gosub attack circle
-        gosub attack bob
-        return
-    }
+
+###############################
+###      attackAnalyzed
+###############################
+attackAnalyzed:
     eval attacks replace("%attacks", " and", ",")
     eval attacks replace("%attacks", "a ", "")
     eval attacks replace("%attacks", "an ", "")
@@ -229,7 +271,7 @@ doAnalyzedAttacks:
     eval length count("%attacks", "|")
     var index 0
 
-    if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping")) then {
+    if (%debil.use = 1 && $mana > 80 && !contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") then {
         gosub prep %debil.spell %debil.prepAt
         pause 4
         gosub cast
@@ -243,16 +285,118 @@ doAnalyzedAttacks:
         goto attackLoop
 
 
+
+###############################
+###      attackCrossbow
+###############################
+attackCrossbow:
+    var crossbowRetreat 0
+    gosub stance shield
+    if %crossbowRetreat = 1 then gosub retreat
+    gosub load my %weapons.items(%weapons.index) with my basilisk bolt
+    if %crossbowRetreat = 1 then gosub retreat
+    gosub aim
+    if (%debil.use = 1) then gosub prep %debil.spell %debil.prepAt
+    if %crossbowRetreat = 1 then gosub retreat
+    pause 2
+    if %crossbowRetreat = 1 then gosub retreat
+    pause 2
+    if %crossbowRetreat = 1 then gosub retreat
+    pause 2
+    gosub cast
+    gosub checkHide
+    gosub fire
+    return
+
+
+
+###############################
+###      attackThrownWeapon
+###############################
+attackThrownWeapon:
+    if ("%weapons.items(%weapons.index)" != "Empty") then { # Empty thrown weapons means using throwing blades
+        if ("$righthand" != "%weapons.items(%weapons.index)" ) then {
+            gosub get my %weapons.items(%weapons.index)
+        }
+
+        if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata") then {
+            if (%debil.use = 1 && $mana > 80 && (!contains("$monsterlist", "sleeping") || !contains("$monsterlist", "immobilized")) then {
+                gosub prep %debil.spell %debil.prepAt
+                pause 4
+                gosub cast
+            }
+            gosub checkHide
+            gosub attack throw
+            gosub get %weapons.items(%weapons.index)
+            gosub attack throw
+            gosub get %weapons.items(%weapons.index)
+
+        } else {
+            if (%debil.use = 1 && $mana > 80 && (!contains("$monsterlist", "sleeping") || !contains("$monsterlist", "immobilized")) then {
+                gosub prep %debil.spell %debil.prepAt
+                pause 4
+                gosub cast
+            }
+            gosub checkHide
+            gosub attack lob
+        }
+        if ("$righthand" != "%weapons.items(%weapons.index)" ) then {
+            gosub get my %weapons.items(%weapons.index)
+        }
+    } else {
+        if (!contains("$righthand", "throwing blade")) then gosub stow right
+        gosub get throwing blades
+        if (%debil.use = 1 && $mana > 80 && (!contains("$monsterlist", "sleeping") || !contains("$monsterlist", "immobilized")) then {
+            gosub prep %debil.spell %debil.prepAt
+            pause 4
+            gosub cast
+        }
+        gosub checkHide
+        gosub attack throw
+        if ("$righthand" != "Empty") then {
+            gosub attack throw
+        }
+    }
+    return
+
+
+
+###############################
+###      attackTm
+###############################
+attackTm:
+    if (%useSls = 1 && $Time.isDay != 1) then {
+        if ($SpellTimer.StarlightSphere.active != 1) then {
+            gosub prep sls 15
+            pause 20
+            gosub cast heart
+        } else {
+            math weapons.index add 1
+        }
+    }
+
+    gosub target %tmSpell %tmPrep
+    gosub checkHide
+    pause 5
+    gosub cast
+    return
+
+
+
+###############################
+###      buffs
+###############################
 buffs:
+    if (%useBuffs = 0) then return
     if ($charactername = Selesthiel) then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3) then {
-            put .cast n seer
+            put .cast seer
             waitforre ^CAST DONE
             return
         }
 
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 3) then {
-            put .cast n maf
+            put .cast maf
             waitforre ^CAST DONE
             return
         }
@@ -264,92 +408,64 @@ buffs:
     if ($charactername = Qizhmur) then {
         #es, substratum, tw, sw, ys, maf
         #mof rit
-        if ($SpellTimer.ManifestForce.active = 0) then {
-            gosub prep maf 3
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 2) then {
+            gosub prep maf 10
             pause 10
             gosub cast
             return
         }
-        if ($SpellTimer.Obfuscation.active != 1) then {
-            gosub prep obf 3
+        if ($SpellTimer.Obfuscation.active != 1 || $SpellTimer.Obfuscation.duration < 2) then {
+            gosub prep obf 10
             pause 10
             gosub cast
             return
         }
-        if ($SpellTimer.EaseBurden.active != 1) then {
-            gosub prep ease 1
+        if ($SpellTimer.PhilosophersPreservation.active != 1 || $SpellTimer.PhilosophersPreservation.duration < 3) then {
+            gosub prep php 10
             pause 10
             gosub cast
             return
         }
-        return
-    }
-
-     if ($charactername = Nyarlathotep) then {
-        if ($SpellTimer.ManifestForce.active = 0) then {
-            gosub prep maf 5
+        if (false && ($SpellTimer.CalcifiedHide.active != 1 || $SpellTimer.CalcifiedHide.duration < 3)) then {
+            gosub prep ch 10
+            pause 20
+            gosub cast
+            return
+        }
+        if ($SpellTimer.IvoryMask.active != 1 && "%weapons.skills(%weapons.index)" = "Targeted_Magic" && %useIvm = 1) then {
+            gosub prep ivm 10
             pause 10
             gosub cast
             return
         }
-        if ($SpellTimer.Obfuscation.active != 1) then {
-            gosub prep obf 5
-            pause 10
-            gosub cast
+        if (%useQe = 1 && $SpellTimer.QuickentheEarth.active != 1) then {
             return
-        }
-        if (1 = 0 && $SpellTimer.EaseBurden.active != 1) then {
-            gosub prep ease 5
+            gosub prep qe 12
             pause 10
-            gosub cast
-            return
-        }
-        if ($SpellTimer.IvoryMask.active != 1) then {
-            gosub prep ivm 5
-            pause 10
-            gosub cast
-            return
-        }
-        if (($SpellTimer.QuickentheEarth.active != 1) && (%useQe = 1)) then {
-            echo useQe = %useQe
-            gosub prep qe 1
+            gosub stance shield
             gosub stow left
-            gosub get my dirt
+            put push my vial
+            pause
             gosub perform cut
-            pause 15
             gosub cast
             return
         }
-        return
-    }
 
-    if ($charactername = Discordia) then {
-        #es, substratum, tw, sw, ys, maf
-        #mof rit
-        if ($SpellTimer.Substratum.active = 0) then {
-            put .cast n substratum
-            waitforre ^CAST DONE
-            return
-        }
-        if ($SpellTimer.SureFooting.active = 0) then {
-            put .cast n suf
-            waitforre ^CAST DONE
-            return
-        }
-        if ($SpellTimer.Tailwind.active = 0) then {
-            put .cast n tw
-            waitforre ^CAST DONE
-            return
-        }
-        if ($SpellTimer.EtherealShield.active = 0) then {
-            put .cast n es
-            waitforre ^CAST DONE
-            return
-        }
-        if ($SpellTimer.SwirlingWinds.active = 0) then {
-            put .cast n sw
-            waitforre ^CAST DONE
-            return
+        if ("%useRog" = "1") then {
+            if ($mana < 80 || (%t > %nextRogCastAt && $SpellTimer.RiteofGrace.active = 1) ) then {
+                gosub release rog
+            }
+            if ($SpellTimer.RiteofGrace.active = 0 && $mana > 80 && ($SpellTimer.IvoryMask.active != 1 || $SpellTimer.PhilosophersPreservation.active != 1) then {
+                gosub rel spell
+                gosub prep rog
+                waitfor You feel fully prepared
+                gosub cast
+                math nextRogCastAt add 300
+            }
+        } else {
+            if ($SpellTimer.RiteofGrace.active = 1) then {
+                gosub release rog
+            }
         }
 
         return
@@ -358,27 +474,37 @@ buffs:
 
     return
 
+
+
+###############################
+###      buffCol
+###############################
 buffCol:
+    if (%ignoreCoL = 1) then return
     if ($Time.isKatambaUp = 1) then {
-        put .cast n col katamba
+        put .cast col katamba
         waitforre ^CAST DONE
         return
     }
 
     if ($Time.isXibarUp = 1) then {
-        put .cast n col xibar
+        put .cast col xibar
         waitforre ^CAST DONE
         return
     }
 
     if ($Time.isYavashUp = 1) then {
-        put .cast n col yavash
+        put .cast col yavash
         waitforre ^CAST DONE
         return
     }
     return
 
 
+
+###############################
+###      checkWeaponSkills
+###############################
 checkWeaponSkills:
     if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate) then {
         # By default, don't switch weapons faster than once every 30 seconds.
@@ -397,7 +523,10 @@ checkWeaponSkills:
         }
     }
 
-    if ("$righthand" != "%weapons.items(%weapons.index)") then {
+    var handItem $righthand
+    if ("%handItem" = "white ironwood nightstick") then var handItem white nightstick
+    # if ("$righthand" != "%weapons.items(%weapons.index)") then {
+    if ("%handItem" != "%weapons.items(%weapons.index)") then {
         gosub stow right
         if ("%weapons.items(%weapons.index)" != "Empty") then gosub get my %weapons.items(%weapons.index)
     }
@@ -406,10 +535,54 @@ checkWeaponSkills:
 
     return
 
+
+
 ##
+# Trains shield and parry in 5s
 # Assumes, all other things being equal, that shield stance is preferable
 ##
+###############################
+###      checkStancesNEW
+###############################
+checkStancesNEW:
+    if ($healh < 90 || %weapons.skills(%weapons.index) = Crossbow || "$righthandnoun" = "crossbow" ) then {
+        gosub stance shield
+        var stance.current shield
+        return
+    }
+    echo $%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate
+    if ($%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate) then {
+        math stances.index add 1
+        if (%stances.index > %stances.length) then {
+            var stances.index 0
+            match stances.targetLearningRate add 5
+            if (%stances.targetLearningRate > 32) then var stances.targetLearningRate = 32
+        }
+    }
+    if ("%stance.current" != "%stances.list(%stances.index)" || "$stance" != "%stances.list(%stances.index)") then {
+        gosub stance %stances.list(%stances.index)
+        var stance.current %stances.list(%stances.index)
+    }
+    return
+
+
+
+##
+# Locks shield before training parry at all.
+# Defaults to shield under every circumstance.
+##
+###############################
+###      checkStances
+###############################
 checkStances:
+    if (%forceShield = 1) then {
+        if ("%stance.current" != "shield" || "$stance" != "shield") then {
+            gosub stance shield
+            var stance.current shield
+        }
+        return
+    }
+
     if ($Shield_Usage.LearningRate < 33 || $Parry_Ability.LearningRate > 32 || $health < 100 || %weapons.skills(%weapons.index) = Crossbow || "$righthandnoun" = "crossbow") then {
         if ("%stance.current" != "shield" || "$stance" != "shield") then {
             gosub stance shield
@@ -424,22 +597,53 @@ checkStances:
     return
 
 
+
+###############################
+###      checkDeadMob
+###############################
+checkDeadMob:
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
+        var mobName $1
+        if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName") then {
+            put .cf %mobName
+            waitforre ^CF DONE$
+
+            gosub performRitual %mobName
+        }
+        if (matchre("%skinnablecritters", "%mobName") then {
+            if (%arrangeForPart = 1) then {
+                gosub arrange for part
+            }
+
+            gosub skin
+            gosub loot treasure
+        }
+    }
+    return
+
+
+###############################
+###      checkHide
+###############################
 checkHide:
-    if ($Stealth.LearningRate < 33) then {
+    if (%useStealth = 1 && $Stealth.LearningRate < 33) then {
         gosub hide
         evalmath nextHideAt 30 + %t
     }
     return
 
 
+
+###############################
+###      huntApp
+###############################
 huntApp:
-    if (%t > %nextHuntAt && $Perception.LearningRate < 33) then {
+    if (%useHunt = 1 && %t > %nextHuntAt && $Perception.LearningRate < 33) then {
         gosub hunt
         evalmath nextHuntAt 120 + %t
-        echo nextHuntAt: %nextHuntAt
         return
     }
-    if (%doAppraisal = 1 && %t > %nextAppAt && $Appraisal.LearningRate < 33) then {
+    if (%useApp = 1 && %doAppraisal = 1 && %t > %nextAppAt && $Appraisal.LearningRate < 33) then {
         gosub retreat
         gosub retreat
         gosub app my bundle
@@ -450,7 +654,7 @@ huntApp:
         pause 5
         return
     }
-    if (%t > %nextPercAt && $Attunement.LearningRate < 33) then {
+    if (%usePerc = 1 && %t > %nextPercAt && $Attunement.LearningRate < 33) then {
         gosub perc mana
         evalmath nextPercAt 90 + %t
         return
@@ -459,6 +663,35 @@ huntApp:
     return
 
 
+
+###############################
+###      performRitual
+###############################
+performRitual:
+    var ritualTarget $1
+    # Use dissection to train up First Aid and Skinning
+    if ($Skinning.LearningRate < 33 || $FirstAid.LearningRate < 33) then {
+        gosub arrange
+        gosub arrange
+        gosub arrange
+        gosub arrange
+        gosub perform dissection on %ritualTarget
+    } else { # Otherwise level up that butchery hidden number!
+        gosub stow right
+        gosub stow left
+        gosub perform preserve on %ritualTarget
+        gosub perform butchery on %ritualTarget
+        if ("$righthand" != "Empty") then {
+            gosub put my $righthandnoun in my eddy
+        }
+    }
+    return
+
+
+
+###############################
+###      pickupLoot
+###############################
 pickupLoot:
     put .loot
     waitforre ^LOOT DONE
@@ -481,6 +714,9 @@ pickupLoot:
 
 
 
+###############################
+###      pickupLootAtFeet
+###############################
 pickupLootAtFeet:
     action (invFeet) on
     var toLoot null
@@ -498,38 +734,85 @@ pickupLootAtFeet:
         goto pickupLootAtFeetLoop
 
 
+
+###############################
+###      newBundle
+###############################
 newBundle:
     if ($charactername = Selesthiel) then {
-        put .ret
-        if ($preparedspell != None) then gosub release spell
-        gosub prep ss
+        put .ssstowbundle
+        waitforre ^SS STOW BUNDLE DONE
+        return
+    }
+    return
 
-        var storedItem $righthandnoun
-        gosub stow right
-        if ("$lefthand" != "Empty") then gosub stow left
 
-        pause 10
-        gosub cast
-        pause
-        gosub ask servant for haversack
-        gosub open my haversack
-        gosub remove my bundle
-        gosub put my bundle in my haversack
-        gosub close my haversack
-        pause
-        put give haversack to servant
-        pause
-        gosub release servant
-        gosub get my rope
-        gosub get my %storedItem
-        gosub bundle my %storedItem with my rope
-        pause
-        put tie my bundle
-        pause
-        put tie my bundle
-        pause
-        gosub wear my bundle
-        put adjust my bundle
-        put #script abort ret
-        goto loop
+
+###############################
+###      sortWeaponRanks
+###############################
+sortWeaponRanks:
+    var newWeapons.skills null
+    var newWeapons.items null
+    sortNext:
+        var lowestSkillIndex null
+        var currIndex 0
+        sortLoop:
+            if (!contains("%newWeapons.skills", "%weapons.skills(%currIndex)")) then {
+                if (%lowestSkillIndex = null || $%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks) then {
+                    var lowestSkillIndex %currIndex
+                }
+            }
+            math currIndex add 1
+            if (%currIndex <= %weapons.length) then goto sortLoop
+            if (%newWeapons.skills = null) then {
+                var newWeapons.skills %weapons.skills(%lowestSkillIndex)
+                var newWeapons.items %weapons.items(%lowestSkillIndex)
+            } else {
+                var newWeapons.skills %newWeapons.skills|%weapons.skills(%lowestSkillIndex)
+                var newWeapons.items %newWeapons.items|%weapons.items(%lowestSkillIndex)
+            }
+            if (count("%newWeapons.skills", "|") < %weapons.length) then {
+                goto sortNext
+            }
+            var weapons.skills %newWeapons.skills
+            var weapons.items %newWeapons.items
+            return
+
+
+
+exit
+
+## TEMP ARCHIVE
+
+if ($monsterdead > 0) then {
+        if ($guild = Necromancer) then {
+            put .cf %deadMonsterName
+            waitfor CF DONE
+        }
+        if ($guild = Necromancer && $Thanatology.LearningRate < 33) then {
+            if ("%necroRitual" = "dissection" && $Skinning.LearningRate < 33) then {
+                gosub arrange
+                gosub arrange
+                gosub arrange
+                gosub arrange
+                gosub perform %necroRitual on %deadMonsterName
+            } else if ("%necroRitual" = "butchery") then {
+                gosub stow right
+                gosub stow left
+                gosub perform preserve on %deadMonsterName
+                gosub perform butchery on %deadMonsterName
+                if ("$righthand" != "Empty") then {
+                    gosub put my $righthandnoun in my eddy
+                }
+            } else {
+                gosub perform %necroRitual on %deadMonsterName
+            }
+        }
+        if (%arrangeForPart = 1) then {
+            gosub arrange for part
+        }
+
+        gosub skin
+        gosub loot treasure
     }

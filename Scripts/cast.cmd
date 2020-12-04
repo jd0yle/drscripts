@@ -2,11 +2,14 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var cambrinth yoakena globe
+var cambrinth mammoth calf
+var worncambrinth 1
+var focus inauri plush
 
 ######################
 
 var useCambrinth 1
+
 
 if ("%1" = "n") then {
     var useCambrinth 0
@@ -26,7 +29,7 @@ var stowedItemNoun null
 
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 
-if ("$righthand" != "Empty" && "$lefthand" != "Empty") then {
+if ("%worncambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
     var stowedItemNoun $lefthandnoun
     gosub stow left
 }
@@ -34,15 +37,30 @@ if ("$righthand" != "Empty" && "$lefthand" != "Empty") then {
 if ("$preparedspell" != "None") then gosub release spell
 
 if ("%spell" = "bc" || "%spell" = "dc") then goto ritualSpell
+if ("%spell" = "col") then {
+    var target null
+    if ($Time.isYavashUp = 1) then {
+        var target yavash
+    }
+    if ($Time.isXibarUp = 1) then {
+        var target xibar
+    }
+    if ($Time.isKatambaUp = 1) then {
+        var target katamba
+    }
+    if ("%moon" = "null") then goto done
+}
 
 gosub prep %1 20
+
 if (%useCambrinth = 1) then {
-    gosub get my %cambrinth
+    if ("%worncambrinth" != 1) then {
+        gosub get my %cambrinth
+    }
     gosub charge my %cambrinth 20
     gosub charge my %cambrinth 20
     gosub charge my %cambrinth 20
     gosub charge my %cambrinth 20
-    gosub focus my %cambrinth
     gosub invoke my %cambrinth
 } else {
     gosub harness 20
@@ -56,20 +74,28 @@ waitPrep:
     pause 1
     if %isFullyPrepped != 1 then goto waitPrep
     gosub cast %target
-    gosub stow my %cambrinth
+    if ("%worncambrinth" != 1) then {
+        gosub stow my %cambrinth
+    }
     goto done
 
 
 ritualSpell:
-    gosub get my totem
+    gosub get my %focus
     if (%spell = bc) then gosub prep bc 700
     if (%spell = dc) then gosub prep dc 600
-    gosub invoke my totem
+    gosub invoke my %focus
+    if %isFullyPrepped != 1 then goto waitPrep
     gosub cast
-    gosub stow my totem
+    gosub stow my %focus
     goto done
 
 done:
+    if ("%spell" = "shadowling") then {
+        pause
+        put invoke shadowling
+        pause
+    }
     if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
     put #parse CAST DONE
     exit

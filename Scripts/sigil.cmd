@@ -11,7 +11,7 @@ if ("%1" = "noscribe") then {
 var burin silversteel burin
 ######################
 
-var sigilsToIgnore abolition|congruence|permutation|clarification|decay|integration|metamorphosis|nurture|evolution|rarefaction
+#var sigilsToIgnore abolition|congruence|permutation|clarification|decay|integration|metamorphosis|nurture|evolution|rarefaction
 
 var primary abolition|congruence|induction|permutation|rarefaction
 var secondary antipode|ascension|clarification|decay|evolution|integration|metamorphosis|nurture|paradox|unity
@@ -33,6 +33,7 @@ var reIndexSigils 1
 
 action var isRoomEmpty 1; echo isRoomEmpty: %isRoomEmpty when ^Having recently been searched
 action var isRoomEmpty 1; echo isRoomEmpty: %isRoomEmpty when ^You lose track of your surroundings.
+action var isRoomEmpty 1 when ^You are unaware of any sigils in the area
 
 
 action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^In your mind's eye you see the definition of an? (\S+) sigil before you.
@@ -43,7 +44,7 @@ action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $r
 action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^Almost obscured by the surround, you make out the details of an? (\S+) sigil.
 action var sigilType $1; echo FOUND A %sigilType;put #log >sigils.txt $zoneid $roomid $Time.season %sigilType when ^Subtleties in the surroundings reveal themselves as the origins of an? (\S+) sigil.
 
-
+action goto done when ^You are unaware of any sigils in the area
 
 action var doImprove 1; echo doImprove: %doImprove when ^You are already working to improve
 
@@ -120,7 +121,7 @@ roomLoop:
         goto roomLoop
     }
 
-    if ($sigilCounts.%sigilType > 10) then {
+    if ($sigilCounts.%sigilType > 19 || contains("%sigilsToIgnore", "%sigilType")) then {
         #put #log >sigils.txt $zoneid $roomid $Time.season %sigilType
         var doReturn 1
         if (contains("%primary", "%sigilType")) then var doReturn 0
@@ -189,6 +190,7 @@ improve:
     improve1:
     var location improve1
     matchre done ^You lose track of your surroundings.
+    matchre done ^You are unaware of any sigils in the area
     matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION|METHOD|FORM)
     match scribeSigil Roundtime
     put perc sigil improve
@@ -205,6 +207,7 @@ percImproveType:
     percImproveType1:
     var location percImproveType1
     matchre done ^You lose track of your surroundings.
+    matchre done ^You are unaware of any sigils in the area
     matchre percImproveType ^\..*(PROCESS|TECHNIQUE|APPROACH|EFFORT|TASK|RITUAL|ACTION|METHOD|FORM)
     matchre improve You are unaware of any sigil's capable of that method of improvement in this area.
     match scribeSigil Roundtime
@@ -227,6 +230,7 @@ scribeSigil:
     }
 
     match done You should probably seek knowledge of a sigil before trying to scribe one.
+    matchre done ^You are unaware of any sigils in the area
     match scribeSigil You carefully scribe the sigil
     match scribeSigil Remnants of the sigil pattern linger, allowing for additional scribing.
     put scribe sigil

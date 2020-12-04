@@ -178,6 +178,7 @@ action send stand when ^You might want to stand up first
 action send stand when ^You had better stand up first
 action send stand when ^You can't do that while lying down
 action send stand when ^You'd have better luck standing up
+action send stand when ^You should stand up first.
 
 #Skip to the end of the file, don't execute this because this is just an include
 goto end.of.file
@@ -205,6 +206,15 @@ put engage
 pause 2
 goto Attack1
 
+
+affix:
+var location affix1
+var todo $0
+affix1:
+matchre return ^You carefully attach
+matchre return ^Roundtime
+put affix %todo
+goto retry
 
 aim:
 var location aim1
@@ -280,25 +290,17 @@ goto retry
 
 arr:
 arrange:
-pause .3
-var location arrange
-Skinning.Arrange:
+var todo $0
+var location arrange1
+arrange1:
 matchre return has already been arranged as much as you can manage\.
 matchre return ^Arrange what\?
 matchre return ^Try killing the
 matchre return The .+ cannot be skinned, so you can't arrange it either.
-put arrange
+matchre return ^That creature cannot produce a skinnable part\.
+matchre return Roundtime
+put arrange %todo
 goto retry
-
-
-arranging:
-var todo $0
-var location arranging1
-arranging1:
-matchre arranging1 ^You properly arrange
-matchre arranging1 ^Roundtime
-goto Skinning.Arrange
-
 
 
 attack:
@@ -330,6 +332,7 @@ matchre return ^You must be hidden or invisible to ambush\!
 matchre return ^The khuj is too heavy for you to use like that\.
 matchre return ^Wouldn't it be better
 matchre return sphere
+matchre return ^You can not slam with that
 matchre attack2 ^You should stand up first\.
 put %todo
 goto retry
@@ -350,6 +353,16 @@ put block stop
 goto retry
 
 
+braid:
+var location braid1
+var todo $0
+braid1:
+matchre return ^You begin to carefully braid
+matchre return ^Roundtime
+put braid %todo
+goto retry
+
+
 bundle:
 var location bundle
 matchre return ^You try to stuff your eye into the bundle but can't seem to find a good spot\.
@@ -365,6 +378,16 @@ gosub get bundling rope
 goto bundle
 
 
+burgle:
+var location burgle
+var todo $0
+burgle1:
+matchre return ^You take a moment to think
+matchre return ^You should wait
+put burgle %todo
+goto retry
+
+
 cast:
 var location cast1
 var todo $0
@@ -372,6 +395,7 @@ cast1:
 if ("$preparedspell" = "None") then return
 matchre return ^You gesture
 matchre return ^Disregarding the pain
+matchre return ^You clench your hands into fists
 matchre return ^The blood on your palm bubbles slightly
 matchre return ^Lacking properly ritualized blood
 matchre return ^Your target pattern dissipates
@@ -393,7 +417,11 @@ matchre return ^You have difficulty manipulating the mana streams, causing the s
 matchre return ^You have already fully prepared
 matchre return ^You attempt to quiet your mind
 matchre return ^The mental strain of this pattern
+matchre return ^You hold out your arms to either side
+matchre return ^Currently lacking the skill to complete the pattern
 matchre return ^Return
+matchre return ^Your spell backfires
+matchre return aids your spell\.$
 put cast %todo
 goto retry
 
@@ -490,6 +518,7 @@ count1:
 matchre return ^You take a quick count of potential threats in the area\.\.\.
 matchre return ^You count up the items in your
 matchre return ^That doesn't tell you much of anything.
+matchre return ^You count some
 put count %todo
 goto retry
 
@@ -506,6 +535,16 @@ matchre return ^You are off center, and have trouble focusing\.
 matchre return ^You slowly relax, letting the power of the dance fade from your core\.
 matchre return ^Stop what\?
 put dance %todo
+goto retry
+
+
+dip:
+var location dip1
+var todo $0
+dip1:
+matchre return ^You dip the
+matchre return ^Roundtime
+put dip %todo
 goto retry
 
 
@@ -693,6 +732,8 @@ matchre return ^Randal looks over
 matchre return ^You hand
 matchre return ^What is it
 matchre return ^Randal
+matchre return ^The Servant accepts
+matchre return ^The Servant ignores your offer
 put give %todo
 goto retry
 
@@ -715,8 +756,8 @@ goto retry
 
 health:
 var location health
-   matchre return.p ^Your body feels
-   matchre return.p ^Your spirit feels
+   matchre return ^Your body feels
+   matchre return ^Your spirit feels
    put health
 goto retry
 
@@ -745,6 +786,7 @@ matchre return ^You take note
 matchre return ^You move to hunt down your prey\.
 matchre return ^Your prey seems to have completely vanished\.
 matchre return ^You don't have that target currently available\.
+matchre return ^You find yourself unable to hunt
 matchre hunt2 ^You'll need to disengage first\.
 matchre hunt3 ^You'll need to be standing up, first\.
 put hunt %todo
@@ -1065,6 +1107,11 @@ matchre return ^The blood on your palm bubbles slightly
 matchre return ^You bend over the
 matchre return ^This corpse has already
 matchre return ^This ritual may only be performed
+matchre return ^A failed or completed ritual
+matchre return is too injured
+matchre return much too battered
+matchre return ^Rituals do not work upon constructs\.$
+matchre return prevents a meaningful dissection.
 matchre return ^Roundtime
 put perform %todo
 goto retry
@@ -1124,6 +1171,7 @@ matchre return ^The future, however, remains a dark mystery to you\.
 matchre return ^You must be a real expert to predict the weather indoors\.
 matchre return ^You are a bit too distracted to be making predictions\.
 matchre return ^You consider your recent observations
+matchre return ^As you reach out toward the future
 matchre return ^Roundtime
 put predict %todo
 goto retry
@@ -1201,6 +1249,15 @@ put put %todo
 goto retry
 
 
+pull:
+var location pull1
+var toto $0
+pull1:
+matchre return ^You tug
+matchre return Roundtime
+put pull %todo
+goto retry
+
 read:
 var location read1
 var todo $0
@@ -1225,7 +1282,15 @@ matchre return ^You let your concentration lapse and feel the spell's energies d
 matchre return ^You have no cyclic spell active to release.
 matchre return ^You release
 matchre return ^But you haven't prepared
+matchre return ^You aren't preparing
+matchre return ^The shimmering globe of blue fire
 matchre return disappears\.$
+matchre return ^Release what
+matchre return ^The Rite of Grace matrix loses
+matchre return ^The refractive field surrounding you
+matchre return ^That would be a neat trick.  Try finding a shadowling first.$
+matchre return ^A faint grown echoes
+matchre return ^Your corruption fades
 put release %todo
 goto retry
 
@@ -1323,6 +1388,16 @@ if $monstercount > 0 then
 return
 
 
+repair:
+var location repair1
+var todo $0
+repair1:
+matchre return ^With some needle and thread,
+matchre return isn't in need of repair.$
+matchre return Roundtime
+put repair %todo
+goto retry
+
 
 rub:
 var location rub1
@@ -1373,6 +1448,7 @@ goto retry
 skin:
 skinning:
 var location Skinning
+var todo $0
 matchre return ^.*can't be skinned
 matchre return ^Skin what\?
 matchre return ^Living creatures often object to being flayed alive\.
@@ -1386,27 +1462,15 @@ matchre return ^You claw
 matchre return ^You fumble and make an improper cut
 matchre return ^Your .* twists and slips in your grip
 matchre return ^The .+ cannot be skinned.
+matchre return ^Roundtime
+matchre return Maybe you should REPAIR it\.$
 matchre pre.skin ^You will need a more appropriate tool for skinning
 matchre pre.skin ^You must have one hand free to skin\.
 matchre pre.skin ^You'll need to have a bladed instrument to skin with\.
 matchre Skinning ^You approach \w+'s kill
-matchre Skinning.Empty ^You struggle with the
-matchre Skinning.Empty ^Roundtime
-matchre Skinning.Empty ^A heartbreaking slip
-matchre Skinning.Empty ^You skillfully peel
-matchre Skinning.Empty ^You skin
-matchre Skinning.Empty ^You work diligently at skinning
-matchre Skinning.Empty ^You work hard at peeling
-matchre Skinning.Empty ^You skillfully peel
-matchre Skinning.Empty ^You slice away a bloody trophy
-matchre Skinning.Empty ^Some greater force guides your hand
-matchre Skinning.Empty ^Moving with impressive skill and grace
-matchre Skinning.Empty ^Working deftly
-put skin
+put skin %todo
 goto retry
-Skinning.Empty:
-#gosub stowing
-return
+
 
 
 stance:
@@ -1437,7 +1501,7 @@ goto retry
 
 
 stand:
-if standing then return
+if $standing = 1 then return
 var location stand1
 stand1:
 matchre return ^You stand back up\.
@@ -1527,12 +1591,15 @@ if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = 
     return
 }
 matchre return ^Stow what\?
+matchre return ^I can't find your container
 matchre return ^You carefully
 matchre return ^You put your
 matchre return ^You stop as you realize
 matchre return ^You pick up
 matchre return ^But that is already in your inventory\.
 matchre return ^You hang your
+matchre return ^You open your pouch
+matchre return ^There doesn't seem to be anything left in the pile\.$
 matchre location.unload ^You should unload the
 matchre location.unload ^You need to unload the
 matchre stowing too long to fit
@@ -1576,6 +1643,7 @@ matchre return ^You feel it is too soon to grasp anything new in the skies above
 matchre return ^You scan
 matchre return ^Roundtime
 matchre return ^Why do you need to study this chart again\?
+matchre return ^You've gleaned all the insight you can
 put study %todo
 goto retry
 
@@ -1664,6 +1732,7 @@ matchre return ^You don't need to target the spell you're preparing\.
 matchre target2 ^You are not engaged to anything, so you must specify a target to focus on\!
 matchre target2 ^There is no need to target
 matchre return ^This spell cannot be targeted\.$
+matchre return ^But you're already preparing
 put target %todo
 goto retry
 target2:
@@ -1676,6 +1745,7 @@ var location teach1
 var todo $0
 teach1:
 matchre return ^You begin to lecture
+matchre return ^The TEACH verb
 matchre return is already listening to you\.
 matchre return is listening to someone else\.
 matchre return is not paying attention to you\.
@@ -1686,7 +1756,7 @@ matchre return ^That person is too busy teaching their own students to listen to
 matchre return ^You cannot listen to a teacher and teach at the same time
 matchre return ^I could not find who you were referring to\.
 matchre return isn't teaching you anymore\.
-put Teach %todo
+put teach %todo
 goto retry
 
 
@@ -1814,6 +1884,8 @@ var toroom $1
 automovecont:
 match return YOU HAVE ARRIVED
 match automovecont1 YOU HAVE FAILED
+match automovecont1 AUTOMAPPER MOVEMENT FAILED!
+match automovecont1 MOVE FAILED
 put #goto %toroom
 matchwait
 
@@ -1933,7 +2005,11 @@ matchre location.p ^You attempt that, but end up getting caught in an invisible 
 matchre location1 ^You should stop playing before you do that\.
 matchre location1 ^You are a bit too busy performing to do that\.
 matchre location1 ^You are concentrating too much upon your performance to do that\.
-matchwait
+# JD 2020/7/9: Testing this temporarily to see if it doesn't break things
+#matchwait
+matchwait 120
+goto location
+
 
 location.unload:
 gosub unload

@@ -66,6 +66,7 @@ action var doSigil 1;var sigilToScribe $1 when ^You need another (\S+).* sigil t
 action var doSigil 0 when with your finger and prepare to begin scribing it more permanently
 
 action var doStoreProducts 1 when With the enchanting process completed, you believe it is safe to collect your things once more.
+action var doStoreProducts 1 when You collect the fount and place it at your feet.
 
 action var sigilsNeeded %sigilsNeeded|$2 when (primary|secondary) sigil \((\S+)\)$
 
@@ -134,7 +135,7 @@ enchantLoop:
 
     if (%doImbue = 1) then {
         gosub stow right
-        put .cast n imbue "%baseItem on brazier"
+        put .cast imbue "%baseItem on brazier"
         waitforre ^CAST DONE
     }
 
@@ -144,6 +145,8 @@ enchantLoop:
         put store default %defaultContainer
         gosub get my %baseItem
         gosub focus my %baseItem
+        put #parse ENCHANT DONE
+        pause .3
         exit
     }
 
@@ -182,7 +185,7 @@ setArtificingBook:
 
 
 setBaseItem:
-    gosub get my %baseItem from my sack
+    gosub get my %baseItem from my tort sack
     if ("$righthand" = "Empty") then {
         gosub get my %baseItem
     }

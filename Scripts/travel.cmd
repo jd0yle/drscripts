@@ -21,7 +21,7 @@
 ##########################################
 ##    ARE YOU A CITIZEN OF SHARD?       ##
 ##        CHOOSE yes or no              ##
-     var shardcitizen yes
+     var shardcitizen no
 ##########################################
 ##    RANKS TO USE THE ROSSMAN'S        ##
 ##          SHORTCUT                    ##

@@ -739,6 +739,7 @@ move.closed:
      echo
      put #parse SHOP IS CLOSED
      put #parse SHOP CLOSED
+     put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
 jailed:
      echo
@@ -750,6 +751,7 @@ jailed:
      put #parse JAILED
      put #parse NAILED AND JAILED!
      put #parse THROWN IN JAIL
+     put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
 move.failed:
      evalmath failcounter %failcounter + 1
@@ -771,6 +773,7 @@ move.failed:
      echo ********************************
      pause 0.1
      put #parse MOVE FAILED!
+     put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
      if (%failcounter > 3) then
           {

@@ -14,27 +14,31 @@ action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait
 ########################
 #  Variables
 ########################
+echo First va is %1
 setVariables:
-  if "%1" = "pole" then put #setvariable chapter 1;#setvariable page 5;#setvariable cut 2
-  if "%1" = "sphere" then put #setvariable chapter 1;#setvariable page 7;#setvariable cut 2
-  if "%1" = "burin" then put #setvariable chapter 6;#setvariable page 3;#setvariable cut 4
-  if "%1" = "earcuff" then put #setvariable chapter 7;#setvariable page 15;#setvariable cut 2
-  if "%1" = "brooch" then put #setvariable chapter 7;#setvariable page 16;#setvariable cut 2
-  if "%1" = "buckle" then put #setvariable chapter 7;#setvariable page 18;#setvariable cut 2
-  if "%1" = "choker" then put #setvariable chapter 7;#setvariable page 19;#setvariable cut 3
-  if "%1" = "wand" then put #setvariable chapter 8;#setvariable page 6;#setvariable cut 3
-  if "%1" = "bead" then put #setvariable chapter 8;#setvariable page 2;#setvariable cut 1
-  if "%1" = "totem" then put #setvariable chapter 8;#setvariable page 3;#setvariable cut 2
-  if "%1" = "figurine" then put #setvariable chapter 8;#setvariable page 5;#setvariable cut 3
-  if "%1" = ("bead"|"totem"|"figurine") then goto setDesign
+  #if "%1" = "pole" then put #setvariable chapter 1;#setvariable page 5;#setvariable cut 2
+  #if "%1" = "sphere" then put #setvariable chapter 1;#setvariable page 7;#setvariable cut 2
+  #if "%1" = "burin" then put #setvariable chapter 6;#setvariable page 3;#setvariable cut 4
+  #if "%1" = "earcuff" then put #setvariable chapter 7;#setvariable page 15;#setvariable cut 2
+  #if "%1" = "brooch" then put #setvariable chapter 7;#setvariable page 16;#setvariable cut 2
+  #if "%1" = "buckle" then put #setvariable chapter 7;#setvariable page 18;#setvariable cut 2
+  #if "%1" = "choker" then put #setvariable chapter 7;#setvariable page 19;#setvariable cut 3
+  #if "%1" = "wand" then put #setvariable chapter 8;#setvariable page 6;#setvariable cut 3
+  #if "%1" = "bead" then put #setvariable chapter 8;#setvariable page 2;#setvariable cut 1
+  #if "%1" = "totem" then put #setvariable chapter 8;#setvariable page 3;#setvariable cut 2
+  #if "%1" = "figurine" then put #setvariable chapter 8;#setvariable page 5;#setvariable cut 3
+  #if "%1" = "rod" then put #setvariable chapter 8;put #setvariable page 7;put #setvariable cut 3
+  #if "%1" = ("bead"|"totem"|"figurine") then goto setDesign
+
+  put #setvariable chapter 8;put #setvariable page 7;put #setvariable cut 3
   goto setStore
 ########################
 # Codex Variables
 ########################
 setDesign:
-  if "%1" = "bead" then put #setvariable chapter 8;#setvariable page 2;#setvariable cut 1
-  if "%1" = "totem" then put #setvariable chapter 8;#setvariable page 3;#setvariable cut 2
-  if "%1" = "figurine" then put #setvariable chapter 8;#setvariable page 5;#setvariable cut 3
+  #if "%1" = "bead" then put #setvariable chapter 8;#setvariable page 2;#setvariable cut 1
+  #if "%1" = "totem" then put #setvariable chapter 8;#setvariable page 3;#setvariable cut 2
+  #if "%1" = "figurine" then put #setvariable chapter 8;#setvariable page 5;#setvariable cut 3
 setDesignRace:
   var race.list human|elf|dwarf|elothean|gor'tog|halfling|s'kra mur|rakash|prydaen|gnome|kaldar
   eval race.len count("%race.list", "|")
@@ -111,13 +115,16 @@ combinex:
   matchwait
 
 markLumber:
+  put #setvariable cut 3
   match count There is not enough of the lumber
   matchre getScissors (You mark|You count)
-  put mark my lumber at $cut
+  #put mark my lumber at $cut
+  put mark my lumber at 3
   matchwait
 
 count:
-  match getBook $cut
+  #match getBook $cut
+  match getBook 3
   match exit You count out
   put count lumber
   matchwait
@@ -149,6 +156,7 @@ turnChapter:
   matchwait
 
 turnPage:
+  put #setvariable page 7
   matchre study (The book is|You turn)
   match exit What were you
   put turn my book to page $page

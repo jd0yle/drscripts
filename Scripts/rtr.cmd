@@ -1,6 +1,6 @@
 include libsel.cmd
 
-var ritualFocus S'kra totem
+var ritualFocus inauri plush
 
 var doPredictions %1
 
@@ -22,11 +22,16 @@ action var survivalPredState $1 when (\S+) understanding of the celestial influe
 gosub stow right
 gosub stow left
 
+put .astro
+waitforre ^ASTRO DONE$
+
+gosub waitForConcentration
+
 put sit
 
 if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
 
-gosub prep rtr 725
+gosub prep rtr 750
 gosub get my %ritualFocus
 put invoke my %ritualFocus
 goto prepWait
@@ -72,6 +77,12 @@ rtrPred:
     }
     gosub rtrWait
     return
+
+
+waitForConcentration:
+    if ($concentration > 50) then return
+    pause 2
+    goto waitForConcentration
 
 
 rtrWait:

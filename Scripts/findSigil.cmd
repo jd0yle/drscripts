@@ -59,7 +59,11 @@ loop:
 
 
 goNext:
-    gosub put my book in my shadows
+    if ("$righthand" = "white backpack" || "$lefthand" = "white backpack") then {
+        gosub put my book in my white backpack
+    } else {
+        gosub put my book in my shadows
+    }
     gosub stow right
     math colorsIndex add 1
     if %colorsIndex > %len then goto done
@@ -95,7 +99,11 @@ listLoop:
     gosub get my %colors(%colorsIndex) book
     gosub turn my book to index
     put read my book
-    gosub put my book in my shadows
+    if ("$righthand" = "white backpack" || "$lefthand" = "white backpack") then {
+        gosub put my book in my white backpack
+    } else {
+        gosub put my book in my shadows
+    }
     gosub stow right
     math colorsIndex add 1
     if %colorsIndex > %colorsLength then goto listDone
@@ -126,9 +134,13 @@ echoTypes:
 
 storeLoop:
     gosub get my %colors(%colorsIndex) book
+    if ("$righthand" = "Empty") then {
+        gosub get my %colors(%colorsIndex) book from my white backpack
+    }
 storeLoop1:
     gosub get my %types(%colorsIndex) sigil
     if ("$lefthand" = "Empty") then {
+        gosub put my book in my white backpack
         gosub put my book in my shadows
         gosub stow right
         math colorsIndex add 1

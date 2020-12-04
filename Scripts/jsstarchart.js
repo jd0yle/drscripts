@@ -1194,7 +1194,7 @@ var constellations = [
     }
 ];
 
-function getConstellationNamesBySkillet(skiilset) {
+function getConstellationNamesBySkillet(skillset) {
     return constellations.reduce(function (item, acc) {
         if (item[skillset] > 0) {
             acc.push(item.name);

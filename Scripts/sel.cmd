@@ -1,20 +1,28 @@
 include libsel.cmd
 
-var labels First_Aid|Warding|Astrology
+var labels Warding|First_Aid|Astrology
+#var labels Warding|First_Aid
 eval length count("%labels", "|")
 var index 0
 
 var lowestRateIndex 0
 
-put #script abort all except sel
-put .idle
+var firstRun 1
+var skipToNext 0
+
+action var skipToNext 1 when ^OBS DONE
+
+#put #script abort all except sel
+#put .idle
 #put .logafter
+put #script abort almanac
 
 gosub put my comp in my bag
 gosub put my telescope in my telescope case
 gosub stow right
 gosub stow left
-gosub release
+gosub release spell
+gosub release mana
 gosub release symbi
 
 
@@ -32,11 +40,12 @@ initDone:
     var scriptRunning 0
 
 selLoop:
-    if ($%labels(%index).LearningRate > 32) then {
+    if ($%labels(%index).LearningRate > 32 || %skipToNext = 1) then {
         put #script abort all except sel
-        put .logafter
-        put .idle
+        #put .logafter
+        #put .idle
         var scriptRunning 0
+        var skipToNext 0
         math index add 1
         if (%index > %length) then var index 0
         gosub put my comp in my bag
@@ -45,14 +54,45 @@ selLoop:
         gosub stow left
         gosub release
         gosub release symbi
+        pause 150
+    }
+    if (%scriptRunning = 0) then {
+        if (%firstRun = 1) then {
+            var firstRun 0
+        } else {
+            evalmath waitUntil (%t + 120)
+            gosub waitItOut
+        }
     }
     if ("%labels(%index)" = "First_Aid") then {
         if (%scriptRunning = 0) then {
+            if ($Astrology.LearningRate < 10) then {
+                put .astro
+                waitforre ^ASTRO DONE$
+                gosub align lore
+                gosub get my divination bones from my telescope case
+                gosub roll bones at selesthiel
+                gosub align survival
+                gosub get my divination bones from my telescope case
+                gosub roll bones at selesthiel
+                gosub put my divination bones in my telescope case
+            }
             put .comp
             var scriptRunning 1
         }
     } else if ("%labels(%index)" = "Warding") then {
        if (%scriptRunning = 0) then {
+           if ($Astrology.LearningRate < 10) then {
+               put .astro
+               waitforre ^ASTRO DONE$
+               gosub align offense
+               gosub get my divination bones from my telescope case
+               gosub roll bones at selesthiel
+               gosub align defense
+               gosub get my divination bones from my telescope case
+               gosub roll bones at selesthiel
+               gosub put my divination bones in my telescope case
+           }
            put .magic
            var scriptRunning 1
        }
@@ -64,3 +104,8 @@ selLoop:
     }
     pause 2
     goto selLoop
+
+waitItOut:
+    if (%t > %waitUntil) then return
+    pause 10
+    goto waitItOut

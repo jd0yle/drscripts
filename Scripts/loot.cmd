@@ -2,6 +2,10 @@ include libsel.cmd
 
 var options %0
 
+if ("$charactername" = "Selesthiel") then {
+    var specialStorage tort sack
+}
+
 
 var scrolls scroll|ostracon|\broll|leaf|vellum|tablet|(?<!of )parchment|bark|papyrus
 var treasuremaps \bmap\b
@@ -13,7 +17,7 @@ var gweths (?:jadeite|kyanite|lantholite|sjatmal|waermodi|lasmodi) stones
 var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox
 var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover
-var ammo arrow|bolt|stone|rock|throwing blade|quadrello
+var ammo basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang
 var coin coin
 
 #var box (?:%boxtype) (?:%boxes)
@@ -21,7 +25,6 @@ var coin coin
 
 var lootables %scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%miscKeep|%ammo|%coin
 
-#var lootables throwing blade|arrow|bolt|quadrello|brazier|arrow|coin|coins|iolite|hematite|moonstone|coffer|turquoise|box|morganite|small rock|spinel|dioside|crate|kunzite|caddy|chrysoberyl|coral|card|trunk|tanzanite|amber|chalcedony|tourmaline|skippet|jade|chrysoprase|diopside|peridot|andalusite|carnelian|citrine
 var toLoot null
 action (invFeet) var toLoot %toLoot|$1 when (%lootables)
 action (invFeet) off
@@ -36,7 +39,16 @@ pickupLoot:
     #eval gwethsInRoom matchre("$roomobjs", "(%gweths)")
     if (contains("$roomobjs", "waermodi stone")) then {
         gosub get waermodi stone
-        gosub put waermodi stone in my telescope case
+        gosub put my waermodi stone in my %specialStorage
+        gosub stow my w stone
+        goto pickupLoot
+    }
+
+    if (contains("$roomobjs", "hematite")) then {
+        gosub get hematite
+        gosub put my hematite in my %specialStorage
+        gosub stow my hematite
+        goto pickupLoot
     }
 
     eval numItems count("%lootables", "|")

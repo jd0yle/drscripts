@@ -59,6 +59,8 @@ action var doResearch 0 when ^You continue to flex the mana streams
 action var doResearch 0 when ^You tentatively reach out and begin manipulating the mana streams
 action var doResearch 0 when ^Though it is taking much of your attention, you feel your research is going well.
 
+action put #echo >Log Almanac: $1 when You believe you've learned something significant about (.*)!$
+
 var researchTopics.list warding|augmentation|stream|utility|fundamental
 var researchTopics.skills Warding|Augmentation|Attunement|Utility|Primary_Magic
 var researchTopics.index 0
@@ -70,6 +72,18 @@ timer start
 var nextAppAt 0
 
 loop:
+    evalmath nextStudyAt $lastAlmanacGametime + 600
+
+    if (%nextStudyAt < $gametime) then {
+        if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
+            gosub get my almanac
+        }
+        gosub study my almanac
+        gosub put my almanac in my thigh bag
+        put #var lastAlmanacGametime $gametime
+    }
+
+    if ("%magicPredState" = "complete" && "%lorePredState" = "complete" && "%survivalPredState" = "complete" && "%offensePredState" = "complete" && "%defensePredState" = "complete") then goto done
     if "%magicPredState" = "null" then gosub predState
     if (%doResearch = 1) then {
         #gosub startResearch
@@ -212,3 +226,7 @@ waitMana:
     pause 2
     if ($mana < 80) then goto waitMana
     return
+
+done:
+    put #parse OBS DONE
+    exit

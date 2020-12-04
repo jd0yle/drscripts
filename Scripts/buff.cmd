@@ -1,5 +1,5 @@
 ########################################################################################
-# .findSigil
+# .buff
 #
 # Selesthiel - Justin Doyle <justin@jmdoyle.com>
 #
@@ -37,7 +37,6 @@ var buffGroups = {
     pvp: [
         { spellName: "seer", mana: 100 },
         { spellName: "maf", mana: 100 },
-        { spellName: "col", mana: 100},
         { spellName: "psy", mana: 100},
         { spellName: "shadows", mana: 100},
         { spellName: "cv", mana: 100}
