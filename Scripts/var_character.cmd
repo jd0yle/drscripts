@@ -1,1 +1,0 @@
-include var_character_$charactername.cmd

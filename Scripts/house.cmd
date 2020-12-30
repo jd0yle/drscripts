@@ -9,6 +9,7 @@ if $roomid = 258 || "$roomname" != "Private Home Interior" then {
 }
 
 send unlock %obj
+
 send open %obj
 pause .2
 move go %obj
@@ -23,3 +24,5 @@ if %lock = 1 then {
     send close %obj
     send lock %obj
 }
+
+put #parse HOUSE DONE

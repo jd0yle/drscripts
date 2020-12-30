@@ -10,14 +10,48 @@ if_1 then {
 
 
 
-if ($roomid > 79 && $roomid < 97 && "$roomplayers" = "") then {
+if ("%mob" = "bull" && $roomid > 81 && $roomid < 97 && "$roomplayers" = "") then {
     pause
     goto done
 }
 
-var checkRoomId 80
+init:
+
+if ("%mob" = "bull") then {
+    var checkRoomId 82
+    var maxRoomId 97
+    var waitroomid telescope
+}
+
+if ("%mob" = "leucro") then {
+    var checkRoomId 16
+    var maxRoomId 22
+}
+
+if ("%mob" = "gremlin") then {
+    var checkRoomId 109
+    var maxRoomId 117
+    var waitroomid 89
+}
+
+if ("%mob" = "peccary") then {
+    var checkRoomId 257
+    var maxRoomId 263
+    var waitroomid 163
+}
+
+
+if ($roomid >= %checkRoomId && $roomid <= maxRoomId) then {
+    pause .2
+    goto done
+}
+
 
 findRoom:
+    if ($roomid = 0) then {
+        gosub moveRandom
+        goto findRoom
+    }
     if ($roomid != %checkRoomId) then {
         gosub automove %checkRoomId
         gosub checkThisRoom
@@ -26,15 +60,17 @@ findRoom:
 
 
 checkThisRoom:
-    if ("$roomplayers" != "") then {
+    if ("$roomplayers" != "" || $monstercount >= 2) then {
         math checkRoomId add 1
-        if (%checkRoomId > 97) then {
-            put #walk telescope
-            waitfor YOU HAVE ARRIVED
+        if (%checkRoomId > %maxRoomId) then {
+            gosub automove %waitroomid
+            gosub hide
             echo ******************************
             echo * COULD NOT FIND OPEN ROOM
+            echo * WAITING 120 SECONDS
             echo ******************************
-            goto doneFail
+            pause 120
+            goto init
         }
         return
     } else {

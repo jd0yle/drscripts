@@ -19,6 +19,8 @@ action var survivalPredState $1 when (\S+) understanding of the celestial influe
 
 #action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait
 
+if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
+
 gosub stow right
 gosub stow left
 
@@ -31,9 +33,10 @@ put sit
 
 if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
 
-gosub prep rtr 750
+gosub prep rtr 800
 gosub get my %ritualFocus
 put invoke my %ritualFocus
+var isFullyPrepped 0
 goto prepWait
 
 prepWait:
@@ -41,15 +44,18 @@ pause 1
 if (%isFullyPrepped != 1) then goto prepWait
 gosub cast
 gosub stow right
+gosub get my telescope
 goto rtrObserve
 
 
 
 rtrObserve:
+    gosub center my telescope on %object
     matchre rtrPred ^Although you were nearly overwhelmed by some aspects of your observation, you still learned more of the future.
     matchre rtrPred ^You learned something useful from
     matchre rtrObserve ^You see nothing regarding the future.
-    put observe %object in sky
+    #put observe %object in sky
+    put peer my telescope
     matchwait
 
 
@@ -91,6 +97,9 @@ rtrWait:
 
 rtrDone:
     gosub stand
+    gosub put my telescope in my telescope case
+    gosub stow right
+    gosub stow left
     echo RTR Complete
     put #parse RTR DONE
     exit

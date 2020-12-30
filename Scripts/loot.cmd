@@ -16,8 +16,8 @@ var gems4 opal|pearl|pebble|peridot|quartz.(?!gargoyle)|ruby|sapphire|spinel|sta
 var gweths (?:jadeite|kyanite|lantholite|sjatmal|waermodi|lasmodi) stones
 var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox
-var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover
-var ammo basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang
+var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover|card
+var ammo basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock
 var coin coin
 
 #var box (?:%boxtype) (?:%boxes)

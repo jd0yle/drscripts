@@ -1,30 +1,10 @@
 include libsel.cmd
 
-var isPrepped 0
-action var isPrepped 1 when Your formation
+action put accept; put put box in my portal when offers you
 
 loop:
-var isPrepped 0
-gosub target burn 30
-pause 5
-gosub retreat
-gosub cast
-gosub retreat
-put loot treasure
+pause 2
 goto loop
-
-
-waitForMana:
-    if ($mana > 13) then return
-    pause
-    gosub retreat
-    goto waitForMana
-
-waitForPrep:
-    if (%isPrepped = 1) then return
-    pause
-    gosub retreat
-    goto waitForPrep
 
 exit
 

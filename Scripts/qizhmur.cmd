@@ -1,6 +1,6 @@
 include libsel.cmd
 
-var cambrinth cambrinth orb
+var cambrinth aoustone muhenta
 
 var useRog 0
 
@@ -16,8 +16,6 @@ timer start
 
 gosub stow right
 gosub stow left
-gosub remove my %cambrinth
-gosub get my %cambrinth
 
 loop:
     if (%t > %nextPercAt && $Attunement.LearningRate < 33) then {
@@ -35,12 +33,16 @@ loop:
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
         evalmath nextRogAt (300 + %t)
-    } else if (%useRog = 0 && $Utility.LearningRate < 33) then {
+    }
+
+    if (%useRog = 0 && $SpellTimer.RiteofGrace.active = 1) then gosub release rog
+
+    if (%useRog = 0 && $Utility.LearningRate < 33) then {
        if ($preparedspell != None) then gosub release spell
        var isFullyPrepped 0
        gosub prep eotb 5
-       gosub charge my %cambrinth 15
-       gosub charge my %cambrinth 15
+       gosub charge my %cambrinth 20
+       gosub charge my %cambrinth 20
        gosub invoke my %cambrinth
        if (%isFullyPrepped != 1) then gosub waitForPrep
        gosub cast
@@ -49,8 +51,8 @@ loop:
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
         gosub prep maf 5
-        gosub charge my %cambrinth 16
-        gosub charge my %cambrinth 16
+        gosub charge my %cambrinth 20
+        gosub charge my %cambrinth 20
         gosub invoke my %cambrinth
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
@@ -59,16 +61,16 @@ loop:
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
         gosub prep obf 5
-        gosub charge my %cambrinth 16
-        gosub charge my %cambrinth 16
+        gosub charge my %cambrinth 20
+        gosub charge my %cambrinth 20
         gosub invoke my %cambrinth
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
     }
     gosub waitMana
-    pause .5
+    pause .2
     if ($Augmentation.LearningRate > 32 && $Utility.LearningRate > 32 && $Warding.LearningRate > 32) then {
-        put #parse QIZHMUR DONE
+        # put #parse QIZHMUR DONE
     }
 goto loop
 

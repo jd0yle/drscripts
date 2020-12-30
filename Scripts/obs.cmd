@@ -8,7 +8,7 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var cambrinth yoakena globe
+var cambrinth mammoth calf
 
 ######################
 
@@ -163,14 +163,7 @@ obs:
     gosub center my telescope on %objList(%objIndex)
     gosub peer my telescope
 
-    if (%isObsOnCd = 1) then {
-       # gosub put my tele in my tele case
-       # gosub align %skillset
-       # gosub predict future $charactername
-       # echo predictionCount: $predictionCount
-      #  put title pre choose moonm harbin
-        pause
-    }
+
     if (%t > %nextAppAt) then {
         gosub app my gem pouch
         evalmath nextAppAt (90 + %t)
@@ -209,17 +202,15 @@ castBuff:
     var spell $0
     if ("$preparedspell" != "None") then gosub rel
     if ($mana < 80) then gosub waitMana
-    gosub prep %spell 20
-    gosub stowing
-    gosub get my %cambrinth
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub focus my %cambrinth
-    gosub invoke my %cambrinth
-    gosub cast
-    gosub stow my %cambrinth
+    put .cast %spell
+    waitforre ^CAST DONE
+    #gosub prep %spell 20
+    #gosub charge my %cambrinth 20
+    #gosub charge my %cambrinth 20
+    #gosub charge my %cambrinth 20
+    #gosub charge my %cambrinth 20
+    #gosub invoke my %cambrinth
+    #gosub cast
     return
 
 waitMana:

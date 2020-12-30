@@ -3,11 +3,11 @@ include libsel.cmd
 var act %1
 
 if ("$charactername" = "Selesthiel") then {
-    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|shield
+    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield
 }
 
 if ("$charactername" = "Qizhmur") then {
-    var armor leathers|gloves|buckler|cowl|shield|helm|mask
+    var armor demonscale leathers|demonscale gloves|gladiator's shield|demonscale helm|demonscale mask
 }
 
 eval length count("%armor", "|")

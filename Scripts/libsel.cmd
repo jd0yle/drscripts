@@ -184,6 +184,15 @@ action send stand when ^You should stand up first.
 goto end.of.file
 
 
+adjust:
+var location adjust1
+var todo $0
+adjust1:
+matchre return You adjust
+put adjust %todo
+goto retry
+
+
 advance:
 var location advance1
 var todo $0
@@ -263,6 +272,7 @@ ask1:
 matchre return ^To whom are you speaking\?
 matchre return ^With a sad look
 matchre return ^A pure white alfar avenger peers at you
+matchre return ^The Shadow Servant stares at you in confusion.
 matchre ask.retreat ^You cannot do that while focusing on combat!
 matchre return hands it to you\.$
 put ask %todo
@@ -359,17 +369,18 @@ var todo $0
 braid1:
 matchre return ^You begin to carefully braid
 matchre return ^Roundtime
+matchre return ^You are a little too busy
 put braid %todo
 goto retry
 
 
 bundle:
 var location bundle
-matchre return ^You try to stuff your eye into the bundle but can't seem to find a good spot\.
+matchre return ^You try to stuff your.*into the bundle but can't seem to find a good spot\.
 matchre return ^You stuff your
 matchre return ^You bundle up your
 matchre bundle2 ^That's not going to work\.
-put bundle eye
+put bundle
 goto retry
 
 bundle2:
@@ -384,6 +395,8 @@ var todo $0
 burgle1:
 matchre return ^You take a moment to think
 matchre return ^You should wait
+matchre return ^The BURGLE command
+matchre return ^You don't see any
 put burgle %todo
 goto retry
 
@@ -434,6 +447,8 @@ matchre openTelescope ^You'll need to open
 matchre return ^You put your eye to the
 matchre return ^Center what
 matchre return ^What did you want
+matchre return ^The pain is too much
+matchre return ^You are unable to hold
 put center %todo
 goto retry
 
@@ -481,7 +496,8 @@ var location close1
 matchre return ^You try, but the telescope won't collapse any further.
 matchre return ^You collapse your telescope.
 matchre return ^You need to be holding the telescope first.
-matchre return ^You close your
+matchre return ^You close
+matchre return ^The door
 put close %todo
 goto retry
 
@@ -577,6 +593,7 @@ drop1:
 matchre return ^You drop
 matchre return ^What were you referring to\?
 matchre return ^But you aren't holding that\.
+matchre return ^You discard
 put drop %todo
 goto retry
 
@@ -945,6 +962,18 @@ put load %todo
 goto retry
 
 
+lock:
+var location lock1
+var todo $0
+lock1:
+matchre return ^You lock
+matchre return ^You rattle
+matchre return ^That is
+matchre return ^You don't
+put lock %todo
+goto retry
+
+
 look:
 var location look1
 var todo $0
@@ -956,6 +985,7 @@ matchre return ^(He|She) is
 matchre return ^I could not find what you were referring to\.
 matchre return ^On the
 matchre return ^There is nothing
+matchre return ^\[
 put look %todo
 goto retry
 
@@ -1032,6 +1062,7 @@ var todo $0
 observe1:
 matchre return ^You scan the skies for a few moments\.
 matchre return ^Your search for the constellation
+matchre return ^You are a bit too distracted
 matchre return ^Roundtime
 put observe %todo
 goto retry
@@ -1045,6 +1076,9 @@ matchre return ^You try, but the telescope seems as extended as it will ever be.
 matchre return ^You extend your telescope.
 matchre return ^You need to be holding the telescope first.
 matchre return ^You open your
+matchre return ^You open
+matchre return already open.$
+matchre return ^You rattle
 put open %todo
 goto retry
 
@@ -1112,6 +1146,8 @@ matchre return is too injured
 matchre return much too battered
 matchre return ^Rituals do not work upon constructs\.$
 matchre return prevents a meaningful dissection.
+matchre return ^Both
+matchre return  too injured to be a good specimen\.$
 matchre return ^Roundtime
 put perform %todo
 goto retry
@@ -1172,6 +1208,7 @@ matchre return ^You must be a real expert to predict the weather indoors\.
 matchre return ^You are a bit too distracted to be making predictions\.
 matchre return ^You consider your recent observations
 matchre return ^As you reach out toward the future
+matchre return ^You are far too occupied
 matchre return ^Roundtime
 put predict %todo
 goto retry
@@ -1245,6 +1282,7 @@ matchre return ^As you put the wax label
 matchre return ^You glance down
 matchre return ^With a flick
 matchre return ^Roundtime
+matchre return ^That's too heavy to go in there\!$
 put put %todo
 goto retry
 
@@ -1291,6 +1329,9 @@ matchre return ^The refractive field surrounding you
 matchre return ^That would be a neat trick.  Try finding a shadowling first.$
 matchre return ^A faint grown echoes
 matchre return ^Your corruption fades
+matchre return ^You don't have a Shadow Servant
+matchre return ^A.*Shadow Servant.*disappears\.$
+matchre return ^The Rite of Contrition
 put release %todo
 goto retry
 
@@ -1326,6 +1367,8 @@ var location roll1
 var todo $0
 roll1:
 matchre return ^Roundtime
+matchre return ^You realize you have not yet properly aligned
+matchre return ^You're too
 put roll %todo
 goto retry
 
@@ -1413,6 +1456,16 @@ put rub %todo
 goto retry
 
 
+rummage:
+var location rummage1
+var todo $0
+rummage1:
+matchre return ^You rummage
+matchre return ^I don't
+put rummage %todo
+goto retry
+
+
 scribe:
 var location scribe1
 var todo $0
@@ -1442,13 +1495,20 @@ matchre return ^You ask Scupper to buy a lumpy bundle\.
 matchre return ^Scupper separates the bundle and sorts through it carefully
 matchre return ^Sell what\?
 matchre return ^I could not find what you were referring to\.
+matchre return ^Cormyn looks around
+matchre return ^Cormyn takes your
+matchre return ^Cormyn shakes his head and says
+matchre return ^Cormyn looks puzzled
+matchre return ^Cormyn whistles and says
+matchre return Oweede
 put sell %todo
 goto retry
 
 skin:
 skinning:
-var location Skinning
+var location skin1
 var todo $0
+skin1:
 matchre return ^.*can't be skinned
 matchre return ^Skin what\?
 matchre return ^Living creatures often object to being flayed alive\.
@@ -1578,7 +1638,7 @@ stow1:
 if ("%todo" = "" && "$righthand" = "Empty") then return
 if ("%todo" = "right" && "$righthand" = "Empty") then return
 if ("%todo" = "left" && "$lefthand" = "Empty") then return
-if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "satinwood telescope")) then {
+if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope")) then {
     gosub put my telescope in my telescope case
     return
 }
@@ -1600,6 +1660,7 @@ matchre return ^But that is already in your inventory\.
 matchre return ^You hang your
 matchre return ^You open your pouch
 matchre return ^There doesn't seem to be anything left in the pile\.$
+matchre return ^You need a free hand to pick that up.
 matchre location.unload ^You should unload the
 matchre location.unload ^You need to unload the
 matchre stowing too long to fit
@@ -1776,6 +1837,15 @@ put tend %todo
 goto retry
 
 
+tie:
+var location tie1
+var todo $0
+tie1:
+matchre return Once you've tied off your bundle
+matchre return ^Using the length
+put tie %todo
+goto retry
+
 turn:
 var location turn1
 var todo $0
@@ -1811,6 +1881,19 @@ matchre return ^You don't have a
 matchre return ^You can't unload such a weapon\.
 matchre return ^Your
 put unload
+goto retry
+
+
+unlock:
+var location unlock1
+var todo $0
+unlock1:
+matchre return ^What were you referring to
+matchre return ^You unlock
+matchre return ^You rattle
+matchre return already open.$
+matchre return ^You don't have a key
+put unlock %todo
 goto retry
 
 
@@ -1862,6 +1945,16 @@ put wear %todo
 goto retry
 
 
+whisper:
+var location whisper1
+var todo $0
+whisper1:
+matchre return ^You whisper
+matchre return ^Who are
+put whisper %todo
+goto retry
+
+
 wield:
 var location wield1
 var todo $0
@@ -1880,7 +1973,7 @@ goto retry
 ########################################################################
 
 automove:
-var toroom $1
+var toroom $0
 automovecont:
 match return YOU HAVE ARRIVED
 match automovecont1 YOU HAVE FAILED
@@ -1920,7 +2013,10 @@ matchre Dig.then.move ^Like a blind, lame duck, you wallow in the mud
 matchre Dig.then.move ^The mud holds you tightly
 matchre Dig.then.move ^You find yourself stuck in the mud
 matchre stow.then.move ^Free up your hands first
+matchre return ^You see no dock.
+matchre return ^You look around in vain for the
 matchre return ^Obvious
+matchre return ^\[
 matchre return It's pitch dark and you can't see a thing
 matchre move.error ^You can't go there\.
 matchre move.error ^You can't swim in that direction\.
@@ -1958,7 +2054,7 @@ var todo %todo.saved
 goto moving
 
 
-moverandom:
+moveRandom:
 pause .2
 var People.Room empty
 random 1 8
@@ -1992,7 +2088,7 @@ return
 
 retry:
 matchre location ^\.\.\.wait
-matchre location ^Sorry, you may
+matchre location.tooFast ^Sorry, you may
 matchre location ^Sorry, system is slow
 matchre location.p ^You don't seem to be able to move to do that
 matchre location.p ^It's all a blur
@@ -2007,7 +2103,7 @@ matchre location1 ^You are a bit too busy performing to do that\.
 matchre location1 ^You are concentrating too much upon your performance to do that\.
 # JD 2020/7/9: Testing this temporarily to see if it doesn't break things
 #matchwait
-matchwait 120
+matchwait 30
 goto location
 
 
@@ -2028,10 +2124,14 @@ gosub stop.humming1
 goto %location
 
 location.p:
-pause
+pause 1
 
 location:
 goto %location
+
+location.tooFast:
+random 1 2
+pause %r
 
 return.p:
    pause .1
