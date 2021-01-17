@@ -6,6 +6,7 @@ var skins skin|pelt|horn|sac|hide
 var readyToPull false
 action var readyToPull false when ^You are certain that the braided grass isn't usable for anything yet.
 action var readyToPull true when  piece of bundling rope\.$
+action var getMoreGrass true when ^You need to have more material in your other hand to continue braiding.
 
 
 if (matchre ("$righthandnoun", "(%skins)")) then {
@@ -40,6 +41,11 @@ getGrass:
 
 
 braidIntoRope:
+    if (%getMoreGrass = true) then {
+        gosub retreat
+        gosub forage grass
+        var getMoreGrass false
+    }
     if (%readyToPull = true) then return
     if ($monstercount != 0) then {
         gosub retreat

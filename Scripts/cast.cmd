@@ -28,6 +28,7 @@ var isFullyPrepped 0
 var stowedItemNoun null
 
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
+action var isFullyPrepped 1 when ^You have lost the spell you were preparing.
 
 if ("%worncambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
     var stowedItemNoun $lefthandnoun

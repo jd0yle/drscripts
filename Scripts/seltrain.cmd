@@ -9,7 +9,8 @@ var inLeth false
 
 
 #Set for leth
-if ($zoneid = 112) then {
+if ($zoneid = 112 || $zoneid = 61 || $zoneid = 150) then {
+    echo ** inLeth = 1 **
     var inLeth true
     var sitRoom 42
     var burgleRoom 39
@@ -61,21 +62,33 @@ main:
     }
 
     if (%inLeth = true) then {
-        if ($Crossbow.LearningRate < 31 || $Small_Edged.LearningRate < 31 || $Targeted_Magic.LearningRate < 31 || $Brawling.LearningRate < 31 || $Light_Thrown.LearningRate < 31 || $Evasion.LearningRate < 31 || $Parry_Ability.LearningRate < 31 || $Shield_Usage.LearningRate < 31) then {
+        # Main Combat
+        # if (false) then {
+        if ($Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Brawling.LearningRate < 30 || $Light_Thrown.LearningRate < 30 || $Evasion.LearningRate < 30 || $Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30) then {
             put #echo >Log #fff2de Moving to combat
-            put .findSpot bull
-            waitforre ^FINDSPOT DONE$
+            gosub moveToBulls
             put .fight
             gosub waitForMainCombat
             goto main
-        } else {
-            put #echo >Log #fff2de Moving to magic
-            gosub moveToSitRoom
-            put .sel
-            gosub waitForMagic
+        }
+
+        # Backtrain
+        if (false) then {
+        #if ($Heavy_Thrown.LearningRate < 30) then {
+            put #echo >Log #fff2de Moving to backtrain
+            gosub moveToGremlins
+            put .fight backtrain
+            gosub waitForBacktrain
             goto main
         }
-        
+
+        # Magic
+        put #echo >Log #fff2de Moving to magic
+        gosub moveToSitRoom
+        put .sel
+        gosub waitForMagic
+        goto main
+
     } else {
         #if ($Enchanting.LearningRate > 30) then {
         #    put #echo >Log #fff2de Moving to backtrain
@@ -113,8 +126,43 @@ checkBurgleCd:
     return
 
 
+moveToBulls:
+    gosub moveToIlaya
+    put .findSpot bull
+    waitforre ^FINDSPOT DONE$
+    return
+
+
+moveToIlaya:
+    # Ilaya Taipa
+    if ($zoneid = 112) then {
+        return
+    }
+
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToIlaya
+    }
+
+    # Leth
+    if ($zoneid = 61) then {
+        gosub automove ilaya
+        goto moveToIlaya
+    }
+    goto moveToIlaya
+
+
 moveToBurgleRoom:
     if ($roomid = %burgleRoom) then return
+    if (%inLeth = 1) then {
+        # Ilaya Taipa
+        if ($zoneid != 112) then {
+            gosub moveToIlaya
+            goto moveToBurgleRoom
+        }
+    }
     gosub automove %burgleRoom
     pause .2
     goto moveToBurgleRoom
@@ -134,6 +182,19 @@ moveToGremlins:
             goto moveToGremlins
         }
         return
+    }
+
+    # Ilaya Taipa
+    if ($zoneid = 112) then {
+        gosub automove leth
+        goto moveToGremlins
+    }
+
+    # Leth
+    if ($zoneid = 61) then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToGremlins
     }
 
     # Crossing
@@ -214,11 +275,8 @@ moveToLawn:
     goto moveToLawn
 
 
-
-
-
-
 moveToSitRoom:
+    if (%inLeth = 1) then gosub moveToIlaya
     if ($roomid = %sitRoom) then return
     gosub automove %sitRoom
     pause .2
@@ -260,7 +318,7 @@ retrieveArrows:
 
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "eighteen") then {
+    if ("%numBolts" = "fifteen") then {
         gosub stow right
         return
     }
@@ -296,7 +354,7 @@ waitForBacktrain:
         put .fight backtrain
         pause 1
     }
-    if (%burgleCooldown = 0 || $Enchanting.LearningRate < 3) then {
+    if (%burgleCooldown = 0 || $Heavy_Thrown.LearningRate > 30 || $Shield_Usage.LearningRate < 5 || $Evasion.LearningRate < 5) then {
         put #script abort all except seltrain
         pause 1
         put #script abort all except seltrain
@@ -353,7 +411,7 @@ waitForMainCombat:
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Light_Thrown)) then {
+    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
         put #script abort all except seltrain
         pause 1
         put #script abort all except seltrain

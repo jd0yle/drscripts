@@ -27,6 +27,7 @@ var useSkin 1
 var useSls 0
 var useStealth 1
 var useAlmanac 0
+var useUsol 0
 
 
 ####################################################################################################
@@ -49,6 +50,8 @@ if ("%opts" = "backtrain") then {
 }
 
 if ($charactername = Selesthiel && "%opts" != "backtrain") then {
+    #var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown
+    #var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
     var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
     var cambrinth mammoth calf
@@ -60,13 +63,17 @@ if ($charactername = Selesthiel && "%opts" != "backtrain") then {
     var debil.prepAt 20
     var ignoreCoL 0
     var arrangeForPart 1
+    var arrangeFull 1
     var useAlmanac 1
     var doObserve 0
+    var useApp 1
 }
 
 if ($charactername = Selesthiel && "%opts" = "backtrain") then {
-    var weapons.skills Heavy_Thrown|Offhand_Weapon|Small_Blunt|Large_Blunt|Bow|Staves|Twohanded_Edged|Twohanded_Blunt|Polearms|Slings|Large_Edged
-    var weapons.items ka'hurst hhr'ata|Empty|hunting bola|ka'hurst hhr'ata|competition shortbow|nightstick|bastard sword|footman's flail|narrow-bladed halberd|leather sling|bastard sword
+    #var weapons.skills Heavy_Thrown|Offhand_Weapon|Small_Blunt|Large_Blunt|Bow|Staves|Twohanded_Edged|Twohanded_Blunt|Polearms|Slings|Large_Edged
+    #var weapons.items ka'hurst hhr'ata|Empty|hunting bola|ka'hurst hhr'ata|competition shortbow|nightstick|bastard sword|footman's flail|narrow-bladed halberd|leather sling|bastard sword
+    var weapons.skills Heavy_Thrown|Large_Blunt|Bow|Staves|Twohanded_Edged|Twohanded_Blunt|Slings
+    var weapons.items ka'hurst hhr'ata|ka'hurst hhr'ata|competition shortbow|nightstick|bastard sword|footman's flail|leather sling
     var cambrinth mammoth calf
     var useSls 0
     var tmSpell pd
@@ -75,7 +82,7 @@ if ($charactername = Selesthiel && "%opts" = "backtrain") then {
     var debil.spell mb
     var debil.prepAt 10
     var useBuffs 1
-    var ignoreCoL 1
+    var ignoreCoL 0
     var arrangeForPart 0
     var useAlmanac 1
     var doObserve 1
@@ -98,6 +105,9 @@ if ($charactername = Qizhmur && "%opts" != "backtrain") then {
     var necroRitual dissection
     var useQe 0
     var arrangeForPart 0
+    var useApp 1
+    var doAppraisal 1
+    var useUsol 0
 }
 
 if ($charactername = Qizhmur && "%opts" = "backtrain") then {
@@ -207,12 +217,47 @@ loop:
     if ($standing != 1) then gosub stand
     gosub checkDeadMob
     gosub pickupLoot
+
+    if ("$charactername" = "Qizhmur" && $SpellTimer.RiteofContrition.active = 1) then {
+        gosub release roc
+    }
+    if ("$charactername" = "Qizhmur" && $SpellTimer.RiteofGrace.active = 1) then {
+        gosub release rog
+    }
+
     if ("$charactername" = "Qizhmur") then {
         gosub checkStancesNEW
     } else {
         gosub checkStances
     }
+
     gosub buffs
+
+    # CYCLICS
+    if (%useUsol = 1) then {
+        var shouldCastUsol 1
+        if ($SpellTimer.UniversalSolvent.active = 1) then var shouldCastUsol 0
+        if ($mana < 80) then var shouldCastUsol 0
+        if ($Targeted_Magic.LearningRate > 27) then var shouldCastUsol 0
+        if ($monstercount < 2) then var shouldCastUsol 0
+
+        if (%shouldCastUsol = 1) then {
+            gosub prep usol
+            gosub waitForPrep
+            gosub cast
+        }
+
+        if ($SpellTimer.UniversalSolvent.active = 1) then {
+            var shouldReleaseUsol 0
+            if ($mana < 60) then var shouldReleaseUsol 1
+            if ("$roomplayers" != "") then var shouldReleaseUsol 1
+            if ($Targeted_Magic.LearningRate > 32) then var shouldReleaseUsol 1
+
+            if (%shouldReleaseUsol = 1) then gosub release usol
+        }
+    } else {
+        if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
+    }
 
     # OBSERVE
     if (%doObserve = 1 && $Astrology.LearningRate < 32) then {
@@ -511,7 +556,8 @@ buffs:
         #mof rit
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 2) then {
             gosub prep maf 10
-            gosub charge %cambrinth 30
+            gosub charge %cambrinth 20
+            gosub charge %cambrinth 20
             gosub invoke %cambrinth
             gosub waitForPrep
             gosub cast
@@ -519,7 +565,8 @@ buffs:
         }
         if ($SpellTimer.Obfuscation.active != 1 || $SpellTimer.Obfuscation.duration < 2) then {
             gosub prep obf 10
-            gosub charge %cambrinth 30
+            gosub charge %cambrinth 20
+            gosub charge %cambrinth 20
             gosub invoke %cambrinth
             gosub waitForPrep
             gosub cast
@@ -527,7 +574,8 @@ buffs:
         }
         if (%usePhp = 1 && $SpellTimer.PhilosophersPreservation.active != 1 || $SpellTimer.PhilosophersPreservation.duration < 3) then {
             gosub prep php 10
-            gosub charge %cambrinth 30
+            gosub charge %cambrinth 20
+            gosub charge %cambrinth 20
             gosub invoke %cambrinth
             gosub waitForPrep
             gosub cast
@@ -615,6 +663,14 @@ buffCol:
 ###      checkWeaponSkills
 ###############################
 checkWeaponSkills:
+    if (%useUsol = 1 && "$%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
+        math weapons.index add 1
+        if (%weapons.index > %weapons.length) then {
+            var weapons.index 0
+            math weapons.targetLearningRate add 5
+            if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+        }
+    }
     if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate) then {
         # By default, don't switch weapons faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 120 seconds before swapping
@@ -729,6 +785,10 @@ checkDeadMob:
                 gosub arrange for part
             }
 
+            if (%arrangeFull = 1) then {
+                gosub arrange full
+            }
+
             var preSkinRightHand $righthand
             gosub skin
             var skinType null
@@ -746,6 +806,27 @@ checkDeadMob:
                     gosub stow right
                     put .braidrope
                     waitforre ^BRAIDROPE DONE$
+                    gosub get my bundling rope
+                }
+                gosub get my %skinType
+                if ("$lefthand" = "Empty") then gosub get my horn
+                gosub bundle
+                gosub tie bundle
+                gosub tie bundle
+                gosub adjust bundle
+                gosub wear bundle
+            }
+
+            if ("$charactername" = "Qizhmur" && "%skinType" != "null") then {
+                gosub remove my bundle
+                gosub put my bundle in my portal
+                gosub stow right
+                gosub stow left
+                gosub get my bundling rope
+                if ("$righthand" != "bundling rope") then {
+                    gosub stow right
+                    put .braidrope
+                    waitforre ^BRAIDROPE DONE$
                     gosub get my rope
                 }
                 gosub get my %skinType
@@ -754,6 +835,7 @@ checkDeadMob:
                 gosub tie bundle
                 gosub adjust bundle
                 gosub wear bundle
+
             }
         }
         gosub loot treasure
@@ -782,14 +864,21 @@ huntApp:
         evalmath nextHuntAt 120 + %t
         return
     }
-    if (%useApp = 1 && %doAppraisal = 1 && %t > %nextAppAt && $Appraisal.LearningRate < 33) then {
-        gosub retreat
-        gosub retreat
-        gosub app my bundle
+    if (%useApp = 1 && %doAppraisal = 1 && %t > %nextAppAt && $Appraisal.LearningRate < 31) then {
+        if (matchre("$roomdesc", "caracal")) then {
+            gosub app caracal
+        }
+        if ("$charactername" = "Selesthiel") then {
+            gosub app bull
+        }
+
+        #gosub retreat
+        #gosub retreat
+        #gosub app my bundle
         evalmath nextAppAt 90 + %t
-        pause
-        put adv
-        pause 5
+        #pause
+        #put adv
+        #pause 5
         return
     }
     if (%usePerc = 1 && %t > %nextPercAt && $Attunement.LearningRate < 33) then {
@@ -861,10 +950,12 @@ performRitual:
     var ritualTarget $1
     # Use dissection to train up First Aid and Skinning
     if ($Skinning.LearningRate < 33 || $First_Aid.LearningRate < 33) then {
-        gosub arrange
-        gosub arrange
-        gosub arrange
-        gosub arrange
+        if ($Skinning.LearningRate < 33) then {
+            gosub arrange
+            gosub arrange
+            gosub arrange
+            gosub arrange
+        }
         gosub stow right
         gosub stow left
         gosub perform preserve on %ritualTarget

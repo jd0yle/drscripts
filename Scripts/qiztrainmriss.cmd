@@ -37,6 +37,8 @@ gosub stow right
 gosub stow left
 gosub release eotb
 gosub release rog
+gosub release roc
+gosub release usol
 gosub retrieveBolts
 gosub stow hhr'ata
 gosub stow bola
@@ -68,6 +70,28 @@ main:
         put .pawn
         waitforre ^PAWN DONE$
 
+        gosub automove bundle
+        gosub remove my bundle
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my skull
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my skull
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my portal
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my portal
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+
         put .dep
         waitforre ^DEP DONE$
 
@@ -76,7 +100,7 @@ main:
 
     }
 
-    if ($Thanatology.LearningRate < 20 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 20 || $Heavy_Thrown.LearningRate < 20 || $Targeted_Magic.LearningRate < 20) then {
+    if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 5 || $Heavy_Thrown.LearningRate < 20 || $Targeted_Magic.LearningRate < 20) then {
         put #echo >Log Train: Going to main combat
         gosub moveToPeccary
         put .fight
@@ -97,6 +121,7 @@ moveToBurgle:
 
     if ("$preparedspell" != "None") then gosub release spell
     if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
+    if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
     if ($SpellTimer.PhilosophersPreservation.active = 1 || $SpellTimer.CalcifiedHide.active = 1 || $SpellTimer.ButchersEye.active = 1 || $SpellTimer.IvoryMask.active = 1) then {
         if ($SpellTimer.RiteofContrition.active != 1) then {
             gosub prep roc
@@ -144,8 +169,8 @@ moveToBurgle:
     }
 
     if ("%zone" = "107") then {
-        if ($roomid = "79") then return
-        gosub automove 79
+        if ($roomid = "299") then return
+        gosub automove 299
         goto moveToBurgle
     }
 
@@ -159,6 +184,7 @@ moveToMriss:
     if ("%zone" = "108") then {
         if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
         if ($SpellTimer.RiteofContrition.active = 1) then gosub release roc
+        if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
         return
     }
     if ("%zone" = "107") then {
@@ -210,8 +236,10 @@ moveToMagic:
 
 moveToPeccary:
     if ("$zoneid" != "108") then gosub moveToMriss
-    if ($roomid = 257) then return
-    gosub automove 257
+    if ($roomid = 195) then return
+    gosub automove 195
+   # if ($roomid = 257) then return
+ #   gosub automove 257
     goto moveToPeccary
 
 
@@ -246,7 +274,7 @@ waitForMagic:
         put .qizhmur
         pause 1
     }
-    if (%burgleCooldown = 0 || $Thanatology.LearningRate < 5 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 ) then {
+    if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 ) then {
         put #script abort all except qiztrainmriss
         pause 1
         put #script abort all except qiztrainmriss
@@ -271,7 +299,7 @@ waitForMainCombat:
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
+    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
         put #script abort all except qiztrainmriss
         pause 1
         put #script abort all except qiztrainmriss

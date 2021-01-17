@@ -34,7 +34,7 @@ var invasioncritters bone amalgam|bone warrior|brine shark|cloud eel|Drogorian s
 var skinnablecritters %skinnablemonsters1|%skinnablemonsters2|%skinnablemonsters3|%skinnablemonsters4|%skinnablemonsters5|%skinnablemonsters6|%skinnablemonsters7|%skinnablemonsters8|%skinnableundead1|%skinnableundead2|%skinnableconstruct
 var nonskinnablecritters %monsters1|%monsters2|%monsters3|%monsters4|%monsters5|%monsters6|%monsters7|%undead1|%undead2|%undead3|%undead4|construct
 
-var ritualcritters %monsters1|%monsters2|%monsters3|%monsters4|%monsters5|%monsters6|%monsters7|%skinnablemonsters1|%skinnablemonsters2|%skinnablemonsters3|%skinnablemonsters4|%skinnablemonsters5|%skinnablemonsters6|%skinnablemonsters7|%skinnablemonsters8|%specialmanipulate
+var ritualcritters %monsters1|%monsters2|%monsters3|%monsters4|%monsters5|%monsters6|%monsters7|%skinnablemonsters1|%skinnablemonsters2|%skinnablemonsters3|%skinnablemonsters4|%skinnablemonsters5|%skinnablemonsters6|%skinnablemonsters7|%skinnablemonsters8|%specialmanipulate|gremlin
 var normnoshockcritters %construct|%skinnableconstruct
 var absnoshockcritters %construct|%skinnableconstruct|%undead1|%undead2|%undead3|%undead4|%skinnableundead1|%skinnableundead2
 var allundead %undead1|%undead2|%undead3|%undead4|%skinnableundead1|%skinnableundead2

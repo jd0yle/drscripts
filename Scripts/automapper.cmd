@@ -668,7 +668,7 @@ move.stand:
      matchre return.clear ^You stand back up
      matchre return.clear ^You are already standing
      put stand
-     matchwait
+     matchwait 20
 move.retreat:
      pause 0.0001
      pause 0.0001

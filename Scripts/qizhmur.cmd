@@ -51,8 +51,8 @@ loop:
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
         gosub prep maf 5
-        gosub charge my %cambrinth 20
-        gosub charge my %cambrinth 20
+        gosub charge my %cambrinth 30
+        gosub charge my %cambrinth 30
         gosub invoke my %cambrinth
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
@@ -61,8 +61,8 @@ loop:
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
         gosub prep obf 5
-        gosub charge my %cambrinth 20
-        gosub charge my %cambrinth 20
+        gosub charge my %cambrinth 25
+        gosub charge my %cambrinth 25
         gosub invoke my %cambrinth
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast

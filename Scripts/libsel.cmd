@@ -167,7 +167,7 @@ var skin 0
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
 #######################################################################################################################################
 
-action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
+#action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
 
 #action send dump junk when ^The room is too cluttered to find anything here\!
 
@@ -179,6 +179,13 @@ action send stand when ^You had better stand up first
 action send stand when ^You can't do that while lying down
 action send stand when ^You'd have better luck standing up
 action send stand when ^You should stand up first.
+
+#######################################################################################################################################
+
+action send 2 #parse MOVE FAILED when DESTINATION NOT FOUND
+
+#######################################################################################################################################
+
 
 #Skip to the end of the file, don't execute this because this is just an include
 goto end.of.file
@@ -370,6 +377,7 @@ braid1:
 matchre return ^You begin to carefully braid
 matchre return ^Roundtime
 matchre return ^You are a little too busy
+matchre return ^You need to have
 put braid %todo
 goto retry
 
@@ -498,6 +506,7 @@ matchre return ^You collapse your telescope.
 matchre return ^You need to be holding the telescope first.
 matchre return ^You close
 matchre return ^The door
+matchre return ^What were
 put close %todo
 goto retry
 
@@ -750,7 +759,7 @@ matchre return ^You hand
 matchre return ^What is it
 matchre return ^Randal
 matchre return ^The Servant accepts
-matchre return ^The Servant ignores your offer
+matchre return ignores your offer
 put give %todo
 goto retry
 
@@ -1079,6 +1088,7 @@ matchre return ^You open your
 matchre return ^You open
 matchre return already open.$
 matchre return ^You rattle
+matchre return ^What were
 put open %todo
 goto retry
 
@@ -1293,6 +1303,7 @@ var toto $0
 pull1:
 matchre return ^You tug
 matchre return Roundtime
+matchre return ^You are a little too busy with combat to worry about that right now.
 put pull %todo
 goto retry
 
@@ -1332,6 +1343,7 @@ matchre return ^Your corruption fades
 matchre return ^You don't have a Shadow Servant
 matchre return ^A.*Shadow Servant.*disappears\.$
 matchre return ^The Rite of Contrition
+matchre return ^The greenish hues
 put release %todo
 goto retry
 
@@ -1501,6 +1513,8 @@ matchre return ^Cormyn shakes his head and says
 matchre return ^Cormyn looks puzzled
 matchre return ^Cormyn whistles and says
 matchre return Oweede
+matchre return ^You ask
+matchre return Dokora|Kronar|Lirum
 put sell %todo
 goto retry
 
@@ -1661,6 +1675,7 @@ matchre return ^You hang your
 matchre return ^You open your pouch
 matchre return ^There doesn't seem to be anything left in the pile\.$
 matchre return ^You need a free hand to pick that up.
+matchre return ^You try to
 matchre location.unload ^You should unload the
 matchre location.unload ^You need to unload the
 matchre stowing too long to fit
@@ -1856,6 +1871,10 @@ matchre return ^You turn
 matchre return already at the contents
 matchre return ^But you're not
 matchre return ^The book is already
+matchre return ^You carefully
+matchre return ^I could not
+matchre return ^Roundtime
+matchre return ^You attempt
 put turn %todo
 goto retry
 
@@ -1974,15 +1993,25 @@ goto retry
 
 automove:
 var toroom $0
+var moveAttemptsRemaining 5
 automovecont:
 match return YOU HAVE ARRIVED
 match automovecont1 YOU HAVE FAILED
 match automovecont1 AUTOMAPPER MOVEMENT FAILED!
 match automovecont1 MOVE FAILED
-put #goto %toroom
-matchwait
+matchre automovecont1 DESTINATION NOT FOUND
+put #walk %toroom
+#put #goto %toroom
+matchwait 120
 
 automovecont1:
+math moveAttemptsRemaining subtract 1
+if (%moveAttemptsRemaining < 1) then {
+    echo [libsel automove]: No more attempts, it's dead, Jim
+    return
+} else {
+    echo [libsel automove]: Automove failed, retrying (%moveAttemptsRemaining)
+}
 pause
 put look
 pause
