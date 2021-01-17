@@ -6,7 +6,7 @@ include libsel.cmd
 #action send 2 #parse MOVE FAILED when DESTINATION NOT FOUND
 
 pause
-gosub automove -1
+gosub automove bank
 echo After Move
 
 exit
