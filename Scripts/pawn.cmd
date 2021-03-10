@@ -3,6 +3,8 @@ include libsel.cmd
 ####################################################################################################
 # CONFIG
 
+var container backpack
+
 if ("$charactername" = "Qizhmur") then {
     var container portal
 }

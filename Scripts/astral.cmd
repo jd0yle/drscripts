@@ -72,8 +72,11 @@ echo %destShardName %pillar
 
 gosub awake
 
+put .astro
+waitforre ^ASTRO DONE$
+
 waitForConcentration:
-    if ($concentration < 75) then {
+    if ($concentration < 30) then {
         pause 2
         goto waitForConcentration
     }

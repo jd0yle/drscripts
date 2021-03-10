@@ -4,7 +4,13 @@ var options %0
 
 if ("$charactername" = "Selesthiel") then {
     var specialStorage tort sack
+    var container backpack
+} else {
+    var specialStorage skull
+    var container skull
 }
+
+
 
 
 var scrolls scroll|ostracon|\broll|leaf|vellum|tablet|(?<!of )parchment|bark|papyrus
@@ -16,9 +22,11 @@ var gems4 opal|pearl|pebble|peridot|quartz.(?!gargoyle)|ruby|sapphire|spinel|sta
 var gweths (?:jadeite|kyanite|lantholite|sjatmal|waermodi|lasmodi) stones
 var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox
-var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover|card
+var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover|card|kirmhiro draught
 var ammo basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock
 var coin coin
+
+var gems %gems1|%gems2|%gems3|%gems4
 
 #var box (?:%boxtype) (?:%boxes)
 #var boxes (?:brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox)
@@ -28,6 +36,10 @@ var lootables %scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%miscKeep|%ammo
 var toLoot null
 action (invFeet) var toLoot %toLoot|$1 when (%lootables)
 action (invFeet) off
+
+var newGemPouch 0
+action var newGemPouch 1 when ^You think the gem pouch is too full to fit another gem into.
+action var newGemPouch 1 when ^WARNING: You are carrying an extremely large number of items on your person\.$
 
 gosub pickupLoot
 gosub pickupLootAtFeet
@@ -58,6 +70,21 @@ pickupLoot:
         eval preLootLen len("$roomobjs")
         if (contains("$roomobjs", "%lootables(%loot.index)")) then {
             gosub stow %lootables(%loot.index)
+            if (%newGemPouch = 1) then {
+                if ("$lefthand" != "Empty") then {
+                    gosub put my $lefthandnoun in my %container
+                }
+                gosub stow right
+                gosub stow left
+                gosub remove my gem pouch
+                gosub put my gem pouch in my portal
+                gosub get gem pouch from my %container
+                gosub wear my gem pouch
+                gosub fill my gem pouch with my %container
+                gosub tie my gem pouch
+                gosub stow %lootables(%loot.index)
+                var newGemPouch 0
+            }
         }
         if (len("$roomobjs") != %preLootLen) then {
             goto pickupLootLoop

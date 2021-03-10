@@ -9,7 +9,7 @@
 
 include libsel.cmd
 
-if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 20) then {
+if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
     gosub release shadowling
     put .cast shadowling
     waitforre ^CAST DONE
@@ -17,28 +17,28 @@ if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 20) t
 
 gosub waitConcentration
 
-if ($SpellTimer.BraunsConjecture.active = 0 || $SpellTimer.BraunsConjecture.duration < 20) then {
+if ($SpellTimer.BraunsConjecture.active = 0 || $SpellTimer.BraunsConjecture.duration < 5) then {
     put .cast bc
     waitforre ^CAST DONE
 }
 
 gosub waitConcentration
 
-if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 20) then {
+if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 5) then {
     put .cast dc
     waitforre ^CAST DONE
 }
 
 gosub waitConcentration
 
-if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 20) then {
+if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 5) then {
     put .cast aus
     waitforre ^CAST DONE
 }
 
 gosub waitConcentration
 
-if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 20) then {
+if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 5) then {
     put .cast pg
     waitforre ^CAST DONE
 }

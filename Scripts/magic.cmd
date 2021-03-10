@@ -13,9 +13,6 @@ action var observeOffCooldown false when ^You have not pondered your last observ
 action var observeOffCooldown false when ^You are unable to make use of this latest observation
 
 
-
-action put #echo >Log Almanac: $1 when You believe you've learned something significant about (.*)!$
-
 var nextPercAt 0
 timer start
 
@@ -50,7 +47,7 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep psy 10
-        gosub charge my calf 50
+        gosub charge my calf 60
         gosub invoke my calf
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
@@ -62,7 +59,7 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep sm 20
-        gosub charge my calf 20
+        gosub charge my calf 25
         gosub invoke my calf
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
@@ -73,7 +70,7 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep cv 10
-        gosub charge my calf 40
+        gosub charge my calf 45
         gosub invoke my calf
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
@@ -96,6 +93,6 @@ waitMana:
     goto waitMana
 
 
- done:
-     gosub stow my %cambrinth
-     exit
+done:
+    gosub stow my %cambrinth
+    exit

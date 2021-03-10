@@ -17,12 +17,17 @@ timer start
 gosub stow right
 gosub stow left
 
+gosub release cyclic
+
 loop:
+    if ($SpellTimer.RiteofContrition.active = 1) then {
+        gosub release roc
+    }
     if (%t > %nextPercAt && $Attunement.LearningRate < 33) then {
          gosub perc mana
          evalmath nextPercAt (60 + %t)
     } else if (%t > %nextAppAt && $Appraisal.LearningRate < 33) then {
-        gosub app my bundle
+        gosub app my gem pouch
         evalmath nextAppAt (90 + %t)
     }
     if (%useRog = 1 && %t > %nextRogAt) then {
@@ -40,9 +45,9 @@ loop:
     if (%useRog = 0 && $Utility.LearningRate < 33) then {
        if ($preparedspell != None) then gosub release spell
        var isFullyPrepped 0
-       gosub prep eotb 5
-       gosub charge my %cambrinth 20
-       gosub charge my %cambrinth 20
+       gosub prep symbiosis
+       gosub prep eotb 1
+       gosub charge my %cambrinth 11
        gosub invoke my %cambrinth
        if (%isFullyPrepped != 1) then gosub waitForPrep
        gosub cast
@@ -50,9 +55,9 @@ loop:
     if ($Warding.LearningRate < 33) then {
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
-        gosub prep maf 5
-        gosub charge my %cambrinth 30
-        gosub charge my %cambrinth 30
+        gosub prep symbiosis
+        gosub prep maf 1
+        gosub charge my %cambrinth 11
         gosub invoke my %cambrinth
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
@@ -60,9 +65,9 @@ loop:
     if ($Augmentation.LearningRate < 33) then {
         if ($preparedspell != None) then gosub release spell
         var isFullyPrepped 0
-        gosub prep obf 5
-        gosub charge my %cambrinth 25
-        gosub charge my %cambrinth 25
+        gosub prep symbiosis
+        gosub prep obf 1
+        gosub charge my %cambrinth 11
         gosub invoke my %cambrinth
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast

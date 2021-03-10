@@ -58,10 +58,8 @@ if (%useCambrinth = 1) then {
     if ("%worncambrinth" != 1) then {
         gosub get my %cambrinth
     }
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
-    gosub charge my %cambrinth 20
+    gosub charge my %cambrinth 40
+    gosub charge my %cambrinth 40
     gosub invoke my %cambrinth
 } else {
     gosub harness 20
@@ -69,7 +67,8 @@ if (%useCambrinth = 1) then {
     gosub harness 20
     gosub harness 20
 }
-goto waitPrep
+gosub waitPrep
+goto done
 
 waitPrep:
     pause 1
@@ -78,7 +77,7 @@ waitPrep:
     if ("%worncambrinth" != 1) then {
         gosub stow my %cambrinth
     }
-    goto done
+    return
 
 
 ritualSpell:
@@ -86,7 +85,7 @@ ritualSpell:
     if (%spell = bc) then gosub prep bc 700
     if (%spell = dc) then gosub prep dc 600
     gosub invoke my %focus
-    if %isFullyPrepped != 1 then goto waitPrep
+    if %isFullyPrepped != 1 then gosub waitPrep
     gosub cast
     gosub stow my %focus
     goto done

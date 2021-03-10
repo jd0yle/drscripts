@@ -2,7 +2,12 @@ include libsel.cmd
 
 var noloop %1
 
-action put #echo >Log Almanac: $1 when You believe you've learned something significant about (.*)!$
+var almanacContainer thigh bag
+
+if ("$charactername" = "Qizhmur") then var almanacContainer skull
+
+var isAsleep 0
+action var isAsleep 1 when ^You awaken from your reverie
 
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 
@@ -13,10 +18,16 @@ main:
         put #script pause all except almanac
         if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
             gosub get my almanac
+            gosub awake
         }
         if ("$lefthandnoun" != "almanac") then gosub swap
         gosub study my almanac
-        gosub put my almanac in my thigh bag
+        gosub put my almanac in my %almanacContainer
+        if (%isAsleep = 1) then {
+            gosub sleep
+            gosub sleep
+            var isAsleep 0
+        }
         put #var lastAlmanacGametime $gametime
         put #script resume all
     }

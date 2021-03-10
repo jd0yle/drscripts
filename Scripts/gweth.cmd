@@ -4,6 +4,7 @@ action var channelIsClosed 1 when ^With a moment of focus you close your mind to
 
 touch:
   matchre channel (A chorus of foreign thoughts joins your own.|Since you already have telepathy, nothing more happens.)
+  matchre channel You touch the stones on a gwethdesuan.
   match exit crumble
   put touch my gweth
   matchwait

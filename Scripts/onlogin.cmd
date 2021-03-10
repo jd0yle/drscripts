@@ -1,4 +1,4 @@
-include libsel.cmd
+#include libsel.cmd
 
 send sort auto headtotoe
 
@@ -9,6 +9,6 @@ send sort auto headtotoe
 #    #put title pre choose moon %titleList(%r)
 #}
 
-if ($standing != 1) then gosub stand
+if ($standing != 1) then send stand
 
 send befriend list

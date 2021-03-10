@@ -1,28 +1,30 @@
-var lock 1
-if "$roomplayers" != "" then var lock 0
-if "$1" != "" then var lock 1
+include libsel.cmd
 
-if $roomid = 258 || "$roomname" != "Private Home Interior" then {
+
+
+if ($roomid = 258 || "$roomname" != "Private Home Interior") then {
     var obj house
-} else {
-    var obj door
+}
+if ($roomid = 640) then {
+    var obj third farmstead
 }
 
-send unlock %obj
+if ("$roomname" = "Private Home Interior") then var obj door
 
-send open %obj
+gosub unlock %obj
+gosub open %obj
+gosub move go %obj
+
+if ("%obj" != "door") then {
+    gosub close door
+    gosub lock door
+} else {
+    var closeObj house
+    if (contains("$roomobjs", "farmstead") then var closeObj farmstead
+    gosub close %closeObj
+    gosub lock %closeObj
+}
+
 pause .2
-move go %obj
-
-if "%obj" = "house" then {
-    var obj door
-} else {
-    var obj house
-}
-
-if %lock = 1 then {
-    send close %obj
-    send lock %obj
-}
-
 put #parse HOUSE DONE
+exit

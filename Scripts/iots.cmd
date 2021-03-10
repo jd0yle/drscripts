@@ -4,7 +4,7 @@ include libsel.cmd
 
 var ritualFocus inauri plush
 var isFocusWorn 0
-var defaultMana 750
+var defaultMana 800
 
 ######################
 

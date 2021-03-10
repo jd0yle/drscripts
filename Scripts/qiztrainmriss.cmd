@@ -47,7 +47,7 @@ main:
     if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub checkBurgleCd
 
     if (%useBurgle = 1 &&  %burgleCooldown = 0) then {
-        put #echo >Log Train: Going to burgle
+        put #echo >Log #cc99ff Train: Going to burgle
         gosub moveToBurgle
         gosub release spell
         gosub prep eotb
@@ -101,14 +101,14 @@ main:
     }
 
     if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 5 || $Heavy_Thrown.LearningRate < 20 || $Targeted_Magic.LearningRate < 20) then {
-        put #echo >Log Train: Going to main combat
+        put #echo >Log #cc99ff Going to main combat
         gosub moveToPeccary
         put .fight
         gosub waitForMainCombat
         goto main
     }
 
-    put #echo >Log Train: Going to magic
+    put #echo >Log #cc99ff Going to magic
     gosub moveToMagic
     put .qizhmur
     gosub waitForMagic
@@ -331,7 +331,7 @@ checkBurgleCd:
     gosub burgle recall
     pause
     evalmath nextBurgleCheck (%burgleCooldown * 60) + %t
-    put #echo >Log Next burgle check in %burgleCooldown minutes (%nextBurgleCheck s)
+    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes (%nextBurgleCheck s)
     return
 
 

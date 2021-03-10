@@ -34,15 +34,33 @@ if ("%mob" = "gremlin") then {
     var waitroomid 89
 }
 
+if ("%mob" = "redgremlin") then {
+    var checkRoomId 622
+    var maxRoomId 632
+    var waitroomid 545
+}
+
 if ("%mob" = "peccary") then {
     var checkRoomId 257
     var maxRoomId 263
     var waitroomid 163
 }
 
+if ("%mob" = "warklin") then {
+    var checkRoomId 39
+    var maxRoomId 47
+    var waitroomid 8
+}
 
-if ($roomid >= %checkRoomId && $roomid <= maxRoomId) then {
-    pause .2
+if ("%mob" = "wyvern") then {
+    var checkRoomId 567
+    var maxRoomId 572
+    var waitroomid 436
+}
+
+
+if ($roomid >= %checkRoomId && $roomid <= %maxRoomId && "$roomplayers" = "") then {
+    pause 1
     goto done
 }
 
@@ -60,7 +78,7 @@ findRoom:
 
 
 checkThisRoom:
-    if ("$roomplayers" != "" || $monstercount >= 2) then {
+    if (("$roomplayers" != "" || $monstercount >= 2) && !matchre("$roomplayers", "Maori")) then {
         math checkRoomId add 1
         if (%checkRoomId > %maxRoomId) then {
             gosub automove %waitroomid
@@ -70,6 +88,7 @@ checkThisRoom:
             echo * WAITING 120 SECONDS
             echo ******************************
             pause 120
+            gosub shiver
             goto init
         }
         return
@@ -79,10 +98,12 @@ checkThisRoom:
 
 
 done:
+    echo FINDSPOT DONE
     put #parse FINDSPOT DONE
     exit
 
 
 doneFail:
+    echo FINDSPOT FAIL
     put #parse FINDSPOT FAIL
     exit

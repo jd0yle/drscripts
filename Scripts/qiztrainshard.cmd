@@ -71,38 +71,40 @@ main:
         put .burgle
         waitforre ^BURGLE DONE$
 
+        gosub devourIfNeeded
+
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        gosub automove crossing
-
-        #gosub automove bundle
-        #gosub remove my bundle
-        #gosub sell my bundle
-        #gosub stow right
-        #gosub stow left
-        #gosub get bundle from my skull
-        #gosub sell my bundle
-        #gosub stow right
-        #gosub stow left
-        #gosub get bundle from my skull
-        #gosub sell my bundle
-        #gosub stow right
-        #gosub stow left
-        #gosub get bundle from my portal
-        #gosub sell my bundle
-        #gosub stow right
-        #gosub stow left
-        #gosub get bundle from my portal
-        #gosub sell my bundle
-        #gosub stow right
-        #gosub stow left
+        gosub automove n gate
 
         gosub automove portal
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         gosub move go meeting portal
 
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+
+        gosub automove bundle
+        gosub remove my bundle
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my skull
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my skull
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my portal
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my portal
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
 
         put .dep
         waitforre ^DEP DONE$
@@ -111,21 +113,53 @@ main:
 
     }
 
-    if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 5 || $Heavy_Thrown.LearningRate < 20 || $Targeted_Magic.LearningRate < 20) then {
+    if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30) then {
+        put #echo >Log #cc99ff Going to magic
+        gosub moveToMagic
+        put .qizhmur
+        gosub waitForMagic
+    }
+
+    #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
         put #echo >Log #cc99ff Going to main combat
-        #gosub moveToYellowGremlin
-        gosub moveToWarklin
+        gosub moveToYellowGremlin
+        #gosub moveToRedGremlin
         put .fight
         gosub waitForMainCombat
         goto main
-    }
+    #}
 
-    put #echo >Log #cc99ff Going to magic
-    gosub moveToMagic
-    put .qizhmur
-    gosub waitForMagic
 
     goto main
+
+
+
+devourIfNeeded:
+    if ($bleeding = 1) then {
+        if ($SpellTimer.Devour.active = 1) then gosub waitToDevour
+        gosub stow right
+        gosub stow left
+        if ("$preparedspell" != "none") then gosub release spell
+
+        gosub get my material
+        if ("$righthandnoun"  != "material") then {
+            put #echo >Log #FFFF00 OUT OF MATERIAL
+            return
+        }
+
+        put #echo >Log #FFFF00 HEALING WITH DEVOUR
+        put .devour
+        waitforre ^DEVOUR DONE$
+        goto devourIfNeeded
+    }
+    return
+
+
+waitToDevour:
+    if ($bleeding != 1 || $SpellTimer.Devour.active != 1) then return
+    pause 1
+    goto waitToDevour
+
 
 
 moveToBurgle:
@@ -140,37 +174,6 @@ moveToBurgle:
             gosub waitForPrep
             gosub cast
         }
-    }
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub automove ntr
-        goto moveToBurgle
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove n gate
-        goto moveToBurgle
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove w gate
-        goto moveToBurgle
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        if ("$roomid" = "450") then return
-        gosub automove 450
-        goto moveToBurgle
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove w gate
-        goto moveToBurgle
     }
 
     # Shard West Gate Area
@@ -204,40 +207,7 @@ moveToBurgle:
 
 moveToMagic:
     gosub setZone
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub automove ntr
-        goto moveToMagic
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove crossing
-        goto moveToMagic
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove crossing
-        goto moveToMagic
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        gosub automove crossing
-        goto moveToMagic
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        gosub move go meeting portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        goto moveToMagic
-    }
-
+    #545
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
@@ -265,6 +235,8 @@ moveToMagic:
     }
 
     goto moveToMagic
+
+
 
 
 moveToRedGremlin:
@@ -306,9 +278,9 @@ moveToRedGremlin:
     }
 
     goto moveToRedGremlin
-
-
-
+    
+    
+    
 moveToYellowGremlin:
     gosub setZone
 
@@ -343,53 +315,7 @@ moveToYellowGremlin:
     }
 
     goto moveToYellowGremlin
-
-
-
-moveToWarklin:
-    gosub setZone
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub automove 46
-        put .findSpot warklin
-        waitforre ^FINDSPOT DONE$
-        return
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove 396
-        goto moveToWarklin
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove ntr
-        goto moveToWarklin
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        gosub automove n gate
-        goto moveToWarklin
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove ne gate
-        goto moveToWarklin
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        gosub automove portal
-        gosub move go exit portal
-        goto moveToWarklin
-    }
-
-    echo No move target found, zoneid = $zoneid  zone = %zone
-    goto moveToWarklin
+        
 
 
 setZone:
@@ -423,7 +349,8 @@ waitForMagic:
         put .qizhmur
         pause 1
     }
-    if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 ) then {
+    #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < -1 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 ) then {
+    if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < -1 || $Warding.LearningRate > 30 ) then {
         put #script abort all except qiztrainshard
         pause 1
         put #script abort all except qiztrainshard
@@ -448,7 +375,7 @@ waitForMainCombat:
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
+    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 0 && $Shield_Usage.LearningRate > 20 && $Parry_Ability.LearningRate > 20 && $Heavy_Thrown.LearningRate > 25 && $Targeted_Magic.LearningRate > 0)) then {
         put #script abort all except qiztrainshard
         pause 1
         put #script abort all except qiztrainshard
@@ -461,6 +388,7 @@ waitForMainCombat:
         return
     }
     goto waitForMainCombat
+
 
 
 

@@ -12,6 +12,9 @@ var skillsets magic|offens|defens|survival|lore
 eval len count("%skillsets", "|")
 var index 0
 
+#####
+# CONSTELLATIONS AND PLANETS TO OBSERVE PER SKILLSET
+#####
 var magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
 var lore forge|Amlothi|Verena|Phoenix|Xibar
 var offens Estrilda|Szeldia|forge|Spider
@@ -25,15 +28,24 @@ action var tooInjured true when ^You are unable to hold the
 action var tooInjured true when ^The pain is too much
 
 
+#
 # Initialize $lastObserveAt if it doesn't have a valid value
+#
 if (!($lastObserveAt > 0)) then put #var lastObserveAt 0
 
 var previousLastObserveAt $lastObserveAt
 
+#
 # The timer on observations is random from 2-4 minutes. If it has been longer than that, force it.
+#
 evalmath timeSinceLastObserve $gametime - $lastObserveAt
 if (%timeSinceLastObserve > 240) then var force true
 
+
+
+###############################
+###      main
+###############################
 main:
     if (%force = false && $isObsOnCd = true) then goto done
     gosub checkPredState
@@ -56,6 +68,9 @@ main:
         waitforre ^CAST DONE$
     }
 
+    ###############################
+    ###      main.loop
+    ###############################
     main.loop:
         if ("$lefthandnoun" != "telescope") then {
             gosub stow right
@@ -64,6 +79,9 @@ main:
             gosub swap
         }
         gosub this.retreat
+        #
+        # If we can't use the telescope, just OBSERVE without it
+        #
         if (%tooInjured = true) then {
             gosub observe %objects(%objindex) in sky
         } else {
@@ -77,6 +95,9 @@ main:
 
 
 
+###############################
+###      checkPredState
+###############################
 checkPredState:
     if ($lastPredictionAt > $lastPredStateAllAt) then {
         #echo "No PRED STATE ALL since last PREDICTION, do predstateall"
@@ -89,6 +110,9 @@ checkPredState:
 
 
 
+###############################
+###      findSkillSet
+###############################
 findSkillSet:
     # echo findSkillSet Checking index = %index %skillsets(%index) $predictPool.%skillsets(%index)
     if ($predictPool.%skillsets(%index) != complete) then {

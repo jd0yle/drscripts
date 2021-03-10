@@ -1,66 +1,39 @@
-include libsel.cmd
-
-#action put #echo >Everything $1 when ^(.*)$
-
-#action echo Caught when DESTINATION NOT FOUND
-#action send 2 #parse MOVE FAILED when DESTINATION NOT FOUND
-
-pause
-gosub automove bank
-echo After Move
-
-exit
 
 
-asdfautomove:
-    var toroom $0
-    var moveAttemptsRemaining 5
+action #setvariable heal 1 when ^Selesthiel whispers, \"heal\"
+action #setvariable heal 2 when ^Selesthiel whispers, \"heal again\"
+action #setvariable poison 1 when ^Selesthiel whispers, \"poison\"
+action #setvariable expSleep 1 when ^Selesthiel whispers, \"!sleep\"
+action #setvariable expSleep 2 when ^Selesthiel whispers, \"!awaken\"
 
-asdfautomovecont:
-    match return YOU HAVE ARRIVED
-    match automovecont1 YOU HAVE FAILED
-    match automovecont1 AUTOMAPPER MOVEMENT FAILED!
-    match automovecont1 MOVE FAILED
-    matchre automovecont1 DESTINATION NOT FOUND
-    put #walk %toroom
-    matchwait 30
-    goto automovecont1
+if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 
-asdfautomovecont1:
-    math moveAttemptsRemaining subtract 1
-    if (%moveAttemptsRemaining < 1) then {
-        echo No more attempts, it's dead, Jim
-        return
+loop:
+    if ($heal = 1 || $heal = 2) then {
+        #do the heal thing
     }
-    pause 1
-    put look
-    pause 1
-    goto automovecont
+    if ($poison = 1) then {
+        #do the poison thing
+    }
 
-
-exit
-
-
-
+    gosub studyAlmanac
+    pause 2
+goto loop
 
 
 
 
 
 
-var charges null
-action var charges $1; put #echo >Log Gweth charges: $1 when ^It has (\d+) charges
+studyAlmanac:
+    evalmath nextStudyAt $lastAlmanacGametime + 600
 
-start:
-    gosub get gweth from my tel case
-    gosub focus my gweth
-    gosub lower ground
-    gosub get tag from tag sack
-    gosub get my quill
-    put write %charges
-    gosub put my quill in my bag
-    gosub get my gweth
-    put put my tag on my gweth
-    pause
-    gosub put my gweth in my haversack
-    goto start
+    if (%nextStudyAt < $gametime) then {
+        if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
+            gosub get my almanac
+        }
+        gosub study my almanac
+        gosub stow my almanac
+        put #var lastAlmanacGametime $gametime
+    }
+    return

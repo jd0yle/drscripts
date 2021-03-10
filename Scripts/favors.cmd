@@ -15,6 +15,7 @@ favorLoop:
     pause
     if (%orbIsReady = 1) then {
         gosub placeOrb
+        put favor
         goto favorLoop
     }
     gosub collectRocks
@@ -40,6 +41,23 @@ placeOrb:
 
 collectRocks:
     put research fundamental 300
+
+    evalmath nextAppGametime $lastAppGametime + 120
+    if ($gametime > %nextAppGametime) then {
+        gosub get my gem pouch from my portal
+        gosub appraise my gem pouch
+        gosub put my gem pouch in my portal
+        put #var lastAppGametime $gametime
+    }
+
+    put .observe
+    waitforre ^OBSERVE DONE$
+
+    if ($Astrology.LearningRate < 15) then {
+        put .predict
+        waitforre ^PREDICT DONE$
+    }
+
     gosub collect rock
     gosub kick pile
 

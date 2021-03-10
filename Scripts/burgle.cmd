@@ -525,10 +525,11 @@ DONE_3:
 	matchwait 5
 
 BURGLETIMER:
-	put #echo >log red New Burgle Cooldown: $1 Rois
-	put #echo >log red Burgled %successful items
-	put #echo >log red Found following rooms: %rooms_captured
-	     if ("%item3" != "NULL") then
+	put #echo >log red [burgle] New Burgle Cooldown: $1 Rois
+	#put #echo >log red Burgled %successful items
+	#put #echo >log red Found following rooms: %rooms_captured
+	goto END
+     if ("%item3" != "NULL") then
           {
                put #echo >log red Found: %item1, %item2, %item3
                goto END

@@ -377,7 +377,7 @@ bundle:
     matchre return ^You try to stuff your.*into the bundle but can't seem to find a good spot\.
     matchre return ^You stuff your
     matchre return ^You bundle up your
-    matchre bundle2 ^That's not going to work\.
+    matchre return ^That's not going to work\.
     put bundle
     goto retry
 
@@ -434,6 +434,7 @@ cast:
     matchre return ^Return
     matchre return ^Your spell backfires
     matchre return aids your spell\.$
+    matchre return aid your spell\.$
     put cast %todo
     goto retry
 
@@ -458,6 +459,7 @@ charge:
     charge1:
     matchre return ^Roundtime
     matchre return ^I could not find
+    matchre return ^You are in no condition to do that
     put charge %todo
     goto retry
 
@@ -646,11 +648,27 @@ matchre return ^Overall state of mind:
     goto retry
 
 
+fill:
+    var todo $0
+    fill1:
+    var location fill1
+    matchre return Roundtime
+    matchre return You
+    matchre return There aren't
+    put fill %todo
+    goto retry
+
+
+
 fire:
     var todo $0
     fire1:
     var location fire1
     matchre return Roundtime
+    matchre return ^There is nothing else to face
+    matchre return ^What are you trying to attack
+    matchre return ^That weapon must be in your right hand to fire
+    matchre return ^You turn to face
     put fire %todo
     goto retry
 
@@ -851,6 +869,7 @@ invoke:
     matchre return ^You don't have any
     matchre return ^A finely balanced tago suddenly leaps
     matchre return ^Roundtime
+    matchre return ^You are in no condition
     put invoke %todo
     goto retry
 
@@ -1135,6 +1154,7 @@ perform:
     var location perform1
     var todo $0
     perform1:
+    matchre return ^You cannot harvest useful material from the corpse unless it is preserved first\.
     matchre return ^A skinned creature is worthless
     matchre return ^You've already performed
     matchre return ^The blood on your palm bubbles slightly
@@ -1149,6 +1169,7 @@ perform:
     matchre return ^Both
     matchre return  too injured to be a good specimen\.$
     matchre return ^Roundtime
+    matchre return ^The harvesting ritual performed
     put perform %todo
     goto retry
 
@@ -1283,6 +1304,7 @@ put:
     matchre return ^With a flick
     matchre return ^Roundtime
     matchre return ^That's too heavy to go in there\!$
+    matchre return ^Perhaps you should be holding that first.$
     put put %todo
     goto retry
 
@@ -1316,6 +1338,7 @@ release:
     var location release1
     var todo $0
     release1:
+    if ("$preparedspell" = "none") then return
     matchre return ^Type RELEASE HELP for more options\.
     matchre return ^You aren't harnessing any mana.
     matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
@@ -1335,6 +1358,8 @@ release:
     matchre return ^A.*Shadow Servant.*disappears\.$
     matchre return ^The Rite of Contrition
     matchre return ^The greenish hues
+    matchre return sphere suddenly flares with a cold light and vaporizes!$
+    matchre return ^You cease your shadow weaving.$
     put release %todo
     goto retry
 
@@ -1507,6 +1532,7 @@ sell:
     matchre return ^Cormyn whistles and says
     matchre return Oweede
     matchre return ^You ask
+    matchre return Aelik
     matchre return Dokora|Kronar|Lirum
     put sell %todo
     goto retry
@@ -1727,6 +1753,7 @@ swap:
     matchre return ^You switch your
     matchre return ^Your eyes blaze
     matchre return ^With a quiet
+    matchre return  too injured to do that.$
     put swap %todo
     goto retry
 
@@ -1845,6 +1872,10 @@ tie:
     tie1:
     matchre return Once you've tied off your bundle
     matchre return ^Using the length
+    matchre return ^You tie
+    matchre return ^The gem pouch has already
+    matchre return ^Tie what
+    matchre return ^But this bundle
     put tie %todo
     goto retry
 
@@ -1899,6 +1930,7 @@ unlock:
     matchre return ^You rattle
     matchre return already open.$
     matchre return ^You don't have a key
+    matchre return ^The door is open.
     put unlock %todo
     goto retry
 
@@ -1978,30 +2010,30 @@ wield:
 ########################################################################
 
 automove:
-var toroom $0
-var moveAttemptsRemaining 5
-automovecont:
-match return YOU HAVE ARRIVED
-match automovecont1 YOU HAVE FAILED
-match automovecont1 AUTOMAPPER MOVEMENT FAILED!
-match automovecont1 MOVE FAILED
-matchre automovecont1 DESTINATION NOT FOUND
-put #walk %toroom
-#put #goto %toroom
-matchwait 120
+    var toroom $0
+    var moveAttemptsRemaining 5
+    automovecont:
+    match return YOU HAVE ARRIVED
+    match automovecont1 YOU HAVE FAILED
+    match automovecont1 AUTOMAPPER MOVEMENT FAILED!
+    match automovecont1 MOVE FAILED
+    matchre automovecont1 DESTINATION NOT FOUND
+    put #walk %toroom
+    #put #goto %toroom
+    matchwait 120
 
     automovecont1:
-math moveAttemptsRemaining subtract 1
-if (%moveAttemptsRemaining < 1) then {
-    echo [libsel automove]: No more attempts, it's dead, Jim
-    return
-} else {
-    echo [libsel automove]: Automove failed, retrying (%moveAttemptsRemaining)
-}
-pause
-put look
-pause
-goto automovecont
+    math moveAttemptsRemaining subtract 1
+    if (%moveAttemptsRemaining < 1) then {
+        echo [libsel automove]: No more attempts, it's dead, Jim
+        return
+    } else {
+        echo [libsel automove]: Automove failed, retrying (%moveAttemptsRemaining)
+    }
+    pause
+    put look
+    pause
+    goto automovecont
 
 move:
 var alsohere no
@@ -2112,41 +2144,39 @@ matchre location.p ^You attempt that, but end up getting caught in an invisible 
 matchre location1 ^You should stop playing before you do that\.
 matchre location1 ^You are a bit too busy performing to do that\.
 matchre location1 ^You are concentrating too much upon your performance to do that\.
-# JD 2020/7/9: Testing this temporarily to see if it doesn't break things
-#matchwait
 matchwait 30
 goto location
 
 location.unload:
-gosub unload
-var location stow1
-gosub stow1
-return
+    gosub unload
+    var location stow1
+    gosub stow1
+    return
 
-    location.unload1:
-gosub unload
-var location wear1
-gosub wear1
-return
+location.unload1:
+    gosub unload
+    var location wear1
+    gosub wear1
+    return
 
-    location1:
-gosub stop.humming1
-goto %location
+location1:
+    gosub stop.humming1
+    goto %location
 
 location.p:
-pause 1
+    pause 1
 
 location:
-goto %location
+    goto %location
 
 location.tooFast:
-random 1 2
-pause %r
+    random 1 2
+    pause %r
 
 return.p:
    pause .1
 
 return:
-return
+    return
 
 end.of.file:
