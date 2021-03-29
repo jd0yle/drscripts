@@ -53,7 +53,7 @@ selLoop:
         if (%firstRun = 1) then {
             var firstRun 0
         } else {
-            evalmath waitUntil (%t + 120)
+            evalmath waitUntil (%t + 30)
             gosub waitItOut
         }
     }

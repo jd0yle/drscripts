@@ -18,7 +18,11 @@ var skinnablemonsters3 cinder beast|cougar|\bcrab\b|crayfish|crocodile|\bdeer\b|
 var skinnablemonsters4 goblin|grass eel|\bgrub\b|gryphon|Isundjen conjurer|jackal|kartais|kashika serpent|kobold|la'heke|larva|la'tami|leucro
 var skinnablemonsters5 marbled angiswaerd|merrows|\bmoda\b|\bmoth\b|mottled westanuryn|musk hog|\bpard\b|peccary|piruati serpent|pivuh|poloh'izh|pothanit|prereni|\bram\b
 var skinnablemonsters6 \brat\b|retan dolomar|rock troll|scaly seordmaor|shadow beast|shadow mage|shalswar|silverfish|sinuous elsralael|skunk|S'lai scout
-var skinnablemonsters7 sleek hele'la|sluagh|snowbeast|sorcerer|\bsow\b|spider|spirit dancer|storm bull|trollkin|\bunyn\b|viper|vulture|vykathi harvester
+
+# commented for spirit dancer change
+#var skinnablemonsters7 sleek hele'la|sluagh|snowbeast|sorcerer|\bsow\b|spider|spirit dancer|storm bull|trollkin|\bunyn\b|viper|vulture|vykathi harvester
+var skinnablemonsters7 sleek hele'la|sluagh|snowbeast|sorcerer|\bsow\b|spider|dancer|storm bull|trollkin|\bunyn\b|viper|vulture|vykathi harvester
+
 var skinnablemonsters8 vykathi soldier|warcat|warklin mauler|\bwasp\b|\bwolf\b|\bworm\b|juvenile wyvern|adult wyvern|young wyvern
 
 var specialmanipulate tress

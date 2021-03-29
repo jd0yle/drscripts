@@ -3,19 +3,14 @@ include libsel.cmd
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
-var inLeth false
+
+
+if_1 then {
+    if ("%1" = "fight") then var startAt fight
+}
 
 
 # debug 10
-
-
-#Set for leth
-if ($zoneid = 112 || $zoneid = 61 || $zoneid = 150) then {
-    echo ** inLeth = 1 **
-    var inLeth true
-    var sitRoom 42
-    var burgleRoom 39
-}
 
 
 
@@ -29,8 +24,12 @@ action var numBolts $1 when ^You count some basilisk bolts in the \S+ and see th
 action var numArrows $1 when ^You count some basilisk arrows in the \S+ and see there are (\S+) left\.$
 action send stand when ^You'll have to move off the sandpit first.
 
+action put whisper inauri teach $1 when ^Inauri stops trying to teach (.*) to you.$
+
 
 timer start
+
+if ("%startAt" = "fight") then goto startFight
 
 main:
     gosub abortScripts
@@ -57,25 +56,78 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
+        gosub automove n gate
+
+        gosub automove portal
+        if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+        gosub move go meeting portal
+
+        gosub automove bundle
+        gosub remove my bundle
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my backpack
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my backpack
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my portal
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+        gosub get bundle from my portal
+        gosub sell my bundle
+        gosub stow right
+        gosub stow left
+
+        put .dep
+        waitforre ^DEP DONE$
     }
 
 
+
+
+
     # Magic
-    if ($bleeding = 1 || $Warding.LearningRate < 30 || $Utility.LearningRate < 30 || $Augmentation.LearningRate < 30 || $Arcana.LearningRate < 30) then {
+    startMagic:
+    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 20 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
-        put .sel
+
+        #if ($Warding.LearningRate < 20) then {
+        #    put #echo >Log Doing research
+        #    put .research
+        #    waitforre ^RESEARCH DONE$
+        #}
+
+        if ($Sorcery.LearningRate < 2) then {
+            put .research sorcery
+            waitforre ^RESEARCH DONE$
+            gosub getHealed
+        }
+
+        put #echo >Log #00ffff Magic start - Warding: $Warding.LearningRate/34
+        put .magic
         gosub waitForMagic
+        put #echo >Log #00ffff Magic End - Warding: $Warding.LearningRate/34
         goto main
     }
 
     # Main Combat
-    put #echo >Log #cc99ff Moving to combat
-    gosub moveToWyverns
-    put .fight
-    gosub waitForMainCombat
-    goto main
+    startFight:
+    #if ($bleeding = 1) then goto startMagic
+    #if ($Evasion.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Parry_Ability.LearningRate < 20 || $Targeted_Magic.LearningRate < 20 || $Light_Thrown.LearningRate < 20 || $Brawling.LearningRate < 20 || $Small_Edged.LearningRate < 20) then {
+	    put #echo >Log #cc99ff Moving to combat
+	    gosub moveToWyverns
+	    put .fight
+	    gosub waitForMainCombat
+	    goto main
+    #}
 
 
     # Backtrain
@@ -100,10 +152,21 @@ main:
     goto main
 
 
-abortScripts:
+sorceryCont:
     put #script abort all except seltrainshard
+    put .reconnect
     pause 1
     put #script abort all except seltrainshard
+    put .reconnect
+    goto magicCont
+
+
+abortScripts:
+    put #script abort all except seltrainshard
+put .reconnect
+    pause 1
+    put #script abort all except seltrainshard
+put .reconnect
     pause .2
     gosub stow right
     gosub stow left
@@ -112,8 +175,16 @@ abortScripts:
 
 checkBurgleCd:
     var burgleCooldown 0
-    gosub burgle recall
-    pause
+
+    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
+    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
+    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
+
+    if (%burgleCooldown = 0) then {
+        gosub burgle recall
+        pause
+    }
+
     evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
     put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
     return
@@ -122,9 +193,34 @@ checkBurgleCd:
 
 getHealed:
     gosub checkHealth
-    if (%injured = 1 && contains("$roomplayers", "Inauri")) then {
-        gosub whisper inauri heal
-        pause 30
+    if (%injured = 1) then {
+        if (contains("$roomplayers", "Inauri")) then {
+	        gosub whisper inauri heal
+	        pause 30
+        } else {
+            if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
+            eval nextHealTime (300 + $lastHealedGametime)
+
+            if ($gametime > %nextHealTime) then {
+	            put .house
+	            waitforre ^HOUSE DONE$
+
+	            gosub automove portal
+	            if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+	            gosub move go meeting portal
+
+	            gosub automove heal
+	            put join list
+	            matchre getHealedCont Yrisa crosses Selesthiel's name from the list.
+	            matchwait 120
+
+	            getHealedCont:
+	            put #var lastHealedGametime $gametime
+	            gosub automove portal
+	            gosub move go exit portal
+	            gosub moveToMagic
+            }
+        }
     }
     return
 
@@ -149,12 +245,13 @@ checkHealthNotInjured:
 
 
 moveToBurgle:
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
     if ("$roomname" = "Private Home Interior") then {
-        gosub unlock door
-        gosub open door
-        gosub move go door
-        gosub close third farmstead
-        gosub lock third farmstead
+        gosub runScript house
         goto moveToBurgle
     }
 
@@ -192,6 +289,7 @@ moveToMagic:
     if (contains("$roomplayers", "Inauri") then {
         if ($Enchanting.LearningRate < 15) then {
             gosub whisper inauri teach enchanting
+            #gosub teach tm to inauri
         } else {
             gosub stop teach
             gosub stop listen
@@ -206,12 +304,8 @@ moveToMagic:
 
     # Shard East Gate Area
     if ("$zoneid" = "66") then {
-        if ("$roomid" != "640") then gosub automove 640
-        gosub unlock third farmstead
-        gosub open third farmstead
-        gosub move go third farmstead
-        gosub close door
-        gosub lock door
+        if ("$roomid" != "252") then gosub automove 252
+        gosub runScript house
         goto moveToMagic
     }
 
@@ -229,8 +323,8 @@ moveToMagic:
 
     # FC
     if ("$zoneid" = "150") then {
-        if ("$roomid" = "106") then return
-        gosub automove 106
+        gosub automove portal
+        gosub move go exit portal
         goto moveToMagic
     }
 
@@ -239,12 +333,13 @@ moveToMagic:
 
 
 moveToWyverns:
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
     if ("$roomname" = "Private Home Interior") then {
-        gosub unlock door
-        gosub open door
-        gosub move go door
-        gosub close third farmstead
-        gosub lock third farmstead
+        gosub runScript house
         goto moveToWyverns
     }
 
@@ -279,8 +374,10 @@ moveToWyverns:
 
 moveToHeal:
     put #script abort all except seltrainshard
+put .reconnect
     pause 1
     put #script abort all except seltrainshard
+put .reconnect
     if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
     gosub stow right
     gosub stow left
@@ -290,6 +387,7 @@ moveToHeal:
     gosub moveToMagic
     gosub getHealed
     put #script abort all except seltrainshard
+put .reconnect
     put .seltrainshard
     exit
 
@@ -330,7 +428,7 @@ retrieveArrows:
 
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "thirty-four") then {
+    if ("%numBolts" = "twenty-eight") then {
         gosub stow right
         return
     }
@@ -349,6 +447,7 @@ retrieveBolts:
 waitForBurgleCd:
     if (%nextBurgleCheck < %t) then {
         put #script abort all except seltrainshard
+put .reconnect
         gosub stow right
         gosub stow left
         gosub checkBurgleCd
@@ -363,20 +462,24 @@ waitForMagic:
     pause 2
     if (%nextBurgleCheck < %t) then {
         put #script abort all except seltrainshard
+        put .reconnect
         pause 1
         put #script abort all except seltrainshard
+        put .reconnect
         gosub stow right
         gosub stow left
         gosub checkBurgleCd
-        put .sel
+        put .magic
         pause 1
     }
 
     #if (%burgleCooldown = 0 || $Crossbow.LearningRate < 5 || $Small_Edged.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Brawling.LearningRate < 5 || $Light_Thrown.LearningRate < 5 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5) then {
-    if (%burgleCooldown = 0 || ($Warding.LearningRate > 30 && $Utility.LearningRate > 30 && $Augmentation.LearningRate > 30 && $Arcana.LearningRate > 30)) then {
+    if (%burgleCooldown = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
         put #script abort all except seltrainshard
+        put .reconnect
         pause 1
         put #script abort all except seltrainshard
+        put .reconnect
         gosub resetState
         return
     }
@@ -390,19 +493,23 @@ waitForMainCombat:
     if ($bleeding = 1) then goto moveToHeal
     if (%nextBurgleCheck < %t) then {
         put #script abort all except seltrainshard
+put .reconnect
         pause 1
         put #script abort all except seltrainshard
+put .reconnect
         gosub stow right
         gosub stow left
         gosub checkBurgleCd
         put .fight
         pause 1
     }
-    #if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
-    if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
+    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    #if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
         put #script abort all except seltrainshard
+put .reconnect
         pause 1
         put #script abort all except seltrainshard
+put .reconnect
         if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
         gosub stow right
         gosub stow left
@@ -417,7 +524,9 @@ waitForMainCombat:
 logout:
     put exit
     put #script abort all except seltrainshard
+put .reconnect
     pause 1
     put #script abort all except seltrainshard
+put .reconnect
     put exit
     exit

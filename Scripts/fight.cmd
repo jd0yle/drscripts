@@ -18,22 +18,25 @@ include libsel.cmd
 var arrangeForPart 0
 var debil.use 0
 var forceDebil 0
-var necroMaterialCount -1
 var lootType treasure
+var useAlmanac 0
 var useApp 1
 var useBuffs 1
 var useHunt 1
 var usePerc 1
 var useSkin 1
 var useStealth 1
-var useAlmanac 0
+
 var useSls 0
+
 var useCh 0
 var usePhp 0
 var useQe 0
 var useRog 0
 var useUsol 0
 var avoidDivineOutrage 0
+
+var useSanowret 0
 
 
 ####################################################################################################
@@ -81,11 +84,12 @@ if ($charactername = Selesthiel && "%opts" != "backtrain") then {
     var ignoreCoL 0
 
     var arrangeForPart 1
-    var arrangeFull 1
+    var arrangeFull 0
 
     var doObserve 1
 
     var useAlmanac 1
+    var useSanowret 1
     var useApp 1
     var useShw 1
     var useSls 1
@@ -117,7 +121,7 @@ if ($charactername = Selesthiel && "%opts" = "backtrain") then {
 if ($charactername = Qizhmur && "%opts" != "backtrain") then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves
     var weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|triple-weighted bola|spiritwood lockbow|white nightstick
-    var cambrinth aoustone muhenta
+    var cambrinth cambrinth calf
     var tmSpell acs
     var tmPrep 10
     var debil.use 1
@@ -248,19 +252,19 @@ loop:
 
     gosub checkStances
 
+    gosub checkWeaponSkills
+
     gosub buffs
     gosub manageCyclics
     gosub fight.observe
-    #gosub trainMagics
     gosub huntApp
-    gosub checkWeaponSkills
+
     gosub checkAlmanac
+
+    if (%useSanowret = 1 && $Arcana.LearningRate < 33 && $concentration = 100) then gosub gaze my sanowret crystal
 
     var attackContinue 1
     if (%attackContinue = 1 && $monstercount < 2) then {
-        if ("$charactername" = "Qizhmur") then {
-            gosub qizhmurIdle
-        }
         if ($monstercount = 1) then {
             gosub attack circle
             gosub attack bob
@@ -350,6 +354,7 @@ checkAlmanac:
         evalmath nextStudyAt $lastAlmanacGametime + 600
 
         if (%nextStudyAt < $gametime) then {
+            gosub stow left
             if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
                 gosub get my almanac
             }
@@ -482,21 +487,24 @@ buffs:
     if ($mana < 30) then return
     if ($charactername = Selesthiel) then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3) then {
-            put .cast seer
-            waitforre ^CAST DONE
+            gosub runScript cast seer
             return
         }
 
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 3) then {
-            put .cast maf
-            waitforre ^CAST DONE
+            gosub runScript cast maf
             return
         }
 
         if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 3) then gosub buffCol
 
         if ($SpellTimer.Shadowling.active = 0) then {
-            put .cast shadowling
+            gosub runScript cast shadowling
+            return
+        }
+
+        if ($SpellTimer.Shadows.active = 0 || $SpellTimer.Shadows.duration < 2) then {
+            put .cast shadows
             waitforre ^CAST DONE
             return
         }
@@ -516,9 +524,9 @@ buffs:
         }
 
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 2) then {
-            gosub prep maf 10
-            gosub charge %cambrinth 25
-            gosub charge %cambrinth 25
+            gosub prep maf 40
+            gosub charge %cambrinth 30
+            gosub charge %cambrinth 30
             gosub invoke %cambrinth
             gosub waitForPrep
             gosub cast
@@ -526,9 +534,10 @@ buffs:
         }
 
         if ($SpellTimer.Obfuscation.active != 1 || $SpellTimer.Obfuscation.duration < 2) then {
-            gosub prep obf 10
-            gosub charge %cambrinth 25
-            gosub charge %cambrinth 25
+            gosub prep obf 40
+            gosub charge %cambrinth 30
+            gosub charge %cambrinth 30
+            gosub invoke %cambrinth
             gosub invoke %cambrinth
             gosub waitForPrep
             gosub cast
@@ -648,6 +657,8 @@ checkWeaponSkills:
 
     put #statusbar 6 Weapon: %weapons.skills(%weapons.index) $%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate
 
+    if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow") then gosub stance shield
+
     return
 
 
@@ -718,7 +729,7 @@ checkStancesOLDDEPRECATED:
 ###      checkDeadMob
 ###############################
 checkDeadMob:
-    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
         # TODO: Fix this for things like "warklin mauler" vs "armored warklin"
         var mobName $1
 
@@ -807,26 +818,6 @@ checkHide:
 
 
 ###############################
-###      countNecroMaterial
-###############################
-countNecroMaterial:
-    matchre countNecroMaterial2 ^In the(.*)$
-    gosub look in my skull
-    matchwait 1
-    echo NOT SUPPOSED TO BE HERE!
-    return
-    goto countNecroMaterial
-
-countNecroMaterial2:
-    var contents $1
-    eval necroMaterialCount count("%contents", "material")
-    #put #echo >Log Harvested Material: %necroMaterialCount
-    put #statusbar 8 Material: %necroMaterialCount
-    return
-
-
-
-###############################
 ###      debil
 ###############################
 debil:
@@ -845,14 +836,8 @@ debil:
 ###      fight.observe
 ###############################
 fight.observe:
-    if (%doObserve = 1 && $Astrology.LearningRate < 32) then {
-        if ($Astrology.LearningRate < 22) then {
-            put .predict
-            waitforre ^PREDICT DONE$
-        }
-        put .observe
-        waitforre ^OBSERVE DONE$
-    }
+    if (%doObserve = 1 && $Astrology.LearningRate < 32) then gosub runScript observe
+    if (%doObserve = 1 && $Astrology.LearningRate < 22) then gosub runScript predict
     return
 
 
@@ -862,36 +847,16 @@ fight.observe:
 ###############################
 huntApp:
     if (%useHunt = 1 && $Perception.LearningRate < 33) then {
-        if (!($lastHuntGametime > 0)) then put #var lastHuntGametime 1
-        evalmath nextHuntGametime $lastHuntGametime + 120
-        if ($gametime > %nextHuntGametime) then {
-            gosub hunt
-            put #var lastHuntGametime $gametime
-            return
-        }
+       gosub hunt.onTimer
+       return
     }
     if (%useApp = 1 && $Appraisal.LearningRate < 30) then {
-        if (!($lastAppGametime > 0)) then put #var lastAppGametime 1
-        evalmath nextAppGametime $lastAppGametime + 120
-        if ($gametime > %nextAppGametime) then {
-            gosub get my gem pouch from my portal
-            if ("$lefthandnoun" != "pouch" && "$righthandnoun" != "pouch") then gosub get my gem pouch from my backpack
-            gosub retreat
-            gosub appraise my gem pouch
-            gosub put my gem pouch in my portal
-            gosub advance
-            put #var lastAppGametime $gametime
-            return
-        }
+        gosub appraise.onTimer
+        return
     }
     if (%usePerc = 1 && $Attunement.LearningRate < 33) then {
-        if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
-        evalmath nextPercGametime $lastPercGameTime + 90
-        if ($gametime > %nextPercGametime) then {
-            gosub perc mana
-            put #var lastPercGameTime $gametime
-            return
-        }
+        gosub perc.onTimer
+        return
     }
 
     return
@@ -906,7 +871,7 @@ manageCyclics:
         var shouldCastUsol 1
         if ($SpellTimer.UniversalSolvent.active = 1) then var shouldCastUsol 0
         if ($mana < 80) then var shouldCastUsol 0
-        if ($Targeted_Magic.LearningRate > -1) then var shouldCastUsol 0
+        if ($Targeted_Magic.LearningRate > 26) then var shouldCastUsol 0
         if ($monstercount < 2) then var shouldCastUsol 0
 
         if (%shouldCastUsol = 1) then {
@@ -919,7 +884,7 @@ manageCyclics:
             var shouldReleaseUsol 0
             if ($mana < 60) then var shouldReleaseUsol 1
             if ("$roomplayers" != "") then var shouldReleaseUsol 1
-            if ($Targeted_Magic.LearningRate > 0) then var shouldReleaseUsol 1
+            if ($Targeted_Magic.LearningRate > 32) then var shouldReleaseUsol 1
 
             if (%shouldReleaseUsol = 1) then gosub release usol
         }
@@ -1005,14 +970,17 @@ newBundle:
 ###      performRitual
 ###############################
 performRitual:
-    var ritualTarget $1
+    var ritualTarget $0
 
     # Make sure we have enough material stocked up
-    if (%necroMaterialCount < 10) then {
-        gosub countNecroMaterial
+    if (!($necroMaterialCount > -1)) then put #var necroMaterialCount 0
+    gosub runScript countNecroMaterial
+    if ($necroMaterialCount < 30) then {
         gosub perform preserve on %ritualTarget
         gosub perform harvest on %ritualTarget
         if ("$righthandnoun" = "material" || "$lefthandnoun" = "material") then gosub stow material
+        put .countNecroMaterial
+        waitforre ^COUNTNECROMATERIAL DONE$
     }
 
     # Use dissection to train up First Aid and Skinning
@@ -1142,18 +1110,6 @@ sortWeaponRanks:
 
 
 
-###############################
-###      waitForPrep
-###############################
-waitForPrep:
-    pause .5
-    if ("$preparedspell" = "None") then {
-        echo >Log [fight waitforprep]: No prepared spell to wait for!
-        return
-    }
-    if (%isFullyPrepped = 1) then return
-    #if (%isFullyPrepped = 1 || "$preparedspell" = "None") then return
-    goto waitForPrep
 
 
 done:

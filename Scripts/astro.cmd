@@ -15,28 +15,28 @@ if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) th
     waitforre ^CAST DONE
 }
 
-gosub waitConcentration
+gosub waitForConcentration
 
 if ($SpellTimer.BraunsConjecture.active = 0 || $SpellTimer.BraunsConjecture.duration < 5) then {
     put .cast bc
     waitforre ^CAST DONE
 }
 
-gosub waitConcentration
+gosub waitForConcentration
 
 if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 5) then {
     put .cast dc
     waitforre ^CAST DONE
 }
 
-gosub waitConcentration
+gosub waitForConcentration 10
 
 if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 5) then {
     put .cast aus
     waitforre ^CAST DONE
 }
 
-gosub waitConcentration
+gosub waitForConcentration 10
 
 if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 5) then {
     put .cast pg
@@ -45,12 +45,9 @@ if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 5
 
 gosub stow right
 gosub stow left
-pause
+delay .2
 put #parse ASTRO DONE
 exit
 
 
-waitConcentration:
-    if ($concentration > 30) then return
-    pause 1
-    goto waitConcentration
+

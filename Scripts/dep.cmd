@@ -25,6 +25,7 @@ if ($zoneid = 67 || $zoneid = 150) then {
 }
 
 gosub automove teller
+put wealth
 put deposit all
 pause
 

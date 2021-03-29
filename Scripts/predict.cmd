@@ -1,5 +1,7 @@
 include libsel.cmd
 
+action send retreat when ^You are far too occupied by present matters to immerse yourself in matters of the future.
+
 var skillset null
 var predictOn $charactername
 
@@ -35,6 +37,8 @@ findSkillSet:
     eval len count("%skillsets", "|")
     var index 0
 
+    gosub checkPredState
+
     findSkillSetLoop:
         #if ($predictPool.%skillsets(%index) = complete) then {
         if ("$predictPool.%skillsets(%index)" != "no") then {
@@ -42,8 +46,28 @@ findSkillSet:
             return
         }
         math index add 1
-        if (%index > %len) then return
+        if (%index > %len) then {
+            put #echo >Log All pred pools empty
+            return
+        }
     goto findSkillSetLoop
+
+
+
+###############################
+###      checkPredState
+###############################
+checkPredState:
+    if ($lastPredictionAt > $lastPredStateAllAt || $lastObserveAt > $lastPredStateAllAt) then {
+        #echo "No PRED STATE ALL since last PREDICTION, do predstateall"
+        gosub predict state all
+    }
+    return
+
+    #else {
+    #    return
+    #}
+    #goto checkPredState
 
 
 done:

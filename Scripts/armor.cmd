@@ -34,7 +34,9 @@ if ("%act" = "get") then goto getArmorFromRepairLoop
 
 armorLoop:
     gosub %verbOne my %armor(%index)
-    gosub %verbTwo my %armor(%index)
+    if ("$righthand" != "Empty" || "$lefthand" != "Empty") then {
+        gosub %verbTwo my %armor(%index)
+    }
     math index add 1
     if (%index > %length) then goto done
     goto armorLoop
@@ -58,5 +60,6 @@ getArmorFromRepairLoop:
     goto getArmorFromRepairLoop
 
 done:
+    pause .2
     put #parse ARMOR DONE
     exit

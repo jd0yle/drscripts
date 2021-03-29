@@ -137,6 +137,7 @@ doneAllFull:
         put #echo >Log #f6d1ff [observe] All Pools Full
         put #var lastEchoPredStateAllAt $gametime
     }
+    put #var lastObserveAt $gametime
     goto done
 
 

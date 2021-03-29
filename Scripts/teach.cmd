@@ -13,15 +13,24 @@ include libsel.cmd
 # TODO: Add teaching the entire room
 ####################################################################################################
 
+var isTeaching 0
+action var isTeaching 1 when ^You begin to lecture
+
 var topic %1
 var student %2
 if ("%2" = "to") then var student %3
 
-put #script pause all except teach
-pause
-gosub awake
-put stop listen
-gosub teach %topic to %student
-pause
-put #script resume all
-exit
+
+doTeach:
+	gosub awake
+	gosub stop listen
+	gosub teach %topic to %student
+	pause 3
+	if (%isTeaching = 1) then goto done
+	goto doTeach
+
+
+done:
+    pause .2
+    put #parse TEACH DONE
+    exit

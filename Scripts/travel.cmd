@@ -35,10 +35,12 @@
     var faldesu 200
 ##########################################
 ##    RANKS TO USE THE SEGOLTHA         ##
-    var segoltha 550
+    #var segoltha 550
+    var segoltha 540
 ##########################################
 ##    RANKS TO USE UNDER-GONDOLA        ##
-    var undergondola 550
+    #var undergondola 550
+    var undergondola 540
 ##########################################
 ##########################################
 ##    RANKS TO USE UNDER-SEGOLTHA(THIEF)##

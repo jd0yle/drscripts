@@ -1,12 +1,16 @@
 include libsel.cmd
 
-var isFullyPrepped 0
-action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
+var healAll 0
 
 #action goto noDeadCreature when ^This ritual may only be performed on a corpse
 
 if_1 then {
-    var creature %0
+    if ("%1" = "all") then {
+        var healAll 1
+        var creature material
+    } else {
+        var creature %0
+    }
 } else {
     #if ("$righthandnoun" != "material" && "$lefthandnoun" != "material") then {
     #    put #echo >Log [devour]: ERROR! No creature specified in .devour creature
@@ -32,6 +36,8 @@ heal:
     gosub release spell
     var isFullyPrepped 0
     gosub prep devour
+    gosub charge my calf 20
+    gosub invoke my calf
     if (!(matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") || "%creature" = "material") then {
         if ("$righthandnoun" != "material" && "$lefthandnoun" != "material") then {
             gosub stow right
@@ -45,14 +51,22 @@ heal:
     }
     gosub waitForPrep
     gosub cast
+    if (%healAll = 1) then goto healAll
     goto done
 
 
 
-waitForPrep:
-    if (%isFullyPrepped = 1) then return
-    pause
-    goto waitForPrep
+healAll:
+    gosub waitForDevour
+    goto checkHealth
+
+
+waitForDevour:
+    if ($SpellTimer.Devour.duration > 0) then {
+        pause 2
+        goto waitForDevour
+    }
+    return
 
 
 noDeadCreature:

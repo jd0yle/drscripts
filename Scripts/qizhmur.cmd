@@ -1,6 +1,6 @@
 include libsel.cmd
 
-var cambrinth aoustone muhenta
+var cambrinth cambrinth calf
 
 var useRog 0
 
@@ -23,13 +23,18 @@ loop:
     if ($SpellTimer.RiteofContrition.active = 1) then {
         gosub release roc
     }
-    if (%t > %nextPercAt && $Attunement.LearningRate < 33) then {
-         gosub perc mana
-         evalmath nextPercAt (60 + %t)
-    } else if (%t > %nextAppAt && $Appraisal.LearningRate < 33) then {
-        gosub app my gem pouch
-        evalmath nextAppAt (90 + %t)
+
+    gosub almanac.onTimer
+
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer careful
+
+    if ($Arcana.LearningRate < 33 && $concentration = 100) then {
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        gosub gaze my sanowret crystal
     }
+
     if (%useRog = 1 && %t > %nextRogAt) then {
         if ($preparedspell != None) then gosub release spell
         gosub release rog
@@ -47,8 +52,9 @@ loop:
        var isFullyPrepped 0
        gosub prep symbiosis
        gosub prep eotb 1
-       gosub charge my %cambrinth 11
-       gosub invoke my %cambrinth
+       gosub charge my %cambrinth 6
+       gosub invoke my %cambrinth 6
+       gosub harness 5
        if (%isFullyPrepped != 1) then gosub waitForPrep
        gosub cast
    }
@@ -57,8 +63,9 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep maf 1
-        gosub charge my %cambrinth 11
-        gosub invoke my %cambrinth
+        gosub charge my %cambrinth 7
+        gosub invoke my %cambrinth 7
+        gosub harness 6
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
     }
@@ -67,24 +74,15 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep obf 1
-        gosub charge my %cambrinth 11
-        gosub invoke my %cambrinth
+        gosub charge my %cambrinth 6
+        gosub invoke my %cambrinth 6
+        gosub harness 5
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast
     }
-    gosub waitMana
+    gosub waitForMana 80
     pause .2
-    if ($Augmentation.LearningRate > 32 && $Utility.LearningRate > 32 && $Warding.LearningRate > 32) then {
-        # put #parse QIZHMUR DONE
-    }
+
 goto loop
 
-waitForPrep:
-    pause 1
-    if (%isFullyPrepped = 1) then return
-    goto waitForPrep
 
-waitMana:
-    pause 1
-    if ($mana > 80) then return
-    goto waitMana

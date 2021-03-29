@@ -37,9 +37,10 @@ var super.enemies (Nonerightnow)
 
 #Log only if person is an enemy:
 
-########################################################################################################################################
-#################################################################################################################################
-## HE/2HE SWAPPING
+
+####################
+### HE/2HE SWAPPING
+####################
 action var weapon_hand The when ^You draw out your .* sword from the .*, gripping it firmly in your right hand and balancing with your left\.$
 action var weapon_hand The when ^You deftly change your grip on your sword so it can be used as a two-handed edged weapon\.$
 action var weapon_hand The when ^You fiercely switch your grip so that your sword can be used as a two-handed edged weapon\.$
@@ -57,9 +58,10 @@ action var weapon_hand he when ^You switch your sword so that you can use it as 
 action var weapon_hand he when ^Your eyes blaze as your hands move to a heavy edged grip on your sword\.$
 action var weapon_hand he when ^With a quiet snarl, you move your hands to grip your sword as a heavy edged weapon\.$
 var weapon_hand NONERIGHTNOW
-#################################################################################################################################
-#########################################################################################################################
-# DEAD
+
+####################
+### DEAD
+####################
 #action goto exit.full when ^Your body will decay beyond its ability to hold your soul
 #action goto exit.full when ^You feel like you're dying
 #action goto exit.full when ^You are somewhat comforted that you have gained favor with your God and are in no danger of walking the Starry Road, never to return\.
@@ -68,8 +70,22 @@ var weapon_hand NONERIGHTNOW
 #action goto exit.full when ^You are a ghost\!
 #action goto exit.full when ^You are a ghost\!  You must wait until someone resurrects you, or you decay\.
 #action goto exit.full when ^You feel like you're dying\!
-#########################################################################################################################
 
+####################
+### WAIT FOR PREP
+####################
+action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
+action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
+
+action var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
+action var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
+action var observeOffCooldown false when ^You learned something useful from your observation\.$
+action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
+action var observeOffCooldown false when ^You are unable to make use of this latest observation
+
+####################
+### ROOM OCCUPIED
+####################
 #action var People.Room occupied when ^A howl echoes about you as a wolf calls to his kind\!$
 #action var People.Room occupied when ^With a waver like a mirage, \w+ fades into view\.$
 #action var People.Room occupied when ^You notice \w+ loading
@@ -94,8 +110,9 @@ var weapon_hand NONERIGHTNOW
 #action var People.Room occupied when ^\w+ gestures at a \w+\.$
 #var People.Room empty
 
-########################################################################################################################################
-
+####################
+### SLEEP / AWAKE
+####################
 #action put sleep when ^Overall state of mind: (very murky|thick|very thick|frozen|very frozen|dense|very dense)
 #action put sleep when ^Overall state of mind: murky
 #action put awake when ^Overall state of mind: clear
@@ -106,19 +123,24 @@ var weapon_hand NONERIGHTNOW
 #action var sleep 0 when ^You relax and allow your mind to enter a state of r
 #action var sleep 1 when ^You awaken from your reverie and begin to take in the world aro
 
-#########################################################################################################################
-
+####################
+### HIDDEN
+####################
 action var Hidden 0 when ^You blend in with your surroundings|^You slip into a hiding|^You melt into the background|^Darkness falls over you like a cloak, and you involuntarily blend into the shadows\.|^Eh\?  But you're already hidden
 action var Hidden 1 when ^You leap out of hiding|^You come out of hiding\.|^You burst from hiding and begin to dance about\!|^You slip out of hiding\.|notices your attempt to hide|discovers you, ruining your hiding place|reveals you, ruining your hiding attempt
 var Hidden 1
 
+####################
+### FORAGEBLE
+####################
 action var foragable 1 when ^The room is too cluttered to find anything her
 action var foragable 0 when ^A scavenger troll strolls in, looks you squarely in the eye and says
 action var foragable 0 when ^A low fog rolls in, then just as quickly rolls out
 var foragable 0
 
-#########################################################################################################################
-
+####################
+### SKINNING
+####################
 action var skin 1 when ^A.*gryphon collapses into a lifeless mound of fur and feathers\.
 action var skin 1 when ^A.*snow goblin stares at you stupidly for a moment, before its eyes roll backwards into its head\.
 action var skin 1 when ^A snowbeast lets loose a blood-curdling howl and falls into a heap\.
@@ -291,6 +313,7 @@ appraise:
     matchre return ^You cannot appraise that when you are in combat\!
     matchre return ^I could not find what you were referring to\.
     matchre return Roundtime:
+    matchre return ^You can't
     put appraise %todo
     goto retry
 
@@ -400,6 +423,20 @@ burgle:
     goto retry
 
 
+
+card:
+    var location card1
+    var todo $0
+    card1:
+    matchre return ^You must have a
+    matchre return ^You slide
+    matchre return ^You don't have room
+    put card %todo
+    goto retry
+
+
+
+
 cast:
     var location cast1
     var todo $0
@@ -460,6 +497,7 @@ charge:
     matchre return ^Roundtime
     matchre return ^I could not find
     matchre return ^You are in no condition to do that
+    matchre return ^You strain, but lack the mental stamina to charge the muhenta this much.
     put charge %todo
     goto retry
 
@@ -596,6 +634,9 @@ drop:
     matchre return ^What were you referring to\?
     matchre return ^But you aren't holding that\.
     matchre return ^You discard
+    matchre return ^You spread
+    matchre return ^Whoah!
+    matchre return ^Having no further use
     put drop %todo
     goto retry
 
@@ -720,6 +761,20 @@ forage2:
     goto retry
 
 
+
+gaze:
+    var location gaze1
+    var todo $0
+
+    gaze1:
+    matchre return ^Doing that would give away your hiding place
+    matchre return ^You gaze intently
+    matchre return ^I could not find
+    put gaze %todo
+    goto retry
+
+
+
 gesture:
     var location gesture1
     var todo $0
@@ -745,11 +800,12 @@ get:
     matchre return ^What were you referring to\?
     matchre return ^You are already holding that\.
     matchre return ^You need a free hand to pick that up\.
-    matchre get.remove ^But that is already in your inventory\.
+    #matchre get.remove ^But that is already in your inventory\.
+    matchre return ^But that is already in your inventory\.
     matchre return ^You fade in for a moment as you pick up
     matchre return ^You are not strong enough to pick that up\!
     matchre return ^That is far too dangerous
-    matchre get.remove ^But that is already in your inventory
+    matchre return ^You fade in for a moment
     put get %todo
     goto retry
 
@@ -769,6 +825,7 @@ give:
     matchre return ^Randal
     matchre return ^The Servant accepts
     matchre return ignores your offer
+    matchre return Osmandikar|Lakyan
     put give %todo
     goto retry
 
@@ -870,6 +927,9 @@ invoke:
     matchre return ^A finely balanced tago suddenly leaps
     matchre return ^Roundtime
     matchre return ^You are in no condition
+    matchre return ^Invoke what?
+    matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane.$
+    matchre return ^You're not sure what would happen
     put invoke %todo
     goto retry
 
@@ -976,6 +1036,7 @@ load:
     matchre return ^What weapon are you trying to load\?
     matchre return ^You don't have the proper ammunition readily available for your
     matchre return ^You can't load .+, silly\!
+    matchre return ^You need to hold the
     put load %todo
     goto retry
 
@@ -1125,6 +1186,7 @@ peer:
     matchre return ^You focus
     matchre return ^You peer aimlessly
     matchre return ^Roundtime
+    matchre return ^Clouds obscure the sky
     put peer %todo
     goto retry
 
@@ -1145,6 +1207,7 @@ power:
     matchre return ^Your focus expires
     matchre return ^You lost track of your surroundings
     matchre return ^You are too distracted
+    matchre return ^Strangely, you can sense absolutely nothing.
     put PERCEIVE %todo
     goto retry
 
@@ -1240,6 +1303,7 @@ prep_spell:
     prep_spell1:
     if $mana < 80 then goto return
 prep:
+prepare:
     var location prep1
     var todo $0
     prep1:
@@ -1271,6 +1335,7 @@ prep:
     matchre return ^You raise one hand before you and concentrate
     matchre return ^As you begin to focus on preparing
     matchre return ^You trace an angular sigil
+    matchre return ^As quickly as you form the spell pattern in your mind it slips away from you again.$
     matchre prep1 ^Are you sure you want to do that\?  You'll interrupt your research\!
     put prepare %todo
     goto retry
@@ -1329,6 +1394,7 @@ read:
     matchre return ^You page through
     matchre return ^On this page
     matchre return ^Roundtime
+    matchre return contains a
     put read %todo
     goto retry
 
@@ -1338,7 +1404,7 @@ release:
     var location release1
     var todo $0
     release1:
-    if ("$preparedspell" = "none") then return
+    if ( ("%todo" = "" || "%todo" = "spell") && "$preparedspell" = "none") then return
     matchre return ^Type RELEASE HELP for more options\.
     matchre return ^You aren't harnessing any mana.
     matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
@@ -1360,6 +1426,8 @@ release:
     matchre return ^The greenish hues
     matchre return sphere suddenly flares with a cold light and vaporizes!$
     matchre return ^You cease your shadow weaving.$
+    matchre return ^A faint growl echoes from the depths
+    matchre return ^Release\?  You can't even sense mana right now.$
     put release %todo
     goto retry
 
@@ -1534,6 +1602,7 @@ sell:
     matchre return ^You ask
     matchre return Aelik
     matchre return Dokora|Kronar|Lirum
+    matchre return ^There is no merchant
     put sell %todo
     goto retry
 
@@ -1664,6 +1733,18 @@ stop:
     goto retry
 
 
+
+store:
+    var location store1
+    var todo $0
+    store1:
+    matchre return ^To use the STORE verb
+    matchre return ^You will now store
+    put store %todo
+    goto retry
+
+
+
 stow:
     var location stow1
     var todo $0
@@ -1683,6 +1764,10 @@ stow:
         gosub put my compendium in my thigh bag
         return
     }
+    if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material")) then {
+        gosub put my material in my satchel
+        return
+    }
     matchre return ^Stow what\?
     matchre return ^I can't find your container
     matchre return ^You carefully
@@ -1695,12 +1780,22 @@ stow:
     matchre return ^There doesn't seem to be anything left in the pile\.$
     matchre return ^You need a free hand to pick that up.
     matchre return ^You try to
+    matchre return ^You think the gem pouch is too full to fit another gem into\.
     matchre location.unload ^You should unload the
     matchre location.unload ^You need to unload the
     matchre stowing too long to fit
     matchre stowing too wide to fit
+    matchre stow.tieGemPouch ^You've already got a wealth of gems in there!
     put stow %todo
     goto retry
+
+
+
+stow.tieGemPouch:
+    var stowTodo %todo
+    gosub tie my gem pouch
+    gosub stow %stowTodo
+    return
 
 
 stowing:
@@ -1736,6 +1831,7 @@ study:
     matchre return ^Roundtime
     matchre return ^Why do you need to study this chart again\?
     matchre return ^You've gleaned all the insight you can
+    matchre return ^Are you sure you want to do that
     put study %todo
     goto retry
 
@@ -1876,6 +1972,7 @@ tie:
     matchre return ^The gem pouch has already
     matchre return ^Tie what
     matchre return ^But this bundle
+    matchre return ^Tie it off
     put tie %todo
     goto retry
 
@@ -2003,6 +2100,79 @@ wield:
     matchre return ^You're already holding
     put wield %todo
     goto retry
+    
+    
+    
+########################################################################
+#                            Timer Verbs
+########################################################################
+almanac.onTimer:
+    var todo $0
+    var location almanac.onTimer1
+
+    almanac.onTimer1:
+	if (!($lastAlmanacGametime > 0)) then put #var lastAlmanacGametime 1
+	evalmath nextStudyAt $lastAlmanacGametime + 600
+	if (%nextStudyAt < $gametime) then gosub runScript almanac noloop
+	return
+
+
+appraise.onTimer:
+    var todo $0
+    var location appraise.onTimer1
+    
+    appraise.onTimer1:
+    if (!($lastAppGametime > 0)) then put #var lastAppGametime 1
+    evalmath nextAppGametime $lastAppGametime + 121
+    
+    if ($gametime > %nextAppGametime) then gosub runScript appraise %todo
+    return
+
+
+
+hunt.onTimer:
+    var todo $0
+    var location hunt.onTimer1
+
+    hunt.onTimer1:
+    if (!($lastHuntGametime > 0)) then put #var lastHuntGametime 1
+    evalmath nextHuntGametime $lastHuntGametime + 120
+    if ($gametime > %nextHuntGametime) then {
+        gosub hunt
+        put #var lastHuntGametime $gametime
+    }
+    return
+
+
+
+observe.onTimer:
+    var todo $0
+    var location observe.onTimer1
+
+    observe.onTimer1:
+	if (!($lastObserveAt > -1)) then put #var lastObserveAt 0
+	evalmath nextObserveGametime ($lastObserveAt + 240)
+	if ($gametime > %nextObserveGametime || $isObsOnCd != true) then gosub runScript observe %todo
+	#if ($gametime > %nextObserveGametime) then gosub runScript observe %todo
+	return
+
+
+
+perc.onTimer:
+    var todo $0
+    var location perc.onTimer1
+    
+    perc.onTimer1:
+	if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
+
+	evalmath nextPercGametime $lastPercGameTime + 61
+
+	if ($gametime > %nextPercGametime) then {
+	    gosub perc mana
+	    put #var lastPercGameTime $gametime
+	}
+    return    
+        
 
 
 ########################################################################
@@ -2012,6 +2182,7 @@ wield:
 automove:
     var toroom $0
     var moveAttemptsRemaining 5
+
     automovecont:
     match return YOU HAVE ARRIVED
     match automovecont1 YOU HAVE FAILED
@@ -2019,7 +2190,6 @@ automove:
     match automovecont1 MOVE FAILED
     matchre automovecont1 DESTINATION NOT FOUND
     put #walk %toroom
-    #put #goto %toroom
     matchwait 120
 
     automovecont1:
@@ -2066,8 +2236,14 @@ matchre return ^\[
 matchre return It's pitch dark and you can't see a thing
 matchre move.error ^You can't go there\.
 matchre move.error ^You can't swim in that direction\.
+matchre move.portal ^What were you referring to?
 put %todo
 goto retry
+
+
+move.portal:
+    gosub move go portal
+    return
 
 
 stand.then.move:
@@ -2178,5 +2354,50 @@ return.p:
 
 return:
     return
+
+
+isDef:
+    if (!matchre(“%var”, “\%var”)) then var localDef 1
+    return
+
+
+runScript:
+    var todo $0
+    var scriptName $1
+    var location runScript1
+    runScript1:
+    #echo [runScript] .%todo
+	put .%todo
+	eval doneString toupper(%scriptName)
+	waitforre ^%doneString DONE$
+	return
+
+
+waitForConcentration:
+    var waitConcentrationAmount $1
+    if (!(%waitConcentrationAmount) > 0) then var waitConcentrationAmount 30
+
+    waitForConcentration1:
+    if ($concentration >= %waitConcentrationAmount) then return
+    pause .5
+    goto waitForConcentration1
+
+
+waitForPrep:
+    var isFullyPrepped 0
+    waitForPrep1:
+    pause .5
+    if (%isFullyPrepped = 1 || $preparedspell = None) then return
+    goto waitForPrep1
+
+
+waitForMana:
+    var waitManaForAmount $1
+    if (!(%waitManaForAmount > 0)) then var waitManaForAmount 80
+
+    waitForMana1:
+    pause .5
+    if ($mana > %waitManaForAmount) then return
+    goto waitForMana1
 
 end.of.file:

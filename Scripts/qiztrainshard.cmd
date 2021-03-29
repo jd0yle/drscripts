@@ -33,13 +33,23 @@ action put #var lastSetGalleyDocked $gametime; echo new lastSetGalleyDocked is $
 
 if (!($lastSetGalleyDocked > 0)) then put #var lastSetGalleyDocked 0
 
+put .reconnect
+
 gosub stow right
 gosub stow left
 gosub release rog
 gosub release usol
+gosub release symbiosis
 gosub retrieveBolts
 gosub stow hhr'ata
 gosub stow bola
+
+if_1 then {
+    if ("%1" = "research") then {
+        var startResearch 1
+        goto startMagic
+    }
+}
 
 main:
     if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub checkBurgleCd
@@ -54,6 +64,7 @@ main:
         }
 
         if ($SpellTimer.RiteofContrition.active != 1) then {
+            gosub release usol
             gosub prep roc
             gosub waitForPrep
             gosub cast
@@ -71,18 +82,14 @@ main:
         put .burgle
         waitforre ^BURGLE DONE$
 
-        gosub devourIfNeeded
-
         put .armor wear
         waitforre ^ARMOR DONE$
 
         gosub automove n gate
-
         gosub automove portal
+
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         gosub move go meeting portal
-
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
 
         gosub automove bundle
         gosub remove my bundle
@@ -109,56 +116,46 @@ main:
         put .dep
         waitforre ^DEP DONE$
         pause 1
-        put .qiztrainshard
+        put .qiztrain
+        put .reconnect
 
     }
 
-    if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30) then {
+
+    startMagic:
+    if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
         gosub moveToMagic
+
+        if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
+            var startResearch 0
+            put .research sorcery
+            waitforre ^RESEARCH DONE$
+            if ($bleeding = 1) then gosub runScript devour all
+        }
+        put .reconnect
         put .qizhmur
         gosub waitForMagic
     }
 
     #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToYellowGremlin
-        #gosub moveToRedGremlin
+        gosub moveToAdanf
         put .fight
         gosub waitForMainCombat
         goto main
     #}
-
-
     goto main
 
 
 
-devourIfNeeded:
-    if ($bleeding = 1) then {
-        if ($SpellTimer.Devour.active = 1) then gosub waitToDevour
-        gosub stow right
-        gosub stow left
-        if ("$preparedspell" != "none") then gosub release spell
-
-        gosub get my material
-        if ("$righthandnoun"  != "material") then {
-            put #echo >Log #FFFF00 OUT OF MATERIAL
-            return
-        }
-
-        put #echo >Log #FFFF00 HEALING WITH DEVOUR
-        put .devour
-        waitforre ^DEVOUR DONE$
-        goto devourIfNeeded
-    }
-    return
-
-
-waitToDevour:
-    if ($bleeding != 1 || $SpellTimer.Devour.active != 1) then return
+sorceryCont:
+    put #script abort all except qiztrainshard
+    put .reconnect
     pause 1
-    goto waitToDevour
+    put #script abort all except qiztrainshard
+    put .reconnect
+    goto magicCont
 
 
 
@@ -170,10 +167,43 @@ moveToBurgle:
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
     if ($SpellTimer.PhilosophersPreservation.active = 1 || $SpellTimer.CalcifiedHide.active = 1 || $SpellTimer.ButchersEye.active = 1 || $SpellTimer.IvoryMask.active = 1) then {
         if ($SpellTimer.RiteofContrition.active != 1) then {
+            gosub release usol
             gosub prep roc
             gosub waitForPrep
+            gosub release usol
             gosub cast
         }
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToBurgle
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto moveToBurgle
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove w gate
+        goto moveToBurgle
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        if ("$roomid" = "450") then return
+        gosub automove 450
+        goto moveToBurgle
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove w gate
+        goto moveToBurgle
     }
 
     # Shard West Gate Area
@@ -207,7 +237,40 @@ moveToBurgle:
 
 moveToMagic:
     gosub setZone
-    #545
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToMagic
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove crossing
+        goto moveToMagic
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToMagic
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto moveToMagic
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        gosub move go meeting portal
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        goto moveToMagic
+    }
+
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
@@ -235,8 +298,6 @@ moveToMagic:
     }
 
     goto moveToMagic
-
-
 
 
 moveToRedGremlin:
@@ -278,9 +339,9 @@ moveToRedGremlin:
     }
 
     goto moveToRedGremlin
-    
-    
-    
+
+
+
 moveToYellowGremlin:
     gosub setZone
 
@@ -315,7 +376,53 @@ moveToYellowGremlin:
     }
 
     goto moveToYellowGremlin
-        
+
+
+
+moveToWarklin:
+    gosub setZone
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove 46
+        put .findSpot warklin
+        waitforre ^FINDSPOT DONE$
+        return
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove 396
+        goto moveToWarklin
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove ntr
+        goto moveToWarklin
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove n gate
+        goto moveToWarklin
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove ne gate
+        goto moveToWarklin
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToWarklin
+    }
+
+    echo No move target found, zoneid = $zoneid  zone = %zone
+    goto moveToWarklin
 
 
 setZone:
@@ -342,18 +449,22 @@ setZone:
 waitForMagic:
     pause 2
     if (%useBurgle = 1 && %nextBurgleCheck < %t) then {
-        put #script abort all except qiztrainshard
+        put #script abort all except qiztrain
+put .reconnect
         pause 1
-        put #script abort all except qiztrainshard
+        put #script abort all except qiztrain
+put .reconnect
         gosub checkBurgleCd
         put .qizhmur
         pause 1
     }
-    #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < -1 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 ) then {
-    if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < -1 || $Warding.LearningRate > 30 ) then {
-        put #script abort all except qiztrainshard
+    #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
+    if (%burgleCooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
+        put #script abort all except qiztrain
+put .reconnect
         pause 1
-        put #script abort all except qiztrainshard
+        put #script abort all except qiztrain
+put .reconnect
         gosub stow right
         gosub stow left
         gosub release eotb
@@ -368,17 +479,21 @@ waitForMagic:
 waitForMainCombat:
     pause 2
     if (%useBurgle = 1 && %nextBurgleCheck < %t) then {
-        put #script abort all except qiztrainshard
+        put #script abort all except qiztrain
+put .reconnect
         pause 1
-        put #script abort all except qiztrainshard
+        put #script abort all except qiztrain
+put .reconnect
         gosub checkBurgleCd
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 0 && $Shield_Usage.LearningRate > 20 && $Parry_Ability.LearningRate > 20 && $Heavy_Thrown.LearningRate > 25 && $Targeted_Magic.LearningRate > 0)) then {
-        put #script abort all except qiztrainshard
+    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
+        put #script abort all except qiztrain
+put .reconnect
         pause 1
-        put #script abort all except qiztrainshard
+        put #script abort all except qiztrain
+put .reconnect
         if ("$righthandnoun" = "lockbow") then gosub unload my lockbow
         gosub stow right
         gosub stow left
@@ -391,10 +506,9 @@ waitForMainCombat:
 
 
 
-
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "seventeen") then return
+    if ("%numBolts" = "twelve") then return
     gosub attack kick
     gosub loot
     put .loot
@@ -405,11 +519,20 @@ retrieveBolts:
 
 checkBurgleCd:
     var burgleCooldown 0
-    gosub burgle recall
-    pause
+
+    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
+    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
+    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
+
+    if (%burgleCooldown = 0) then {
+        gosub burgle recall
+        pause
+    }
+
     evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
     put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
     return
+
 
 
 waitForBurgleCd:
@@ -457,16 +580,13 @@ moveAny:
     return
 
 
-waitForPrep:
-    if (%isFullyPrepped = 1 || "$preparedspell" = "None") then return
-    pause .5
-    goto waitForPrep
-
 
 logout:
     put exit
-    put #script abort all except qiztrainshard
+    put #script abort all except qiztrain
+put .reconnect
     pause 1
-    put #script abort all except qiztrainshard
+    put #script abort all except qiztrain
+put .reconnect
     put exit
     exit

@@ -1,39 +1,172 @@
 
+action goto ejectFromHouse when eval "$roomplayers" != ""
 
-action #setvariable heal 1 when ^Selesthiel whispers, \"heal\"
-action #setvariable heal 2 when ^Selesthiel whispers, \"heal again\"
-action #setvariable poison 1 when ^Selesthiel whispers, \"poison\"
-action #setvariable expSleep 1 when ^Selesthiel whispers, \"!sleep\"
-action #setvariable expSleep 2 when ^Selesthiel whispers, \"!awaken\"
+ejectFromHouse:
+	eval names replacere("$roomplayers", "Also here: ", "")
+	eval names replacere("%names", "(,| and)", "|")
+	eval names replacere("%names", "\.", "")
 
-if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
+	var index 0
+	eval namesLength count("%names", "|")
+
+	ejectloop:
+	    if ("%names(%index)" != "Inauri") then {
+	        put show %names(%index) to door
+	        pause .5
+	        put show %names(%index) to door
+	        pause .5
+	    }
+	    math index add 1
+	    if (%index > %namesLength) then goto ejectdone
+	    goto ejectloop
+
+	ejectdone:
+	exit
+
+
+
+
+
+#include libsel.cmd
+
+
+var mobs armored warklin|warklin mauler
+
+#if (matchre ("$roomobjs", "(%mobs)") then {
+if (matchre ("$roomobjs", "(%mobs) ((which|that) appears dead|(dead))") then {
+    var mobName $1
+    echo mob: %mobName
+} else {
+    echo not found
+}
+
+
+exit
+
+
+
+
+
+
+
+exit
+
+pouchloop:
+    gosub get gem pouch from my skull
+    if ("$righthand" = "Empty") then exit
+    matchre stowportal find \d+ gems
+    matchre stowsatch empty
+    put count my gem pouch
+    matchwait
+
+
+stowportal:
+    gosub put my gem pouch in my portal
+    goto pouchloop
+
+
+stowsatch:
+    gosub put my gem pouch in my satchel
+    goto pouchloop
+
+
+
+
+
+var scrolls tablet|scroll|vellum|ostracon|bark|roll
+var typeIndex 0
+eval typeLength count("%scrolls", "|")
+
+matloop:
+
+    gosub get my %scrolls(%typeIndex) from my satchel
+    if ("$righthand" = "Empty") then {
+        math typeIndex add 1
+        if (%typeIndex > %typeLength) then exit
+        goto matloop
+    }
+    gosub stow right
+    goto matloop
+
+
+exit
+
+var calculatedGametime $gametime
+
+testloop:
+    evalmath elapsedGametime (%calculatedGametime - $gametime)
+    if (%elapsedGametime > 30) then {
+        echo %elapsedGametime since gametime updated (%elapsedGametime - $gametime > %calculatedGametime + 30)
+        var lastGameTime $gametime
+    }
+    echo gametime: $gametime  calculatedGametime: %calculatedGametime  elapsedGametime: %elapsedGametime
+    math calculatedGametime add 1
+    delay 1
+    goto testloop
+
+
+
+exit
+
+
+var args first second third 4 "five plus" 6 7 8 9 10
+echo test %args
+put .shift %args
+matchre shiftArgs ^SHIFT (.*)$
+matchwait
+
+shiftArgs:
+    var newArgs $0
+    echo newArgs %newArgs
+
+exit
+
+
+testlabel:
+    var args $0
+    echo $5
+    eval args replacere(%args, ", DQUOTE)
+    echo args %args
+
+    if (matchre("%args", "\S+(.*)")) then {
+	    eval newArgs trim($1)
+	    echo newArgs %newArgs
+    }
+
+    return
+
+exit
+
+
+
+exit
+
+include var_characters.cmd
+
+var spells maf|obf|ch|php
+var index 0
+eval spellLength count("%spells", "|")
+
 
 loop:
-    if ($heal = 1 || $heal = 2) then {
-        #do the heal thing
-    }
-    if ($poison = 1) then {
-        #do the poison thing
-    }
-
-    gosub studyAlmanac
-    pause 2
-goto loop
+echo cast..prep  %cast.%spells(%index).prep
+echo cast.maf.charge %cast.%spell.charge
+echo cast.maf.times %cast.%spell.times
 
 
 
 
 
 
-studyAlmanac:
-    evalmath nextStudyAt $lastAlmanacGametime + 600
 
-    if (%nextStudyAt < $gametime) then {
-        if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
-            gosub get my almanac
-        }
-        gosub study my almanac
-        gosub stow my almanac
-        put #var lastAlmanacGametime $gametime
-    }
-    return
+exit
+var mobs spirit dancer|blood warrior|shadow mage
+
+if (matchre("$roomobjs", (%mobs)) then {
+    var zero $0
+    var one $1
+    var two $2
+    echo zero: %zero
+    echo one: %one
+    echo two: %two
+}

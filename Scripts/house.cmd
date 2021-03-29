@@ -1,12 +1,13 @@
 include libsel.cmd
 
-
-
 if ($roomid = 258 || "$roomname" != "Private Home Interior") then {
     var obj house
 }
 if ($roomid = 640) then {
-    var obj third farmstead
+    var obj farmstead
+}
+if ($roomid = 252) then {
+    var obj sandalwood door
 }
 
 if ("$roomname" = "Private Home Interior") then var obj door
@@ -21,6 +22,7 @@ if ("%obj" != "door") then {
 } else {
     var closeObj house
     if (contains("$roomobjs", "farmstead") then var closeObj farmstead
+    if (contains("$roomobjs", "sandalwood door") then var closeObj door
     gosub close %closeObj
     gosub lock %closeObj
 }

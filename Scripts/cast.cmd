@@ -2,14 +2,18 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var cambrinth mammoth calf
-var worncambrinth 1
-var focus inauri plush
+#var cambrinth mammoth calf
+#var worncambrinth 1
+#var focus inauri plush
+
+include var_characters.cmd
 
 ######################
 
 var useCambrinth 1
 
+var cambrinthFull 0
+action var cambrinthFull 1 when dissipates (uselessly|harmlessly)\.$
 
 if ("%1" = "n") then {
     var useCambrinth 0
@@ -52,15 +56,17 @@ if ("%spell" = "col") then {
     if ("%moon" = "null") then goto done
 }
 
-gosub prep %1 20
+gosub prep %1 60
 
 if (%useCambrinth = 1) then {
     if ("%worncambrinth" != 1) then {
         gosub get my %cambrinth
     }
+
+    var cambrinthFull 0
     gosub charge my %cambrinth 40
-    gosub charge my %cambrinth 40
-    gosub invoke my %cambrinth
+    #if (%cambrinthFull = 0) then gosub charge my %cambrinth 40
+    gosub invoke my %cambrinth 40
 } else {
     gosub harness 20
     gosub harness 20
@@ -91,11 +97,8 @@ ritualSpell:
     goto done
 
 done:
-    if ("%spell" = "shadowling") then {
-        pause
-        put invoke shadowling
-        pause
-    }
+    if ("%spell" = "shadowling") then gosub invoke shadowling
+
     if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
     put #parse CAST DONE
     exit

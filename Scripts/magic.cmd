@@ -1,96 +1,93 @@
 include libsel.cmd
 
 
-var isFullyPrepped 0
 
-action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
-action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
+var spell.warding maf
+var prep.warding 10
+var charge.warding 70
 
-action var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
-action var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
-action var observeOffCooldown false when ^You learned something useful from your observation\.$
-action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
-action var observeOffCooldown false when ^You are unable to make use of this latest observation
+var spell.augmentation cv
+var prep.augmentation 10
+var charge.augmentation 70
 
+var spell.utility sm
+var prep.utility 20
+var charge.utility 30
 
-var nextPercAt 0
-timer start
+if (!($charge.warding > 0)) then put #tvar charge.warding %charge.warding
+if (!($charge.augmentation > 0)) then put #tvar charge.augmentation %charge.augmentation
+if (!($charge.utility > 0)) then put #tvar charge.utility %charge.utility
+
+var lastSpellBackfired 0
+action var lastSpellBackfired 1 when ^Your spell.*backfire
 
 loop:
-    evalmath nextStudyAt $lastAlmanacGametime + 600
+    gosub almanac.onTimer
 
-    if (%nextStudyAt < $gametime) then {
-        if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
-            gosub get my almanac
-        }
-        gosub study my almanac
-        gosub put my almanac in my thigh bag
-        put #var lastAlmanacGametime $gametime
+    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
+
+    if ($Astrology.LearningRate < 22) then gosub runScript predict
+
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+
+    if ($Arcana.LearningRate < 33 && $concentration = 100) then {
+        if ($SpellTimer.RefactiveField.active = 1) then gosub release rf
+        gosub gaze my sanowret crystal
     }
 
-    if ($Astrology.LearningRate < 32) then {
-        if ($Astrology.LearningRate < 22) then {
-            put .predict
-            waitforre ^PREDICT DONE$
-        }
-        put .observe
-        waitforre ^OBSERVE DONE$
-    }
-
-    if (%t > %nextPercAt) then {
-         gosub perc mana
-         evalmath nextPercAt (60 + %t)
-         if ($Appraisal.LearningRate < 33) then gosub app my gem pouch
-    }
     if ($Warding.LearningRate < 33) then {
         if ($preparedspell != None) then gosub release spell
-        var isFullyPrepped 0
+        var lastSpellBackfired 0
         gosub prep symbiosis
-        gosub prep psy 10
-        gosub charge my calf 60
-        gosub invoke my calf
-        if (%isFullyPrepped != 1) then gosub waitForPrep
+        gosub prep maf %prep.warding
+        gosub charge my calf $charge.warding
+        gosub invoke my calf $charge.warding
+        gosub waitForPrep
         gosub cast
+        if (%lastSpellBackfired = 1) then {
+            evalmath tmp ($charge.warding - 1)
+            put #tvar charge.warding %tmp
+        }
         #gosub release shear
     }
 
     if ($Utility.LearningRate < 33) then {
         if ($preparedspell != None) then gosub release spell
-        var isFullyPrepped 0
+        var lastSpellBackfired 0
         gosub prep symbiosis
-        gosub prep sm 20
-        gosub charge my calf 25
-        gosub invoke my calf
-        if (%isFullyPrepped != 1) then gosub waitForPrep
+        gosub prep %spell.utility %prep.utility
+        gosub charge my calf $charge.utility
+        gosub invoke my calf $charge.utility
+        gosub waitForPrep
         gosub cast
+        if (%lastSpellBackfired = 1) then {
+            evalmath tmp ($charge.utility - 1)
+            put #tvar charge.utility %tmp
+        }
     }
 
     if ($Augmentation.LearningRate < 33) then {
         if ($preparedspell != None) then gosub release spell
-        var isFullyPrepped 0
+        var lastSpellBackfired 0
         gosub prep symbiosis
-        gosub prep cv 10
-        gosub charge my calf 45
-        gosub invoke my calf
-        if (%isFullyPrepped != 1) then gosub waitForPrep
+        gosub prep %spell.augmentation %prep.augmentation
+        gosub charge my calf $charge.augmentation
+        gosub invoke my calf $charge.augmentation
+        gosub waitForPrep
         gosub cast
+        if (%lastSpellBackfired = 1) then {
+            evalmath tmp ($charge.augmentation - 1)
+            put #tvar charge.augmentation %tmp
+        }
     }
    
-    gosub waitMana
+    gosub waitForMana 80
     pause .5
 
 goto loop
 
-
-waitForPrep:
-    pause 1
-    if (%isFullyPrepped = 1) then return
-    goto waitForPrep
-
-waitMana:
-    pause 1
-    if ($mana > 80) then return
-    goto waitMana
 
 
 done:

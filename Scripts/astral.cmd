@@ -72,14 +72,9 @@ echo %destShardName %pillar
 
 gosub awake
 
-put .astro
-waitforre ^ASTRO DONE$
+gosub runScript astro
 
-waitForConcentration:
-    if ($concentration < 30) then {
-        pause 2
-        goto waitForConcentration
-    }
+gosub waitForConcentration 30
 
 if (contains("$roomname", "Astral Plane")) then {
     var moveToAxis 0

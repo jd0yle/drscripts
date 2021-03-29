@@ -15,7 +15,7 @@ main:
     evalmath nextStudyAt $lastAlmanacGametime + 600
 
     if (%nextStudyAt < $gametime) then {
-        put #script pause all except almanac
+        #put #script pause all except almanac
         if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
             gosub get my almanac
             gosub awake
@@ -38,5 +38,6 @@ main:
 
 
 done:
+    delay .2
     put #parse ALMANAC DONE
     exit

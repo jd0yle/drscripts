@@ -47,15 +47,27 @@ if ("%mob" = "peccary") then {
 }
 
 if ("%mob" = "warklin") then {
-    var checkRoomId 39
-    var maxRoomId 47
-    var waitroomid 8
+    var checkRoomId 117
+    var maxRoomId 121
+    var waitroomid 38
 }
 
 if ("%mob" = "wyvern") then {
     var checkRoomId 567
     var maxRoomId 572
     var waitroomid 436
+}
+
+if ("%mob" = "wyvern2") then {
+    var checkRoomId 480
+    var maxRoomId 487
+    var waitroomid 436
+}
+
+if ("%mob" = "adanf") then {
+    var checkRoomId 13
+    var maxRoomId 16
+    var waitroomid 31
 }
 
 
@@ -81,6 +93,10 @@ checkThisRoom:
     if (("$roomplayers" != "" || $monstercount >= 2) && !matchre("$roomplayers", "Maori")) then {
         math checkRoomId add 1
         if (%checkRoomId > %maxRoomId) then {
+            if ("%mob" = "wyvern") then {
+                put .findSpot wyvern2
+                exit
+            }
             gosub automove %waitroomid
             gosub hide
             echo ******************************
@@ -89,6 +105,10 @@ checkThisRoom:
             echo ******************************
             pause 120
             gosub shiver
+            if ("%mob" = "wyvern2") then {
+                put .findSpot wyvern
+                exit
+            }
             goto init
         }
         return
