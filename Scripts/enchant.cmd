@@ -13,7 +13,8 @@ var burin silversteel burin
 var brazier silversteel brazier
 var loop augmenting loop
 
-var enchantingContainer shadows
+#var enchantingContainer shadows
+var enchantingContainer steelsilk backpack
 var defaultContainer steelsilk backpack
 
 

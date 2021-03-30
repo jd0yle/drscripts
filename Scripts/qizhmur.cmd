@@ -74,8 +74,8 @@ loop:
         var isFullyPrepped 0
         gosub prep symbiosis
         gosub prep obf 1
-        gosub charge my %cambrinth 6
-        gosub invoke my %cambrinth 6
+        gosub charge my %cambrinth 8
+        gosub invoke my %cambrinth 8
         gosub harness 5
         if (%isFullyPrepped != 1) then gosub waitForPrep
         gosub cast

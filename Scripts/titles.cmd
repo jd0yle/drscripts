@@ -1,5 +1,8 @@
+####
+# Dumps out a list of all titles in Genie Client 3/Logs/titles.txt
+####
 
-var categories Moonmage|Blunt|Ranged|Brawling|GenEdged|SpecEdged|Thrown|Pole|Shield|Slings|Weapons|WeaponMaster|Performer|PrimaryMagic|Magic|Money|Ownership|Survival1|Survival2|Survival3|Lore|Criminal|Generic|Racial|Premium|Order|Religion|Novice|Practitioner|Dilettante|Aficionado|Adept|Expert|Professional|Authority|Genius|Savant|Master|GrandMaster|Guru|Legend|Custom
+var categories guild|Blunt|Ranged|Brawling|GenEdged|SpecEdged|Thrown|Pole|Shield|Slings|Weapons|WeaponMaster|Performer|PrimaryMagic|Magic|Money|Ownership|Survival1|Survival2|Survival3|Lore|Criminal|Generic|Racial|Premium|Order|Religion|Arcane|Novice|Practitioner|Dilettante|Aficionado|Adept|Expert|Professional|Authority|Genius|Savant|Master|GrandMaster|Guru|Legend|Custom
 eval len count("%categories", "|")
 eval index 0
 

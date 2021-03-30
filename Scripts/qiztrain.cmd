@@ -88,7 +88,11 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
+        gosub automove n gate
+        gosub automove portal
+
         gosub release eotb
+        gosub move go meeting portal
 
         gosub automove bundle
         gosub remove my bundle
@@ -112,14 +116,9 @@ main:
         gosub stow right
         gosub stow left
 
-        gosub automove portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        gosub move go meeting portal
-
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-
         put .dep
         waitforre ^DEP DONE$
+        gosub automove 106
         pause 1
         put .qiztrain
         put .reconnect
@@ -213,7 +212,6 @@ moveToAdanf:
         gosub automove n gate
         goto moveToAdanf
     }
-
 
     # FC
     if ("%zone" = "150") then {
@@ -365,6 +363,7 @@ moveToMagic:
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
+        gosub release eotb
         gosub move go meeting portal
         goto moveToMagic
     }
@@ -439,6 +438,7 @@ moveToYellowGremlin:
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
+        gosub release eotb
         gosub move go meeting portal
         goto moveToYellowGremlin
     }
@@ -599,7 +599,7 @@ put .reconnect
 
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "twelve") then return
+    if ("%numBolts" = "nine") then return
     gosub attack kick
     gosub loot
     put .loot
