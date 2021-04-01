@@ -930,6 +930,7 @@ invoke:
     matchre return ^Invoke what?
     matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane.$
     matchre return ^You're not sure what would happen
+    matchre return ^You must begin preparing a ritual spell before you can focus it
     put invoke %todo
     goto retry
 
@@ -1023,6 +1024,8 @@ listen:
     matchre return isn't teaching you anymore\.
     matchre return has closed the class to new students\.
     matchre return ^You cannot teach a skill and be a student at the same time\!
+    matchre return ^You can't really learn anything when your instructor can't see you.
+    matchre return ^You don't have the appropriate training to learn that skill.
     put listen %todo
     goto retry
 
@@ -1124,8 +1127,6 @@ libAwake:
     put awake %todo
     goto retry
 
-    put awake
-    goto %location
 
 mind:
     var location mind1
@@ -1187,6 +1188,8 @@ peer:
     matchre return ^You peer aimlessly
     matchre return ^Roundtime
     matchre return ^Clouds obscure the sky
+    matchre return ^You peer in
+    matchre return Usage
     put peer %todo
     goto retry
 
@@ -1337,8 +1340,16 @@ prepare:
     matchre return ^You trace an angular sigil
     matchre return ^As quickly as you form the spell pattern in your mind it slips away from you again.$
     matchre prep1 ^Are you sure you want to do that\?  You'll interrupt your research\!
+    matchre prepare.ritualFix ^Magical rituals are exceedingly obvious.  You cannot do it while remaining hidden.
     put prepare %todo
     goto retry
+
+
+
+prepare.ritualFix:
+    gosub release rf
+    gosub shiver
+    goto %location
 
 
 push:
@@ -1428,6 +1439,7 @@ release:
     matchre return ^You cease your shadow weaving.$
     matchre return ^A faint growl echoes from the depths
     matchre return ^Release\?  You can't even sense mana right now.$
+    matchre return ^The Refractive Field pattern fades from you.
     put release %todo
     goto retry
 
@@ -2111,10 +2123,10 @@ almanac.onTimer:
     var location almanac.onTimer1
 
     almanac.onTimer1:
-	if (!($lastAlmanacGametime > 0)) then put #var lastAlmanacGametime 1
-	evalmath nextStudyAt $lastAlmanacGametime + 600
-	if (%nextStudyAt < $gametime) then gosub runScript almanac noloop
-	return
+    if (!($lastAlmanacGametime > 0)) then put #var lastAlmanacGametime 1
+    evalmath nextStudyAt $lastAlmanacGametime + 600
+    if (%nextStudyAt < $gametime) then gosub runScript almanac noloop
+    return
 
 
 appraise.onTimer:
@@ -2150,11 +2162,10 @@ observe.onTimer:
     var location observe.onTimer1
 
     observe.onTimer1:
-	if (!($lastObserveAt > -1)) then put #var lastObserveAt 0
-	evalmath nextObserveGametime ($lastObserveAt + 240)
-	if ($gametime > %nextObserveGametime || $isObsOnCd != true) then gosub runScript observe %todo
-	#if ($gametime > %nextObserveGametime) then gosub runScript observe %todo
-	return
+    if (!($lastObserveAt > -1)) then put #var lastObserveAt 0
+    evalmath nextObserveGametime ($lastObserveAt + 240)
+    if ($gametime > %nextObserveGametime || $isObsOnCd != true) then gosub runScript observe %todo
+    return
 
 
 
@@ -2163,14 +2174,14 @@ perc.onTimer:
     var location perc.onTimer1
     
     perc.onTimer1:
-	if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
+    if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
 
-	evalmath nextPercGametime $lastPercGameTime + 61
+    evalmath nextPercGametime $lastPercGameTime + 61
 
-	if ($gametime > %nextPercGametime) then {
-	    gosub perc mana
-	    put #var lastPercGameTime $gametime
-	}
+    if ($gametime > %nextPercGametime) then {
+        gosub perc mana
+        put #var lastPercGameTime $gametime
+    }
     return    
         
 
@@ -2367,10 +2378,10 @@ runScript:
     var location runScript1
     runScript1:
     #echo [runScript] .%todo
-	put .%todo
-	eval doneString toupper(%scriptName)
-	waitforre ^%doneString DONE$
-	return
+    put .%todo
+    eval doneString toupper(%scriptName)
+    waitforre ^%doneString DONE$
+    return
 
 
 waitForConcentration:

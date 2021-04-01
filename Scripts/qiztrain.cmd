@@ -52,6 +52,9 @@ if_1 then {
     if ("%1" = "fight") then {
         goto startFight
     }
+    if ("%1" = "magic") then {
+        goto startMagic
+    }
 }
 
 main:
@@ -124,24 +127,28 @@ main:
         put .reconnect
     }
 
-#    if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 5 || $Heavy_Thrown.LearningRate < 20 || $Targeted_Magic.LearningRate < 20) then {
-#        put #echo >Log #cc99ff Going to main combat
-#        #gosub moveToYellowGremlin
-#        gosub moveToWarklin
-#        put .fight
-#        gosub waitForMainCombat
-#        goto main
-#    }##
-#
-#    put #echo >Log #cc99ff Going to magic
-#    gosub moveToMagic
-#    put .qizhmur
-#    gosub waitForMagic
 
     startMagic:
     if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
-        gosub moveToMagic
+        gosub moveToHouse
+
+        if ("$roomname" != "Private Home Interior") then {
+            put #echo >Log #cc99ff House won't open, going to FC
+            gosub moveToMagic
+        }
+
+		if (contains("$roomplayers", "Selesthiel") && contains("$roomplayers", "Inauri")) then {
+		    gosub listen to Selesthiel
+		    gosub listen to Inauri observe
+		    gosub teach tm to Inauri
+		    gosub teach tm to Selesthiel
+		} else {
+		    if (contains("$roomplayers", "Inauri")) then {
+		        gosub teach tm to inauri
+		        gosub listen to inauri observe
+		    }
+		}
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
             var startResearch 0
@@ -178,6 +185,11 @@ sorceryCont:
 
 moveToAdanf:
     gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToAdanf
+    }
 
     # Shard South Gate Area
     if ("%zone" = "68") then {
@@ -227,6 +239,8 @@ moveToAdanf:
 moveToBurgle:
     gosub setZone
 
+
+
     if ("$preparedspell" != "None") then gosub release spell
     if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
@@ -238,6 +252,11 @@ moveToBurgle:
             gosub release usol
             gosub cast
         }
+    }
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToBurgle
     }
 
     # Ice Caves
@@ -312,19 +331,116 @@ moveToBurgle:
     goto moveToBurgle
 
 
-moveToMagic:
+
+moveToHouse:
     gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then return
 
     # Ice Caves
     if ("%zone" = "68a") then {
         gosub automove 30
-        goto moveToBurgle
+        goto moveToHouse
     }
 
     # Shard S Gate
     if ("%zone" = "68") then {
         gosub automove e gate
-        goto moveToBurgle
+        goto moveToHouse
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToHouse
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove crossing
+        goto moveToHouse
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToHouse
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto moveToHouse
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        gosub move go meeting portal
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        goto moveToHouse
+    }
+
+    # Shard East Gate Area
+    if ("%zone" = "66") then {
+        if ("$roomname" = "Private Home Interior") then return
+        if ("$roomid" = "252") then {
+            gosub release eotb
+            gosub peer door
+            pause 10
+            gosub open door
+            gosub move go door
+            gosub close door
+            gosub lock door
+            return
+        } else {
+            gosub automove 252
+        }
+        goto moveToHouse
+    }
+
+    # Shard
+    if ("%zone" = "67") then {
+        gosub automove 132
+        goto moveToHouse
+    }
+
+    # Shard West Gate Area
+    if ("%zone" = "69") then {
+        gosub automove n gate
+        goto moveToHouse
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub release eotb
+        gosub move go portal
+        goto moveToHouse
+    }
+
+    goto moveToHouse
+    
+
+moveToMagic:
+    gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToMagic
+    }
+
+    # Ice Caves
+    if ("%zone" = "68a") then {
+        gosub automove 30
+        goto moveToMagic
+    }
+
+    # Shard S Gate
+    if ("%zone" = "68") then {
+        gosub automove e gate
+        goto moveToMagic
     }
 
     # Abandoned Mine
@@ -599,7 +715,7 @@ put .reconnect
 
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "nine") then return
+    if ("%numBolts" = "thirty-eight") then return
     gosub attack kick
     gosub loot
     put .loot

@@ -19,7 +19,11 @@ gosub stow left
 loop:
     gosub get my %items(%index) from my %container
     if ("$righthand" != "Empty") then {
-        gosub drop my %items(%index)
+        if ("$charactername" = "Selesthiel") then {
+            gosub put my %items(%index) in my bucket
+        } else {
+            gosub drop my %items(%index)
+        }
         if ("$righthand" != "Empty") then {
             gosub drop my %items(%index)
         }

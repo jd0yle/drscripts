@@ -30,9 +30,11 @@ if (%skillset != null) then {
 goto done
 
 
+###############################
+###      findSkillSet
+###############################
 findSkillSet:
     var skillset null
-    #var skillsets magic|offens|defens|survival|lore
     var skillsets lore|survival|defens|offens|magic
     eval len count("%skillsets", "|")
     var index 0
@@ -40,8 +42,8 @@ findSkillSet:
     gosub checkPredState
 
     findSkillSetLoop:
-        #if ($predictPool.%skillsets(%index) = complete) then {
-        if ("$predictPool.%skillsets(%index)" != "no") then {
+        if ($predictPool.%skillsets(%index) = complete) then {
+        #if ("$predictPool.%skillsets(%index)" != "no") then {
             var skillset %skillsets(%index)
             return
         }
@@ -64,10 +66,6 @@ checkPredState:
     }
     return
 
-    #else {
-    #    return
-    #}
-    #goto checkPredState
 
 
 done:

@@ -23,7 +23,7 @@ if_1 then {
 }
 
 checkHealth:
-    if ($SpellTimer.Devour.duration > 0) then goto done
+    if ($SpellTimer.Devour.duration > 0 && %healAll != 1) then goto done
     matchre heal ^You have.*(skin|head|neck|chest|abdomen|back|tail|hand|arm|leg|eye|twitching|paralysis)
     matchre done ^You have no significant injuries.
     put health
@@ -36,8 +36,8 @@ heal:
     gosub release spell
     var isFullyPrepped 0
     gosub prep devour
-    gosub charge my calf 20
-    gosub invoke my calf
+    gosub charge my calf 10
+    gosub invoke my calf 10
     if (!(matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") || "%creature" = "material") then {
         if ("$righthandnoun" != "material" && "$lefthandnoun" != "material") then {
             gosub stow right

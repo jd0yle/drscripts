@@ -14,7 +14,11 @@ include libsel.cmd
 # NOTE: This assumes you have you 15 sigil books with the colors in the `colors` array!
 ####################################################################################################
 
+echo .findSigil %0
+
 var sigil %1
+
+if ("%sigil" = "any" || "%sigil" = "primary") then var sigil induction
 
 var types abolition|congruence|induction|permutation|rarefaction|antipode|ascension|clarification|decay|integration|metamorphosis|nurture|paradox|unity|evolution
 eval typesLength count("%types", "|")

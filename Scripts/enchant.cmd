@@ -8,7 +8,7 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-var cambrinth yoakena globe
+var cambrinth mammoth calf
 var burin silversteel burin
 var brazier silversteel brazier
 var loop augmenting loop

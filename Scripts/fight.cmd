@@ -205,6 +205,8 @@ action var isFullyPrepped 0 when ^You raise one hand before you and concentrate
 timer start
 
 
+action send get comp crossbow; send load when ^You need to hold the competition crossbow in your right hand to load it.
+
 var magicSkills Warding|Utility|Augmentation
 eval magicSkillsLength count("%magicSkills", "|")
 var magicSkillsIndex 0
@@ -730,7 +732,6 @@ checkStancesOLDDEPRECATED:
 ###############################
 checkDeadMob:
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
-        # TODO: Fix this for things like "warklin mauler" vs "armored warklin"
         var mobName $1
 
         if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName") then {
@@ -902,7 +903,7 @@ manageCyclics:
         if (%shouldCastSls = 1) then {
             gosub prep Sls
             gosub waitForPrep
-            gosub cast heart in sky
+            gosub cast spider in sky
         }
 
         if ($SpellTimer.StarlightSphere.active = 1) then {

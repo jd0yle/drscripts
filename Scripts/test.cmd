@@ -1,4 +1,79 @@
 
+
+if (1 = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
+    echo ready
+} else {
+    echo not ready
+}
+
+
+exit
+
+# Dynamic character trainer
+# if
+var sections magic|combat
+var sectionIndex 0
+
+var magic.startState $Warding.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Utility.LearningRate < 10
+var magic.doneState $Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31
+
+var combat.startState
+
+
+if (eval(%%sections(%sectionIndex).startState)) then {
+    echo doing %sections(%sectionIndex)
+} else {
+    echo not starting %sections(%sectionIndex)
+}
+
+if (eval(%%sections(%sectionIndex).doneState)) then {
+    echo Done with %sections(%sectionIndex)
+} else {
+    echo Not done with %sections(%sectionIndex)
+}
+
+exit
+
+var cond "foo" = "foo"
+
+if (eval(%cond)) then {
+    echo true
+} else {
+    echo false
+}
+
+var cond "foo" = "bar"
+if (%cond) then {
+    echo true
+} else {
+    echo false
+}
+
+
+
+
+
+
+
+exit
+
+
+
+if (contains("$roomplayers", "Selesthiel") && contains("$roomplayers", "Inauri")) then {
+    gosub listen to Selesthiel
+    gosub listen to Inauri
+    gosub teach tm to inauri
+} else {
+    if (contains("$roomplayers", "Inauri")) then {
+        gosub teach tm to inauri
+    }
+}
+
+
+exit
+
+
+
 action goto ejectFromHouse when eval "$roomplayers" != ""
 
 ejectFromHouse:

@@ -7,6 +7,10 @@ if_1 then {
     }
 }
 
+var telescope clockwork telescope
+var telescopeContainer telescope case
+
+
 var skillset null
 var skillsets magic|offens|defens|survival|lore
 eval len count("%skillsets", "|")
@@ -57,7 +61,6 @@ main:
 
     var objects %%skillset
     eval objlength count("%objects", "|")
-    # echo Skillset is %skillset , objects are %objects , length is %objlength
 
     if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then {
         put .cast aus
@@ -75,7 +78,7 @@ main:
         if ("$lefthandnoun" != "telescope") then {
             gosub stow right
             gosub stow left
-            gosub get my clockwork telescope
+            gosub get my %telescope
             gosub swap
         }
         gosub this.retreat
@@ -90,6 +93,13 @@ main:
             gosub peer my telescope
         }
         math objindex add 1
+
+        if (%objindex > %objlength) then {
+            gosub nextSkillSet
+            var objindex 0
+            var objects %%skillset
+            eval objlength count("%objects", "|")
+        }
         if ($lastObserveAt != %previousLastObserveAt || %objindex > %objlength) then goto done
     goto main.loop
 
@@ -114,7 +124,6 @@ checkPredState:
 ###      findSkillSet
 ###############################
 findSkillSet:
-    # echo findSkillSet Checking index = %index %skillsets(%index) $predictPool.%skillsets(%index)
     if ($predictPool.%skillsets(%index) != complete) then {
         var skillset %skillsets(%index)
         return
@@ -122,6 +131,14 @@ findSkillSet:
     math index add 1
     if (%index > %len) then return
     goto findSkillSet
+
+
+
+nextSkillSet:
+    math index add 1
+    if (%index > %len) then goto done
+    var skillset %skillsets(%index)
+    return
 
 
 
@@ -145,7 +162,7 @@ doneInjured:
     goto done
 
 done:
-    if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my telescope in my telescope case
+    if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my telescope in my %telescopeContainer
     pause .2
     put #parse OBSERVE DONE
     exit

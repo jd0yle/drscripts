@@ -41,6 +41,11 @@ main:
 
         gosub moveToBurgle
 
+        if ($SpellTimer.InvocationoftheSpheres.active != 1 || $SpellTimer.InvocationoftheSpheres.duration < 10) then {
+            gosub release rf
+            gosub runScript iots dis
+        }
+
         gosub prep rf
 
         put .armor remove
@@ -94,16 +99,10 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 20 || $Sorcery.LearningRate < 2) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Arcana.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
-
-        #if ($Warding.LearningRate < 20) then {
-        #    put #echo >Log Doing research
-        #    put .research
-        #    waitforre ^RESEARCH DONE$
-        #}
 
         if ($Sorcery.LearningRate < 2) then {
             put .research sorcery
@@ -163,10 +162,10 @@ sorceryCont:
 
 abortScripts:
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     pause 1
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     pause .2
     gosub stow right
     gosub stow left
@@ -374,10 +373,10 @@ moveToWyverns:
 
 moveToHeal:
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     pause 1
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
     gosub stow right
     gosub stow left
@@ -387,7 +386,7 @@ put .reconnect
     gosub moveToMagic
     gosub getHealed
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     put .seltrainshard
     exit
 
@@ -410,7 +409,7 @@ resetState:
 
 retrieveArrows:
     gosub count my basilisk arrows
-    if ("%numArrows" = "nineteen") then {
+    if ("%numArrows" = "seven") then {
         gosub stow right
         return
     }
@@ -428,7 +427,7 @@ retrieveArrows:
 
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "twenty-eight") then {
+    if ("%numBolts" = "forty-five") then {
         gosub stow right
         return
     }
@@ -447,7 +446,7 @@ retrieveBolts:
 waitForBurgleCd:
     if (%nextBurgleCheck < %t) then {
         put #script abort all except seltrainshard
-put .reconnect
+        put .reconnect
         gosub stow right
         gosub stow left
         gosub checkBurgleCd
@@ -493,10 +492,10 @@ waitForMainCombat:
     if ($bleeding = 1) then goto moveToHeal
     if (%nextBurgleCheck < %t) then {
         put #script abort all except seltrainshard
-put .reconnect
+        put .reconnect
         pause 1
         put #script abort all except seltrainshard
-put .reconnect
+        put .reconnect
         gosub stow right
         gosub stow left
         gosub checkBurgleCd
@@ -506,10 +505,10 @@ put .reconnect
     if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
     #if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
         put #script abort all except seltrainshard
-put .reconnect
+        put .reconnect
         pause 1
         put #script abort all except seltrainshard
-put .reconnect
+        put .reconnect
         if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
         gosub stow right
         gosub stow left
@@ -524,9 +523,9 @@ put .reconnect
 logout:
     put exit
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     pause 1
     put #script abort all except seltrainshard
-put .reconnect
+    put .reconnect
     put exit
     exit

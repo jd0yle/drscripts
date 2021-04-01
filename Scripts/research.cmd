@@ -68,9 +68,9 @@ loop:
         }
 	    if ("$guild" = "Moon Mage") then gosub observe.onTimer
 
-	    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 15) then gosub runScript predict
+	    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
 
-	    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer careful
+	    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
 
 	    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     }

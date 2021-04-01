@@ -16,17 +16,23 @@ include libsel.cmd
 var isTeaching 0
 action var isTeaching 1 when ^You begin to lecture
 
+action goto done when ^You are already teaching a different class.$
+action goto done when ^I could not find who you were referring to.$
+
 var topic %1
 var student %2
 if ("%2" = "to") then var student %3
 
 
 doTeach:
-	gosub awake
+    #gosub awake
+
+    put awake
 	gosub stop listen
 	gosub teach %topic to %student
-	pause 3
+	pause 2
 	if (%isTeaching = 1) then goto done
+	pause 2
 	goto doTeach
 
 
