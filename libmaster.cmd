@@ -36,6 +36,11 @@ if ("$charactername" = "Qizhmur" || "$charactername" = "Selesthiel") then {
     var enemies (nonerightnow)
     var super.enemies (Nonerightnow)
 }
+if ("$charactername" = "Inauri" || "$charactername" = "Khurnaarti") then {
+    var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Khurnaarti|Inauri)
+    var enemies (Meiline|Nideya|Psaero)
+    var super.enemies (Meiline|Nideya|Psaero)
+}
 
 #Log only if person is an enemy:
 
@@ -43,47 +48,62 @@ if ("$charactername" = "Qizhmur" || "$charactername" = "Selesthiel") then {
 ####################
 ### HE/2HE SWAPPING
 ####################
-action var weapon_hand The when ^You draw out your .* sword from the .*, gripping it firmly in your right hand and balancing with your left\.$
-action var weapon_hand The when ^You deftly change your grip on your sword so it can be used as a two-handed edged weapon\.$
-action var weapon_hand The when ^You fiercely switch your grip so that your sword can be used as a two-handed edged weapon\.$
-action var weapon_hand The when ^You effortlessly switch to a grip for using your sword as a two-handed edged weapon\.$
-action var weapon_hand The when ^You turn your sword easily in your hands and end with it in position to be used as a two-handed edged weapon\.$
-action var weapon_hand The when ^You switch your sword so that you can use it as a two-handed edged weapon\.$
-action var weapon_hand The when ^Your eyes blaze as your hands move to a two-handed edged grip on your sword\.$
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
-action var weapon_hand he when ^You draw out your .* sword from the .*, gripping it firmly in your right hand\.$
-action var weapon_hand he when ^You deftly change your grip on your sword so it can be used as a heavy edged weapon\.$
-action var weapon_hand he when ^You fiercely switch your grip so that your sword can be used as a heavy edged weapon\.$
-action var weapon_hand he when ^You effortlessly switch to a grip for using your sword as a heavy edged weapon\.$
-action var weapon_hand he when ^You turn your sword easily in your hands and end with it in position to be used as a heavy edged weapon\.$
-action var weapon_hand he when ^You switch your sword so that you can use it as a heavy edged weapon\.$
-action var weapon_hand he when ^Your eyes blaze as your hands move to a heavy edged grip on your sword\.$
+action var weapon_hand The when ^You deftly change your grip on your sword so it can be used as a two-handed edged weapon\.$
+action var weapon_hand The when ^You draw out your .* sword from the .*, gripping it firmly in your right hand and balancing with your left\.$
+action var weapon_hand The when ^You effortlessly switch to a grip for using your sword as a two-handed edged weapon\.$
+action var weapon_hand The when ^Your eyes blaze as your hands move to a two-handed edged grip on your sword\.$
+action var weapon_hand The when ^You fiercely switch your grip so that your sword can be used as a two-handed edged weapon\.$
+action var weapon_hand The when ^You switch your sword so that you can use it as a two-handed edged weapon\.$
+action var weapon_hand The when ^You turn your sword easily in your hands and end with it in position to be used as a two-handed edged weapon\.$
+
 action var weapon_hand he when ^With a quiet snarl, you move your hands to grip your sword as a heavy edged weapon\.$
+action var weapon_hand he when ^You deftly change your grip on your sword so it can be used as a heavy edged weapon\.$
+action var weapon_hand he when ^You draw out your .* sword from the .*, gripping it firmly in your right hand\.$
+action var weapon_hand he when ^You effortlessly switch to a grip for using your sword as a heavy edged weapon\.$
+action var weapon_hand he when ^Your eyes blaze as your hands move to a heavy edged grip on your sword\.$
+action var weapon_hand he when ^You fiercely switch your grip so that your sword can be used as a heavy edged weapon\.$
+action var weapon_hand he when ^You switch your sword so that you can use it as a heavy edged weapon\.$
+action var weapon_hand he when ^You turn your sword easily in your hands and end with it in position to be used as a heavy edged weapon\.$
 var weapon_hand NONERIGHTNOW
+
 
 ####################
 ### DEAD
 ####################
-#action goto exit.full when ^Your body will decay beyond its ability to hold your soul
-#action goto exit.full when ^You feel like you're dying
-#action goto exit.full when ^You are somewhat comforted that you have gained favor with your God and are in no danger of walking the Starry Road, never to return\.
-#action goto exit.full when ^Your death cry echoes in your brain
-#action goto exit.full when ^You feel yourself falling\.\.\.
 #action goto exit.full when ^You are a ghost\!
 #action goto exit.full when ^You are a ghost\!  You must wait until someone resurrects you, or you decay\.
+#action goto exit.full when ^You are somewhat comforted that you have gained favor with your God and are in no danger of walking the Starry Road, never to return\.
+#action goto exit.full when ^Your body will decay beyond its ability to hold your soul
+#action goto exit.full when ^Your death cry echoes in your brain
 #action goto exit.full when ^You feel like you're dying\!
+#action goto exit.full when ^You feel yourself falling\.\.\.
+
 
 ####################
-### WAIT FOR PREP
+### HIDDEN
 ####################
-action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
-action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
+action var Hidden 0 when ^You blend in with your surroundings|^You slip into a hiding|^You melt into the background|^Darkness falls over you like a cloak, and you involuntarily blend into the shadows\.|^Eh\?  But you're already hidden
+action var Hidden 1 when ^You leap out of hiding|^You come out of hiding\.|^You burst from hiding and begin to dance about\!|^You slip out of hiding\.|notices your attempt to hide|discovers you, ruining your hiding place|reveals you, ruining your hiding attempt
+var Hidden 1
 
-action var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
-action var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
-action var observeOffCooldown false when ^You learned something useful from your observation\.$
-action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
-action var observeOffCooldown false when ^You are unable to make use of this latest observation
+
+####################
+### FORAGEBLE
+####################
+action var foragable 1 when ^The room is too cluttered to find anything her
+action var foragable 0 when ^A scavenger troll strolls in, looks you squarely in the eye and says
+action var foragable 0 when ^A low fog rolls in, then just as quickly rolls out
+var foragable 0
+
+
+###################
+## MAGIC
+###################
+if ("$charactername" = "Inauri") then {
+    action goto refreshRegen when eval $health < 50
+}
+
 
 ####################
 ### ROOM OCCUPIED
@@ -112,6 +132,81 @@ action var observeOffCooldown false when ^You are unable to make use of this lat
 #action var People.Room occupied when ^\w+ gestures at a \w+\.$
 #var People.Room empty
 
+
+####################
+### SKINNING
+####################
+action put #var skin 1 when ^The ship's rat screams one last time and lies still\.
+action put #var skin 1 when ^The ship's rat falls to the ground and lies still\.
+action put #var skin 1 when ^A granite gargoyle grumbles and falls over\.
+action put #var skin 1 when ^A granite gargoyle grumbles and goes still\.
+action put #var skin 1 when ^A quartz gargoyle grumbles and falls over with a
+action put #var skin 1 when ^A quartz gargoyle grumbles and goes still\.
+action put #var skin 1 when ^A silverfish lurches forward and collapses
+action put #var skin 1 when ^A silverfish freezes a moment and falls into a heap
+action put #var skin 1 when grows limp and seems to deflate slightly
+action put #var skin 1 when slaps around a few times and then grows still
+action put #var skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing
+action put #var skin 1 when ^A seordhevor kartais flaps its wings to no avail as it falls to the ground and goes
+action put #var skin 1 when ^A seordhevor kartais lets out a shriek and goes
+action put #var skin 1 when ^The striped badger screams one last time and lies still\.
+action put #var skin 1 when ^The striped badger falls to the ground and lies still\.
+action put #var skin 1 when ^The croff pothanit falls to the ground and lies still\.
+action put #var skin 1 when ^The wild boar falls to the ground and lies still\.
+action put #var skin 1 when ^The wild boar screams one last time and lies still\.
+action put #var skin 1 when ^The majestic deer collapses to the ground, its mouth panting in a last few desperate gulps of air before that too fails and it goes completely limp\.
+action put #var skin 1 when ^A.*gryphon collapses into a lifeless mound of fur and feathers\.
+action put #var skin 1 when ^A.*snow goblin stares at you stupidly for a moment, before its eyes roll backwards into its head\.
+action put #var skin 1 when ^A snowbeast lets loose a blood-curdling howl and falls into a heap\.
+action put #var skin 1 when ^A snowbeast lets loose a blood-curdling howl and goes still\.
+action put #var skin 1 when ^The forest geni's body explodes into a gaseous cloud\.
+action put #var skin 1 when ^The forest geni cries out to the forest for protection\.  Getting no response, it collapses to the ground\.
+action put #var skin 1 when ^A giant black leucro collapses to the ground, yelping like a lost puppy calling for its mother until finally it ceases all movement\.
+action put #var skin 1 when ^A giant black leucro suddenly yelps like a puppy and stops all movement\.
+action put #var skin 1 when ^The silver leucro screams one last time and lies
+action put #var skin 1 when ^The silver leucro falls to the ground and lies
+action put #var skin 1 when ^A giant thicket viper slaps around a few times and then grows still\.
+action put #var skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing\.
+action put #var skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
+action put #var skin 1 when ^A grass eel thrashes about wildly for a few seconds, then lies still\.
+action put #var skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
+action put #var skin 1 when ^A grass eel shudders then goes limp\.
+action put #var skin 1 when ^A grass eel shudders, then goes limp\.
+action put #var skin 1 when ^The beisswurm falls to the ground and lies still\.
+action put #var skin 1 when ^A rock troll collapses with a heavy thud\.
+action put #var skin 1 when ^The bucca drops dead at your feet\!
+action put #var skin 1 when ^A copperhead viper rises up threateningly one last time before collapsing\.
+action put #var skin 1 when ^A copperhead viper slaps around a few times and then grows still\.
+action put #var skin 1 when ^An Endrus serpent jackknifes a few times, then grows still, its body rapidly settling until it is little more than a pile of wood and vine\.
+action put #var skin 1 when ^A suw bizar loses its cohesion, oozing outwards as a murky puddle\.
+action put #var skin 1 when ^A blood wolf whines briefly before closing its eyes forever\.
+action put #var skin 1 when ^A silver-backed bear growls one last time and collapses\.
+action put #var skin 1 when ^The fire maiden screams and collapses, her dance stilled at last\.
+action put #var skin 1 when ^The immature firecat falls to the ground and lies still\.
+action put #var skin 1 when ^The immature firecat screams one last time and lies still\.
+action put #var skin 1 when ^The young firecat falls to the ground and lies still\.
+action put #var skin 1 when ^A fire sprite screams and collapses, her dance stilled at last\.
+action put #var skin 1 when ^A fire sprite screams in anguish and lies still\.
+action put #var skin 1 when ^A blue-belly crocodile sinks into the water and turns belly up, clawing in vain at the air until it ceases all movement\.
+action put #var skin 1 when ^A caracal tips over, limbs extended stiffly, and exp
+action put #var skin 1 when ^A caracal trembles violently before finally exp
+action put #var skin 1 when ^A peccary flops in a porky heap, squealing one last time before passing into obliv
+action put #var skin 1 when ^A peccary kicks and spasms as the last vestiges of life flee this mortal c
+action put #var skin 1 when ^A bristle-backed peccary flops in a porky heap, squealing one last time before passing into ob
+action put #var skin 1 when ^A bristle-backed peccary kicks and spasms as the last vestiges of life flee this mortal
+action put #var skin 1 when ^The asaren celpeze thrashes about for a moment, then lies s
+action put #var skin 1 when ^The asaren celpeze's flared crest wobbles, then collapses as the celpeze falls over and lies s
+action put #var skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
+action put #var skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
+action put #var skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
+action goto loot when ^Skin what\?
+action goto loot when ^.* can't be skinned
+put #var skin 0
+
+#var pelts.keep (celpeze eye)
+#var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
+
+
 ####################
 ### SLEEP / AWAKE
 ####################
@@ -125,59 +220,31 @@ action var observeOffCooldown false when ^You are unable to make use of this lat
 #action var sleep 0 when ^You relax and allow your mind to enter a state of r
 #action var sleep 1 when ^You awaken from your reverie and begin to take in the world aro
 
-####################
-### HIDDEN
-####################
-action var Hidden 0 when ^You blend in with your surroundings|^You slip into a hiding|^You melt into the background|^Darkness falls over you like a cloak, and you involuntarily blend into the shadows\.|^Eh\?  But you're already hidden
-action var Hidden 1 when ^You leap out of hiding|^You come out of hiding\.|^You burst from hiding and begin to dance about\!|^You slip out of hiding\.|notices your attempt to hide|discovers you, ruining your hiding place|reveals you, ruining your hiding attempt
-var Hidden 1
+
+###################
+## TEACHING
+###################
+#action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
+
+if ("$charactername" = "Inauri") then {
+    action put #var class 0 when ^All of your students have left, so you stop teaching\.
+    action put #var class 0 when ^Because you have no more students, your class ends\.
+    action put #var student 1 when ^You begin to listen to (\S+) teach
+}
+
 
 ####################
-### FORAGEBLE
+### WAIT FOR PREP
 ####################
-action var foragable 1 when ^The room is too cluttered to find anything her
-action var foragable 0 when ^A scavenger troll strolls in, looks you squarely in the eye and says
-action var foragable 0 when ^A low fog rolls in, then just as quickly rolls out
-var foragable 0
-
-####################
-### SKINNING
-####################
-action var skin 1 when ^A.*gryphon collapses into a lifeless mound of fur and feathers\.
-action var skin 1 when ^A.*snow goblin stares at you stupidly for a moment, before its eyes roll backwards into its head\.
-action var skin 1 when ^A snowbeast lets loose a blood-curdling howl and falls into a heap\.
-action var skin 1 when ^A snowbeast lets loose a blood-curdling howl and goes still\.
-action var skin 1 when ^The forest geni's body explodes into a gaseous cloud\.
-action var skin 1 when ^The forest geni cries out to the forest for protection\.  Getting no response, it collapses to the ground\.
-action var skin 1 when ^A giant black leucro collapses to the ground, yelping like a lost puppy calling for its mother until finally it ceases all movement\.
-action var skin 1 when ^A giant black leucro suddenly yelps like a puppy and stops all movement\.
-action var skin 1 when ^The silver leucro screams one last time and lies
-action var skin 1 when ^The silver leucro falls to the ground and lies
-action var skin 1 when ^A giant thicket viper slaps around a few times and then grows still\.
-action var skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing\.
-action var skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
-action var skin 1 when ^A grass eel thrashes about wildly for a few seconds, then lies still\.
-action var skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
-action var skin 1 when ^A grass eel shudders then goes limp\.
-action var skin 1 when ^The beisswurm falls to the ground and lies still\.
-action var skin 1 when ^A caracal tips over, limbs extended stiffly, and exp
-action var skin 1 when ^A caracal trembles violently before finally exp
-action var skin 1 when ^A peccary flops in a porky heap, squealing one last time before passing into obliv
-action var skin 1 when ^A peccary kicks and spasms as the last vestiges of life flee this mortal c
-action var skin 1 when ^A bristle-backed peccary flops in a porky heap, squealing one last time before passing into ob
-action var skin 1 when ^A bristle-backed peccary kicks and spasms as the last vestiges of life flee this mortal
-action var skin 1 when ^The asaren celpeze thrashes about for a moment, then lies s
-action var skin 1 when ^The asaren celpeze's flared crest wobbles, then collapses as the celpeze falls over and lies s
-action var skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
-action var skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
-action var skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
-
-action var skin 0 when ^Skin what\?
-action var skin 0 when ^.* can't be skinned
-var skin 0
-
-#var pelts.keep (celpeze eye)
-#var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
+action var isFullyPrepped 1 when ^Your concentration lapses for a moment, and your spell is lost.$
+action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
+action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
+action var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
+action var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
+action var observeOffCooldown false when ^While the sighting wasn't quite what you were hoping for, you still learned from your observation\.$
+action var observeOffCooldown false when ^You are unable to make use of this latest observation
+action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
+action var observeOffCooldown false when ^You learned something useful from your observation\.$
 #######################################################################################################################################
 
 #action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
@@ -195,7 +262,7 @@ action send stand when ^You should stand up first.
 
 #######################################################################################################################################
 
-action send 2 #parse MOVE FAILED;echo [libsel] parsed for failed move when DESTINATION NOT FOUND
+action send 2 #parse MOVE FAILED;echo [libmaster] parsed for failed move when DESTINATION NOT FOUND
 
 #######################################################################################################################################
 
@@ -375,6 +442,19 @@ attack2:
     gosub stand
     var location attack1
     goto Attack1
+
+
+awake:
+libAwake:
+    var location awake1
+    var todo $0
+    awake1:
+    matchre return ^But you are not sleeping!
+    matchre return ^You awaken from
+    put awake %todo
+    goto retry
+    put awake
+    goto %location
 
 
 block.stop:
@@ -584,6 +664,18 @@ collect:
     goto retry
 
 
+combine:
+    var location combine1
+    var todo $0
+    combine1:
+    matchre return ^Combine some
+    matchre return ^Perhaps you should be holding that first\.
+    matchre return ^Roundtime
+    matchre return ^You combine
+    put combine %todo
+    goto retry
+
+
 count:
     var location Count1
     var todo $0
@@ -684,6 +776,7 @@ empty:
     if "$lefthand" != "Empty" then gosub drop $lefthand
     if "$righthand" != "Empty" then gosub drop $righthand
     return
+
 
 exhale:
     var location exhale1
@@ -945,6 +1038,7 @@ invoke:
     matchre return ^You must begin preparing a ritual spell before you can focus it
     matchre return You reach for its center and forge a magical link
     matchre return ^You're not sure what would happen
+    matchre invoke ^You reach for its center, attempting
     put invoke %todo
     goto retry
 
@@ -982,20 +1076,19 @@ khri.stop:
     var todo $0
     khri.stop1:
     matchre return ^Nothing happens, as you are not using any stoppable meditations\.
-    matchre return ^Your focused mind falters, and you feel slightly less competent overall\.
-    matchre return ^Your extreme cunning vanishes as one of your mental pillars supporting it ceases\.
-    matchre return ^Your inward calm vanishes, the troubles of the world once more washing over you\.
     matchre return ^You are unable to maintain the complex thought processes any longer and your mental faculties return to normal\.
+    matchre return ^You are no longer able to keep your thoughts free from distraction, and your heightened ability to notice and avoid incoming dangers fails\.
     matchre return ^You attempt to relax your mind from all of its meditative states\.
+    matchre return ^You feel mentally fatigued as your heightened paranoia ceases to enhance your knowledge of nearby escape routes\.
+    matchre return ^Your augmented reaction times slow as one of your mental pillars supporting it ceases\.
     matchre return ^Your cool composure fades, and with it your heightened knowledge of enemies' weak points\.
     matchre return ^Your concentration fails, and you feel your body perceptibly slow\.
-    matchre return ^Your silence ends, placing you back into the normal field of perception\.
-    matchre return ^You attempt to relax your mind from all of its meditative states\.
-    matchre return ^Your mind's prowess wavers, and so too does the extra combat strength it granted you vanish\.
-    matchre return ^Your augmented reaction times slow as one of your mental pillars supporting it ceases\.
-    matchre return ^You feel mentally fatigued as your heightened paranoia ceases to enhance your knowledge of nearby escape routes\.
-    matchre return ^You are no longer able to keep your thoughts free from distraction, and your heightened ability to notice and avoid incoming dangers fails\.
     matchre return ^Your concentration runs out, and your rapid analysis of incoming threats ceases\.
+    matchre return ^Your extreme cunning vanishes as one of your mental pillars supporting it ceases\.
+    matchre return ^Your focused mind falters, and you feel slightly less competent overall\.
+    matchre return ^Your inward calm vanishes, the troubles of the world once more washing over you\.
+    matchre return ^Your silence ends, placing you back into the normal field of perception\.
+    matchre return ^Your mind's prowess wavers, and so too does the extra combat strength it granted you vanish\.
     put khri stop
     goto retry
 
@@ -1004,10 +1097,10 @@ kick:
     var location kick
     if ($standing = 0) then put stand
     matchre kick ^Bringing your foot
-    matchre kick ^You take a step back and run up to the
     matchre kick ^Loosing your footing at the last moment
     matchre kick ^You can't do that from your position\.
     matchre kick ^You can't quite manage
+    matchre kick ^You take a step back and run up to the
     matchre kick ^You throw a glorious temper tantrum\!
     matchre return ^I could not find what you were referring to\.
     put kick pile
@@ -1135,25 +1228,11 @@ meditate:
     goto retry
 
 
-awake:
-libAwake:
-    var location awake1
-    var todo $0
-    awake1:
-    matchre return ^But you are not sleeping!
-    matchre return ^You awaken from
-    put awake %todo
-    goto retry
-
-    put awake
-    goto %location
-
-
 mind:
     var location mind1
     mind1:
     matchre return ^EXP HELP for more information
-matchre return ^Overall state of mind:
+    matchre return ^Overall state of mind:
     put mind
     goto retry
 
@@ -1183,6 +1262,7 @@ open:
     matchre return ^You need to be holding the telescope first.
     matchre return ^You rattle
     matchre return ^You try, but the telescope seems as extended as it will ever be\.
+    matchre return ^Your dreamweave fan is already
     put open %todo
     goto retry
 
@@ -1314,8 +1394,8 @@ pray:
     matchre return ^You beseech your God for mercy\.
     matchre return ^You bow your head
     matchre return ^You continue praying for guidance\.
-    matchre return ^You pray fervently\.
     matchre return ^You kneel down and begin to pray\.
+    matchre return ^You pray fervently\.
     matchre return ^You want to pray here\?
     matchre return ^Your fervent prayers are met with a sense of peace and security\.
     put pray %todo
@@ -1358,7 +1438,10 @@ prepare:
     var location prep1
     var todo $0
     prep1:
-    matchre prep1 ^Are you sure you want to do that\?  You'll interrupt your research\!
+    if ($char.research.interrupt.cast = 1) then {
+        matchre prep1 ^Are you sure you want to do that\?  You'll interrupt your research\!
+    }
+    matchre return ^Are you sure you want to do that\?  You'll interrupt your research\!
     matchre return ^A nagging sense of desperation guides your hands through the motions
     matchre return ^As quickly as you form the spell pattern in your mind it slips away from you again.$
     matchre return ^As you begin to focus on preparing
@@ -1875,21 +1958,25 @@ stow:
     if ("%todo" = "" && "$righthand" = "Empty") then return
     if ("%todo" = "right" && "$righthand" = "Empty") then return
     if ("%todo" = "left" && "$lefthand" = "Empty") then return
-    if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope")) then {
-        gosub put my telescope in my telescope case
-        return
+    if ("$charactername" = "Selesthiel") then {
+        if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope")) then {
+            gosub put my telescope in my telescope case
+            return
+        }
+        if (contains("%todo", "sunstone runestone") || ("%todo" = "right" && "$righthand" = "sunstone runestone")) then {
+            gosub put my sunstone runestone in my telescope case
+            return
+        }
+        if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = "compendium")) then {
+            gosub put my compendium in my thigh bag
+            return
+        }
     }
-    if (contains("%todo", "sunstone runestone") || ("%todo" = "right" && "$righthand" = "sunstone runestone")) then {
-        gosub put my sunstone runestone in my telescope case
-        return
-    }
-    if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = "compendium")) then {
-        gosub put my compendium in my thigh bag
-        return
-    }
-    if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material")) then {
-        gosub put my material in my satchel
-        return
+    if ("$charactername" = "Qizhmur") then {
+        if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material")) then {
+            gosub put my material in my satchel
+            return
+        }
     }
     matchre return ^But that is already in your inventory\.
     matchre return ^I can't find your container
@@ -1944,6 +2031,9 @@ study:
     var location study1
     var todo $0
     study1:
+    if ($char.research.interrupt.study = 1) then {
+        matchre study ^Are you sure you want to do that
+    }
     matchre return ^Are you sure you want to do that
     matchre return ^But you aren't holding
     matchre return ^Roundtime
@@ -2044,13 +2134,13 @@ target:
     var location target1
     var todo $0
     target1:
+    matchre return ^But you're already preparing
+    matchre return ^This spell cannot be targeted\.$
     matchre return ^You begin to weave
     matchre return ^You deftly remove
-    matchre return ^Your target pattern is already formed
-    matchre return ^You must be preparing a spell in order to target it\!
     matchre return ^You don't need to target the spell you're preparing\.
-    matchre return ^This spell cannot be targeted\.$
-    matchre return ^But you're already preparing
+    matchre return ^You must be preparing a spell in order to target it\!
+    matchre return ^Your target pattern is already formed
     matchre target2 ^There is no need to target
     matchre target2 ^You are not engaged to anything, so you must specify a target to focus on\!
     put target %todo
@@ -2298,6 +2388,17 @@ appraise.onTimer:
     return
 
 
+healPoisonSelf:
+  gosub prep fp 10
+  pause 2
+  gosub charge my $cambItem 10
+  pause 2
+  gosub invoke my $cambItem spell
+  waitforre ^You feel fully prepared
+  gosub cast
+  return
+
+
 hunt.onTimer:
     var todo $0
     var location hunt.onTimer1
@@ -2339,6 +2440,17 @@ perc.onTimer:
 	}
     return
 
+refreshRegen:
+  pause 3
+  put #var refreshRegen 0
+  if ($SpellTimer.Regenerate.duration > 1) then {
+    return
+  }
+  gosub prep regen 8
+  waitforre ^You feel fully prepared to cast your spell\.
+  gosub cast
+  return
+
 ########################################################################
 #                            MOVE
 ########################################################################
@@ -2357,10 +2469,10 @@ automove:
     automovecont1:
     math moveAttemptsRemaining subtract 1
     if (%moveAttemptsRemaining < 1) then {
-        echo [libsel automove]: No more attempts, it's dead, Jim
+        echo [libmaster automove]: No more attempts, it's dead, Jim
         return
     } else {
-        echo [libsel automove]: Automove failed, retrying (%moveAttemptsRemaining)
+        echo [libmaster automove]: Automove failed, retrying (%moveAttemptsRemaining)
     }
     pause
     put look

@@ -1,15 +1,29 @@
-include libsel.cmd
+include libmaster.cmd
 
 var act %1
 
-if ("$charactername" = "Selesthiel") then {
-    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick
+############
+# Variables
+############
+if ("$charactername" = "Inauri") then {
+    var armor balaclava|gloves|shirt|pants|shield|knee spikes|elbow spikes|knuckles|footwraps|armguard
+}
+
+if ("$charactername" = "Khurnaarti") then {
+    var armor balaclava|gloves|hauberk|targe|armguard|knee spikes|elbow spikes|knuckles|footwraps
 }
 
 if ("$charactername" = "Qizhmur") then {
     var armor demonscale leathers|demonscale gloves|gladiator's shield|demonscale helm|demonscale mask|calcified femur
 }
 
+if ("$charactername" = "Selesthiel") then {
+    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick
+}
+
+############
+# Main
+############
 eval length count("%armor", "|")
 var index 0
 
@@ -38,7 +52,7 @@ armorLoop:
         gosub %verbTwo my %armor(%index)
     }
     math index add 1
-    if (%index > %length) then goto done
+    if (%index > %length) then goto armorDone
     goto armorLoop
 
 
@@ -59,7 +73,7 @@ getArmorFromRepairLoop:
     gosub wear right
     goto getArmorFromRepairLoop
 
-done:
+armorDone:
     pause .2
     put #parse ARMOR DONE
     exit

@@ -1,4 +1,8 @@
-include libsel.cmd
+include libmaster.cmd
+action goto closeDoor when ^You must wait a few hours before entering this home again\.
+########################
+# Housing Doors
+########################
 
 if ($roomid = 258 || "$roomname" != "Private Home Interior") then {
     var obj house
@@ -30,3 +34,9 @@ if ("%obj" != "door") then {
 pause .2
 put #parse HOUSE DONE
 exit
+
+
+closeDoor:
+  gosub close %closeObj
+  gosub lock %closeObj
+  exit
