@@ -1,6 +1,12 @@
+###############################
+###      CAST
+###############################
 put #tvar char.cambrinth mammoth calf
 put #tvar char.wornCambrinth 1
 put #tvar char.ritualFocus inauri plush
+put #tvar char.wornFocus 0
+put #tvar char.focusContainer steelsilk backpack
+
 
 ###############################
 ###      MAGIC
@@ -30,6 +36,7 @@ put #tvar char.compendium third compendium
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
 
 pause .2
 put #parse CHARVARS DONE

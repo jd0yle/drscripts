@@ -1,6 +1,12 @@
+###############################
+###      CAST
+###############################
 put #tvar char.cambrinth cambrinth calf
 put #tvar char.wornCambrinth 1
 put #tvar char.ritualFocus null
+put #tvar char.wornFocus 0
+put #tvar char.focusContainer gryphon skull
+
 
 ###############################
 ###      MAGIC
@@ -29,12 +35,8 @@ put #tvar char.magic.train.harness.Warding 6
 put #tvar char.compendium 0
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
-put #tvar char.research.useSanowret 0
-
-###############################
-###      RESEARCH
-###############################
 put #tvar char.research.useSanowret 1
+
 
 pause .2
 put #parse CHARVARS DONE
