@@ -12,7 +12,7 @@ if_1 then {
     }
 }
 ###############################
-# Variables
+###      INIT
 ###############################
 var telescope $char.observe.telescope
 var telescopeContainer $char.observe.telescope.container
@@ -24,10 +24,10 @@ eval len count("%skillsets", "|")
 var index 0
 
 ###############################
-# CONSTELLATIONS AND PLANETS TO OBSERVE PER SKILLSET
+### OBJECTS TO OBSERVE
 ###############################
 var magic $char.observe.magic
-var lore $har.observe.lore
+var lore $char.observe.lore
 var offens $char.observe.offense
 var defens $char.observe.defense
 var survival $char.observe.survival
@@ -46,7 +46,7 @@ if (%timeSinceLastObserve > 240) then var force true
 
 
 ###############################
-###      Main
+###      main
 ###############################
 main:
     if (%force = false && $isObsOnCd = true) then goto done

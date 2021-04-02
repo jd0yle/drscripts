@@ -29,7 +29,7 @@ var stowedItemNoun null
 ###############################
 ###      MAIN
 ###############################
-if ("$char.wornCambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
+if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
     var stowedItemNoun $lefthandnoun
     gosub stow left
 }
@@ -51,24 +51,32 @@ if ("%spell" = "col") then {
     if ("%moon" = "null") then goto done
 }
 
-gosub prep %1 $char.cast.default.prep
+var prepAt $char.cast.default.prep
+var charge $char.cast.default.charge
+var chargeTimes $char.cast.default.chargeTimes
+var harness $char.cast.default.harness
+
+if ($char.cast.%spell.prep > 0) then var prepAt $char.cast.%spell.prep
+if ($char.cast.%spell.charge > 0) then var charge $char.cast.%spell.charge
+if ($char.cast.%spell.chargeTimes > 0) then var chargeTimes $char.cast.%spell.chargeTimes
+if ($char.cast.%spell.harness > 0) then var prepAt $char.cast.%spell.harness
+
+gosub prep %spell %prepAt
 
 if (%useCambrinth = 1) then {
-    if ("$char.wornCambrinth" != 1) then {
+    if ($char.wornCambrinth != 1) then {
         gosub get my $char.cambrinth
         gosub remove my $char.cambrinth
     }
 
-    gosub charge my $char.cambrinth $char.cast.default.charge
-    gosub invoke my $char.cambrinth spell
-    #var cambrinthFull 0
-    #if (%cambrinthFull = 0) then gosub charge my $char.cambrinth $char.cast.default.charge
-    #gosub invoke my $char.cambrinth $char.cast.default.charge
+    gosub charge my $char.cambrinth %charge
+    if (%chargeTimes = 2 && %cambrinthFull != 1) then gosub charge my $char.cambrinth %charge
+    var invokeSpell
+    if ($char.cast.invokeSpell = 1) then var invokeSpell spell
+    gosub invoke my $char.cambrinth %charge %invokeSpell
+
 } else {
-    gosub harness $char.cast.default.harness
-    gosub harness $char.cast.default.harness
-    gosub harness $char.cast.default.harness
-    gosub harness $char.cast.default.harness
+    gosub harness %harness
 }
 gosub waitPrep
 goto done
@@ -78,7 +86,7 @@ waitPrep:
     pause 1
     if %isFullyPrepped != 1 then goto waitPrep
     gosub cast %target
-    if ("char.wornCambrinth" != 1) then {
+    if ($char.wornCambrinth != 1) then {
         gosub wear my $char.cambrinth
         gosub stow my $char.cambrinth
     }
@@ -87,7 +95,7 @@ waitPrep:
 
 ritualSpell:
     gosub get my $char.ritualFocus
-    gosub prep %spell $char.cast.ritual.%spell
+    gosub prep %spell $char.cast.%spell.prep
     gosub invoke my $char.ritualFocus
     if %isFullyPrepped != 1 then gosub waitPrep
     gosub cast

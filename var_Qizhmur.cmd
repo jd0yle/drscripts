@@ -10,6 +10,32 @@ put #tvar char.ritualFocus null
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
 
+put #tvar char.cast.invokeSpell 0
+
+put #tvar char.cast.default.prep 60
+put #tvar char.cast.default.charge 20
+put #tvar char.cast.default.harness 40
+
+put #tvar char.cast.obf.prep 40
+put #tvar char.cast.obf.charge 50
+put #tvar char.cast.obf.chargeTimes 1
+put #tvar char.cast.obf.harness 0
+
+put #tvar char.cast.maf.prep 40
+put #tvar char.cast.maf.charge 50
+put #tvar char.cast.maf.chargeTimes 1
+
+put #tvar char.cast.devour.prep 30
+put #tvar char.cast.devour.charge 10
+
+put #tvar char.cast.eotb.prep 20
+put #tvar char.cast.eotb.charge 40
+put #tvar char.cast.eotb.chargeTimes 1
+
+put #tvar char.cast.gaf.prep 40
+put #tvar char.cast.gaf.charge 40
+put #tvar char.cast.gaf.chargeTimes 1
+
 
 ###############################
 ###      FRIENDS

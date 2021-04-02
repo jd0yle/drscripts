@@ -12,6 +12,16 @@ put #tvar char.ritualFocus inauri plush
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
 
+put #tvar char.cast.invokeSpell 0
+
+put #tvar char.spells.default.charge 20
+put #tvar char.spells.default.harness 40
+put #tvar char.spells.default.prep 60
+put #tvar char.spells.bc.prep 700
+put #tvar char.spells.dc.prep 600
+
+
+
 
 ###############################
 ###      FRIENDS

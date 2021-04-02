@@ -11,6 +11,8 @@ put #tvar char.ritualFocus cameo
 put #tvar char.wornCambrinth 0
 put #tvar char.wornFocus 0
 
+put #tvar char.cast.invokeSpell 1
+
 
 ###############################
 ###      FRIENDS
