@@ -1,4 +1,15 @@
 
+put .var_$charactername.cmd
+var char.test asdf
+echo %char.test
+
+
+
+
+
+
+
+exit
 
 if (1 = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
     echo ready
