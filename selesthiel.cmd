@@ -1,5 +1,8 @@
 include libsel.cmd
 
+put .var_selesthiel
+waitforre ^CHARVARS DONE$
+
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
