@@ -3,13 +3,14 @@ include libmaster.cmd
 # Idle Action Triggers
 ###################
 action put #var heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel) whispers, "heal
+action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
+action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
 action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action put #var poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
 action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your 
 action put #var poisonHeal 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
-action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action put #var teach 1; put #var topic $2 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
-
+action put
 
 ###################
 # Variable Inits
@@ -38,6 +39,11 @@ loop:
         gosub touch $target
         gosub take $target ever quick
         put #var heal 0
+    }
+    if ($openDoor = 1) then {
+        gosub unlock door
+        gosub open door
+        put #var openDoor 0
     }
     if ($poison = 1) then {
         gosub touch $target
