@@ -9,6 +9,8 @@
 # Ensures that the script with your charactername is running, and .reconnect
 ####################################################################################################
 
+put #var afk 1
+
 eval characterScript tolower($charactername)
 
 loop:
