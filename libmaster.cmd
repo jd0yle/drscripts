@@ -522,7 +522,6 @@ burgle:
     var location burgle
     var todo $0
     burgle1:
-
     matchre return ^The BURGLE command
     matchre return ^You don't see any
     matchre return ^You should wait
