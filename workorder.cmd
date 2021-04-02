@@ -25,7 +25,7 @@ workOrderDoCount:
         if (matchre("%itemArr(%index)", "$char.craft.item")) then math numCount add 1
         math index add 1
         if (%index > %itemLength) then goto workOrderCountDone
-        goto doCountLoop
+        goto workOrderDoCountDoCountLoop
 
 
 workOrderCountDone:
@@ -54,7 +54,7 @@ workOrderBundle:
         if (%workOrderTotalHave >= %workOrderTotalNeed) then {
             gosub get $char.craft.item from my $char.craft.container
             gosub bundle $char.craft.item with my logbook
-            waitforre ^You bundle up your
+            waitforre ^You notate
             evalmath workOrderTotalNeed (%workOrderTotalNeed - 1)
         } else {
             goto workOrderCraftMore
@@ -66,10 +66,10 @@ workOrderBundle:
 
 
 workOrderTurnIn:
-  gosub give master
-  gosub stow my logbook in my $char.craft.container
-  put #echo >log yellow [workorder] Order completed.
-  exit
+    gosub give master
+    gosub stow my logbook in my $char.craft.container
+    put #echo >log yellow [workorder] Order completed. %workOrderTotalHave remaining in $char.craft.container.
+    exit
 
 
 workOrderBadQuality:
@@ -79,6 +79,7 @@ workOrderBadQuality:
 
 
 workOrderCraftMore:
-    put #echo >log yellow [workorder] More items needed.
+    put #echo >log yellow [workorder] More items needed. (%workOrderTotalHave/%workOrderTotalNeed)
+    stow my logbook in my $char.craft.container
     exit
 
