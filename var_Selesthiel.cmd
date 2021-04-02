@@ -2,10 +2,15 @@
 ###      CAST
 ###############################
 put #tvar char.cambrinth mammoth calf
-put #tvar char.wornCambrinth 1
-put #tvar char.ritualFocus inauri plush
-put #tvar char.wornFocus 0
+put #tvar char.cast.default.charge 20
+put #tvar char.cast.default.harness 40
+put #tvar char.cast.default.prep 60
+put #tvar char.cast.ritual.bc 700
+put #tvar char.cast.ritual.dc 600
 put #tvar char.focusContainer steelsilk backpack
+put #tvar char.ritualFocus inauri plush
+put #tvar char.wornCambrinth 1
+put #tvar char.wornFocus 0
 
 
 ###############################

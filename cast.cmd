@@ -1,6 +1,8 @@
 include libmaster.cmd
 
 ####### CONFIG #######
+put .var_$charactername.cmd
+waitforre ^CHARVARS DONE$
 
 var cambrinth $char.cambrinth
 var worncambrinth $char.wornCambrinth
@@ -39,7 +41,7 @@ if ("%worncambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") 
 
 if ("$preparedspell" != "None") then gosub release spell
 
-if ("%spell" = "bc" || "%spell" = "dc") then goto ritualSpell
+if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop") then goto ritualSpell
 if ("%spell" = "col") then {
     var target null
     if ($Time.isYavashUp = 1) then {
@@ -54,22 +56,24 @@ if ("%spell" = "col") then {
     if ("%moon" = "null") then goto done
 }
 
-gosub prep %1 60
+gosub prep %1 $char.cast.default.prep
 
 if (%useCambrinth = 1) then {
     if ("%worncambrinth" != 1) then {
         gosub get my %cambrinth
+        gosub remove my %cambrinth
     }
 
     var cambrinthFull 0
-    gosub charge my %cambrinth 40
-    #if (%cambrinthFull = 0) then gosub charge my %cambrinth 40
-    gosub invoke my %cambrinth 40
+    gosub charge my %cambrinth $char.cast.default.charge
+    gosub invoke my %cambrinth spell
+    #if (%cambrinthFull = 0) then gosub charge my %cambrinth $char.cast.default.charge
+    #gosub invoke my %cambrinth $char.cast.default.charge
 } else {
-    gosub harness 20
-    gosub harness 20
-    gosub harness 20
-    gosub harness 20
+    gosub harness $char.cast.default.harness
+    gosub harness $char.cast.default.harness
+    gosub harness $char.cast.default.harness
+    gosub harness $char.cast.default.harness
 }
 gosub waitPrep
 goto done
@@ -79,6 +83,7 @@ waitPrep:
     if %isFullyPrepped != 1 then goto waitPrep
     gosub cast %target
     if ("%worncambrinth" != 1) then {
+        gosub wear my %cambrinth
         gosub stow my %cambrinth
     }
     return
@@ -86,12 +91,11 @@ waitPrep:
 
 ritualSpell:
     gosub get my %focus
-    if (%spell = bc) then gosub prep bc 700
-    if (%spell = dc) then gosub prep dc 600
+    gosub prep %spell $char.cast.ritual.%spell
     gosub invoke my %focus
     if %isFullyPrepped != 1 then gosub waitPrep
     gosub cast
-    gosub stow my %focus
+    gosub stow my %focus in my $char.focusContainer
     goto done
 
 done:
