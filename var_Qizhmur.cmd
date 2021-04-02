@@ -26,9 +26,9 @@ put #tvar char.magic.train.harness.Warding 6
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar $char.compendium 0
-put #tvar $char.research.interrupt.cast 1
-put #tvar $char.research.interrupt.study 0
+put #tvar char.compendium 0
+put #tvar char.research.interrupt.cast 1
+put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 0
 
 ###############################
