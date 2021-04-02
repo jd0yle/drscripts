@@ -2,16 +2,20 @@
 ###      CAST
 ###############################
 put #tvar char.cambrinth viper
-put #tvar char.wornCambrinth 0
-put #tvar char.ritualFocus cameo
-put #tvar char.wornFocus 0
+put #tvar char.cast.default.charge 20
+put #tvar char.cast.default.harness 0
+put #tvar char.cast.default.prep 10
+put #tvar char.cast.ritual.pop 300
 put #tvar char.focusContainer poke
+put #tvar char.ritualFocus cameo
+put #tvar char.wornCambrinth 0
+put #tvar char.wornFocus 0
 
 
 ###############################
 ###      FRIENDS
 ###############################
-var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Inauri)
+var friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh)
 var enemies (Meiline|Nideya|Psaero)
 var super.enemies (Meiline|Nideya|Psaero)
 
