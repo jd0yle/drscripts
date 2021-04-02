@@ -19,6 +19,9 @@ put #tvar char.cast.default.prep 60
 put #tvar char.cast.ritual.bc 700
 put #tvar char.cast.ritual.dc 600
 
+put #tvar char.cast.bc.prep 700
+put #tvar char.cast.dc.prep 600
+
 put #tvar char.spells.default.charge 20
 put #tvar char.spells.default.harness 40
 put #tvar char.spells.default.prep 60

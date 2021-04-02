@@ -1299,6 +1299,7 @@ peer:
     matchre return ^You peer in the window and see
     matchre return ^Roundtime
     matchre return ^Clouds obscure the sky
+    matchre return ^You peer in the window
     matchre return Usage
     put peer %todo
     goto retry
