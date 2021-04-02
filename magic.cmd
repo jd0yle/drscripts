@@ -15,13 +15,25 @@ eval magic.length count("%magic.skills", "|")
 
 if (!($magic.index > -1)) then put #tvar magic.index 0
 
+gosub release cyclic
+
 loop:
     gosub almanac.onTimer
+
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
+
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
+
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
-    if ($Arcana.LearningRate < 33 && $concentration = 100) then gosub gaze my sanowret crystal
+
+    if ($Arcana.LearningRate < 33 && $concentration = 100) then {
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+        if ($hidden = 1) then gosub shiver
+        gosub gaze my sanowret crystal
+    }
 
     var skill %magic.skills($magic.index)
 

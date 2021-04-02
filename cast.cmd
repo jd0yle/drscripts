@@ -2,11 +2,9 @@ include libsel.cmd
 
 ####### CONFIG #######
 
-#var cambrinth mammoth calf
-#var worncambrinth 1
-#var focus inauri plush
-
-include var_characters.cmd
+var cambrinth $char.cambrinth
+var worncambrinth $char.wornCambrinth
+var focus $char.ritualFocus
 
 ######################
 

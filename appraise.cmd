@@ -1,5 +1,4 @@
 include libsel.cmd
-include var_characters.cmd
 
 var appraiseArgs my gem pouch
 
@@ -13,7 +12,7 @@ if (!($lastAppGametime > 0)) then put #var lastAppGametime 1
 evalmath nextAppGametime $lastAppGametime + 120
 
 if ($gametime > %nextAppGametime) then {
-    gosub get my gem pouch from my portal
+    gosub get my gem pouch from my %fromContainer
     if ($monstercount > 0) then gosub retreat
 
     gosub appraise %appraiseArgs

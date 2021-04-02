@@ -152,19 +152,19 @@ main:
 
 
 sorceryCont:
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     pause 1
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     goto magicCont
 
 
 abortScripts:
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     pause 1
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     pause .2
     gosub stow right
@@ -372,10 +372,10 @@ moveToWyverns:
 
 
 moveToHeal:
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     pause 1
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
     gosub stow right
@@ -385,9 +385,9 @@ moveToHeal:
     gosub stow bola
     gosub moveToMagic
     gosub getHealed
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
-    put .seltrainshard
+    put .selesthiel
     exit
 
 
@@ -445,7 +445,7 @@ retrieveBolts:
 
 waitForBurgleCd:
     if (%nextBurgleCheck < %t) then {
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         gosub stow right
         gosub stow left
@@ -460,10 +460,10 @@ waitForBurgleCd:
 waitForMagic:
     pause 2
     if (%nextBurgleCheck < %t) then {
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         pause 1
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         gosub stow right
         gosub stow left
@@ -474,10 +474,10 @@ waitForMagic:
 
     #if (%burgleCooldown = 0 || $Crossbow.LearningRate < 5 || $Small_Edged.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Brawling.LearningRate < 5 || $Light_Thrown.LearningRate < 5 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5) then {
     if (%burgleCooldown = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         pause 1
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         gosub resetState
         return
@@ -491,10 +491,10 @@ waitForMainCombat:
     pause 2
     if ($bleeding = 1) then goto moveToHeal
     if (%nextBurgleCheck < %t) then {
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         pause 1
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         gosub stow right
         gosub stow left
@@ -504,10 +504,10 @@ waitForMainCombat:
     }
     if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
     #if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         pause 1
-        put #script abort all except seltrainshard
+        put #script abort all except selesthiel
         put .reconnect
         if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
         gosub stow right
@@ -522,10 +522,10 @@ waitForMainCombat:
 
 logout:
     put exit
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     pause 1
-    put #script abort all except seltrainshard
+    put #script abort all except selesthiel
     put .reconnect
     put exit
     exit
