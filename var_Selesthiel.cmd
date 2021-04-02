@@ -27,6 +27,10 @@ put #tvar char.magic.train.prep.Utility 20
 put #tvar char.magic.train.charge.Utility 30
 put #tvar char.magic.train.harness.Utility 0
 
+###############################
+###      RESEARCH
+###############################
+put #tvar char.research.useSanowret 1
 
 pause .2
 put #parse CHARVARS DONE
