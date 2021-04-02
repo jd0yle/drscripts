@@ -3,8 +3,10 @@ include libmaster.cmd
 # Combat
 ####################
 action goto combatSkin when eval $lib.skin = 1
+action goto combatAnalyze when ^You fail to find any holes
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 action pause 60 ; goto combatSkillCheck when ^Wouldn't it be better if you used a melee weapon\?
+
 
 ####################
 # Variable Inits
@@ -225,4 +227,3 @@ combatSkin:
     pause 1
     gosub loot
     goto combatAnalyze
-
