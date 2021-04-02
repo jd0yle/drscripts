@@ -493,8 +493,12 @@ braid:
 
 bundle:
     var location bundle
+    matchre return quality
     matchre return ^That's not going to work\.
     matchre return ^You bundle up your
+    matchre return ^You have already bundled enough
+    matchre return You notate
+    matchre return ^You realize you have items bundled with the logbook
     matchre return ^You stuff your
     matchre return ^You try to stuff your.*into the bundle but can't seem to find a good spot\.
     put bundle
