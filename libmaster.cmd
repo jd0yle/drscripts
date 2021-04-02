@@ -39,7 +39,7 @@ var todo
 ###############################
 ### CROSSBOWS
 ###############################
-var crossbowItems crossbow|stonebow|latchbow|pelletbow
+var crossbowItems crossbow|stonebow|latchbow|pelletbow|lockbow
 
 ###############################
 ### HE/2HE SWAPPING
