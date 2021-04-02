@@ -628,18 +628,6 @@ close:
     goto retry
 
 
-combine:
-    var location combine1
-    var todo $0
-    combine1:
-    matchre return ^Combine some
-    matchre return ^Perhaps you should be holding that first\.
-    matchre return ^Roundtime
-    matchre return ^You combine
-    put combine %todo
-    goto retry
-
-
 coll:
 collect:
     var location collect1
