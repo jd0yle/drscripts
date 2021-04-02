@@ -15,6 +15,8 @@ eval magic.length count("%magic.skills", "|")
 
 if (!($magic.index > -1)) then put #tvar magic.index 0
 
+gosub release cyclic
+
 loop:
     gosub almanac.onTimer
 
