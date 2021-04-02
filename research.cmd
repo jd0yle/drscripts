@@ -13,7 +13,7 @@
 # .research sorcery
 # .research spell no
 ####################################################################################################
-include libsel.cmd
+include libmaster.cmd
 put .var_$charactername.cmd
 waitforre ^CHARVARS DONE$
 

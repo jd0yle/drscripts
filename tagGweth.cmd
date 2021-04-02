@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 var charges null
 action var charges $1; put #echo >Log Gweth charges: $1 when ^It has (\d+) charges

@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 put .var_selesthiel
 waitforre ^CHARVARS DONE$
@@ -511,7 +511,6 @@ waitForMainCombat:
         put .reconnect
         pause 1
         put #script abort all except selesthiel
-        put .reconnect
         if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
         gosub stow right
         gosub stow left
@@ -520,6 +519,7 @@ waitForMainCombat:
         gosub stow bola
         return
     }
+    if (!contains("$scriptlist", "fight.cmd")) then put .fight
     goto waitForMainCombat
 
 

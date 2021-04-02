@@ -7,7 +7,7 @@
 #
 ####################################################################################################
 
-include libsel.cmd
+include libmaster.cmd
 
 if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
     gosub release shadowling

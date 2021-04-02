@@ -113,7 +113,7 @@ ejectFromHouse:
 
 
 
-#include libsel.cmd
+#include libmaster.cmd
 
 
 var mobs armored warklin|warklin mauler

@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 action send retreat when ^You are far too occupied by present matters to immerse yourself in matters of the future.
 

@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 if_1 then {
     var mob %1

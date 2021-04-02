@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 var weapons nightstick|diamondique hhr'ata|triple-weighted bola|assassin's blade
 

@@ -11,7 +11,7 @@
 ####################################################################################################
 
 include var_mobs.cmd
-include libsel.cmd
+include libmaster.cmd
 
 
 # DEFAULTS

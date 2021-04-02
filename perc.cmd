@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
 evalmath nextPercGametime $lastPercGameTime + 90
