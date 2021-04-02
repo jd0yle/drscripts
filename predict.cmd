@@ -36,7 +36,7 @@ if (%skillset != null) then {
 
     if ($monstercount > 0) then gosub retreat
     gosub roll $char.predict.tool at %predictOn
-    gosub put my $char.predict.tool in my $character.predict.tool.container
+    gosub put my $char.predict.tool in my $char.predict.tool.container
 }
 goto done
 
