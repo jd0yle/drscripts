@@ -28,6 +28,11 @@ put #tvar char.magic.train.charge.Utility 6
 put #tvar char.magic.train.harness.Utility 6
 
 
+###############################
+###      RESEARCH
+###############################
+put #tvar char.research.useSanowret 1
+
 pause .2
 put #parse CHARVARS DONE
 exit
