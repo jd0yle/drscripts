@@ -1,4 +1,4 @@
-include libina.cmd
+include libmaster.cmd
 action var needPredict true when ^Too many futures cloud your mind - you learn nothing\.
 action send retreat when ^You are far too occupied
 action var tooInjured true when ^You are unable to hold the

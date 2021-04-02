@@ -67,7 +67,7 @@ forageExit:
         gosub automove %homeRoom
         put peer door
         waitforre ^A sandalwood door suddenly opens\!
-        put .home
+        put .house
         waitforre ^HOUSE DONE
         pause 3
         put .khuridle

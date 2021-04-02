@@ -1,4 +1,4 @@
-include libina.cmd
+include libmaster.cmd
 action put #var activeResearch 0 when ^Breakthrough|^You lose your focus on your research project\.
 action put #var activeResearch 2 when ^You make definite progress
 action goto magicGafCheck when ^You require some special

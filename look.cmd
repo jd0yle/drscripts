@@ -45,12 +45,20 @@ loop:
         if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     }
     pause 2
-    gosub idleLook
+    gosub waitLook
     goto loop
 
 ###################
 # Wait Methods
 ###################
+waitLook:
+  evalmath nextLookAt $lastLookGametime + 240
+  if (%nextLookAt < $gametime) then {
+    gosub look
+    put #var lastLookGametime $gametime
+  }
+return
+
 waitTeach:
     if ($class <> 0) then {
         put stop teach
