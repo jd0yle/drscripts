@@ -2,7 +2,7 @@ include libmaster.cmd
 ####################
 # Combat
 ####################
-action goto combatSkin when eval $skin = 1
+action goto combatSkin when eval $lib.skin = 1
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 action pause 60 ; goto combatSkillCheck when ^Wouldn't it be better if you used a melee weapon\?
 
@@ -185,11 +185,13 @@ combatExit:
     put #script abort all except look
     exit
 
+
 combatFaceNext:
     matchre combatExit nothing
     matchre combatAnalyze ^You turn
     put face next
     matchwait 5
+
 
 combatHunt:
     if ($Perception.LearningRate > 15) then {
@@ -202,6 +204,7 @@ combatHunt:
     gosub hunt
     put #var lastHuntGametime $gametime
     return
+
 
 combatPerc:
     if ($Attunement.LearningRate > 15) then {

@@ -20,6 +20,7 @@ var super.enemies null
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.useSymbiosis 1
+put #tvar char.magic.train.wornSanowret 1
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
@@ -35,6 +36,24 @@ put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 10
 put #tvar char.magic.train.charge.Warding 70
 put #tvar char.magic.train.harness.Warding 0
+
+
+###############################
+###      OBSERVE & PREDICT
+###############################
+put #tvar char.predict.tool divination bones
+put #tvar char.predict.tool.container telescope case
+
+put #tvar char.observe.telescope clockwork telescope
+put #tvar char.observe.telescope.container telescope case
+
+put #tvar char.observe.defense Merewalda|Dawgolesh|Penhetia|Giant|Katamba
+put #tvar char.observe.lore forge|Amlothi|Verena|Phoenix|Xibar
+put #tvar char.observe.magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
+put #tvar char.observe.offense Estrilda|Szeldia|forge|Spider
+put #tvar char.observe.survival Morleena|Yoakena|Er'qutra|Ram
+
+put #tvar char.observe.predict 0
 
 
 ###############################

@@ -7,7 +7,6 @@ action goto magicGafCheck when ^You require some special
 # Variables Init
 ##############
   if (!($activeResearch >0)) then put #var activeResearch 0
-  if (!($cambItem >0)) then put #var cambItem viper
   if (!($cambMana >0)) then put #var cambMana 0
 
 

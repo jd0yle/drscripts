@@ -9,7 +9,6 @@ action put #var observeOffCooldown false when ^You learned something useful from
 action put #var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
 action put #var observeOffCooldown false when ^You are unable to make use of this latest observation
 action put #var observeOffCooldown false when ^While the sighting wasn't quite what you were hoping for, you still learned from your observation\.$
-action put #var burgleCooldown false when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.
 
 ###################
 # Variable Inits
@@ -87,7 +86,7 @@ waitAstrology:
     if ($observeOffCooldown = false) then {
         return
     } else {
-        put .khurobserve
+        put .observe
         waitforre ^OBSERVE DONE
         return
     }
@@ -107,23 +106,27 @@ waitFaSkin:
     }
     return
 
+
 waitLook:
-  evalmath nextLookAt $lastLookGametime + 240
-  if (%nextLookAt < $gametime) then {
-    gosub look
-    put #var lastLookGametime $gametime
-  }
-return
+    evalmath nextLookAt $lastLookGametime + 240
+    if (%nextLookAt < $gametime) then {
+        gosub look
+        put #var lastLookGametime $gametime
+    }
+    return
+
 
 waitMagic:
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
           put #var lastMagicGametime $gametime
-          put .khurmagic
-          put #script abort all except khurmagic
+          put .magic
+          waitforre ^MAGIC DONE
         }
     }
+    return
+
 
 waitPerc:
     if ($Attunement.LearningRate > 15) then {
@@ -136,6 +139,7 @@ waitPerc:
     }
     return
 
+
 waitPlay:
     if ($Performance.LearningRate > 15) then {
         return
@@ -143,5 +147,5 @@ waitPlay:
     gosub get my $instrument
     gosub play $playSong $playMood
     waitforre ^You finish playing
-    gosub stow my $instrument in my rucksack
+    gosub stow my $instrument
     return
