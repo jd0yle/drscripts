@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1

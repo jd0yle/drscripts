@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 var ignoreScribing 0
 if ("%1" = "noscribe") then {

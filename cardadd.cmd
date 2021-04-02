@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 if ("$righthand" != "Empty") then {
     if ("$righthand" != "collector's case") then gosub stow right

@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 put .var_Qizhmur
 waitforre ^CHARVARS DONE

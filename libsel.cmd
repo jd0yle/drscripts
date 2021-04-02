@@ -3,7 +3,7 @@ var libselLoaded 1
 # libsel.cmd
 # Selesthiel - justin@jmdoyle.com
 # USAGE
-# include libsel.cmd
+# include libmaster.cmd
 #
 # gosub <verb> [options]
 #

@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 var items lace collar|brooch|platinum pin|steel cufflinks|diacan anklet
 eval len count("%items", "|")

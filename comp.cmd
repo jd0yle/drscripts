@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 action put #echo >Log Almanac: $1 when You believe you've learned something significant about (.*)!$
 

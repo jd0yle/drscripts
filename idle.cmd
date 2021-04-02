@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 action put exit when eval $health < 50
 action put exit when eval $dead = 1

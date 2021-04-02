@@ -3,7 +3,7 @@
 # Selesthiel - justin@jmdoyle.com
 # Keeps you out of combat
 ############################################################################
-include libsel.cmd
+include libmaster.cmd
 
 var doRetreat 1
 action var doRetreat 1 when closes to pole weapon range on you!$

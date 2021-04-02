@@ -1,4 +1,4 @@
-include libsel.cmd
+include libmaster.cmd
 
 if ("$righthandnoun" = "stones") then gosub put my stones in my tel case
 if ("$lefthandnoun" = "stones") then gosub put my stones in my tel case

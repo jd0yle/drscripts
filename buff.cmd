@@ -18,7 +18,7 @@
 # TODO: Add support for target spells like Cage of Light and Focus Moonbeam
 #       Add support for ritual spells
 ########################################################################################
-include libsel.cmd
+include libmaster.cmd
 var buffGroup %1
 ########################################################################################
 ###################################### CONFIG ##########################################\

@@ -5,7 +5,7 @@
 # and to put specific items into specific containers
 ###################################################################################################
 
-include libsel.cmd
+include libmaster.cmd
 
 gosub stow %0
 
