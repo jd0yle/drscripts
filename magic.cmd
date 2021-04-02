@@ -49,8 +49,9 @@ loop:
         var lastSpellBackfired 0
         if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
         gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
-        if ($char.wornCambrinth = 1) then {
+        if ($char.wornCambrinth != 1) then {
             gosub remove my $char.cambrinth
+            gosub get my $char.cambrinth
         }
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
         gosub invoke my $char.cambrinth $char.magic.train.charge.%skill

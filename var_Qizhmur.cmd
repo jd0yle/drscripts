@@ -1,20 +1,21 @@
 ###############################
-###      CAST
+###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth cambrinth calf
-put #tvar char.cast.default.charge 20
-put #tvar char.cast.default.harness 40
-put #tvar char.cast.default.prep 60
 put #tvar char.focusContainer gryphon skull
 put #tvar char.ritualFocus null
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
 
+
+###############################
+###      CAST
+###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.prep 60
-put #tvar char.cast.default.charge 20
-put #tvar char.cast.default.harness 40
+put #tvar char.cast.default.prep 20
+put #tvar char.cast.default.charge 40
+put #tvar char.cast.default.harness 0
 
 put #tvar char.cast.obf.prep 40
 put #tvar char.cast.obf.charge 50
