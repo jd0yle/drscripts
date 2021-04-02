@@ -1,24 +1,35 @@
+####################################################################################################
+# .research
+# Selesthiel - Justin Doyle - justin@jmdoyle.com
+# 2021/04/01
+#
+# Starts or continues a research project. Defaults to sorcery if no arguments are provided.
+# Specifying ANY SECOND ARGUMENT will disable Attunement, Appraisal, and Astrology training
+#
+# USAGE
+# .research <project> [doIdle]
+#
+# EXAMPLE
+# .research sorcery
+# .research spell no
+####################################################################################################
 include libsel.cmd
+put .var_$charactername.cmd
+waitforre ^CHARVARS DONE$
 
-var researchProject null
+var doIdle 1
 var project sorcery
+var researchProject null
+var usingCrystal 0
 
 if_1 then {
     var project %1
 }
 
 
-var doIdle 1
-
 if_2 then {
     var doIdle 0
 }
-
-
-var useSanowret 0
-var usingCrystal 0
-
-if ("$charactername" = "Qizhmur") then var useSanowret 1
 
 action var researchProject $1 when ^You.*begin to bend the mana streams.*(utility|augmentation|ward)
 action var researchProject stream when ^You focus your magical perception as tightly as possible
@@ -32,11 +43,7 @@ action var researchProject null when ^Breakthrough!
 action var researchProject null when However, there is still more to learn before you arrive at a breakthrough.
 
 action echo researchProject %researchProject when eval %researchProject
-
-
 action var usingCrystal 0 when ^The light and crystal sound of your sanowret crystal fades slightly as you come to the end
-
-#put .idle
 
 var stallCheckGametime $gametime
 
@@ -62,7 +69,7 @@ loop:
     }
 
     if (%doIdle = 1) then {
-        if (%useSanowret = 1 && $Arcana.LearningRate < 33 && $concentration = 100) then {
+        if ($char.research.useSanowret = 1 && $Arcana.LearningRate < 33 && $concentration = 100) then {
             if (%usingCrystal = 0) then put gaze my sanowret crystal
             var usingCrystal 1
         }

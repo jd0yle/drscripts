@@ -91,7 +91,7 @@ var trashit YES
 var skip NULL
 }
 
-if ("$charactername" = "%CHARACTER1") then
+if ("$charactername" = "%CHARACTER3") then
 {
 # where do you want to store your stolen items?
 var pack rucksack
@@ -125,7 +125,7 @@ var trashit NO
 var skip NULL
 }
 
-if ("$charactername" = "%CHARACTER2") then
+if ("$charactername" = "%CHARACTER4") then
 {
 # where do you want to store your stolen items?
 var pack satchel

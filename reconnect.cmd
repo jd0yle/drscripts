@@ -1,6 +1,7 @@
 #debug 5
 
 var cancelReconnect 0
+var forceReconnect 0
 
 var reconnecting 0
 var nextAttemptAt 0
@@ -20,8 +21,9 @@ loopWait:
     if ($health < 50 || $dead = 1) then {
         var cancelReconnect 1
     }
-    if ($connected = 0 && cancelReconnect != 1) then {
+    if (($connected = 0 || %forceReconnect = 1) && cancelReconnect != 1) then {
         var restartScripts 1
+        var forceReconnect 0
         if (%t > %nextAttemptAt) then {
             echo $datetime ATTEMPTING TO RECONNECT...
             put #echo >Log #00FF00 ATTEMPTING TO RECONNECT...
@@ -44,21 +46,31 @@ loopWait:
         var attemptInterval 15
         if (%restartScripts = 1) then {
             put #script abort all except reconnect
-            if ("$charactername" = "Qizhmur") then put .qizhmur
-            if ("$charactername" = "Selesthiel") then put .selesthiel
+            #if ("$charactername" = "Qizhmur") then put .qizhmur
+            #if ("$charactername" = "Selesthiel") then put .selesthiel
+            put .train
             var restartScripts 0
             put .reconnect
         }
     }
 
-    evalmath elapsedGametime (%calculatedGametime - $gametime)
+
+
     if (%elapsedGametime > 30) then {
         #echo %elapsedGametime since gametime updated (%elapsedGametime - $gametime > %calculatedGametime + 30)
         #put #var connected 0
     }
     math calculatedGametime add 2
 
-    pause 2
+    if (!(%storedGameTime > 0)) then var storedGameTime 1
+    if (%storedGameTime = $gametime) then {
+        put #var connected 0
+        var forceReconnect 1
+    } else {
+        var storedGametime $gametime
+    }
+
+    pause 10
     goto loopWait
 
 
