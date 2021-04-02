@@ -157,7 +157,7 @@ main:
             if ($bleeding = 1) then gosub runScript devour all
         }
         put .reconnect
-        put .qizhmur
+        put .magic
         gosub waitForMagic
     }
 
