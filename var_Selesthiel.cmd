@@ -9,6 +9,14 @@ put #tvar char.focusContainer steelsilk backpack
 
 
 ###############################
+###      FRIENDS
+###############################
+var friends Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch
+var enemies null
+var super.enemies null
+
+
+###############################
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.useSymbiosis 1

@@ -37,21 +37,6 @@ var todo
 
 
 ###############################
-###      FRIENDS
-###############################
-if ("$charactername" = "Qizhmur" || "$charactername" = "Selesthiel") then {
-    var friends (Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch)
-    var enemies (nonerightnow)
-    var super.enemies (Nonerightnow)
-}
-if ("$charactername" = "Inauri" || "$charactername" = "Khurnaarti") then {
-    var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Khurnaarti|Inauri)
-    var enemies (Meiline|Nideya|Psaero)
-    var super.enemies (Meiline|Nideya|Psaero)
-}
-
-
-###############################
 ### HE/2HE SWAPPING
 ###############################
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
