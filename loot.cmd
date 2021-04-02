@@ -46,6 +46,7 @@ action var newGemPouch 1 when ^WARNING: You are carrying an extremely large numb
 
 gosub pickupLoot
 gosub pickupLootAtFeet
+pause .2
 put #parse LOOT DONE
 exit
 
@@ -72,7 +73,11 @@ pickupLoot:
     pickupLootLoop:
         eval preLootLen len("$roomobjs")
         if (contains("$roomobjs", "%lootables(%loot.index)")) then {
-            gosub stow %lootables(%loot.index)
+            if (matchre("$roomobjs", "%gems")) then {
+                gosub stow gem
+            } else {
+                gosub stow %lootables(%loot.index)
+            }
             if (%newGemPouch = 1) then {
                 if ("$lefthand" != "Empty") then {
                     gosub put my $lefthandnoun in my %container
@@ -89,7 +94,6 @@ pickupLoot:
                 gosub drop my %lootables(%loot.index)
                 var newGemPouch 0
                 goto pickupLootLoop
-                #gosub stow %lootables(%loot.index)
             }
         }
         if (len("$roomobjs") != %preLootLen) then {

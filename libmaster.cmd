@@ -37,6 +37,11 @@ var todo
 
 
 ###############################
+### CROSSBOWS
+###############################
+var crossbowItems crossbow|stonebow|latchbow|pelletbow
+
+###############################
 ### HE/2HE SWAPPING
 ###############################
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
@@ -248,7 +253,7 @@ action var observeOffCooldown false when ^You learned something useful from your
 ###############################
 ###    STANCE
 ###############################
-put #trigger {^You are now set to use your (\S+) stance} {#var stance \$1} {stance}
+put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime $gametime;#var stance \$1} {stance}
 
 
 ###############################
@@ -1836,10 +1841,7 @@ stance:
     var location stance1
     var todo $0
     var current.stance $0
-    if ("$righthandnoun" = "crossbow" && "%todo" != "shield") then {
-        var todo shield
-        var current.stance shield
-    }
+    if ("%todo" != "shield" && contains("$righthandnoun", "%crossbowItems")) then var todo shield
     if ("$stance" = "%todo") then {
         echo [libmaster stance:] Not stancing to %todo, \$stance is $stance
         return
@@ -2598,9 +2600,10 @@ retry:
 
 
 location.unload:
+    var unloadTodo %todo
     gosub unload
-    var location stow1
-    gosub stow1
+    gosub stow left
+    gosub stow %unloadTodo
     return
 
 
