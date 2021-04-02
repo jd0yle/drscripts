@@ -1,22 +1,27 @@
 include libmaster.cmd
+action var lastSpellBackfired 1 when ^Your spell.*backfire
 
+##############
+# Variables Init
+##############
 put .var_$charactername.cmd
 waitforre ^CHARVARS DONE$
 
-if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
 if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
 if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
+if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
 
 var lastSpellBackfired 0
-action var lastSpellBackfired 1 when ^Your spell.*backfire
-
 var magic.skills Augmentation|Warding|Utility
-eval magic.length count("%magic.skills", "|")
 
+eval magic.length count("%magic.skills", "|")
 if (!($magic.index > -1)) then put #tvar magic.index 0
 
 gosub release cyclic
 
+##############
+# Main
+##############
 loop:
     gosub almanac.onTimer
 
@@ -32,6 +37,9 @@ loop:
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         if ($hidden = 1) then gosub shiver
+        if ($char.magic.train.wornSanowret = 1) then {
+            gosub get my sanowret crystal
+         }
         gosub gaze my sanowret crystal
     }
 
@@ -42,6 +50,9 @@ loop:
         var lastSpellBackfired 0
         if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
         gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
+        if ($char.wornCambrinth = 1) then {
+            gosub remove my $char.cambrinth
+        }
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
         gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
         if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
@@ -61,11 +72,16 @@ loop:
     pause .5
     goto loop
 
+
 doneNoVars:
      echo CHARACTER GLOBALS AREN'T SET!
      exit
 
+
 done:
+    if ($char.wornCambrinth = 1) then {
+        gosub wear my $char.cambrinth
+    }
     gosub stow my %cambrinth
     pause .2
     put #parse MAGIC DONE

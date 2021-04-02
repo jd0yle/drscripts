@@ -11,15 +11,16 @@ put #tvar char.focusContainer null
 ###############################
 ###      FRIENDS
 ###############################
-var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Khurnaarti|Inauri)
-enemies (Meiline|Nideya|Psaero)
-var super.enemies (Meiline|Nideya|Psaero)
+var friends (Selesthiel|Qizhmur|Inauri)
+var enemies null
+var super.enemies null
 
 
 ###############################
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.useSymbiosis 0
+put #tvar char.magic.train.wornSanowret 0
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
@@ -36,6 +37,23 @@ put #tvar char.magic.train.prep.Warding 10
 put #tvar char.magic.train.charge.Warding 3
 put #tvar char.magic.train.harness.Warding 0
 
+
+###############################
+###      OBSERVE & PREDICT
+###############################
+put #tvar char.predict.tool divination bones
+put #tvar char.predict.tool.container rucksack
+
+put #tvar char.observe.telescope alerce telescope
+put #tvar char.observe.telescope.container khor'vela case
+
+put #tvar char.observe.defense Katamba
+put #tvar char.observe.lore Xibar|Raven
+put #tvar char.observe.magic Yavash
+put #tvar char.observe.offense Cat
+put #tvar char.observe.survival Heart|Ram
+
+put #tvar char.observe.predict 1
 
 ###############################
 ###      RESEARCH

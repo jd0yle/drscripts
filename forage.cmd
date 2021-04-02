@@ -54,7 +54,7 @@ forageClearRoom:
 forageExit:
     if ("$charactername" = "Inauri") then {
         gosub automove %homeRoom
-        put .home
+        put .house
         waitforre ^HOUSE DONE
         pause 3
         if ($Engineering.LearningRate < 25) then {

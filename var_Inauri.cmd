@@ -11,8 +11,8 @@ put #tvar char.focusContainer poke
 ###############################
 ###      FRIENDS
 ###############################
-var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Khurnaarti|Inauri)
-enemies (Meiline|Nideya|Psaero)
+var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Inauri)
+var enemies (Meiline|Nideya|Psaero)
 var super.enemies (Meiline|Nideya|Psaero)
 
 
@@ -20,6 +20,7 @@ var super.enemies (Meiline|Nideya|Psaero)
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.useSymbiosis 1
+put #tvar char.magic.train.wornSanowret 0
 
 put #tvar char.magic.train.spell.Augmentation ags
 put #tvar char.magic.train.prep.Augmentation 10

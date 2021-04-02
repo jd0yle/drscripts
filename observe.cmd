@@ -1,4 +1,8 @@
 include libmaster.cmd
+action send retreat when ^You are far too occupied
+action var needPredict true when ^Too many futures cloud your mind - you learn nothing\.
+action var tooInjured true when ^You are unable to hold the
+action var tooInjured true when ^The pain is too much
 
 var force false
 if_1 then {
@@ -6,9 +10,14 @@ if_1 then {
         var force true
     }
 }
+###############################
+# Variables
+###############################
+put .var_$charactername.cmd
+waitforre ^CHARVARS DONE$
 
-var telescope clockwork telescope
-var telescopeContainer telescope case
+var telescope $char.observe.telescope
+var telescopeContainer $char.observe.telescope.container
 
 
 var skillset null
@@ -16,39 +25,30 @@ var skillsets magic|offens|defens|survival|lore
 eval len count("%skillsets", "|")
 var index 0
 
-#####
+###############################
 # CONSTELLATIONS AND PLANETS TO OBSERVE PER SKILLSET
-#####
-var magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
-var lore forge|Amlothi|Verena|Phoenix|Xibar
-var offens Estrilda|Szeldia|forge|Spider
-var defens Merewalda|Dawgolesh|Penhetia|Giant|Katamba
-var survival Morleena|Yoakena|Er'qutra|Ram
+###############################
+var magic $char.observe.magic
+var lore $har.observe.lore
+var offens $char.observe.offense
+var defens $char.observe.defense
+var survival $char.observe.survival
 var objindex 0
 var objlength 0
 
-action send retreat when ^You are far too occupied
-action var tooInjured true when ^You are unable to hold the
-action var tooInjured true when ^The pain is too much
 
-
-#
 # Initialize $lastObserveAt if it doesn't have a valid value
-#
 if (!($lastObserveAt > 0)) then put #var lastObserveAt 0
 
 var previousLastObserveAt $lastObserveAt
 
-#
 # The timer on observations is random from 2-4 minutes. If it has been longer than that, force it.
-#
 evalmath timeSinceLastObserve $gametime - $lastObserveAt
 if (%timeSinceLastObserve > 240) then var force true
 
 
-
 ###############################
-###      main
+###      Main
 ###############################
 main:
     if (%force = false && $isObsOnCd = true) then goto done
@@ -82,9 +82,8 @@ main:
             gosub swap
         }
         gosub this.retreat
-        #
+
         # If we can't use the telescope, just OBSERVE without it
-        #
         if (%tooInjured = true) then {
             gosub observe %objects(%objindex) in sky
         } else {
@@ -100,9 +99,13 @@ main:
             var objects %%skillset
             eval objlength count("%objects", "|")
         }
+        if (%needPredict = true && $char.observe.predict = 1) then {
+            put .predict
+            waitforre ^PREDICT DONE
+            var nextPredict false
+        }
         if ($lastObserveAt != %previousLastObserveAt || %objindex > %objlength) then goto done
     goto main.loop
-
 
 
 ###############################
@@ -119,7 +122,6 @@ checkPredState:
     goto checkPredState
 
 
-
 ###############################
 ###      findSkillSet
 ###############################
@@ -133,13 +135,11 @@ findSkillSet:
     goto findSkillSet
 
 
-
 nextSkillSet:
     math index add 1
     if (%index > %len) then goto done
     var skillset %skillsets(%index)
     return
-
 
 
 this.retreat:
@@ -160,6 +160,7 @@ doneAllFull:
 
 doneInjured:
     goto done
+
 
 done:
     if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my telescope in my %telescopeContainer

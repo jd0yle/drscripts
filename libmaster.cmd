@@ -87,6 +87,7 @@ var Hidden 1
 ###############################
 ### FORAGEBLE
 ###############################
+#action send dump junk when ^The room is too cluttered to find anything here\!
 action var foragable 1 when ^The room is too cluttered to find anything her
 action var foragable 0 when ^A scavenger troll strolls in, looks you squarely in the eye and says
 action var foragable 0 when ^A low fog rolls in, then just as quickly rolls out
@@ -132,72 +133,70 @@ if ("$charactername" = "Inauri") then {
 ###############################
 ### SKINNING
 ###############################
-action put #var skin 1 when ^The ship's rat screams one last time and lies still\.
-action put #var skin 1 when ^The ship's rat falls to the ground and lies still\.
-action put #var skin 1 when ^A granite gargoyle grumbles and falls over\.
-action put #var skin 1 when ^A granite gargoyle grumbles and goes still\.
-action put #var skin 1 when ^A quartz gargoyle grumbles and falls over with a
-action put #var skin 1 when ^A quartz gargoyle grumbles and goes still\.
-action put #var skin 1 when ^A silverfish lurches forward and collapses
-action put #var skin 1 when ^A silverfish freezes a moment and falls into a heap
-action put #var skin 1 when grows limp and seems to deflate slightly
-action put #var skin 1 when slaps around a few times and then grows still
-action put #var skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing
-action put #var skin 1 when ^A seordhevor kartais flaps its wings to no avail as it falls to the ground and goes
-action put #var skin 1 when ^A seordhevor kartais lets out a shriek and goes
-action put #var skin 1 when ^The striped badger screams one last time and lies still\.
-action put #var skin 1 when ^The striped badger falls to the ground and lies still\.
-action put #var skin 1 when ^The croff pothanit falls to the ground and lies still\.
-action put #var skin 1 when ^The wild boar falls to the ground and lies still\.
-action put #var skin 1 when ^The wild boar screams one last time and lies still\.
-action put #var skin 1 when ^The majestic deer collapses to the ground, its mouth panting in a last few desperate gulps of air before that too fails and it goes completely limp\.
-action put #var skin 1 when ^A.*gryphon collapses into a lifeless mound of fur and feathers\.
-action put #var skin 1 when ^A.*snow goblin stares at you stupidly for a moment, before its eyes roll backwards into its head\.
-action put #var skin 1 when ^A snowbeast lets loose a blood-curdling howl and falls into a heap\.
-action put #var skin 1 when ^A snowbeast lets loose a blood-curdling howl and goes still\.
-action put #var skin 1 when ^The forest geni's body explodes into a gaseous cloud\.
-action put #var skin 1 when ^The forest geni cries out to the forest for protection\.  Getting no response, it collapses to the ground\.
-action put #var skin 1 when ^A giant black leucro collapses to the ground, yelping like a lost puppy calling for its mother until finally it ceases all movement\.
-action put #var skin 1 when ^A giant black leucro suddenly yelps like a puppy and stops all movement\.
-action put #var skin 1 when ^The silver leucro screams one last time and lies
-action put #var skin 1 when ^The silver leucro falls to the ground and lies
-action put #var skin 1 when ^A giant thicket viper slaps around a few times and then grows still\.
-action put #var skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing\.
-action put #var skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
-action put #var skin 1 when ^A grass eel thrashes about wildly for a few seconds, then lies still\.
-action put #var skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
-action put #var skin 1 when ^A grass eel shudders then goes limp\.
-action put #var skin 1 when ^A grass eel shudders, then goes limp\.
-action put #var skin 1 when ^The beisswurm falls to the ground and lies still\.
-action put #var skin 1 when ^A rock troll collapses with a heavy thud\.
-action put #var skin 1 when ^The bucca drops dead at your feet\!
-action put #var skin 1 when ^A copperhead viper rises up threateningly one last time before collapsing\.
-action put #var skin 1 when ^A copperhead viper slaps around a few times and then grows still\.
-action put #var skin 1 when ^An Endrus serpent jackknifes a few times, then grows still, its body rapidly settling until it is little more than a pile of wood and vine\.
-action put #var skin 1 when ^A suw bizar loses its cohesion, oozing outwards as a murky puddle\.
-action put #var skin 1 when ^A blood wolf whines briefly before closing its eyes forever\.
-action put #var skin 1 when ^A silver-backed bear growls one last time and collapses\.
-action put #var skin 1 when ^The fire maiden screams and collapses, her dance stilled at last\.
-action put #var skin 1 when ^The immature firecat falls to the ground and lies still\.
-action put #var skin 1 when ^The immature firecat screams one last time and lies still\.
-action put #var skin 1 when ^The young firecat falls to the ground and lies still\.
-action put #var skin 1 when ^A fire sprite screams and collapses, her dance stilled at last\.
-action put #var skin 1 when ^A fire sprite screams in anguish and lies still\.
-action put #var skin 1 when ^A blue-belly crocodile sinks into the water and turns belly up, clawing in vain at the air until it ceases all movement\.
-action put #var skin 1 when ^A caracal tips over, limbs extended stiffly, and exp
-action put #var skin 1 when ^A caracal trembles violently before finally exp
-action put #var skin 1 when ^A peccary flops in a porky heap, squealing one last time before passing into obliv
-action put #var skin 1 when ^A peccary kicks and spasms as the last vestiges of life flee this mortal c
-action put #var skin 1 when ^A bristle-backed peccary flops in a porky heap, squealing one last time before passing into ob
-action put #var skin 1 when ^A bristle-backed peccary kicks and spasms as the last vestiges of life flee this mortal
-action put #var skin 1 when ^The asaren celpeze thrashes about for a moment, then lies s
-action put #var skin 1 when ^The asaren celpeze's flared crest wobbles, then collapses as the celpeze falls over and lies s
-action put #var skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
-action put #var skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
-action put #var skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
-
-action var skin 0 when ^Skin what\?
-action var skin 0 when ^.* can't be skinned
+action put #tvar lib.skin 1 when ^The ship's rat screams one last time and lies still\.
+action put #tvar lib.skin 1 when ^The ship's rat falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^A granite gargoyle grumbles and falls over\.
+action put #tvar lib.skin 1 when ^A granite gargoyle grumbles and goes still\.
+action put #tvar lib.skin 1 when ^A quartz gargoyle grumbles and falls over with a
+action put #tvar lib.skin 1 when ^A quartz gargoyle grumbles and goes still\.
+action put #tvar lib.skin 1 when ^A silverfish lurches forward and collapses
+action put #tvar lib.skin 1 when ^A silverfish freezes a moment and falls into a heap
+action put #tvar lib.skin 1 when grows limp and seems to deflate slightly
+action put #tvar lib.skin 1 when slaps around a few times and then grows still
+action put #tvar lib.skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing
+action put #tvar lib.skin 1 when ^A seordhevor kartais flaps its wings to no avail as it falls to the ground and goes
+action put #tvar lib.skin 1 when ^A seordhevor kartais lets out a shriek and goes
+action put #tvar lib.skin 1 when ^The striped badger screams one last time and lies still\.
+action put #tvar lib.skin 1 when ^The striped badger falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^The croff pothanit falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^The wild boar falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^The wild boar screams one last time and lies still\.
+action put #tvar lib.skin 1 when ^The majestic deer collapses to the ground, its mouth panting in a last few desperate gulps of air before that too fails and it goes completely limp\.
+action put #tvar lib.skin 1 when ^A.*gryphon collapses into a lifeless mound of fur and feathers\.
+action put #tvar lib.skin 1 when ^A.*snow goblin stares at you stupidly for a moment, before its eyes roll backwards into its head\.
+action put #tvar lib.skin 1 when ^A snowbeast lets loose a blood-curdling howl and falls into a heap\.
+action put #tvar lib.skin 1 when ^A snowbeast lets loose a blood-curdling howl and goes still\.
+action put #tvar lib.skin 1 when ^The forest geni's body explodes into a gaseous cloud\.
+action put #tvar lib.skin 1 when ^The forest geni cries out to the forest for protection\.  Getting no response, it collapses to the ground\.
+action put #tvar lib.skin 1 when ^A giant black leucro collapses to the ground, yelping like a lost puppy calling for its mother until finally it ceases all movement\.
+action put #tvar lib.skin 1 when ^A giant black leucro suddenly yelps like a puppy and stops all movement\.
+action put #tvar lib.skin 1 when ^The silver leucro screams one last time and lies
+action put #tvar lib.skin 1 when ^The silver leucro falls to the ground and lies
+action put #tvar lib.skin 1 when ^A giant thicket viper slaps around a few times and then grows still\.
+action put #tvar lib.skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing\.
+action put #tvar lib.skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
+action put #tvar lib.skin 1 when ^A grass eel thrashes about wildly for a few seconds, then lies still\.
+action put #tvar lib.skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
+action put #tvar lib.skin 1 when ^A grass eel shudders then goes limp\.
+action put #tvar lib.skin 1 when ^A grass eel shudders, then goes limp\.
+action put #tvar lib.skin 1 when ^The beisswurm falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^A rock troll collapses with a heavy thud\.
+action put #tvar lib.skin 1 when ^The bucca drops dead at your feet\!
+action put #tvar lib.skin 1 when ^A copperhead viper rises up threateningly one last time before collapsing\.
+action put #tvar lib.skin 1 when ^A copperhead viper slaps around a few times and then grows still\.
+action put #tvar lib.skin 1 when ^An Endrus serpent jackknifes a few times, then grows still, its body rapidly settling until it is little more than a pile of wood and vine\.
+action put #tvar lib.skin 1 when ^A suw bizar loses its cohesion, oozing outwards as a murky puddle\.
+action put #tvar lib.skin 1 when ^A blood wolf whines briefly before closing its eyes forever\.
+action put #tvar lib.skin 1 when ^A silver-backed bear growls one last time and collapses\.
+action put #tvar lib.skin 1 when ^The fire maiden screams and collapses, her dance stilled at last\.
+action put #tvar lib.skin 1 when ^The immature firecat falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^The immature firecat screams one last time and lies still\.
+action put #tvar lib.skin 1 when ^The young firecat falls to the ground and lies still\.
+action put #tvar lib.skin 1 when ^A fire sprite screams and collapses, her dance stilled at last\.
+action put #tvar lib.skin 1 when ^A fire sprite screams in anguish and lies still\.
+action put #tvar lib.skin 1 when ^A blue-belly crocodile sinks into the water and turns belly up, clawing in vain at the air until it ceases all movement\.
+action put #tvar lib.skin 1 when ^A caracal tips over, limbs extended stiffly, and exp
+action put #tvar lib.skin 1 when ^A caracal trembles violently before finally exp
+action put #tvar lib.skin 1 when ^A peccary flops in a porky heap, squealing one last time before passing into obliv
+action put #tvar lib.skin 1 when ^A peccary kicks and spasms as the last vestiges of life flee this mortal c
+action put #tvar lib.skin 1 when ^A bristle-backed peccary flops in a porky heap, squealing one last time before passing into ob
+action put #tvar lib.skin 1 when ^A bristle-backed peccary kicks and spasms as the last vestiges of life flee this mortal
+action put #tvar lib.skin 1 when ^The asaren celpeze thrashes about for a moment, then lies s
+action put #tvar lib.skin 1 when ^The asaren celpeze's flared crest wobbles, then collapses as the celpeze falls over and lies s
+action put #tvar lib.skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
+action put #tvar lib.skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
+action put #tvar lib.skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
+put #tvar lib.skin 0
 
 #var pelts.keep (celpeze eye)
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
@@ -215,6 +214,19 @@ action var skin 0 when ^.* can't be skinned
 
 #action var sleep 0 when ^You relax and allow your mind to enter a state of r
 #action var sleep 1 when ^You awaken from your reverie and begin to take in the world aro
+
+
+###############################
+###    STAND
+###############################
+#action put STAND when eval $standing = 0
+action send stand when ^You can't do that while lying down
+action send stand when ^You had better stand up first
+action send stand when ^You might want to stand up first
+action send stand when ^You must stand first
+action send stand when ^You should stand up first\.
+action send stand when ^You'd have better luck standing up
+action send stand when ^You'll have to move off the sandpit first\.
 
 
 ###################
@@ -241,13 +253,6 @@ action var observeOffCooldown false when ^While the sighting wasn't quite what y
 action var observeOffCooldown false when ^You are unable to make use of this latest observation
 action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
 action var observeOffCooldown false when ^You learned something useful from your observation\.$
-#######################################################################################################################################
-
-#action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
-
-#action send dump junk when ^The room is too cluttered to find anything here\!
-
-#action put STAND when eval $standing = 0
 
 
 ###############################
@@ -669,7 +674,7 @@ combine:
     matchre return ^You combine
     put combine %todo
     goto retry
-
+    
 
 count:
     var location Count1

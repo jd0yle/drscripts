@@ -1,7 +1,11 @@
 include libmaster.cmd
-
 action send retreat when ^You are far too occupied by present matters to immerse yourself in matters of the future.
 
+###############################
+###      Variables
+###############################
+put .var_$charactername.cmd
+waitforre ^CHARVARS DONE$
 var skillset null
 var predictOn $charactername
 
@@ -14,19 +18,26 @@ if_2 then {
 }
 
 
+###############################
+###      Main
+###############################
+if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
+        put .cast dc
+        waitforre ^CAST DONE$
+    }
+
 if (%skillset = null) then gosub findSkillSet
 
 if (%skillset != null) then {
     if ($monstercount > 0) then gosub stance shield
     if ($monstercount > 0) then gosub retreat
     gosub align %skillset
-    gosub get my divination bones
+    gosub get my $char.predict.tool
 
     if ($monstercount > 0) then gosub retreat
-    gosub roll bones at %predictOn
-    gosub put my bones in my telescope case
+    gosub roll $char.predict.tool at %predictOn
+    gosub put my $char.predict.tool in my $character.predict.tool.container
 }
-
 goto done
 
 
@@ -38,8 +49,8 @@ findSkillSet:
     var skillsets lore|survival|defens|offens|magic
     eval len count("%skillsets", "|")
     var index 0
-
     gosub checkPredState
+
 
     findSkillSetLoop:
         if ($predictPool.%skillsets(%index) = complete) then {
@@ -55,7 +66,6 @@ findSkillSet:
     goto findSkillSetLoop
 
 
-
 ###############################
 ###      checkPredState
 ###############################
@@ -65,7 +75,6 @@ checkPredState:
         gosub predict state all
     }
     return
-
 
 
 done:
