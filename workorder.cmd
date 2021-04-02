@@ -9,7 +9,7 @@ var orderItem %1
 
 workOrderCount:
     matchre workOrderDoCount ^You rummage through.*?and see (.*)\.$
-    gosub rummage my workbag
+    gosub rummage my $char.craft.container
     matchwait 5
     goto workOrderCountDone
 
@@ -21,7 +21,7 @@ workOrderDoCount:
     var index 0
 
     workOrderDoCountDoCountLoop:
-        if (matchre("%itemArr(%index)", "%1")) then math numCount add 1
+        if (matchre("%itemArr(%index)", "$char.craft.item")) then math numCount add 1
         math index add 1
         if (%index > %itemLength) then goto workOrderCountDone
         goto doCountLoop
@@ -29,7 +29,7 @@ workOrderDoCount:
 
 workOrderCountDone:
     pause .2
-    put #var workOrderTotalHave %numCount
+    var workOrderTotalHave %numCount
     goto getLogbook
 
 ##############
@@ -42,7 +42,7 @@ getLogbook:
 
 
 workOrderGet:
-    matchre workOrderBundle %1
+    matchre workOrderBundle $char.craft.item
     matchre workOrderGet Alright, this is an order for
     put ask master for hard shaping work
     matchwait 5
@@ -51,42 +51,33 @@ workOrderGet:
 workOrderBundle:
     if (%workOrderTotalNeed <> 0) then {
         if (%workOrderTotalHave >= %workOrderTotalNeed) then {
-            gosub get %1 from my workbag
-            gosub bundle %1 with my logbook
+            gosub get $char.craft.item from my $char.craft.container
+            gosub bundle $char.craft.item with my logbook
+            waitforre ^You bundle up your
             evalmath workOrderTotalNeed (%workOrderTotalNeed - 1)
+        } else {
+            goto workOrderCraftMore
         }
+    } else {
+        goto workOrderTurnIn
     }
-    goto workOrderTurnIn
-
-bundleItem:
-    matchre readBook What were you
-    matchre getItem You notate|You realize you have items bundled with the logbook
-    matchre orderDone ^You have already bundled enough
-    matchre workOrderdrop quality
-    put bundle %1 with my logbook
-    matchwait 5
+    goto workOrderBundle
 
 
-workOrderdrop:
-    put drop my %1
-    goto getItem
+workOrderTurnIn:
+  gosub give master
+  gosub stow my logbook in my $char.craft.container
+  put #echo >log yellow [workorder] Order completed.
+  exit
 
 
-readBook:
-    match needMore You must bundle and deliver
-    match orderDone Now give it to a crafting
-    put read my logbook
-    matchwait 5
+workOrderBadQuality:
+    gosub drop my $char.craft.item
+    evalmath workOrderTotalNeed (%workOrderTotalNeed + 1)
+    goto workOrderBundle
 
 
 workOrderCraftMore:
     put #echo >log yellow [workorder] More items needed.
     exit
 
-
-orderDone:
-    gosub stow my %1 in my workbag
-    put give master
-    gosub stow my logbook in my workbag
-    put #echo >log yellow [workorder] Order completed.
-    exit 5

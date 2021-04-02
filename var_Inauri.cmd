@@ -21,6 +21,13 @@ put #tvar char.cast.pop 300
 
 
 ###############################
+###      CRAFTING
+###############################
+put #tvar char.craft.container workbag
+put #tvar char.craft.item tiara
+
+
+###############################
 ###      FRIENDS
 ###############################
 var friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh)
