@@ -10,7 +10,6 @@ action put #var poison 1 when ^(She|He) has a (dangerously|mildly|critically) po
 action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your 
 action put #var poisonHeal 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
 action put #var teach 1; put #var topic $2 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
-action put
 
 ###################
 # Variable Inits
