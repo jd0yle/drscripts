@@ -1,4 +1,3 @@
-
 ####################################################################################################
 # .fight
 # Selesthiel - Justin Doyle - justin@jmdoyle.com
@@ -83,7 +82,7 @@ if ($charactername = Selesthiel && "%opts" != "backtrain") then {
 
     var ignoreCoL 0
 
-    var arrangeForPart 1
+    var arrangeForPart 0
     var arrangeFull 0
 
     var doObserve 1
@@ -204,12 +203,8 @@ action var isFullyPrepped 0 when ^You raise one hand before you and concentrate
 
 timer start
 
-
-action send get comp crossbow; send load when ^You need to hold the competition crossbow in your right hand to load it.
-
-var magicSkills Warding|Utility|Augmentation
-eval magicSkillsLength count("%magicSkills", "|")
-var magicSkillsIndex 0
+# Sometimes fails to get crossbow? Not sure, hack fix for now. - JD, 4/1/21
+action send get %weapons.items(%weapons.index); send load when ^You need to hold the.*in your right hand to load it.
 
 
 ###############################
@@ -272,12 +267,8 @@ loop:
             gosub attack bob
         }
         if ($monstercount = 0) then {
-            if ($charactername = "Qizhmur") then {
-                gosub collect dirt
-                #gosub collect rocks
-            } else {
-                gosub collect dirt
-            }
+            gosub collect dirt
+
             if (contains("$roomobjs", "a pile of")) then {
                 gosub kick pile
             }
@@ -673,7 +664,7 @@ checkWeaponSkills:
 ###      checkStances
 ###############################
 checkStances:
-    if ($healh < 90 || %weapons.skills(%weapons.index) = Crossbow || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    if ($healh < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
         #gosub stance shield
         #var stance.current shield
         var stances.index 0
@@ -682,7 +673,7 @@ checkStances:
             math stances.index add 1
             if (%stances.index > %stances.length) then {
                 var stances.index 0
-                match stances.targetLearningRate add 5
+                math stances.targetLearningRate add 5
                 if (%stances.targetLearningRate > 32) then var stances.targetLearningRate = 32
             }
         }
@@ -735,17 +726,15 @@ checkDeadMob:
         var mobName $1
 
         if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName") then {
-            put .devour %mobName
-            waitforre ^DEVOUR DONE$
-
+            gosub runScript devour %mobName
             gosub performRitual %mobName
         }
+
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
             if (%arrangeForPart = 1) then {
                 gosub arrange for part
             }
 
-            #if (%arrangeFull = 1 && $Skinning.LearningRate < 32) then {
             if (%arrangeFull = 1) then {
                 gosub arrange full
             }
@@ -755,51 +744,7 @@ checkDeadMob:
             var skinType null
             if ("%preSkinRightHand" = "Empty" && "$righthand" != "Empty") then var skinType $righthandnoun
             if ("%preSkinRightHand" != "Empty" && "$lefthand" != "Empty") then var skinType $lefthandnoun
-
-            if ("$charactername" = "Selesthiel" && "%skinType" != "null") then {
-                put #echo >Log #a89b32 Making new bundle
-                gosub stow right
-                gosub stow left
-                put .stowbundle
-                waitforre ^STOWBUNDLE DONE$
-                gosub get my bundling rope
-                if ("$righthand" != "bundling rope") then {
-                    gosub stow right
-                    put .braidrope
-                    waitforre ^BRAIDROPE DONE$
-                    gosub get my bundling rope
-                }
-                if ("%skinType" = "blades") then var skinType horn
-                gosub get my %skinType
-                if ("$lefthand" = "throwing blades") then gosub stow my blades
-                if ("$lefthand" = "Empty") then gosub get my horn
-                gosub bundle
-                gosub tie bundle
-                gosub tie bundle
-                gosub adjust bundle
-                gosub wear bundle
-            }
-
-            if ("$charactername" = "Qizhmur" && "%skinType" != "null") then {
-                gosub remove my bundle
-                gosub put my bundle in my portal
-                gosub stow right
-                gosub stow left
-                gosub get my bundling rope
-                if ("$righthand" != "bundling rope") then {
-                    gosub stow right
-                    put .braidrope
-                    waitforre ^BRAIDROPE DONE$
-                    gosub get my rope
-                }
-                gosub get my %skinType
-                gosub bundle
-                gosub tie bundle
-                gosub tie bundle
-                gosub adjust bundle
-                gosub wear bundle
-
-            }
+            if ("%skinType" != "null") then gosub makeNewBundle %skinType
         }
         gosub loot %lootType
     }
@@ -858,6 +803,56 @@ huntApp:
     if (%usePerc = 1 && $Attunement.LearningRate < 33) then {
         gosub perc.onTimer
         return
+    }
+
+    return
+
+
+
+###############################
+###      makeNewBundle
+###############################
+makeNewBundle:
+    var skinType $1
+    if (%useShadowServant" = 1) then {
+        put #echo >Log #a89b32 Making new bundle
+        gosub stow right
+        gosub stow left
+        gosub runScript stowbundle
+        gosub get my bundling rope
+        if ("$righthand" != "bundling rope") then {
+            gosub stow right
+            gosub runScript braidRope
+            gosub get my bundling rope
+        }
+        # Occasionally end up with throwing blades in hand. No clue why.
+        if ("%skinType" = "blades") then var skinType claw
+        gosub get my %skinType
+        if ("$lefthand" = "throwing blades") then gosub stow my blades
+        if ("$lefthand" = "Empty") then gosub get my horn
+        if ("$lefthand" = "Empty") then gosub get my claw
+        gosub bundle
+        gosub tie bundle
+        gosub tie bundle
+        gosub adjust bundle
+        gosub wear bundle
+    } else {
+        gosub remove my bundle
+        gosub put my bundle in my portal
+        gosub stow right
+        gosub stow left
+        gosub get my bundling rope
+        if ("$righthand" != "bundling rope") then {
+            gosub stow right
+            gosub runScript braidRope
+            gosub get my rope
+        }
+        gosub get my %skinType
+        gosub bundle
+        gosub tie bundle
+        gosub tie bundle
+        gosub adjust bundle
+        gosub wear bundle
     }
 
     return
@@ -987,14 +982,11 @@ performRitual:
     # Use dissection to train up First Aid and Skinning
     if ($Skinning.LearningRate < 33 || $First_Aid.LearningRate < 33) then {
         if ($Skinning.LearningRate < 32) then {
-            gosub arrange
-            gosub arrange
-            gosub arrange
-            gosub arrange
+            gosub arrange full
         }
         gosub stow right
         gosub stow left
-        if (1=0 && %avoidDivineOutrage != 1) then {
+        if (%avoidDivineOutrage != 1) then {
             gosub perform preserve on %ritualTarget
             gosub perform butchery on %ritualTarget leg
             gosub drop my leg
@@ -1006,10 +998,11 @@ performRitual:
         gosub stow right
         gosub stow left
         if (%avoidDivineOutrage != 1) then {
-            gosub perform butchery on %ritualTarget
+            gosub perform butchery on %ritualTarget leg
         }
         if ("$righthand" != "Empty") then {
-            gosub put my $righthandnoun in my eddy
+            gosub drop my leg
+            gosub stow right
         }
     }
     return

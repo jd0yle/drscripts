@@ -190,9 +190,9 @@ action put #var skin 1 when ^The asaren celpeze's flared crest wobbles, then col
 action put #var skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
 action put #var skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
 action put #var skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
-action goto loot when ^Skin what\?
-action goto loot when ^.* can't be skinned
-put #var skin 0
+
+action var skin 0 when ^Skin what\?
+action var skin 0 when ^.* can't be skinned
 
 #var pelts.keep (celpeze eye)
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
@@ -243,6 +243,12 @@ action var observeOffCooldown false when ^You learned something useful from your
 #action send dump junk when ^The room is too cluttered to find anything here\!
 
 #action put STAND when eval $standing = 0
+
+
+###############################
+###    STANCE
+###############################
+put #trigger {^You are now set to use your (\S+) stance} {#var stance \$1} {stance}
 
 
 ###############################
@@ -658,7 +664,7 @@ combine:
     matchre return ^You combine
     put combine %todo
     goto retry
-    
+
 
 count:
     var location Count1
@@ -1833,6 +1839,10 @@ stance:
     if ("$righthandnoun" = "crossbow" && "%todo" != "shield") then {
         var todo shield
         var current.stance shield
+    }
+    if ("$stance" = "%todo") then {
+        echo [libmaster stance:] Not stancing to %todo, \$stance is $stance
+        return
     }
     stance1:
     matchre return ^You are now set to use your
