@@ -37,6 +37,11 @@ var todo
 
 
 ###############################
+### CROSSBOWS
+###############################
+var crossbowItems crossbow|stonebow|latchbow|pelletbow|lockbow
+
+###############################
 ### HE/2HE SWAPPING
 ###############################
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
@@ -191,7 +196,7 @@ action put #tvar lib.skin 1 when ^The asaren celpeze's flared crest wobbles, the
 action put #tvar lib.skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
 action put #tvar lib.skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
 action put #tvar lib.skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
-put #var skin 0
+put #tvar lib.skin 0
 
 #var pelts.keep (celpeze eye)
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
@@ -249,6 +254,23 @@ action var observeOffCooldown false when ^You are unable to make use of this lat
 action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
 action var observeOffCooldown false when ^You learned something useful from your observation\.$
 
+
+###############################
+###    STANCE
+###############################
+put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime $gametime;#var stance \$1} {stance}
+
+
+###############################
+###    STAND
+###############################
+action send stand when ^You must stand first
+action send stand when ^You might want to stand up first
+action send stand when ^You had better stand up first
+action send stand when ^You can't do that while lying down
+action send stand when ^You'd have better luck standing up
+action send stand when ^You should stand up first.
+action send stand when ^You'll have to move off the sandpit first.
 
 #######################################################################################################################################
 
@@ -1824,9 +1846,10 @@ stance:
     var location stance1
     var todo $0
     var current.stance $0
-    if ("$righthandnoun" = "crossbow" && "%todo" != "shield") then {
-        var todo shield
-        var current.stance shield
+    if ("%todo" != "shield" && contains("$righthandnoun", "%crossbowItems")) then var todo shield
+    if ("$stance" = "%todo") then {
+        echo [libmaster stance:] Not stancing to %todo, \$stance is $stance
+        return
     }
     stance1:
     matchre return ^You are now set to use your
@@ -2582,9 +2605,10 @@ retry:
 
 
 location.unload:
+    var unloadTodo %todo
     gosub unload
-    var location stow1
-    gosub stow1
+    gosub stow left
+    gosub stow %unloadTodo
     return
 
 

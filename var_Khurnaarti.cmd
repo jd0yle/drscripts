@@ -11,9 +11,9 @@ put #tvar char.focusContainer null
 ###############################
 ###      FRIENDS
 ###############################
-var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Khurnaarti|Inauri)
-enemies (Meiline|Nideya|Psaero)
-var super.enemies (Meiline|Nideya|Psaero)
+var friends (Selesthiel|Qizhmur|Inauri)
+var enemies null
+var super.enemies null
 
 
 ###############################

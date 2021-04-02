@@ -14,6 +14,7 @@ put #var afk 1
 eval characterScript tolower($charactername)
 
 loop:
+    if ($dead = 1) then goto donDead
     if (!contains("$scriptlist", "%characterScript")) then {
         put #echo >Log [train] Starting character script
         put .$charactername
@@ -24,3 +25,9 @@ loop:
     }
     pause 30
     goto loop
+
+
+doneDead:
+    put #var afk 0
+    echo [train] EXITING BECAUSE DEAD!
+    exit

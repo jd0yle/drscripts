@@ -12,7 +12,7 @@ put #tvar char.focusContainer poke
 ###      FRIENDS
 ###############################
 var friends (Selesthiel|Asherasa|Sorhhn|Xomfor|Yraggahh|Qihhth|Diapsid|Qizhmur|Inauri)
-enemies (Meiline|Nideya|Psaero)
+var enemies (Meiline|Nideya|Psaero)
 var super.enemies (Meiline|Nideya|Psaero)
 
 
