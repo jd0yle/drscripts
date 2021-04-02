@@ -16,6 +16,7 @@ if (!($magic.index > -1)) then put #tvar magic.index 0
 
 gosub release cyclic
 
+
 ###############################
 ###      MAIN
 ###############################
@@ -42,9 +43,11 @@ loop:
         gosub gaze my sanowret crystal
     }
 
+    gosub findMinLearnRate
+
     var skill %magic.skills($magic.index)
 
-    if ($%skill.LearningRate < 33) then {
+    if ($%skill.LearningRate < 34) then {
         if ($preparedspell != None) then gosub release spell
         var lastSpellBackfired 0
         if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
@@ -64,13 +67,28 @@ loop:
         }
     }
 
-    evalmath tmp ($magic.index + 1)
-    put #tvar magic.index %tmp
-    if ($magic.index > %magic.length) then put #tvar magic.index 0
-
     gosub waitForMana 80
     pause .5
     goto loop
+
+
+findMinLearnRate:
+    put #tvar magic.index 0
+    var minLearnRateIndex 0
+
+    findMinLearnRateLoop:
+    if ($%magic.skills($magic.index).LearningRate < $%magic.skills(%minLearnRateIndex).LearningRate) then {
+        var minLearnRateIndex $magic.index
+    }
+
+    evalmath tmp ($magic.index + 1)
+    put #tvar magic.index %tmp
+
+    if ($magic.index > %magic.length) then {
+        put #tvar magic.index %minLearnRateIndex
+        return
+    }
+    goto findMinLearnRateLoop
 
 
 doneNoVars:

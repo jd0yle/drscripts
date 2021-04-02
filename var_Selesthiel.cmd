@@ -44,7 +44,7 @@ if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.tra
 
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
-if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 30
+if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 35
 
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 10
