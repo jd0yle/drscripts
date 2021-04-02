@@ -177,10 +177,10 @@ main:
 
 
 sorceryCont:
-    put #script abort all except qiztrain
+    put #script abort all except qizhmur
     put .reconnect
     pause 1
-    put #script abort all except qiztrain
+    put #script abort all except qizhmur
     put .reconnect
     goto magicCont
 
@@ -659,10 +659,10 @@ setZone:
 waitForMagic:
     pause 2
     if (%useBurgle = 1 && %nextBurgleCheck < %t) then {
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         pause 1
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         gosub checkBurgleCd
         put .qizhmur
@@ -670,10 +670,10 @@ put .reconnect
     }
     #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
     if (%burgleCooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         pause 1
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         gosub stow right
         gosub stow left
@@ -689,20 +689,20 @@ put .reconnect
 waitForMainCombat:
     pause 2
     if (%useBurgle = 1 && %nextBurgleCheck < %t) then {
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         pause 1
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         gosub checkBurgleCd
         put .fight
         pause 1
     }
     if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         pause 1
-        put #script abort all except qiztrain
+        put #script abort all except qizhmur
 put .reconnect
         if ("$righthandnoun" = "lockbow") then gosub unload my lockbow
         gosub stow right
@@ -793,10 +793,10 @@ moveAny:
 
 logout:
     put exit
-    put #script abort all except qiztrain
+    put #script abort all except qizhmur
 put .reconnect
     pause 1
-    put #script abort all except qiztrain
+    put #script abort all except qizhmur
 put .reconnect
     put exit
     exit
