@@ -3,6 +3,7 @@ include libmaster.cmd
 # Combat
 ####################
 action goto combatSkin when eval $lib.skin = 1
+action goto combatAnalyze when ^You fail to find any holes
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 action pause 60 ; goto combatSkillCheck when ^Wouldn't it be better if you used a melee weapon\?
 
@@ -21,6 +22,8 @@ if (!($smallEdgeWeapon >0)) then put #var smallEdgeWeapon 0
 if (!($staveWeapon >0)) then put #var staveWeapon 0
 
 var weaponIndex 0
+var weaponItems 0
+var weaponSkills 0
 var useApp 1
 var useHunt 1
 var usePerc 1
@@ -50,6 +53,7 @@ if ("$charactername" = "Khurnaarti") then {
         var weaponItems naphtha|wand
         var useAstrology 0
     }
+    echo %weaponSkills
 }
 
 
@@ -62,7 +66,7 @@ if ("$charactername" = "Sakhhtaw") then {
 goto combatSkillCheck
 combatSkillCheck:
     eval weaponLength count("%weaponSkills", "|")
-    if (%weaponIndex > $weaponLength) then {
+    if (%weaponIndex > %weaponLength) then {
         goto combatExit
     }
     if ($%weaponSkills(%weaponIndex).LearningRate < 30) then {
@@ -72,8 +76,8 @@ combatSkillCheck:
             if ("$righthand" <> "Empty" && "$righthandnoun" <> "%weaponItems(%weaponIndex)" then {
                 gosub stow
                 gosub stow left
-                gosub get my %weaponItems(%weaponIndex)
             }
+            gosub get my %weaponItems(%weaponIndex)
         }
         # Brawling and Targeted Magic
         if ("%weaponItems(%weaponIndex)" = "Empty") then {
@@ -225,4 +229,3 @@ combatSkin:
     pause 1
     gosub loot
     goto combatAnalyze
-

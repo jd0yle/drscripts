@@ -17,7 +17,17 @@ put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
-put #tvar char.cast.pop 300
+put #tvar char.cast.pop.prep 300
+put #tvar char.cast.pop.charge 30
+put #tvar char.cast.pop.chargeTimes 1
+put #tvar char.cast.pop.harness 0
+
+
+###############################
+###      CRAFTING
+###############################
+put #tvar char.craft.container workbag
+put #tvar char.craft.item tiara
 
 
 ###############################

@@ -500,11 +500,17 @@ braid:
 
 bundle:
     var location bundle
+    var todo $0
+    bundle1:
     matchre return ^That's not going to work\.
+    matchre return ^The work order requires items of a higher quality
     matchre return ^You bundle up your
+    matchre return ^You have already bundled enough
+    matchre return ^You notate
+    matchre return ^You realize you have items bundled with the logbook
     matchre return ^You stuff your
     matchre return ^You try to stuff your.*into the bundle but can't seem to find a good spot\.
-    put bundle
+    put bundle %todo
     goto retry
 
 
@@ -518,7 +524,6 @@ burgle:
     var location burgle
     var todo $0
     burgle1:
-
     matchre return ^The BURGLE command
     matchre return ^You don't see any
     matchre return ^You should wait
