@@ -9,18 +9,6 @@ action goto magicGafCheck when ^You require some special
   if (!($activeResearch >0)) then put #var activeResearch 0
   if (!($cambItem >0)) then put #var cambItem viper
   if (!($cambMana >0)) then put #var cambMana 0
-  if (!($currentSpell >0)) then put #var currentSpell 0
-  if (!($currentMana >0)) then put #var currentMana 0
-  if (!($augSpell >0)) then put #var augSpell ags
-  if (!($augMana >0)) then put #var augMana 0
-  if (!($wardSpell >0)) then put #var wardSpell tranquil
-  if (!($wardMana >0)) then put #var wardMana 0
-  if (!($utilSpell >0)) then put #var utilSpell awaken
-  if (!($utilMana >0)) then put #var utilMana 0
-  put #var cambMana 10
-  put #var augMana 10
-  put #var wardMana 7
-  put #var utilMana 10
 
 
 put #script abort all except inamagic
@@ -48,25 +36,28 @@ magicPause:
   goto magicPickTopic
 
 magicAugmentation:
-  put #var currentSpell $augSpell
-  put #var currentMana $augMana
+  put #var currentSpell $char.magic.train.spell.Augmentation
+  put #var currentMana $char.magic.train.prep.Augmentation
+  put #var cambMana $char.magic.train.charge.Augmentation
   goto magicBegin
 
 magicWarding:
-  put #var currentSpell $wardSpell
-  put #var currentMana $wardMana
+  put #var currentSpell $char.magic.train.spell.Warding
+  put #var currentMana $char.magic.train.prep.Warding
+  put #var cambMana $char.magic.train.charge.Warding
   goto magicBegin
 
 magicUtility:
-  put #var currentSpell $utilSpell
-  put #var currentMana $utilMana
+  put #var currentSpell $char.magic.train.spell.Utility
+  put #var currentMana $char.magic.train.prep.Utility
+  put #var cambMana $char.magic.train.charge.Utility
   goto magicBegin
 
 magicBegin:
   gosub prep symb
   gosub prep $currentSpell $currentMana
-  gosub charge my $cambItem $cambMana
-  gosub invoke my $cambItem spell
+  gosub charge my $char.cambrinth $cambMana
+  gosub invoke my $char.cambrinth spell
   waitforre ^You feel fully prepared to cast your
   gosub cast
   gosub perc
@@ -85,9 +76,9 @@ magicGafCheck:
   if ($SpellTimer.GaugeFlow.duration < 6) then {
       gosub prep gaf 20
       pause 2
-      gosub charge my $cambItem 20
+      gosub charge my $char.cambrinth 20
       pause 2
-      gosub invoke my $cambItem spell
+      gosub invoke my $char.cambrinth spell
       waitforre ^You feel fully prepared
       gosub cast
   }

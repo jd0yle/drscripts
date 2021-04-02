@@ -2,6 +2,7 @@ include libmaster.cmd
 ###################
 # Idle Action Triggers
 ###################
+action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action put #var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
 action put #var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
 action put #var observeOffCooldown false when ^You learned something useful from your observation\.$
