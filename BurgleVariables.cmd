@@ -21,8 +21,8 @@ var trashit NO
 ## MAKE SURE TO UPDATE EACH CHARACTERS VARIABLES INDIVIDUALLY BELOW
 var CHARACTER1 Qizhmur
 var CHARACTER2 Selesthiel
-var CHARACTER3 NULL
-var CHARACTER4 NULL
+var CHARACTER3 Khurnaarti
+var CHARACTER4 Inauri
 var CHARACTER5 NULL
 var CHARACTER6 NULL
 var CHARACTER7 NULL
@@ -91,58 +91,68 @@ var trashit YES
 var skip NULL
 }
 
-if ("$charactername" = "%CHARACTER3") then
+if ("$charactername" = "%CHARACTER1") then
 {
 # where do you want to store your stolen items?
-var pack carry
+var pack rucksack
 # method can be RING, LOCKPICK, or ROPE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics. VARIABLE MUST BE IN ALL CAPS
-var method rope
+#if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method RING
+else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
-var ringtype lockpick ring
+var ringtype lockpick
 # Use your adjective-noun for your rope
 # DANCING ROPES DO NOT WORK
 var ropetype heavy rope
 # Toggle for worn lockpick ring/rope
-var worn NO
+if ("%method" = "RING") then var worn YES
+else var worn NO
 # Travel location should be the city and the roomid.  Pick a room where you *know* there will not be a guard, or leave NULL NOTE: LEAVE NULL IF USING WITHIN UBERCOMBAT
 var travel NULL
 # maximum times to try to search surfaces
-var maxgrabs 7
-# do you want to hide before you search? Will ALWAYS be hidden for first search. ON will attempt to hide before any additional search. WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
+var maxgrabs 5
+# do you want to hide before you search? Will ALWAYS be hidden for first search.
+# ON will attempt to hide before any additional search.
+# WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF
+# POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
 var hideme NO
 # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
 var pawn NO
 # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
-var donotpawnthis keepsake box|arrow
+var donotpawnthis manual|guide|scimitar|opener|keepsake box|arrow
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashit NO
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }
 
-if ("$charactername" = "%CHARACTER4") then
+if ("$charactername" = "%CHARACTER2") then
 {
 # where do you want to store your stolen items?
-var pack haversack
+var pack satchel
 # method can be RING, LOCKPICK, or ROPE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics. VARIABLE MUST BE IN ALL CAPS
-var method ROPE
+#if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method RING
+else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
 # Use your adjective-noun for your rope
 # DANCING ROPES DO NOT WORK
-var ropetype heavy rope
+var ropetype braided rope
 # Toggle for worn lockpick ring/rope
-var worn NO
+if ("%method" = "RING") then var worn YES
+else var worn YES
 # Travel location should be the city and the roomid.  Pick a room where you *know* there will not be a guard, or leave NULL NOTE: LEAVE NULL IF USING WITHIN UBERCOMBAT
 var travel NULL
 # maximum times to try to search surfaces
-var maxgrabs 2
-# do you want to hide before you search? Will ALWAYS be hidden for first search. ON will attempt to hide before any additional search. WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
+var maxgrabs 5
+# do you want to hide before you search? Will ALWAYS be hidden for first search.
+# ON will attempt to hide before any additional search.
+# WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF
+# POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
 var hideme NO
 # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
 var pawn NO
 # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
-var donotpawnthis case|manual|keepsake box|arrow
+var donotpawnthis manual|guide|scimitar|opener|keepsake box|arrow
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashit NO
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
