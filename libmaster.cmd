@@ -1,7 +1,8 @@
-var libmasterLoaded 1
 ####################################################################################################
 # libmaster.cmd
 # Selesthiel - justin@jmdoyle.com
+# Inauri - snmurphy95@gmail.com
+#
 # USAGE
 # include libmaster.cmd
 #
@@ -15,8 +16,12 @@ var libmasterLoaded 1
 # stow, stow right, stow left will not try send any commands if your hand is Empty
 # NOTE: This assumes you have you 15 sigil books with the colors in the `colors` array!
 ####################################################################################################
+var libmasterLoaded 1
 
-#############################################################################################################################################
+
+###############################
+###      INIT
+###############################
 action clear
 gosub clear
 Counter Set 0
@@ -29,8 +34,11 @@ put #var caravan 0
 put #var drag 0
 
 var todo
-#############################################################################################################################################
 
+
+###############################
+###      FRIENDS
+###############################
 if ("$charactername" = "Qizhmur" || "$charactername" = "Selesthiel") then {
     var friends (Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch)
     var enemies (nonerightnow)
@@ -42,12 +50,10 @@ if ("$charactername" = "Inauri" || "$charactername" = "Khurnaarti") then {
     var super.enemies (Meiline|Nideya|Psaero)
 }
 
-#Log only if person is an enemy:
 
-
-####################
+###############################
 ### HE/2HE SWAPPING
-####################
+###############################
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
 action var weapon_hand The when ^You deftly change your grip on your sword so it can be used as a two-handed edged weapon\.$
 action var weapon_hand The when ^You draw out your .* sword from the .*, gripping it firmly in your right hand and balancing with your left\.$
@@ -68,9 +74,9 @@ action var weapon_hand he when ^You turn your sword easily in your hands and end
 var weapon_hand NONERIGHTNOW
 
 
-####################
+###############################
 ### DEAD
-####################
+###############################
 #action goto exit.full when ^You are a ghost\!
 #action goto exit.full when ^You are a ghost\!  You must wait until someone resurrects you, or you decay\.
 #action goto exit.full when ^You are somewhat comforted that you have gained favor with your God and are in no danger of walking the Starry Road, never to return\.
@@ -80,17 +86,17 @@ var weapon_hand NONERIGHTNOW
 #action goto exit.full when ^You feel yourself falling\.\.\.
 
 
-####################
+###############################
 ### HIDDEN
-####################
+###############################
 action var Hidden 0 when ^You blend in with your surroundings|^You slip into a hiding|^You melt into the background|^Darkness falls over you like a cloak, and you involuntarily blend into the shadows\.|^Eh\?  But you're already hidden
 action var Hidden 1 when ^You leap out of hiding|^You come out of hiding\.|^You burst from hiding and begin to dance about\!|^You slip out of hiding\.|notices your attempt to hide|discovers you, ruining your hiding place|reveals you, ruining your hiding attempt
 var Hidden 1
 
 
-####################
+###############################
 ### FORAGEBLE
-####################
+###############################
 action var foragable 1 when ^The room is too cluttered to find anything her
 action var foragable 0 when ^A scavenger troll strolls in, looks you squarely in the eye and says
 action var foragable 0 when ^A low fog rolls in, then just as quickly rolls out
@@ -105,9 +111,9 @@ if ("$charactername" = "Inauri") then {
 }
 
 
-####################
+###############################
 ### ROOM OCCUPIED
-####################
+###############################
 #action var People.Room occupied when ^A howl echoes about you as a wolf calls to his kind\!$
 #action var People.Room occupied when ^With a waver like a mirage, \w+ fades into view\.$
 #action var People.Room occupied when ^You notice \w+ loading
@@ -133,9 +139,9 @@ if ("$charactername" = "Inauri") then {
 #var People.Room empty
 
 
-####################
+###############################
 ### SKINNING
-####################
+###############################
 action put #var skin 1 when ^The ship's rat screams one last time and lies still\.
 action put #var skin 1 when ^The ship's rat falls to the ground and lies still\.
 action put #var skin 1 when ^A granite gargoyle grumbles and falls over\.
@@ -207,9 +213,9 @@ put #var skin 0
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
 
 
-####################
+###############################
 ### SLEEP / AWAKE
-####################
+###############################
 #action put sleep when ^Overall state of mind: (very murky|thick|very thick|frozen|very frozen|dense|very dense)
 #action put sleep when ^Overall state of mind: murky
 #action put awake when ^Overall state of mind: clear
@@ -233,9 +239,9 @@ if ("$charactername" = "Inauri") then {
 }
 
 
-####################
+###############################
 ### WAIT FOR PREP
-####################
+###############################
 action var isFullyPrepped 1 when ^Your concentration lapses for a moment, and your spell is lost.$
 action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
@@ -253,12 +259,17 @@ action var observeOffCooldown false when ^You learned something useful from your
 
 #action put STAND when eval $standing = 0
 
+
+###############################
+###    STAND
+###############################
 action send stand when ^You must stand first
 action send stand when ^You might want to stand up first
 action send stand when ^You had better stand up first
 action send stand when ^You can't do that while lying down
 action send stand when ^You'd have better luck standing up
 action send stand when ^You should stand up first.
+action send stand when ^You'll have to move off the sandpit first.
 
 #######################################################################################################################################
 
