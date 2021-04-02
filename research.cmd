@@ -14,8 +14,6 @@
 # .research spell no
 ####################################################################################################
 include libmaster.cmd
-put .var_$charactername.cmd
-waitforre ^CHARVARS DONE$
 
 var doIdle 1
 var project sorcery

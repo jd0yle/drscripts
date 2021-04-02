@@ -1,4 +1,5 @@
 include libmaster.cmd
+
 action send retreat when ^You are far too occupied
 action var needPredict true when ^Too many futures cloud your mind - you learn nothing\.
 action var tooInjured true when ^You are unable to hold the
@@ -13,9 +14,6 @@ if_1 then {
 ###############################
 # Variables
 ###############################
-put .var_$charactername.cmd
-waitforre ^CHARVARS DONE$
-
 var telescope $char.observe.telescope
 var telescopeContainer $char.observe.telescope.container
 

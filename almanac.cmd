@@ -1,20 +1,17 @@
 include libmaster.cmd
 action var isAsleep 1 when ^You awaken from your reverie
 
-##############
-# Variables Init
-##############
+###############################
+###      INIT
+###############################
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
-
-put .var_$charactername.cmd
-waitforre ^CHARVARS DONE$
 var noloop %1
 var isAsleep 0
 
 
-##############
-# Main
-##############
+###############################
+###      MAIN
+###############################
 main:
     evalmath nextStudyAt $lastAlmanacGametime + 600
 

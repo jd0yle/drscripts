@@ -4,8 +4,6 @@ action send retreat when ^You are far too occupied by present matters to immerse
 ###############################
 ###      Variables
 ###############################
-put .var_$charactername.cmd
-waitforre ^CHARVARS DONE$
 var skillset null
 var predictOn $charactername
 

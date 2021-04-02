@@ -20,6 +20,13 @@ var libmasterLoaded 1
 
 
 ###############################
+###    CHAR VARIABLES
+###############################
+put .var_$charactername.cmd
+waitforre ^CHARVARS DONE$
+
+
+###############################
 ###      INIT
 ###############################
 action clear

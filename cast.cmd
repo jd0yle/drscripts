@@ -2,12 +2,9 @@ include libmaster.cmd
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell\.
 action var isFullyPrepped 1 when ^You have lost the spell you were preparing\.
 
-###################
-# Variable Inits
-###################
-put .var_$charactername.cmd
-waitforre ^CHARVARS DONE$
-
+###############################
+###      INIT
+###############################
 var useCambrinth 1
 var cambrinthFull 0
 action var cambrinthFull 1 when dissipates (uselessly|harmlessly)\.$
@@ -29,9 +26,9 @@ var isFullyPrepped 0
 var stowedItemNoun null
 
 
-###################
-# Main
-###################
+###############################
+###      MAIN
+###############################
 if ("$char.wornCambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
     var stowedItemNoun $lefthandnoun
     gosub stow left
