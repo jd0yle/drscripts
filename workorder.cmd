@@ -1,4 +1,5 @@
 include libmaster.cmd
+action goto workOrderBadQuality when ^The work order requires items of a higher quality, so you decide against bundling that\.
 action goto workOrderCraftMore when ^What were you referring to\?
 action var workOrderTotalNeed $1 when I need (\d+) of exceptional quality
 
