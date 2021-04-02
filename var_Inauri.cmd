@@ -23,6 +23,9 @@ var super.enemies (Meiline|Nideya|Psaero)
 ###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.almanacItem chronicle
+put #tvar char.magic.train.almanacContainer satchel
+put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.wornSanowret 0
 

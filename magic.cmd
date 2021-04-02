@@ -23,7 +23,9 @@ gosub release cyclic
 # Main
 ##############
 loop:
-    gosub almanac.onTimer
+    if ($char.magic.train.useAlmanac = 1) then {
+        gosub almanac.onTimer
+    }
 
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
 
