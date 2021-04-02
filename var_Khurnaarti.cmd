@@ -23,6 +23,9 @@ var super.enemies null
 ###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.almanacItem 0
+put #tvar char.magic.train.almanacContainer 0
+put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.wornSanowret 0
 

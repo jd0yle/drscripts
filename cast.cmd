@@ -1,17 +1,14 @@
 include libmaster.cmd
+action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell\.
+action var isFullyPrepped 1 when ^You have lost the spell you were preparing\.
 
-####### CONFIG #######
+###################
+# Variable Inits
+###################
 put .var_$charactername.cmd
 waitforre ^CHARVARS DONE$
 
-var cambrinth $char.cambrinth
-var worncambrinth $char.wornCambrinth
-var focus $char.ritualFocus
-
-######################
-
 var useCambrinth 1
-
 var cambrinthFull 0
 action var cambrinthFull 1 when dissipates (uselessly|harmlessly)\.$
 
@@ -31,10 +28,11 @@ if_2 then {
 var isFullyPrepped 0
 var stowedItemNoun null
 
-action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
-action var isFullyPrepped 1 when ^You have lost the spell you were preparing.
 
-if ("%worncambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
+###################
+# Main
+###################
+if ("$char.wornCambrinth" != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
     var stowedItemNoun $lefthandnoun
     gosub stow left
 }
@@ -59,16 +57,16 @@ if ("%spell" = "col") then {
 gosub prep %1 $char.cast.default.prep
 
 if (%useCambrinth = 1) then {
-    if ("%worncambrinth" != 1) then {
-        gosub get my %cambrinth
-        gosub remove my %cambrinth
+    if ("$char.wornCambrinth" != 1) then {
+        gosub get my $char.cambrinth
+        gosub remove my $char.cambrinth
     }
 
-    var cambrinthFull 0
-    gosub charge my %cambrinth $char.cast.default.charge
-    gosub invoke my %cambrinth spell
-    #if (%cambrinthFull = 0) then gosub charge my %cambrinth $char.cast.default.charge
-    #gosub invoke my %cambrinth $char.cast.default.charge
+    gosub charge my $char.cambrinth $char.cast.default.charge
+    gosub invoke my $char.cambrinth spell
+    #var cambrinthFull 0
+    #if (%cambrinthFull = 0) then gosub charge my $char.cambrinth $char.cast.default.charge
+    #gosub invoke my $char.cambrinth $char.cast.default.charge
 } else {
     gosub harness $char.cast.default.harness
     gosub harness $char.cast.default.harness
@@ -78,25 +76,27 @@ if (%useCambrinth = 1) then {
 gosub waitPrep
 goto done
 
+
 waitPrep:
     pause 1
     if %isFullyPrepped != 1 then goto waitPrep
     gosub cast %target
-    if ("%worncambrinth" != 1) then {
-        gosub wear my %cambrinth
-        gosub stow my %cambrinth
+    if ("char.wornCambrinth" != 1) then {
+        gosub wear my $char.cambrinth
+        gosub stow my $char.cambrinth
     }
     return
 
 
 ritualSpell:
-    gosub get my %focus
+    gosub get my $char.ritualFocus
     gosub prep %spell $char.cast.ritual.%spell
-    gosub invoke my %focus
+    gosub invoke my $char.ritualFocus
     if %isFullyPrepped != 1 then gosub waitPrep
     gosub cast
-    gosub stow my %focus in my $char.focusContainer
+    gosub stow my $char.ritualFocus in my $char.focusContainer
     goto done
+
 
 done:
     if ("%spell" = "shadowling") then gosub invoke shadowling
