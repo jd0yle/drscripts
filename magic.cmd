@@ -1,20 +1,11 @@
 include libsel.cmd
 
-var spell.Warding maf
-var prep.Warding 10
-var charge.Warding 70
+put .var_$charactername.cmd
+waitforre ^CHARVARS DONE$
 
-var spell.Augmentation cv
-var prep.Augmentation 10
-var charge.Augmentation 70
-
-var spell.Utility sm
-var prep.Utility 20
-var charge.Utility 30
-
-if (!($charge.Warding > 0)) then put #tvar charge.Warding %charge.Warding
-if (!($charge.Augmentation > 0)) then put #tvar charge.Augmentation %charge.Augmentation
-if (!($charge.Utility > 0)) then put #tvar charge.Utility %charge.Utility
+if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
+if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
+if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
 
 var lastSpellBackfired 0
 action var lastSpellBackfired 1 when ^Your spell.*backfire
@@ -26,8 +17,8 @@ if (!($magic.index > -1)) then put #tvar magic.index 0
 
 loop:
     gosub almanac.onTimer
-    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
-    if ($Astrology.LearningRate < 25) then gosub runScript predict
+    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
+    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     if ($Arcana.LearningRate < 33 && $concentration = 100) then gosub gaze my sanowret crystal
@@ -37,15 +28,16 @@ loop:
     if ($%skill.LearningRate < 33) then {
         if ($preparedspell != None) then gosub release spell
         var lastSpellBackfired 0
-        gosub prep symbiosis
-        gosub prep %spell.%skill %prep.%skill
-        gosub charge my calf $charge.%skill
-        gosub invoke my calf $charge.%skill
+        if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
+        gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
+        gosub charge my $char.cambrinth $char.magic.train.charge.%skill
+        gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
+        if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
         gosub waitForPrep
         gosub cast
         if (%lastSpellBackfired = 1) then {
-            evalmath tmp ($charge.%skill - 1)
-            put #tvar charge.%skill %tmp
+            evalmath tmp ($char.magic.train.charge.%skill - 1)
+            put #tvar char.magic.train.charge.%skill %tmp
         }
     }
 
@@ -57,9 +49,13 @@ loop:
     pause .5
     goto loop
 
+doneNoVars:
+     echo CHARACTER GLOBALS AREN'T SET!
+     exit
 
 done:
     gosub stow my %cambrinth
     pause .2
     put #parse MAGIC DONE
     exit
+
