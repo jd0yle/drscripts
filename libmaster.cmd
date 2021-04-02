@@ -500,8 +500,8 @@ braid:
 
 bundle:
     var location bundle
-    matchre return quality
     matchre return ^That's not going to work\.
+    matchre return ^The work order requires items of a higher quality
     matchre return ^You bundle up your
     matchre return ^You have already bundled enough
     matchre return You notate
