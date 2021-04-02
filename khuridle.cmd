@@ -50,7 +50,7 @@ loop:
     pause 1
     gosub waitPlay
     pause 1
-    gosub idleLook
+    gosub waitLook
     goto loop
 
 ###################
@@ -105,6 +105,14 @@ waitFaSkin:
     	gosub stow my $trainer
     }
     return
+
+waitLook:
+  evalmath nextLookAt $lastLookGametime + 240
+  if (%nextLookAt < $gametime) then {
+    gosub look
+    put #var lastLookGametime $gametime
+  }
+return
 
 waitMagic:
     evalmath nextMagic $lastMagicGametime + 3600
