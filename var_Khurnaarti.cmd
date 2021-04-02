@@ -1,15 +1,23 @@
 ###############################
-###      CAST
+###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband
+put #tvar char.focusContainer null
+put #tvar char.ritualFocus kingsnake totem
+put #tvar char.wornCambrinth 0
+put #tvar char.wornFocus 0
+
+
+###############################
+###      CAST
+###############################
+put #tvar char.cast.invokeSpell 0
+
 put #tvar char.cast.default.charge 3
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
-put #tvar char.cast.ritual.dc 50
-put #tvar char.focusContainer null
-put #tvar char.ritualFocus kingsnake totem
-put #tvar char.wornCambrinth 1
-put #tvar char.wornFocus 0
+
+put #tvar char.cast.dc 50
 
 
 ###############################

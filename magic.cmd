@@ -1,12 +1,9 @@
 include libmaster.cmd
 action var lastSpellBackfired 1 when ^Your spell.*backfire
 
-##############
-# Variables Init
-##############
-put .var_$charactername.cmd
-waitforre ^CHARVARS DONE$
-
+###############################
+###      INIT
+###############################
 if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
 if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
 if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
@@ -19,9 +16,9 @@ if (!($magic.index > -1)) then put #tvar magic.index 0
 
 gosub release cyclic
 
-##############
-# Main
-##############
+###############################
+###      MAIN
+###############################
 loop:
     if ($char.magic.train.useAlmanac = 1) then {
         gosub almanac.onTimer
@@ -52,8 +49,9 @@ loop:
         var lastSpellBackfired 0
         if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
         gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
-        if ($char.wornCambrinth = 1) then {
+        if ($char.wornCambrinth != 1) then {
             gosub remove my $char.cambrinth
+            gosub get my $char.cambrinth
         }
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
         gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
