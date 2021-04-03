@@ -398,7 +398,7 @@ engDone:
   }
 engExit:
   put #echo >log yellow ********************
-  put #echo >log yellow * Engineering done.  Beginning .wait.
+  put #echo >log yellow * Engineering done.  Beginning .inamagic
   put #echo >log yellow ********************
   put store default in %defaultContainer
   put .inamagic
@@ -410,7 +410,7 @@ errorExit:
 
 engNeedLumber:
   put #echo >log yellow ********************
-  put #echo >log yellow * Need more lumber.  Beginning .idle
+  put #echo >log yellow * Need more lumber.  Beginning .inaidle
   put #echo >log yellow ********************
   put store default in %defaultContainer
   put .inaidle
