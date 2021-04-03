@@ -21,7 +21,6 @@ var crafted 0
 put #var craftNeed %1
 put #script abort all except eng
 put .look
-put #clear Log
 ##############################
 
 ########################
@@ -391,15 +390,11 @@ engDone:
   put stow  
   evalmath crafted (%crafted + 1)
   if (%crafted < $craftNeed) then {
-    put #echo >log yellow ********************
-	put #echo >log yellow * Progress %crafted/$craftNeed
-	put #echo >log yellow ********************
+    put #echo >log yellow [eng] Progress %crafted/$craftNeed
 	goto setStore
   }
 engExit:
-  put #echo >log yellow ********************
-  put #echo >log yellow * Engineering done.  Beginning .inamagic
-  put #echo >log yellow ********************
+  put #echo >log yellow [eng] Engineering done.  Beginning .inamagic
   put store default in %defaultContainer
   put .inamagic
   exit
@@ -409,9 +404,7 @@ errorExit:
   exit
 
 engNeedLumber:
-  put #echo >log yellow ********************
-  put #echo >log yellow * Need more lumber.  Beginning .inaidle
-  put #echo >log yellow ********************
+  put #echo >log yellow [eng] Need more lumber.  Beginning .inaidle
   put store default in %defaultContainer
   put .inaidle
   put #script abort all except inaidle
