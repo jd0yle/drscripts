@@ -73,13 +73,9 @@ waitAstrology:
     if ($Astrology.LearningRate > 30) then {
         return
     }
-    if ($observeOffCooldown = false) then {
-        return
-    } else {
-        put .observe
-        waitforre ^OBSERVE DONE
-        return
-    }
+    gosub observe.onTimer
+    waitforre ^OBSERVE DONE
+    return
 
 
 waitFaSkin:

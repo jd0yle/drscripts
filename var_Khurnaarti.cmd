@@ -69,9 +69,9 @@ put #tvar char.predict.tool.container rucksack
 put #tvar char.observe.telescope alerce telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba
+put #tvar char.observe.defense Katamba|Magpie
 put #tvar char.observe.lore Xibar|Raven
-put #tvar char.observe.magic Yavash
+put #tvar char.observe.magic Yavash|Wolf
 put #tvar char.observe.offense Cat
 put #tvar char.observe.survival Heart|Ram
 

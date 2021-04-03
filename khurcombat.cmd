@@ -53,7 +53,6 @@ if ("$charactername" = "Khurnaarti") then {
         var weaponItems naphtha|wand
         var useAstrology 0
     }
-    echo %weaponSkills
 }
 
 

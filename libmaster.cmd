@@ -502,6 +502,7 @@ bundle:
     var location bundle
     var todo $0
     bundle1:
+    matchre return ^Only completed items can be bundled with the work order\.
     matchre return ^That's not going to work\.
     matchre return ^The work order requires items of a higher quality
     matchre return ^You bundle up your
@@ -696,6 +697,7 @@ count:
     var todo $0
     count1:
     matchre return ^That doesn't tell you much of anything.
+    matchre return ^You count out
     matchre return ^You count some
     matchre return ^You count up the items in your
     matchre return ^You take a quick count of potential threats in the area\.\.\.
@@ -1558,6 +1560,7 @@ read:
     matchre return ^On this page
     matchre return ^Roundtime
     matchre return ^The writing is too small\.  You'll have to hold the scroll to read it\.
+    matchre return ^You open your logbook
     matchre return ^You page through
     put read %todo
     goto retry
@@ -2442,6 +2445,18 @@ observe.onTimer:
 	if ($gametime > %nextObserveGametime || $isObsOnCd != true) then gosub runScript observe %todo
 	#if ($gametime > %nextObserveGametime) then gosub runScript observe %todo
 	return
+
+
+order:
+    var todo $0
+    var location order
+    order1:
+    matchre return enough coins
+    matchre return ^The attendant takes some coins from you and hands you
+    matchre order says, "You can purchase
+    matchre order Just order it again
+    put order %todo
+    goto retry
 
 
 perc.onTimer:
