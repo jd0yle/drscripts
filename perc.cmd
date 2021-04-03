@@ -1,11 +1,11 @@
 include libmaster.cmd
 
-if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
-evalmath nextPercGametime $lastPercGameTime + 90
+if (!($lastPercGametime > 0)) then put #var lastPercGametime 1
+evalmath nextPercGametime $lastPercGametime + 90
 
 if ($gametime > %nextPercGametime) then {
     gosub perc mana
-    put #var lastPercGameTime $gametime
+    put #var lastPercGametime $gametime
 }
 
 pause .2

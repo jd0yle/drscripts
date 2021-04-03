@@ -46,6 +46,20 @@ put #tvar char.cast.gaf.chargeTimes 1
 
 
 ###############################
+###      COMBAT
+###############################
+put #tvar char.combat.spell.Debilitation 0
+put #tvar char.combat.prep.Debilitation 0
+put #tvar char.combat.charge.Debilitation 0
+put #tvar char.combat.harness.Debilitation 0
+
+put #tvar char.combat.spell.Targeted_Magic 0
+put #tvar char.combat.prep.Targeted_Magic 0
+put #tvar char.combat.charge.Targeted_Magic 0
+put #tvar char.combat.harness.Targeted_Magic 0
+
+
+###############################
 ###      FRIENDS
 ###############################
 var friends Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch

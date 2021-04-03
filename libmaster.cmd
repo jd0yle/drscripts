@@ -593,6 +593,7 @@ center:
     var location center1
     matchre openTelescope ^You'll need to open
     matchre return ^Center what
+    matchre return ^That's a bit tough to do when you can't see the sky\.
     matchre return ^The pain is too much
     matchre return ^What did you want
     matchre return ^You are unable to hold
@@ -1259,6 +1260,7 @@ observe:
     var todo $0
     observe1:
     matchre return ^Roundtime
+    matchre return ^That's a bit hard to do here, since you cannot see the sky\.
     matchre return ^You are a bit too distracted
     matchre return ^You scan the skies for a few moments\.
     matchre return ^Your search for the constellation
@@ -1289,6 +1291,18 @@ openTelescope:
     goto location
 
 
+order:
+    var todo $0
+    var location order
+    order1:
+    matchre return enough coins
+    matchre return ^The attendant takes some coins from you and hands you
+    matchre order says, "You can purchase
+    matchre order Just order it again
+    put order %todo
+    goto retry
+
+
 parry:
     var location parry
     matchre return ^Roundtime:
@@ -1310,6 +1324,7 @@ peer:
     matchre return ^Roundtime
     matchre return ^Clouds obscure the sky
     matchre return ^You peer in the window
+    matchre openTelescope ^You'll need to open it to make any use of it\.
     matchre return Usage
     put peer %todo
     goto retry
@@ -2447,32 +2462,37 @@ observe.onTimer:
 	return
 
 
-order:
-    var todo $0
-    var location order
-    order1:
-    matchre return enough coins
-    matchre return ^The attendant takes some coins from you and hands you
-    matchre order says, "You can purchase
-    matchre order Just order it again
-    put order %todo
-    goto retry
-
-
 perc.onTimer:
     var todo $0
     var location perc.onTimer1
 
     perc.onTimer1:
-	if (!($lastPercGameTime > 0)) then put #var lastPercGameTime 1
+	if (!($lastPercGametime > 0)) then put #var lastPercGametime 1
 
-	evalmath nextPercGametime $lastPercGameTime + 61
+	evalmath nextPercGametime $lastPercGametime$lastPercGametime + 61
 
 	if ($gametime > %nextPercGametime) then {
 	    gosub perc mana
-	    put #var lastPercGameTime $gametime
+	    put #var lastPercGametime $gametime
 	}
     return
+
+
+percHealth.onTimer:
+    var todo $0
+    var location percHealth.onTimer1
+
+    percHealth.onTimer1:
+    var cooldown 30
+    if ($roomid = $lastPercHealthRoomid) then var cooldown 270
+    evalmath nextPercHealthGametime ($lastPercHealthGametime + %cooldown)
+    if (%nextPercHealthGametime < $gametime) then {
+        gosub perc health
+        put #tvar lastPercHealthRoomid $roomid
+        put #var lastPercHealthGametime $gametime
+    }
+	return
+
 
 refreshRegen:
   pause 3

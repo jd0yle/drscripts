@@ -24,8 +24,6 @@ if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
-if (!($lastPercGametime >0)) then put #var lastPercGametime 0
-if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 
@@ -57,13 +55,13 @@ loop:
     if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     gosub waitAlmanac
     pause 1
-    gosub waitAppraisal
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     pause 1
     gosub waitFaSkin
     pause 1
-    gosub waitPerc
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     pause 1
-    gosub waitPercHealth
+    if ($Empathy.LearningRate < 33) then gosub percHealth.onTimer
     pause 1
     gosub waitEngineer
     pause 1
@@ -84,18 +82,6 @@ waitAlmanac:
 	    pause 2
         gosub stow my $char.trainer.almanacItem
         put #var lastAlmanacGametime $gametime
-    }
-    return
-
-
-waitAppraisal:
-    evalmath nextAppAt $lastAppGametime + 60
-    if (%nextAppAt > $gametime) then {
-        return
-    }
-    if ($Appraisal.LearningRate < 15) then {
-        gosub appraise $char.appraise.item careful
-	    put #var lastAppGametime $gametime
     }
     return
 
@@ -134,27 +120,6 @@ waitLook:
     if (%nextLookAt < $gametime) then {
         gosub look
         put #var lastLookGametime $gametime
-    }
-    return
-
-
-waitPerc:
-    if ($Attunement.LearningRate > 15) then {
-        return
-    }
-    evalmath nextPerc $lastPercGametime + 60
-    if ($gametime > %nextPerc) then {
-        gosub perc mana
-        put #var lastPercGametime $gametime
-    }
-    return
-
-
-waitPercHealth:
-    evalmath nextPerc $lastPercHealthGametime + 60
-    if ($gametime > %nextPerc) then {
-        gosub perc health
-        put #var lastPercHealthGametime $gametime
     }
     return
 
