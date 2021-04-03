@@ -1,7 +1,8 @@
 include libmaster.cmd
 
-put .var_selesthiel
-waitforre ^CHARVARS DONE$
+
+
+var expectedNumBolts forty-four
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -427,12 +428,16 @@ retrieveArrows:
     waitforre ^LOOT DONE$
     goto retrieveArrows
 
-
+var expectedNumBolts forty-four
 retrieveBolts:
+    var retrieveAttempts 0
+retrieveBoltsLoop:
     gosub count my basilisk bolts
-    if ("%numBolts" = "forty-five") then {
+    if ("%numBolts" = "%expectedNumBolts") then {
         gosub stow right
         return
+    } else {
+        echo WRONG NUMBER OF BOLTS, found %numBolts expected %expectedNumBolts
     }
     if ("$righthandnoun" != "scimitar") then {
         gosub stow right
@@ -443,7 +448,10 @@ retrieveBolts:
     gosub loot treasure
     put .loot
     waitforre ^LOOT DONE$
-    goto retrieveBolts
+    math retrieveAttempts add 1
+    if (%retrieveAttempts < 10) then goto retrieveBolts
+    var expectedNumBolts %numBolts
+    return
 
 
 waitForBurgleCd:
@@ -464,10 +472,6 @@ waitForMagic:
     pause 2
     if (%nextBurgleCheck < %t) then {
         put #script abort all except selesthiel
-        put .reconnect
-        pause 1
-        put #script abort all except selesthiel
-        put .reconnect
         gosub stow right
         gosub stow left
         gosub checkBurgleCd
@@ -475,13 +479,8 @@ waitForMagic:
         pause 1
     }
 
-    #if (%burgleCooldown = 0 || $Crossbow.LearningRate < 5 || $Small_Edged.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Brawling.LearningRate < 5 || $Light_Thrown.LearningRate < 5 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5) then {
     if (%burgleCooldown = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
         put #script abort all except selesthiel
-        put .reconnect
-        pause 1
-        put #script abort all except selesthiel
-        put .reconnect
         gosub resetState
         return
     }
@@ -505,7 +504,8 @@ waitForMainCombat:
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    #if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
     #if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
         put #script abort all except selesthiel
         put .reconnect

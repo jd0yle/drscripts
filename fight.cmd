@@ -770,8 +770,13 @@ checkHide:
 ###############################
 debil:
     var force 0
-    if ("$1" = "force") then var force 1
-    if (%debil.use = 1 && $mana > 80 && (%force = 1 || (!contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") && !contains("$roomobjs", "writhing web of shadows") )) ) then {
+    if ("$1" = "force") then {
+        var force 1
+        echo \$1 is $1     force is %force
+    }
+    var debilConditions sleeping|immobilized|writhing
+    if (%debil.use = 1 && $mana > 80 && (%force = 1 || !contains("$monsterlist", "%debilConditions")) then {
+    #if (%debil.use = 1 && $mana > 80 && (%force = 1 || (!contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") && !contains("$roomobjs", "writhing web of shadows") )) ) then {
         if ($Debilitation.LearningRate < 33 || %forceDebil = 1) then {
             gosub prep %debil.spell %debil.prepAt
             pause 4

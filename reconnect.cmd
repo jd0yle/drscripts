@@ -21,7 +21,7 @@ loopWait:
     if ($health < 50 || $dead = 1) then {
         var cancelReconnect 1
     }
-    if (($connected = 0 || %forceReconnect = 1) && cancelReconnect != 1) then {
+    if ($connected = 0 && %cancelReconnect != 1) then {
         var restartScripts 1
         var forceReconnect 0
         if (%t > %nextAttemptAt) then {
@@ -30,7 +30,7 @@ loopWait:
 
             put #queue clear 
             put #connect
-            send 15 look
+            send 5 look
 
             evalmath nextAttemptAt (%attemptInterval * 2 + %t)
             math attemptInterval add %attemptInterval
@@ -70,7 +70,7 @@ loopWait:
         var storedGametime $gametime
     }
 
-    pause 10
+    pause 2
     goto loopWait
 
 

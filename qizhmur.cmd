@@ -718,7 +718,7 @@ put .reconnect
 
 retrieveBolts:
     gosub count my basilisk bolts
-    if ("%numBolts" = "thirty-eight") then return
+    if ("%numBolts" = "thirty-seven") then return
     gosub attack kick
     gosub loot
     put .loot
