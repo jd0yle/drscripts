@@ -1,4 +1,10 @@
 ###############################
+###      APPRAISE
+###############################
+put #tvar char.appraise.container 0
+put #tvar char.appraise.item my gem pouch
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth viper
@@ -17,7 +23,17 @@ put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
-put #tvar char.cast.pop 300
+put #tvar char.cast.pop.prep 300
+put #tvar char.cast.pop.charge 30
+put #tvar char.cast.pop.chargeTimes 1
+put #tvar char.cast.pop.harness 0
+
+
+###############################
+###      CRAFTING
+###############################
+put #tvar char.craft.container workbag
+put #tvar char.craft.item tiara
 
 
 ###############################
@@ -31,8 +47,6 @@ var super.enemies (Meiline|Nideya|Psaero)
 ###############################
 ###      MAGIC
 ###############################
-put #tvar char.magic.train.almanacItem chronicle
-put #tvar char.magic.train.almanacContainer satchel
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.wornSanowret 0
@@ -61,6 +75,13 @@ put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 1
 put #tvar char.research.useSanowret 0
 
+
+###############################
+###      TRAINER
+###############################
+put #tvar char.trainer.almanacContainer satchel
+put #tvar char.trainer.almanacItem chronicle
+put #tvar char.trainer.firstaid caracal
 
 pause .2
 put #parse CHARVARS DONE

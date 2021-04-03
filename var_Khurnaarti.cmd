@@ -1,4 +1,11 @@
 ###############################
+###      APPRAISE
+###############################
+put #tvar char.appraise.container 0
+put #tvar char.appraise.item my sail pouch
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband
@@ -17,7 +24,7 @@ put #tvar char.cast.default.charge 3
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
-put #tvar char.cast.dc 50
+put #tvar char.cast.dc.prep 50
 
 
 ###############################
@@ -72,12 +79,28 @@ put #tvar char.observe.predict 1
 
 
 ###############################
+###      PERFORMANCE
+###############################
+put #tvar char.performance.instrument guti'adar
+put #tvar char.performance.song ballad
+put #tvar char.performance.mood quiet
+
+
+###############################
 ###      RESEARCH
 ###############################
 put #tvar char.compendium compendium
 put #tvar char.research.interrupt.cast 0
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
+
+###############################
+###      TRAINER
+###############################
+put #tvar char.trainer.almanacContainer satchel
+put #tvar char.trainer.almanacItem chronicle
+put #tvar char.trainer.firstaid caracal
 
 
 pause .2

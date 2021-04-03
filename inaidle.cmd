@@ -22,8 +22,10 @@ if (!($poisonHeal >0)) then put #var poisonHeal 0
 if (!($teach >0)) then put #var teach 0
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
+if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
+if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 
@@ -59,6 +61,10 @@ loop:
     pause 1
     gosub waitPerc
     pause 1
+    gosub waitPercHealth
+    pause 1
+    gosub waitEngineer
+    pause 1
     gosub waitLook
     goto loop
 
@@ -70,11 +76,11 @@ waitAlmanac:
     evalmath nextStudyAt $lastAlmanacGametime + 600
     if (%nextStudyAt < $gametime) then {
     if ("$lefthandnoun" != "chronicle" && "$righthandnoun" != "chronicle") then {
-        gosub get my chronicle
+        gosub get my $char.trainer.almanacItem
         }
-        gosub study my chronicle
+        gosub study my $char.trainer.almanacItem
 	    pause 2
-        gosub stow my chronicle
+        gosub stow my $char.trainer.almanacItem
         put #var lastAlmanacGametime $gametime
     }
     return
@@ -86,10 +92,23 @@ waitAppraisal:
         return
     }
     if ($Appraisal.LearningRate < 15) then {
-        gosub appraise my pouch careful
+        gosub appraise $char.appraise.item careful
 	    put #var lastAppGametime $gametime
     }
     return
+
+
+waitEngineer:
+    evalmath nextTrainer $lastEngineerGametime + 3600
+    if (%nextTrainer > $gametime) then {
+        return
+    }
+    if ($Engineering.LearningRate = 0) then {
+        put #var lastEngineerGametime $gametime
+        put .eng 5 tiara
+        exit
+    }
+return
 
 
 waitFaSkin:
@@ -98,12 +117,12 @@ waitFaSkin:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
-        gosub get my $trainer
-    	gosub skin my $trainer
+        gosub get my $char.trainer.firstaid
+    	gosub skin my $char.trainer.firstaid
 	    pause 2
-    	gosub repair my $trainer
+    	gosub repair my $char.trainer.firstaid
     	pause 2
-    	gosub stow my $trainer
+    	gosub stow my $char.trainer.firstaid
     }
     return
 
@@ -125,6 +144,15 @@ waitPerc:
     if ($gametime > %nextPerc) then {
         gosub perc mana
         put #var lastPercGametime $gametime
+    }
+    return
+
+
+waitPercHealth:
+    evalmath nextPerc $lastPercHealthGametime + 60
+    if ($gametime > %nextPerc) then {
+        gosub perc health
+        put #var lastPercHealthGametime $gametime
     }
     return
 

@@ -1,4 +1,11 @@
 ###############################
+###      APPRAISE
+###############################
+put #tvar char.appraise.container eddy
+put #tvar char.appraise.item my gem pouch
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth cambrinth calf
@@ -49,8 +56,6 @@ var super.enemies null
 ###############################
 ###      MAGIC
 ###############################
-put #tvar char.magic.train.almanacItem almanac
-put #tvar char.magic.train.almanacContainer skull
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.wornSanowret 1
@@ -78,6 +83,14 @@ put #tvar char.compendium 0
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
+
+###############################
+###      TRAINER
+###############################
+put #tvar char.trainer.almanacContainer skull
+put #tvar char.trainer.almanacItem almanac
+put #tvar char.trainer.firstaid 0
 
 
 pause .2

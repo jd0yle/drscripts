@@ -8,6 +8,11 @@ if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
 if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
 if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
 
+var noLoop 0
+if_1 then {
+    if ("%1" = "noLoop") then var noLoop 1
+}
+
 var lastSpellBackfired 0
 var magic.skills Augmentation|Warding|Utility
 
@@ -37,10 +42,14 @@ loop:
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         if ($hidden = 1) then gosub shiver
-        if ($char.magic.train.wornSanowret = 1) then {
+        if ($char.magic.train.wornSanowret = 0) then {
             gosub get my sanowret crystal
-         }
-        gosub gaze my sanowret crystal
+            gosub gaze my sanowret crystal
+            waitforre ^The light and crystal sound of your sanowret crystal fades slightly
+            gosub stow my sano crystal
+        } else {
+           gosub gaze my sanowret crystal
+        }
     }
 
     gosub findMinLearnRate
@@ -69,6 +78,7 @@ loop:
 
     gosub waitForMana 80
     pause .5
+    if (%noLoop = 1 && $Warding.LearningRate > 32 && $Utility.LearningRate > 32 && Augmentation.LearningRate > 32) then goto done
     goto loop
 
 

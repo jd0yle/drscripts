@@ -3,31 +3,18 @@ include libmaster.cmd
 # Idle Action Triggers
 ###################
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-action put #var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
-action put #var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
-action put #var observeOffCooldown false when ^You learned something useful from your observation\.$
-action put #var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
-action put #var observeOffCooldown false when ^You are unable to make use of this latest observation
-action put #var observeOffCooldown false when ^While the sighting wasn't quite what you were hoping for, you still learned from your observation\.$
+
 
 ###################
 # Variable Inits
 ###################
-if (!($instrument >0)) then put #var instrument 0
 if (!($observeOffCooldown >0)) then put #var observeOffCooldown 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
-if (!($playMood >0)) then put #var playMood 0
-if (!($playSong >0)) then put #var playSong 0
-if (!($trainer >0)) then put #var trainer 0
 
-put #var instrument guti'adar
-put #var playMood quiet
-put #var playSong folk
-put #var trainer caracal
 
 put #script abort all except khuridle
 ###################
@@ -53,6 +40,7 @@ loop:
     gosub waitLook
     goto loop
 
+
 ###################
 # Wait Methods
 ###################
@@ -62,10 +50,11 @@ waitAppraisal:
         return
     }
     if ($Appraisal.LearningRate < 15) then {
-        gosub appraise my pouch careful
+        gosub appraise $char.appraise.item careful
     	put #var lastAppGametime $gametime
     }
     return
+
 
 waitArcana:
     if ($Arcana.LearningRate > 15) then {
@@ -79,6 +68,7 @@ waitArcana:
     }
     return
 
+
 waitAstrology:
     if ($Astrology.LearningRate > 30) then {
         return
@@ -91,18 +81,19 @@ waitAstrology:
         return
     }
 
+
 waitFaSkin:
     evalmath nextTrainer $lastTrainerGametime + 3600
     if (%nextTrainer > $gametime) then {
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
-        gosub get my $trainer
-    	gosub skin my $trainer
+        gosub get my $char.trainer.firstaid
+    	gosub skin my $char.trainer.firstaid
     	pause 2
-    	gosub repair my $trainer
+    	gosub repair my $char.trainer.firstaid
     	pause 2
-    	gosub stow my $trainer
+    	gosub stow my $char.trainer.firstaid
     }
     return
 
@@ -121,7 +112,7 @@ waitMagic:
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
           put #var lastMagicGametime $gametime
-          put .magic
+          put .magic noLoop
           waitforre ^MAGIC DONE
         }
     }
@@ -144,8 +135,8 @@ waitPlay:
     if ($Performance.LearningRate > 15) then {
         return
     }
-    gosub get my $instrument
-    gosub play $playSong $playMood
+    gosub get my $char.performance.instrument
+    gosub play $char.performance.song $char.performance.mood
     waitforre ^You finish playing
-    gosub stow my $instrument
+    gosub stow my $char.performance.instrument
     return

@@ -500,11 +500,17 @@ braid:
 
 bundle:
     var location bundle
+    var todo $0
+    bundle1:
     matchre return ^That's not going to work\.
+    matchre return ^The work order requires items of a higher quality
     matchre return ^You bundle up your
+    matchre return ^You have already bundled enough
+    matchre return ^You notate
+    matchre return ^You realize you have items bundled with the logbook
     matchre return ^You stuff your
     matchre return ^You try to stuff your.*into the bundle but can't seem to find a good spot\.
-    put bundle
+    put bundle %todo
     goto retry
 
 
@@ -518,7 +524,6 @@ burgle:
     var location burgle
     var todo $0
     burgle1:
-
     matchre return ^The BURGLE command
     matchre return ^You don't see any
     matchre return ^You should wait
@@ -650,6 +655,9 @@ close:
     put close %todo
     goto retry
 
+closeTelescope:
+  put close my telescope
+  goto %location
 
 coll:
 collect:
@@ -1536,6 +1544,7 @@ put:
     matchre return ^Roundtime
     matchre return ^That's too heavy to go in there\!$
     matchre return ^Perhaps you should be holding that first.$
+    matchre closeTelescope telescope is too long
     put put %todo
     goto retry
 
@@ -2000,6 +2009,7 @@ stow:
     matchre return ^You stop as you realize
     matchre return ^You think the gem pouch is too full to fit another gem into\.
     matchre return ^You try to
+    matchre closeTelescope telescope is too long
     matchre location.unload ^You need to unload the
     matchre location.unload ^You should unload the
     matchre stowing too long to fit
