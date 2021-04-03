@@ -157,7 +157,7 @@ doneInjured:
 
 
 done:
-    if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my $char.observe.telescope in my $char.observe.telescope.container
+    if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub stow my $char.observe.telescope in my $char.observe.telescope.container
     pause .2
     put #parse OBSERVE DONE
     exit

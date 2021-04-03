@@ -656,7 +656,7 @@ close:
     goto retry
 
 closeTelescope:
-  gosub close my telescope
+  put close my telescope
   goto %location
 
 coll:
