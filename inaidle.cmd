@@ -76,11 +76,11 @@ waitAlmanac:
     evalmath nextStudyAt $lastAlmanacGametime + 600
     if (%nextStudyAt < $gametime) then {
     if ("$lefthandnoun" != "chronicle" && "$righthandnoun" != "chronicle") then {
-        gosub get my chronicle
+        gosub get my $char.trainer.almanacItem
         }
-        gosub study my chronicle
+        gosub study my $char.trainer.almanacItem
 	    pause 2
-        gosub stow my chronicle
+        gosub stow my $char.trainer.almanacItem
         put #var lastAlmanacGametime $gametime
     }
     return
@@ -92,14 +92,14 @@ waitAppraisal:
         return
     }
     if ($Appraisal.LearningRate < 15) then {
-        gosub appraise my pouch careful
+        gosub appraise $char.appraise.item careful
 	    put #var lastAppGametime $gametime
     }
     return
 
 
 waitEngineer:
-    evalmath nextTrainer $lastTrainerGametime + 3600
+    evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
         return
     }
@@ -117,12 +117,12 @@ waitFaSkin:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
-        gosub get my $trainer
-    	gosub skin my $trainer
+        gosub get my $char.trainer.firstaid
+    	gosub skin my $char.trainer.firstaid
 	    pause 2
-    	gosub repair my $trainer
+    	gosub repair my $char.trainer.firstaid
     	pause 2
-    	gosub stow my $trainer
+    	gosub stow my $char.trainer.firstaid
     }
     return
 
@@ -147,6 +147,7 @@ waitPerc:
     }
     return
 
+
 waitPercHealth:
     evalmath nextPerc $lastPercHealthGametime + 60
     if ($gametime > %nextPerc) then {
@@ -154,6 +155,7 @@ waitPercHealth:
         put #var lastPercHealthGametime $gametime
     }
     return
+
 
 waitTeach:
     if ($class <> 0) then {

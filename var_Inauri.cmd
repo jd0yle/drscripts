@@ -47,8 +47,6 @@ var super.enemies (Meiline|Nideya|Psaero)
 ###############################
 ###      MAGIC
 ###############################
-put #tvar char.magic.train.almanacItem chronicle
-put #tvar char.magic.train.almanacContainer satchel
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.wornSanowret 0
@@ -77,6 +75,13 @@ put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 1
 put #tvar char.research.useSanowret 0
 
+
+###############################
+###      TRAINER
+###############################
+put #tvar char.trainer.almanacContainer satchel
+put #tvar char.trainer.almanacItem chronicle
+put #tvar char.trainer.firstaid caracal
 
 pause .2
 put #parse CHARVARS DONE

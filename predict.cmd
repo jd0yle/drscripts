@@ -19,10 +19,10 @@ if_2 then {
 ###############################
 ###      Main
 ###############################
-if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
-        put .cast dc
-        waitforre ^CAST DONE$
-    }
+if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2) then {
+      put .cast dc
+      waitforre ^CAST DONE$
+}
 
 if (%skillset = null) then gosub findSkillSet
 
