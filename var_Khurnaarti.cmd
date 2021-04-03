@@ -28,6 +28,20 @@ put #tvar char.cast.dc.prep 50
 
 
 ###############################
+###      COMBAT
+###############################
+put #tvar char.combat.spell.Debilitation calm
+put #tvar char.combat.prep.Debilitation 5
+put #tvar char.combat.charge.Debilitation 0
+put #tvar char.combat.harness.Debilitation 0
+
+put #tvar char.combat.spell.Targeted_Magic pd
+put #tvar char.combat.prep.Targeted_Magic 2
+put #tvar char.combat.charge.Targeted_Magic 0
+put #tvar char.combat.harness.Targeted_Magic 2
+
+
+###############################
 ###      FRIENDS
 ###############################
 var friends (Inauri|Qizhmur|Selesthiel)

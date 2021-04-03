@@ -45,14 +45,7 @@ loop:
 # Wait Methods
 ###################
 waitAppraisal:
-    evalmath nextAppAt $lastAppGametime + 60
-    if (%nextAppAt > $gametime) then {
-        return
-    }
-    if ($Appraisal.LearningRate < 15) then {
-        gosub appraise $char.appraise.item careful
-    	put #var lastAppGametime $gametime
-    }
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     return
 
 
@@ -70,11 +63,7 @@ waitArcana:
 
 
 waitAstrology:
-    if ($Astrology.LearningRate > 30) then {
-        return
-    }
-    gosub observe.onTimer
-    waitforre ^OBSERVE DONE
+    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
     return
 
 
@@ -116,14 +105,7 @@ waitMagic:
 
 
 waitPerc:
-    if ($Attunement.LearningRate > 15) then {
-        return
-    }
-    evalmath nextPerc $lastPercGametime + 60
-    if ($gametime > %nextPerc) then {
-        gosub perc mana
-        put #var lastPercGametime $gametime
-    }
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     return
 
 
