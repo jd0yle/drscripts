@@ -24,7 +24,7 @@ put #tvar char.cast.default.charge 3
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
-put #tvar char.cast.dc 50
+put #tvar char.cast.dc.prep 50
 
 
 ###############################

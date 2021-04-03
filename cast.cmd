@@ -31,7 +31,12 @@ var stowedItemNoun null
 ###############################
 if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty") then {
     var stowedItemNoun $lefthandnoun
-    gosub stow left
+    if ("$lefthandnoun" = "telescope") then {
+        gosub close my $char.observe.telescope
+        gosub stow my $char.observe.telescope in $char.observe.telescope.container
+    } else {
+        gosub stow left
+    }
 }
 
 if ("$preparedspell" != "None") then gosub release spell

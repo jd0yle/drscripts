@@ -1544,6 +1544,7 @@ put:
     matchre return ^Roundtime
     matchre return ^That's too heavy to go in there\!$
     matchre return ^Perhaps you should be holding that first.$
+    matchre closeTelescope telescope is too long
     put put %todo
     goto retry
 

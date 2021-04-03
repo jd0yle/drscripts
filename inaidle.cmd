@@ -99,7 +99,7 @@ waitAppraisal:
 
 
 waitEngineer:
-    evalmath nextTrainer $lastTrainerGametime + 3600
+    evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
         return
     }

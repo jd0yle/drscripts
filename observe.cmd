@@ -14,10 +14,6 @@ if_1 then {
 ###############################
 ###      INIT
 ###############################
-var telescope $char.observe.telescope
-var telescopeContainer $char.observe.telescope.container
-
-
 var skillset null
 var skillsets magic|offens|defens|survival|lore
 eval len count("%skillsets", "|")
@@ -76,7 +72,7 @@ main:
         if ("$lefthandnoun" != "telescope") then {
             gosub stow right
             gosub stow left
-            gosub get my %telescope
+            gosub get my $char.observe.telescope
             gosub swap
         }
         gosub this.retreat
@@ -161,7 +157,7 @@ doneInjured:
 
 
 done:
-    if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my telescope in my %telescopeContainer
+    if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my $char.observe.telescope in my $char.observe.telescope.container
     pause .2
     put #parse OBSERVE DONE
     exit
