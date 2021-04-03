@@ -1,4 +1,11 @@
 ###############################
+###      APPRAISE
+###############################
+put #tvar char.appraise.container 0
+put #tvar char.appraise.item my sail pouch
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband

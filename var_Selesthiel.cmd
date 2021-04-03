@@ -1,4 +1,10 @@
 ###############################
+###      APPRAISE
+###############################
+put #tvar char.appraise.container eddy
+put #tvar char.appraise.item my gem pouch
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth mammoth calf

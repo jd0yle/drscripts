@@ -37,10 +37,14 @@ loop:
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         if ($hidden = 1) then gosub shiver
-        if ($char.magic.train.wornSanowret = 1) then {
+        if ($char.magic.train.wornSanowret = 0) then {
             gosub get my sanowret crystal
-         }
-        gosub gaze my sanowret crystal
+            gosub gaze my sanowret crystal
+            waitforre ^The light and crystal sound of your sanowret crystal fades slightly
+            gosub stow my sano crystal
+        } else {
+           gosub gaze my sanowret crystal
+        }
     }
 
     gosub findMinLearnRate

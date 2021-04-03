@@ -655,6 +655,9 @@ close:
     put close %todo
     goto retry
 
+closeTelescope:
+  gosub close my telescope
+  goto %location
 
 coll:
 collect:
@@ -2005,6 +2008,7 @@ stow:
     matchre return ^You stop as you realize
     matchre return ^You think the gem pouch is too full to fit another gem into\.
     matchre return ^You try to
+    matchre closeTelescope telescope is too long
     matchre location.unload ^You need to unload the
     matchre location.unload ^You should unload the
     matchre stowing too long to fit
