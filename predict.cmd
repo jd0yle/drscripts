@@ -20,8 +20,12 @@ if_2 then {
 ###      Main
 ###############################
 if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2) then {
-      put .cast dc
-      waitforre ^CAST DONE$
+      if ($monstercount > 0) then gosub retreat
+      gosub runScript cast dc
+}
+
+if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
+    gosub runScript cast pg
 }
 
 if (%skillset = null) then gosub findSkillSet
@@ -68,6 +72,7 @@ findSkillSet:
 ###      checkPredState
 ###############################
 checkPredState:
+    if (!($lastPredictionAt > -1)) then put #var lastPredictionAt 1
     if ($lastPredictionAt > $lastPredStateAllAt || $lastObserveAt > $lastPredStateAllAt) then {
         #echo "No PRED STATE ALL since last PREDICTION, do predstateall"
         gosub predict state all
