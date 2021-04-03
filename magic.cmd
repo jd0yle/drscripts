@@ -10,7 +10,9 @@ if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
 
 var noLoop 0
 if_1 then {
-    if ("%1" = "noLoop") then var noLoop 1
+    if ("%1" = "noLoop") then {
+        var noLoop 1
+    }
 }
 
 var lastSpellBackfired 0
@@ -78,7 +80,7 @@ loop:
 
     gosub waitForMana 80
     pause .5
-    if (%noLoop = 1 && $Warding.LearningRate > 32 && $Utility.LearningRate > 32 && Augmentation.LearningRate > 32) then goto done
+    if (%noLoop = 1 && $Warding.LearningRate > 32 && $Utility.LearningRate > 32 && $Augmentation.LearningRate > 32) then goto done
     goto loop
 
 

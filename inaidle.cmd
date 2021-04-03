@@ -7,7 +7,7 @@ action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
 action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action put #var poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
-action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your 
+action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
 action put #var poisonHeal 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
 action put #var teach 1; put #var topic $2 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 
@@ -51,7 +51,9 @@ loop:
         gosub take $target poison quick
         put #var poison 0
     }
-    if ($poisonHeal = 1) then gosub healPoisonSelf
+    if ($poisonHeal = 1) then {
+        gosub runScript cast fp
+    }
     if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     gosub waitAlmanac
     pause 1
