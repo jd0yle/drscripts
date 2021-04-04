@@ -90,6 +90,8 @@ if (!(%charge > 0)) then var charge 0
 if (!(%chargeTimes > 0)) then var chargeTimes 1
 if (!(%harness > 0)) then var harness 0
 
+if (%useCambrinth = 0 || %charge = 0 || %chargeTimes = 0) then var useCambrinth 0
+
 gosub prep %spell %prepAt
 
 if (%useCambrinth = 1) then {
