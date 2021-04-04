@@ -21,6 +21,13 @@ put #script abort all except khuridle
 ###################
 loop:
     if ($standing = 0) then gosub stand
+    if !(contains("$roomplayers", "Inauri")) then {
+        if ($openDoor = 1) then {
+            gosub unlock door
+            gosub open door
+            put #var openDoor 0
+        }
+    }
     pause 1
     gosub waitAppraisal
     pause 1
