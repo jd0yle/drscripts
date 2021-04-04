@@ -2514,6 +2514,7 @@ automove:
     var moveAttemptsRemaining 5
     automovecont:
     match return YOU HAVE ARRIVED
+    matchre return SHOP IS CLOSED
     match automovecont1 YOU HAVE FAILED
     match automovecont1 AUTOMAPPER MOVEMENT FAILED!
     match automovecont1 MOVE FAILED
