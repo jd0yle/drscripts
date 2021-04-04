@@ -85,10 +85,10 @@ if ($char.cast.%spell.chargeTimes > 0) then var chargeTimes $char.cast.%spell.ch
 if ($char.cast.%spell.harness > 0) then var prepAt $char.cast.%spell.harness
 
 # Set anything that had no default or specific value
-if (!(%prepAt > 0)) then var prepAt 1
-if (!(%charge > 0)) then var charge 0
-if (!(%chargeTimes > 0)) then var chargeTimes 1
-if (!(%harness > 0)) then var harness 0
+if (!(%prepAt > -1)) then var prepAt 1
+if (!(%charge > -1)) then var charge 0
+if (!(%chargeTimes > -1)) then var chargeTimes 1
+if (!(%harness > -1)) then var harness 0
 
 if (%useCambrinth = 0 || %charge = 0 || %chargeTimes = 0) then var useCambrinth 0
 
@@ -112,13 +112,16 @@ if (%useCambrinth = 1) then {
     if ($char.cast.invokeSpell = 1) then var invokeSpell spell
 
     gosub invoke my $char.cambrinth %charge %invokeSpell
-
 }
 
 if (%harness > 0) then gosub harness %harness
 
 gosub waitForPrep
-gosub cast %target
+if ("%target" != "0arget") then {
+    gosub cast %target
+} else {
+    gosub cast
+}
 
 goto done
 
