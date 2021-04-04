@@ -149,6 +149,7 @@ action put #tvar lib.skin 1 when ^A quartz gargoyle grumbles and goes still\.
 action put #tvar lib.skin 1 when ^A silverfish lurches forward and collapses
 action put #tvar lib.skin 1 when ^A silverfish freezes a moment and falls into a heap
 action put #tvar lib.skin 1 when grows limp and seems to deflate slightly
+action put #tvar lib.skin 1 when ^A grass eel shudders, then goes limp\.
 action put #tvar lib.skin 1 when slaps around a few times and then grows still
 action put #tvar lib.skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing
 action put #tvar lib.skin 1 when ^A seordhevor kartais flaps its wings to no avail as it falls to the ground and goes
@@ -1293,12 +1294,12 @@ openTelescope:
 
 order:
     var todo $0
-    var location order
+    var location order1
     order1:
     matchre return enough coins
     matchre return ^The attendant takes some coins from you and hands you
-    matchre order says, "You can purchase
-    matchre order Just order it again
+    matchre return says, "You can purchase
+    matchre return Just order it again
     put order %todo
     goto retry
 

@@ -25,5 +25,10 @@ shardLoop:
     waitforre ^DEPOSIT DONE
     gosub automove portal
     gosub automove %forageRoom
-    put .forage
+    gosub runScript forage
+    waitfore ^FORAGE DONE
+    gosub automove homeRoom
+    put .house
+    waitforre ^HOUSE DONE
+    put .inaidle
     exit

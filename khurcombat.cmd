@@ -4,6 +4,7 @@ include libmaster.cmd
 ####################
 action goto combatSkin when eval $lib.skin = 1
 action goto combatAnalyze when ^You fail to find any holes
+action goto combatFaceNext when ^Analyze what
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 action pause 60 ; goto combatSkillCheck when ^Wouldn't it be better if you used a melee weapon\?
 
@@ -22,7 +23,7 @@ if (!($staveWeapon >0)) then put #var staveWeapon 0
 var weaponIndex 0
 var weaponItems 0
 var weaponSkills 0
-var useApp 1
+var useApp 0
 var useForage 0
 var useHunt 1
 var usePerc 1
@@ -181,12 +182,10 @@ combatFaceNext:
 
 
 combatForage:
+    if (%monstercount <> 0) then return
     if ($Outdoorsmanship.LearningRate < 30) then {
-        if ($monstercount > 0) then gosub retreat
-        gosub collect dirt
-        if (contains("$roomobjs", "a pile of")) then {
-            gosub kick pile
-        }
+        gosub runScript forage
+        waitforre ^FORAGE DONE
     }
     return
 
