@@ -183,6 +183,7 @@ repair.fangcove:
     put .dep
     waitforre ^DEP DONE$
     gosub automove 106
+    goto done
     return
 
 

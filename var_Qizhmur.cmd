@@ -1,7 +1,7 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container eddy
+put #tvar char.appraise.container portal
 put #tvar char.appraise.item my gem pouch
 
 

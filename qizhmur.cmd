@@ -49,6 +49,16 @@ gosub retrieveBolts
 gosub stow hhr'ata
 gosub stow bola
 
+
+matchre startRepair ^You tap a
+matchre main ^I could not find
+gosub tap my ticket
+matchwait
+
+startRepair:
+    gosub moveToMagic
+    gosub waitForRepair
+
 if_1 then {
     if ("%1" = "research") then {
         var startResearch 1
@@ -126,6 +136,10 @@ main:
 
         put .dep
         waitforre ^DEP DONE$
+
+        gosub runScript repair
+        gosub waitForRepair
+
         gosub automove 106
         pause 1
         put .qizhmur
@@ -168,6 +182,7 @@ main:
 
     startFight:
     #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
+        gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
         gosub moveToAdanf
         put .fight
@@ -769,6 +784,32 @@ waitForBurgleCd:
     pause 2
     goto waitForBurgleCd
 
+
+waitForRepair:
+    matchre waitForRepairLoop You recall that the repairs won't be ready for another (\d+) roisaen.
+    matchre waitForRepairLoop any moment
+    matchre repairDone ready by now
+    matchre return ^I could not find
+    put look at ticket
+    matchwait 3
+    goto waitForRepair
+
+waitForRepairLoop:
+    var minutesToWait $1
+    if (!(%minutesToWait > 0)) then var minutesToWait 1
+    evalmath nextCheckTicketGametime (%minutesToWait * 60 + $gametime)
+
+    waitForRepairLoop1:
+    if (%nextCheckTicketGametime < $gametime) then goto waitForRepair
+    pause 10
+    goto waitForRepairLoop1
+
+
+repairDone:
+    gosub moveToMagic
+    gosub runScript repair
+    gosub automove 106
+    put .qizhmur
 
 moveAny:
     if ($north) then {

@@ -1,15 +1,16 @@
 include libmaster.cmd
 
+var force 0
+
 if_1 then {
     if (%1 = careful) then var appraiseArgs %appraiseArgs careful
+    if (%1 = careful) then var force 1
 }
-
-var fromContainer portal
 
 if (!($lastAppGametime > 0)) then put #var lastAppGametime 1
 evalmath nextAppGametime $lastAppGametime + 120
 
-if ($gametime > %nextAppGametime) then {
+if ($gametime > %nextAppGametime || %force = 1) then {
     if ($char.appraise.container <> 0) then {
         gosub get $char.appraise.item from my $char.appraise.container
     }
@@ -18,7 +19,7 @@ if ($gametime > %nextAppGametime) then {
     gosub appraise $char.appraise.item
     if ($char.appraise.container <> 0) then {
         if ("$righthandnoun" = "pouch" || "$lefthandnoun" = "pouch") then {
-            gosub put %char.appraise.item in my %fromContainer
+            gosub put $char.appraise.item in my $char.appraise.container
         }
     }
 
