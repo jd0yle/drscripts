@@ -22,7 +22,7 @@ main:
         }
         if ("$lefthandnoun" != "$char.magic.train.almanacItem") then gosub swap
         gosub study my $char.trainer.almanacItem
-        gosub put my $char.magic.train.almanacItem in my $char.trainer.almanacContainer
+        gosub put my $char.trainer.almanacItem in my $char.trainer.almanacContainer
         if (%isAsleep = 1) then {
             gosub sleep
             gosub sleep

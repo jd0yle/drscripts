@@ -5,12 +5,12 @@ var spells null
 action var spells %spells|$1 when ^It is labeled "(.*)\."$
 
 
-var scrolls tablet|scroll|vellum|ostracon|bark|roll
+var scrolls tablet|vellum|ostracon|bark|roll|scroll
 var typeIndex 0
 eval typeLength count("%scrolls", "|")
 
 loop:
-    gosub get my %scrolls(%typeIndex) from my skull
+    gosub get my %scrolls(%typeIndex)
     if ("$righthand" = "Empty") then {
         math typeIndex add 1
         if (%typeIndex > %typeLength) then goto done
@@ -27,7 +27,7 @@ doRead:
     goto doStow
 
 doStow:
-    gosub put my %scrolls(%typeIndex) in my satchel
+    put push my folio with my %scrolls(%typeIndex)
     goto loop
 
 
