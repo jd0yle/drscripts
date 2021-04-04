@@ -61,17 +61,17 @@ put #tvar char.magic.train.wornSanowret 0
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
-put #tvar char.magic.train.charge.Augmentation 3
+put #tvar char.magic.train.charge.Augmentation 10
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility pg
 put #tvar char.magic.train.prep.Utility 10
-put #tvar char.magic.train.charge.Utility 3
+put #tvar char.magic.train.charge.Utility 5
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding psy
 put #tvar char.magic.train.prep.Warding 10
-put #tvar char.magic.train.charge.Warding 3
+put #tvar char.magic.train.charge.Warding 5
 put #tvar char.magic.train.harness.Warding 0
 
 
