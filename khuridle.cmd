@@ -3,12 +3,11 @@ include libmaster.cmd
 # Idle Action Triggers
 ###################
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-
+action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
 
 ###################
 # Variable Inits
 ###################
-if (!($observeOffCooldown >0)) then put #var observeOffCooldown 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
@@ -68,8 +67,10 @@ waitAstrology:
 
 
 waitFaSkin:
-    evalmath nextTrainer $lastTrainerGametime + 3600
-    if (%nextTrainer > $gametime) then {
+    if (contains($time, "01\:(\d+)\:(\d+) AM")) then {
+        put #var lastTrainerGametime 0
+    }
+    if ($lastTrainerGametime <> 0) then {
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
