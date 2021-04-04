@@ -2469,7 +2469,7 @@ perc.onTimer:
     perc.onTimer1:
 	if (!($lastPercGametime > 0)) then put #var lastPercGametime 1
 
-	evalmath nextPercGametime $lastPercGametime$lastPercGametime + 61
+	evalmath nextPercGametime $lastPercGametime + 61
 
 	if ($gametime > %nextPercGametime) then {
 	    gosub perc mana
