@@ -11,7 +11,7 @@ put #tvar char.appraise.item my gem pouch
 put #tvar char.cambrinth viper
 put #tvar char.focusContainer poke
 put #tvar char.ritualFocus cameo
-put #tvar char.wornCambrinth 0
+put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
 
 
