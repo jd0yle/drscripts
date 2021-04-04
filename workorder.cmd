@@ -78,6 +78,7 @@ workOrderBundle:
             gosub get $char.craft.item from my $char.craft.container
             gosub bundle $char.craft.item with my logbook
             evalmath workOrderTotalNeed (%workOrderTotalNeed - 1)
+            evalmath workOrderTotalHave (%workOrderTotalHave - 1)
         } else {
             goto workOrderDone
         }
@@ -141,14 +142,15 @@ workOrderRestock:
     workOrderRestockLoop:
         if (%workOrderLumberHave < 65) then {
             gosub order 11
+            gosub order 11
             gosub combine
             math workOrderLumberHave add 10
             goto workOrderRestockLoop
         } else {
-            put #echo >log yellow [workorder] Lumber not restocked.  Have %workOrderLumberHave.
+            gosub put my lumber in my $char.craft.container
+            put #echo >log yellow [workorder] Lumber count: %workOrderLumberHave.
             goto workOrderDone
         }
-        gosub stow my lumber in my $char.craft.container
         put #echo >log yellow [workorder] Lumber restocked to %workOrderLumberHave.
         goto workOrderDone
 
@@ -157,7 +159,7 @@ workOrderRestock:
 # Exit and Log
 ##############
 workOrderDone:
-    gosub stow my logbook in my $char.craft.container
+    gosub put my logbook in my $char.craft.container
     if (%workOrderTotalHave < %workOrderTotalNeed) then {
         put #echo >log yellow [workorder] More items needed. (%workOrderTotalHave/%workOrderTotalNeed)
     } else {
