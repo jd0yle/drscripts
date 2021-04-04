@@ -133,7 +133,7 @@ ritualSpell:
     gosub get my $char.ritualFocus
     gosub prep %spell $char.cast.%spell.prep
     gosub invoke my $char.ritualFocus
-    if %isFullyPrepped != 1 then gosub waitPrep
+    if %isFullyPrepped != 1 then gosub waitForPrep
     gosub cast
     gosub stow my $char.ritualFocus in my $char.focusContainer
     goto done
