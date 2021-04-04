@@ -7,7 +7,7 @@ action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
 action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action put #var poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
-action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your 
+action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
 action put #var poisonHeal 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
 action put #var teach 1; put #var topic $2 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 
@@ -24,8 +24,6 @@ if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
-if (!($lastPercGametime >0)) then put #var lastPercGametime 0
-if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 
@@ -51,17 +49,19 @@ loop:
         gosub take $target poison quick
         put #var poison 0
     }
-    if ($poisonHeal = 1) then gosub healPoisonSelf
+    if ($poisonHeal = 1) then {
+        gosub runScript cast fp
+    }
     if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     gosub waitAlmanac
     pause 1
-    gosub waitAppraisal
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     pause 1
     gosub waitFaSkin
     pause 1
-    gosub waitPerc
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     pause 1
-    gosub waitPercHealth
+    if ($Empathy.LearningRate < 33) then gosub percHealth.onTimer
     pause 1
     gosub waitEngineer
     pause 1
@@ -86,18 +86,6 @@ waitAlmanac:
     return
 
 
-waitAppraisal:
-    evalmath nextAppAt $lastAppGametime + 60
-    if (%nextAppAt > $gametime) then {
-        return
-    }
-    if ($Appraisal.LearningRate < 15) then {
-        gosub appraise $char.appraise.item careful
-	    put #var lastAppGametime $gametime
-    }
-    return
-
-
 waitEngineer:
     evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
@@ -112,8 +100,10 @@ return
 
 
 waitFaSkin:
-    evalmath nextTrainer $lastTrainerGametime + 3600
-    if (%nextTrainer > $gametime) then {
+    if (contains($time, "01\:(\d+)\:(\d+) AM")) then {
+        put #var lastTrainerGametime 0
+    }
+    if ($lastTrainerGametime <> 0) then {
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
@@ -132,27 +122,6 @@ waitLook:
     if (%nextLookAt < $gametime) then {
         gosub look
         put #var lastLookGametime $gametime
-    }
-    return
-
-
-waitPerc:
-    if ($Attunement.LearningRate > 15) then {
-        return
-    }
-    evalmath nextPerc $lastPercGametime + 60
-    if ($gametime > %nextPerc) then {
-        gosub perc mana
-        put #var lastPercGametime $gametime
-    }
-    return
-
-
-waitPercHealth:
-    evalmath nextPerc $lastPercHealthGametime + 60
-    if ($gametime > %nextPerc) then {
-        gosub perc health
-        put #var lastPercHealthGametime $gametime
     }
     return
 

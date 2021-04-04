@@ -12,10 +12,8 @@ action pause 60 ; goto combatSkillCheck when ^Wouldn't it be better if you used 
 ####################
 if (!($currentWeapon >0)) then put #var currentWeapon 0
 if (!($heavyThrownWeapon >0)) then put #var heavyThrownWeapon 0
-if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastAnalyzeTimeAt >0)) then put #var lastAnalyzeTimeAt 0
 if (!($lastHuntGametime >0)) then put #var lastHuntGametime 0
-if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lightThrownWeapon >0)) then put #var lightThrownWeapon 0
 if (!($observeOffCooldown >0)) then put #var observeOffCooldown 0
 if (!($smallEdgeWeapon >0)) then put #var smallEdgeWeapon 0
@@ -53,7 +51,6 @@ if ("$charactername" = "Khurnaarti") then {
         var weaponItems naphtha|wand
         var useAstrology 0
     }
-    echo %weaponSkills
 }
 
 
@@ -152,29 +149,12 @@ combatAttack:
 # Utilities
 ##############
 combatAstrology:
-    if ($Astrology.LearningRate > 30) then {
-        return
-    }
-    if ($observeOffCooldown = false) then {
-        return
-    } else {
-        put .khurobserve
-        waitforre ^OBSERVE DONE
-        return
+    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
     }
 
 
 combatApp:
-    if ($Appraisal.LearningRate > 15) then {
-        return
-    }
-    evalmath nextAppAt $lastAppGametime + 60
-    if (%nextAppAt < $gametime) then {
-        return
-    }
-    gosub retreat
-    gosub app my pouch
-    put #var lastAppGametime $gametime
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     return
 
 
@@ -211,15 +191,7 @@ combatHunt:
 
 
 combatPerc:
-    if ($Attunement.LearningRate > 15) then {
-        return
-    }
-     evalmath nextPercAt $lastPercGametime + 60
-    if (%nextPercAt < $gametime) then {
-        return
-    }
-    gosub perc
-    put #var lastPercGametime $gametime
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     return
 
 

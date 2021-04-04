@@ -59,13 +59,15 @@ magicUtility:
 
 
 magicBegin:
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+    if ($Empathy.LearningRate < 33) then gosub percHealth.onTimer
     gosub prep symb
     gosub prep $currentSpell $currentMana
     gosub charge my $char.cambrinth $cambMana
     gosub invoke my $char.cambrinth spell
     waitforre ^You feel fully prepared to cast your
     gosub cast
-    gosub perc
     goto magicPickTopic
 
 
