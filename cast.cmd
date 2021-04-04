@@ -1,6 +1,21 @@
+####################################################################################################
+# cast.cmd
+# Selesthiel - justin@jmdoyle.com
+# Inauri - snmurphy95@gmail.com
+#
+# USAGE
+# .cast <spell> [target]
+#
+# .cast maf
+# .cast seer Inauri
+# .cast col
+#
+# Spell values set in var_$charactername.cmd !
+####################################################################################################
 include libmaster.cmd
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell\.
 action var isFullyPrepped 1 when ^You have lost the spell you were preparing\.
+
 
 ###############################
 ###      INIT
@@ -8,6 +23,10 @@ action var isFullyPrepped 1 when ^You have lost the spell you were preparing\.
 var useCambrinth 1
 var cambrinthFull 0
 action var cambrinthFull 1 when dissipates (uselessly|harmlessly)\.$
+
+var noTargetSpells fp|cd
+var isFullyPrepped 0
+var stowedItemNoun null
 
 if ("%1" = "n") then {
     var useCambrinth 0
@@ -19,11 +38,8 @@ var spell %1
 if_2 then {
     var target %2
 } else {
-    var target $charactername
+    if (!matchre("%spell", "%noTargetSpells") then var target $charactername
 }
-
-var isFullyPrepped 0
-var stowedItemNoun null
 
 
 ###############################
@@ -56,15 +72,23 @@ if ("%spell" = "col") then {
     if ("%moon" = "null") then goto done
 }
 
+# Init to character spell defaults
 var prepAt $char.cast.default.prep
 var charge $char.cast.default.charge
 var chargeTimes $char.cast.default.chargeTimes
 var harness $char.cast.default.harness
 
+# If the character has specific values for this spell, use those values
 if ($char.cast.%spell.prep > 0) then var prepAt $char.cast.%spell.prep
 if ($char.cast.%spell.charge > 0) then var charge $char.cast.%spell.charge
 if ($char.cast.%spell.chargeTimes > 0) then var chargeTimes $char.cast.%spell.chargeTimes
 if ($char.cast.%spell.harness > 0) then var prepAt $char.cast.%spell.harness
+
+# Set anything that had no default or specific value
+if (!(%prepAt > 0)) then var prepAt 1
+if (!(%charge > 0)) then var charge 0
+if (!(%chargeTimes > 0)) then var chargeTimes 1
+if (!(%harness > 0)) then var harness 0
 
 gosub prep %spell %prepAt
 
@@ -74,30 +98,32 @@ if (%useCambrinth = 1) then {
         gosub remove my $char.cambrinth
     }
 
-    gosub charge my $char.cambrinth %charge
-    if (%chargeTimes = 2 && %cambrinthFull != 1) then gosub charge my $char.cambrinth %charge
+    if (%charge > 0) then gosub charge my $char.cambrinth %charge
+
+    var invokeAmount %charge
+    if (%chargeTimes = 2 && %cambrinthFull != 1) then {
+        gosub charge my $char.cambrinth %charge
+        evalmath invokeAmount (%invokeAmount * 2)
+    }
+
     var invokeSpell
     if ($char.cast.invokeSpell = 1) then var invokeSpell spell
+
     gosub invoke my $char.cambrinth %charge %invokeSpell
 
-} else {
-    gosub harness %harness
 }
-gosub waitPrep
+
+if (%harness > 0) then gosub harness %harness
+
+gosub waitForPrep
+gosub cast %target
+
 goto done
 
 
-waitPrep:
-    pause 1
-    if %isFullyPrepped != 1 then goto waitPrep
-    gosub cast %target
-    if ($char.wornCambrinth != 1) then {
-        gosub wear my $char.cambrinth
-        gosub stow my $char.cambrinth
-    }
-    return
-
-
+###############################
+###      ritualSpell
+###############################
 ritualSpell:
     gosub get my $char.ritualFocus
     gosub prep %spell $char.cast.%spell.prep
@@ -108,9 +134,18 @@ ritualSpell:
     goto done
 
 
+###############################
+###      done
+###############################
 done:
     if ("%spell" = "shadowling") then gosub invoke shadowling
 
+	if ($char.wornCambrinth != 1) then {
+	    gosub wear my $char.cambrinth
+	    gosub stow my $char.cambrinth
+	}
+
     if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
+    pause .2
     put #parse CAST DONE
     exit
