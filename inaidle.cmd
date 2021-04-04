@@ -100,8 +100,10 @@ return
 
 
 waitFaSkin:
-    evalmath nextTrainer $lastTrainerGametime + 3600
-    if (%nextTrainer > $gametime) then {
+    if (contains($time, "01\:(\d+)\:(\d+) AM")) then {
+        put #var lastTrainerGametime 0
+    }
+    if ($lastTrainerGametime <> 0) then {
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {

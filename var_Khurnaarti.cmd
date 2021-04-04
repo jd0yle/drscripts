@@ -52,6 +52,7 @@ var super.enemies null
 ###############################
 ###      MAGIC
 ###############################
+put #tvar guild Moon Mage
 put #tvar char.magic.train.almanacItem 0
 put #tvar char.magic.train.almanacContainer 0
 put #tvar char.magic.train.useAlmanac 0
