@@ -112,7 +112,7 @@ done:
     if ($char.wornCambrinth = 1) then {
         gosub wear my $char.cambrinth
     }
-    gosub stow my %cambrinth
+    gosub stow my $char.cambrinth
     pause .2
     put #parse MAGIC DONE
     exit
