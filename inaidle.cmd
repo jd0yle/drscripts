@@ -90,13 +90,14 @@ waitEngineer:
     evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
         return
+    } else {
+        if ($Engineering.LearningRate = 0) then {
+            put #var lastEngineerGametime $gametime
+            put .eng 5 tiara
+            exit
+        }
     }
-    if ($Engineering.LearningRate = 0) then {
-        put #var lastEngineerGametime $gametime
-        put .eng 5 tiara
-        exit
-    }
-return
+    return
 
 
 waitFaSkin:

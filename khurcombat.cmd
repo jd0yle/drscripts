@@ -23,12 +23,14 @@ var weaponIndex 0
 var weaponItems 0
 var weaponSkills 0
 var useApp 1
+var useForage 0
 var useHunt 1
 var usePerc 1
 
 var opts %1
 if ("%opts" = "backtrain") then {
     var useApp 0
+    var useForage 0
     var useHunt 0
     var usePerc 0
 }
@@ -128,6 +130,7 @@ combatAnalyzed:
 
 combatAttack:
     if (%useApp = 1) then gosub combatApp
+    if (%useForage = 1) then gosub combatForage
     if (%useHunt = 1) then gosub combatHunt
     if (%usePerc = 1) then gosub combatPerc
     if (%useAstrology = 1) then gosub combatAstrology
@@ -175,6 +178,17 @@ combatFaceNext:
     matchre combatAnalyze ^You turn
     put face next
     matchwait 5
+
+
+combatForage:
+    if ($Outdoorsmanship.LearningRate < 30) then {
+        if ($monstercount > 0) then gosub retreat
+        gosub collect dirt
+        if (contains("$roomobjs", "a pile of")) then {
+            gosub kick pile
+        }
+    }
+    return
 
 
 combatHunt:
