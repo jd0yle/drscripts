@@ -1,7 +1,9 @@
 include libmaster.cmd
 
-put .var_Qizhmur
-waitforre ^CHARVARS DONE
+#put .var_Qizhmur
+#waitforre ^CHARVARS DONE
+
+var expectedNumBolts thirty-four
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -717,13 +719,27 @@ put .reconnect
 
 
 retrieveBolts:
+    var retrieveAttempts 0
+retrieveBoltsLoop:
     gosub count my basilisk bolts
-    if ("%numBolts" = "thirty-seven") then return
+    if ("%numBolts" = "%expectedNumBolts") then {
+        gosub stow right
+        return
+    } else {
+        echo WRONG NUMBER OF BOLTS, found %numBolts expected %expectedNumBolts
+    }
+    if ("$righthandnoun" != "scimitar") then {
+        gosub stow right
+        gosub get my haralun scimitar
+    }
     gosub attack kick
-    gosub loot
+    gosub loot treasure
     put .loot
     waitforre ^LOOT DONE$
-    goto retrieveBolts
+    math retrieveAttempts add 1
+    if (%retrieveAttempts < 10 && $monstercount > 0) then goto retrieveBoltsLoop
+    var expectedNumBolts %numBolts
+    return
 
 
 

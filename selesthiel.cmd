@@ -449,7 +449,7 @@ retrieveBoltsLoop:
     put .loot
     waitforre ^LOOT DONE$
     math retrieveAttempts add 1
-    if (%retrieveAttempts < 10) then goto retrieveBolts
+    if (%retrieveAttempts < 10 && $monstercount > 0) then goto retrieveBoltsLoop
     var expectedNumBolts %numBolts
     return
 

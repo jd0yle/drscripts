@@ -1,4 +1,5 @@
-#include libmaster.cmd
+
+
 
 send sort auto headtotoe
 
@@ -12,3 +13,5 @@ send sort auto headtotoe
 if ($standing != 1) then send stand
 
 send befriend list
+
+if (!($lastLoginTime > -1) then put #tvar lastLoginTime $gametime
