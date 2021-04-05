@@ -4,9 +4,9 @@ action var lastSpellBackfired 1 when ^Your spell.*backfire
 ###############################
 ###      INIT
 ###############################
-if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
-if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
-if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
+#if (!($char.magic.train.charge.Augmentation > -1)) then gosub doneNoVars
+#if (!($char.magic.train.charge.Utility > -1)) then gosub doneNoVars
+#if (!($char.magic.train.charge.Warding > -1)) then gosub doneNoVars
 
 var noLoop 0
 if_1 then {
@@ -59,22 +59,26 @@ loop:
     var skill %magic.skills($magic.index)
 
     if ($%skill.LearningRate < 34) then {
-        if ($preparedspell != None) then gosub release spell
-        var lastSpellBackfired 0
-        if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
-        gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
-        if ($char.wornCambrinth != 1) then {
-            gosub remove my $char.cambrinth
-            gosub get my $char.cambrinth
-        }
-        gosub charge my $char.cambrinth $char.magic.train.charge.%skill
-        gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
-        if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
-        gosub waitForPrep
-        gosub cast
-        if (%lastSpellBackfired = 1) then {
-            evalmath tmp ($char.magic.train.charge.%skill - 1)
-            put #tvar char.magic.train.charge.%skill %tmp
+        if ($char.magic.train.spell.isCyclic.%skill = 1) then {
+            gosub manageCyclic
+        } else {
+	        if ($preparedspell != None) then gosub release spell
+	        var lastSpellBackfired 0
+	        if ($char.magic.train.useSymbiosis = 1) then gosub prep symbiosis
+	        gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
+	        if ($char.wornCambrinth != 1) then {
+	            gosub remove my $char.cambrinth
+	            gosub get my $char.cambrinth
+	        }
+	        gosub charge my $char.cambrinth $char.magic.train.charge.%skill
+	        gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
+	        if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
+	        gosub waitForPrep
+	        gosub cast
+	        if (%lastSpellBackfired = 1) then {
+	            evalmath tmp ($char.magic.train.charge.%skill - 1)
+	            put #tvar char.magic.train.charge.%skill %tmp
+	        }
         }
     }
 
@@ -90,7 +94,15 @@ findMinLearnRate:
 
     findMinLearnRateLoop:
     if ($%magic.skills($magic.index).LearningRate < $%magic.skills(%minLearnRateIndex).LearningRate) then {
-        var minLearnRateIndex $magic.index
+        var tmp %magic.skills(%minLearnRateIndex)
+        if ($char.magic.train.spell.isCyclic.%tmp = 1) then {
+            if (!($char.magic.train.spell.lastCastCyclicGametime.%tmp > 0)) then put #tvar char.magic.train.spell.lastCastCyclicGametime.%tmp 1
+            evalmath nextCastCyclic (300 + $char.magic.train.spell.lastCastCyclicGametime.%tmp)
+            echo findMin nextCastCyclic is %nextCastCyclic  game time is $gametime
+            if (%nextCastCyclic < $gametime) then var minLearnRateIndex $magic.index
+        } else {
+            var minLearnRateIndex $magic.index
+        }
     }
 
     evalmath tmp ($magic.index + 1)
@@ -103,8 +115,32 @@ findMinLearnRate:
     goto findMinLearnRateLoop
 
 
+manageCyclic:
+    echo managing cyclic
+    if (!($char.magic.train.spell.lastCastCyclicGametime.%skill > -1)) then put #tvar char.magic.train.spell.lastCastCyclicGametime.%skill 0
+    evalmath nextCastCyclic (300 + $char.magic.train.spell.lastCastCyclicGametime.%skill)
+    if ($SpellTimer.%spellName.active = 1 && (%nextCastCyclic < $gametime || $mana < 60)) then {
+        gosub release cyclic
+    } else {
+        var spellName $char.magic.train.spell.fullName.Utility
+        if ($SpellTimer.%spellName.active != 1) then {
+            gosub waitForMana 80
+            gosub prep $char.magic.train.spell.Utility $char.magic.train.prep.Utility
+            gosub waitForPrep
+            gosub cast
+            put #tvar char.magic.train.spell.lastCastCyclicGametime.%skill $gametime
+        }
+    }
+    return
+
+
+
+
 doneNoVars:
      echo CHARACTER GLOBALS AREN'T SET!
+     echo char.magic.train.charge.Augmentation $char.magic.train.charge.Augmentation
+     echo char.magic.train.charge.Utility $char.magic.train.charge.Utility
+     echo char.magic.train.charge.Warding $char.magic.train.charge.Warding
      exit
 
 
