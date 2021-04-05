@@ -154,11 +154,13 @@ combatAttack:
 ##############
 combatAstrology:
     if ($Astrology.LearningRate < 33) then gosub observe.onTimer
-    }
+    waitforre ^OBSERVE DONE
+    return
 
 
 combatApp:
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+    waitforre ^APPRAISE DONE
     return
 
 
@@ -205,6 +207,7 @@ combatHunt:
 
 combatPerc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+    waitforre ^PERC DONE
     return
 
 

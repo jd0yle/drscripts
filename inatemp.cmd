@@ -29,7 +29,7 @@ shardLoop:
     gosub automove %forageRoom
     put .forage
     waitforre ^FORAGE DONE
-    gosub automove homeRoom
+    gosub automove %homeRoom
     put .house
     waitforre ^HOUSE DONE
     put .inaidle

@@ -7,10 +7,12 @@ action goto targetFaceNext when ^Target what|^Your pattern dissipates with the l
 #####################
 # Variables
 #####################
-if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastHuntGametime >0)) then put #var lastHuntGametime 0
-if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 
+var useApp 0
+var useHunt 1
+var usePerc 1
+var useAstrology 0
 
 #####################
 # Main
@@ -23,14 +25,10 @@ targetSkillCheck:
     if ($mana < 80) then {
         pause 10
     }
-    gosub targetApp
-    gosub targetHunt
-    gosub targetPerc
-    if ("$charactername" = "Khurnaarti") then {
-        if ($roomid <> $noObserveRoom) then {
-            if ($Astrology.LearningRate < 33) then gosub observe.onTimer
-        }
-    }
+    if (%useApp = 1) then gosub targetApp
+    if (%useHunt = 1) then gosub targetHunt
+    if (%usePerc = 1) then gosub targetPerc
+    if (%useAstrology = 1) then gosub targetAstrology
     gosub prep $char.combat.spell.Debilitation $char.combat.prep.Debilitation
     if ($char.combat.harness.Debilitation <> 0) then {
         gosub harness $char.combat.prep.Debilitation
@@ -46,27 +44,16 @@ targetSkillCheck:
 #####################
 # Utilities
 #####################
-targetApp:
-    if ($Appraisal.LearningRate > 15) then {
-        return
-    }
-    evalmath nextAppAt $gametime + 60
-    if (%nextAppAt < $gametime) then {
-        return
-    }
-    gosub retreat
-    gosub app $char.appraise.item
-    put #var lastAppGametime $gametime
+targetAstrology:
+    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
+    waitforre ^OBSERVE DONE
     return
 
 
-targetAstrology:
-    if ($Astrology.LearningRate > 30) then {
-        return
-    }
-    gosub observe.onTimer
-    waitforre ^OBSERVE DONE
-    goto targetSkillCheck
+targetApp:
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+    waitforre ^APPRAISE DONE
+    return
 
 
 targetFaceNext:
@@ -88,15 +75,8 @@ targetHunt:
 
 
 targetPerc:
-    if ($Attunement.LearningRate > 15) then {
-        return
-    }
-    evalmath nextPercAt $gametime + 60
-    if (%nextPercAt < $gametime) then {
-        return
-    }
-    gosub perc mana
-    put #var lastPercGametime $gametime
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+    waitforre ^PERC DONE
     return
 
 

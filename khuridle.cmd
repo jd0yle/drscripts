@@ -3,7 +3,7 @@ include libmaster.cmd
 # Idle Action Triggers
 ###################
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
+action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Vohraus|Inahk|Estius)'s face appears in the
 
 ###################
 # Variable Inits

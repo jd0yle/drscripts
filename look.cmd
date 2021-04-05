@@ -3,8 +3,8 @@ include libmaster.cmd
 # Idle Action Triggers
 ###################
 if ("$charactername" = "Inauri") then {
-    action put #var heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel) whispers, "heal
-    action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
+    action put #var heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+    action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Vohraus|Inahk|Estius)'s face appears in the
     action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
     action put #var poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your
