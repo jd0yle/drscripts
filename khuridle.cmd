@@ -35,7 +35,7 @@ loop:
     pause 1
     gosub waitPerc
     pause 1
-    gosub waitAstrology
+    if ($Astrology.LearningRate < 30) then gosub waitAstrology
     pause 1
     gosub waitArcana
     pause 1

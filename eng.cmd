@@ -394,6 +394,8 @@ engDone:
 	goto setStore
   }
 engExit:
+  if ("$righthand" <> "Empty") then gosub stow
+  if ("$lefthand" <> "Empty") then gosub stow left
   put #echo >log yellow [eng] Engineering done.  Beginning .inaidle
   put store default in %defaultContainer
   put .inaidle
@@ -408,3 +410,4 @@ engNeedLumber:
   put #echo >log yellow [eng] Need more lumber.
   put store default in %defaultContainer
   goto engExit
+

@@ -96,7 +96,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song ballad
+put #tvar char.performance.song jig
 put #tvar char.performance.mood quiet
 
 
