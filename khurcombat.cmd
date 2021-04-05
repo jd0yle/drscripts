@@ -131,6 +131,10 @@ combatAnalyzed:
 
 combatAttack:
     gosub combatCheckDeadMob
+    if ($stamina < 85) then {
+        pause 5
+        goto combatAttack
+    }
     if (%useApp = 1) then gosub combatApp
     if (%useForage = 1) then gosub combatForage
     if (%useHunt = 1) then gosub combatHunt

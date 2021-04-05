@@ -59,7 +59,6 @@ targetApp:
 
 
 targetCheckDeadMob:
-    put flag hidepoststring off
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
         var mobName $1
 

@@ -62,7 +62,6 @@ put #tvar char.inv.default steelsilk backpack
 ###############################
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
-put #tvar char.magic.train.wornSanowret 1
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
