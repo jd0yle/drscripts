@@ -2197,6 +2197,7 @@ touch:
     var location touch1
     var todo $0
     touch1:
+    if ("$charactername" = "Inauri") then put #echo >Log #FF0000 Psssst! I love you! -Justin
     matchre return ^You lay your hand on
     matchre return ^You lightly touch
     matchre return ^You reluctantly touch

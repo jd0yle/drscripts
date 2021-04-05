@@ -4,9 +4,11 @@ action var lastSpellBackfired 1 when ^Your spell.*backfire
 ###############################
 ###      INIT
 ###############################
-if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
-if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
-if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
+#if (!($char.magic.train.charge.Augmentation > 0)) then gosub doneNoVars
+#if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
+#if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
+
+if ("$charactername" = "Qizhmur") then put #tvar char.magic.train.charge.Utility 1
 
 var noLoop 0
 if_1 then {
