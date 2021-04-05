@@ -154,12 +154,13 @@ waitMagic:
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
             put .look
-            gosub runScript magic noLoop
+            put .magic noLoop
             waitforre ^MAGIC DONE
             put #abort all except inaidle
         }
     }
     return
+
 
 waitResearch:
     if ($Sorcery.LearningRate < 5) then {
@@ -168,7 +169,7 @@ waitResearch:
             return
         }
         put .look
-        gosub runScript research sorcery
+        put .research sorcery
         waitforre ^RESEARCH DONE
         put #script abort all except inaidle
     }
