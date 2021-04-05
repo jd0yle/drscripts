@@ -2663,12 +2663,25 @@ runScript:
     var todo $0
     var scriptName $1
     var location runScript1
+
     runScript1:
-    #echo [runScript] .%todo
-	put .%todo
-	eval doneString toupper(%scriptName)
-    waitforre ^%doneString DONE$
-    return
+	    eval doneString toupper(%scriptName)
+		put .%todo
+		pause .2
+
+	runScriptLoop:
+		if (!contains("$scriptlist", "%scriptName.cmd")) then {
+		    put #echo #FF9900 [runScript] *%scriptName.cmd* NOT IN SCRIPTLIST ($scriptlist), RETURNING
+		    put #echo >Log #FF9900 [runScript] %scriptName exited without #parse
+		    goto runScriptDone
+		}
+		matchre runScriptDone ^%doneString DONE$
+		matchwait 10
+
+	    goto runScriptLoop
+
+    runScriptDone:
+        return
 
 
 waitForConcentration:
