@@ -60,6 +60,16 @@ var super.enemies (Meiline|Nideya|Psaero)
 
 
 ###############################
+###      HEALING
+###############################
+put #tvar char.healing.disease 0
+put #tvar char.healing.heal 0
+put #tvar char.healing.healTarget 0
+put #tvar char.healing.poison 0
+put #tvar char.healing.poisonSelf 0
+
+
+###############################
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.useAlmanac 1

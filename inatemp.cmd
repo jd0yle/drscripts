@@ -32,5 +32,10 @@ shardLoop:
     gosub automove %homeRoom
     put .house
     waitforre ^HOUSE DONE
-    put .inaidle
+    if ("$charactername" = "Inauri") then {
+        put .inaidle
+    }
+    if ("$charactername" = "Khurnaarti") then {
+        put .khuridle
+    }
     exit
