@@ -19,10 +19,6 @@ include libmaster.cmd
 ####################################################################################################
 var opts %1
 
-action echo changed! %tmSpell $char.fight.tmSpell when eval %tmSpell
-
-put #tvar char.fight.tmSpell pd
-
 if ($charactername = Selesthiel && "%opts" != "backtrain") then {
 	var ammo.Crossbow $char.fight.ammo.Crossbow
 	var ammo.Bow $char.fight.ammo.Bow
@@ -44,9 +40,7 @@ if ($charactername = Selesthiel && "%opts" != "backtrain") then {
 
 	var necroRitual $char.fight.necroRitual
 
-	#var opts $char.fight.opts
-
-    echo char.fight.tmSpell $char.fight.tmSpell
+	var opts $char.fight.opts
 
 	var tmSpell $char.fight.tmSpell
 	var tmPrep $char.fight.tmPrep
@@ -399,8 +393,6 @@ attackThrownWeapon:
 ###      attackTm
 ###############################
 attackTm:
-    echo $char.fight.tmSpell
-    echo $char.fight.tmPrep
     gosub target %tmSpell %tmPrep
     gosub checkHide
     pause 5
