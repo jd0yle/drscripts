@@ -95,7 +95,7 @@ main:
             gosub close my telescope
             gosub stow my telescope
             gosub runScript predict
-            var nextPredict false
+            var needPredict false
         }
         if ($lastObserveAt != %previousLastObserveAt || %objindex > %objlength) then goto done
     goto main.loop
