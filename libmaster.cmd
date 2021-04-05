@@ -655,6 +655,15 @@ count:
     goto retry
 
 
+cut:
+    var location cut1
+    var todo $0
+    TODO:  add cut tables
+    cut1:
+    put cut %todo
+    goto retry
+
+
 dance:
     var location dance1
     var todo $0
@@ -1180,8 +1189,11 @@ mark:
     matchre return ^It's dead
     matchre return ^Mark what\?
     matchre return ^Roundtime
+    matchre return ^There is not enough
     matchre return ^You carefully size up
     matchre return ^You begin to
+    matchre return ^You mark
+    matchre return ^You count
     put mark all %todo
     goto retry
 
@@ -2032,6 +2044,7 @@ study:
     matchre return ^You are unable to sense additional information\.
     matchre return ^You attempt
     matchre return ^You feel it is too soon to grasp anything new in the skies above\.
+    matchre return ^You review
     matchre return ^You scan
     matchre return ^You set about
     matchre return ^You should try that where you can see the sky\.

@@ -1,9 +1,6 @@
 ###############################
 ###      BASICS
 ##############################
-put #tvar char.eng.container workbag
-put #tvar char.eng.default.container satchel
-put #tvar char.eng.tool.container workbag
 put #tvar char.eng.tool.drawknife metal drawknife
 put #tvar char.eng.tool.knife carving knife
 put #tvar char.eng.tool.rasp tapered rasp

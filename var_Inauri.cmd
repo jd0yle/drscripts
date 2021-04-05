@@ -34,7 +34,9 @@ put #tvar char.cast.pop.harness 0
 ###      CRAFTING
 ###############################
 put #tvar char.craft.container workbag
-put #tvar char.craft.item tiara
+put #tvar char.craft.default.container satchel
+put #tvar char.craft.tool.container workbag
+put #tvar char.craft.workorder.item tiara
 
 
 ###############################

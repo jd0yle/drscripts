@@ -5,64 +5,127 @@ include var_engineer.cmd
 # USAGE: .eng <number> <item> [design]
 #    EX: .eng 3 bead weasel
 ########################
-action var $eng.craft.nextTool shaper when ^Shaping with a wood shaper is needed to further smooth the material's surface\.
-action var $eng.craft.nextTool rasp when ^A bulbous knot will make continued shaping difficult unless rubbed out with a rasp\.
-action var $eng.craft.nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
-action var $eng.craft.nextTool engDone when ^Applying the final touches
+action var eng.craft.nextTool shaper when ^Shaping with a wood shaper is needed to further smooth the material's surface\.
+action var eng.craft.nextTool rasp when ^A bulbous knot will make continued shaping difficult unless rubbed out with a rasp\.
+action var eng.craft.nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
+action var eng.craft.nextTool engDone when ^Applying the final touches
 action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
+action var eng.lumber $1 when ^You count out (\d+) pieces of lumber remaining\.$
 
 ########################
 #  Variables
 ########################
-var chapter $eng.book.chapter.%2
-var cut $eng.book.cut.%2
-var defaultContainer $char.eng.default.container
-var engineeringContainer $char.eng.container
-var page 0
-var $eng.craft.numberCrafted 0
-var $eng.craft.numberNeeded %1
-var $eng.craft.item %2
+var engChapter eng.book.chapter.%2
+var engChapterLength 0
+var engCut eng.book.cut.%2
+var engPage 0
+if (%engChapter = 1) then var engChapterLength 8
+if (%engChapter = 6) then var engChapterLength 7
+if (%engChapter = 7) then var engChapterLength 30
+if (%engChapter = 8) then var engChapterLength 13
+if (%engChapter = 9) then var engChapterLength 8
+
+var eng.craft.numberCrafted 0
+var eng.craft.numberNeeded %1
+var eng.craft.item %2
+var eng.craft.item.design 0
 if_3 then {
-    var $eng.craft.item.design %3
+    var eng.craft.item.design %3
 }
 
 put #script abort all except eng
 put .look
 
+put store default $char.craft.container
+
 
 ########################
 #  Setup
 ########################
-if ("$righthand" <> "Empty") then {
-    matchre
-    put analyze $eng.craft.item
-    goto checkForPartial
-
-
-findCarvingDesign:
-    if ($chapter = 1) then var option.length 8
-    if ($chapter = 6) then var option.length 7
-    if ($chapter = 7) then var option.length 30
-    if ($chapter = 8) then var option.length 13
-    if ($chapter = 9) then var option.length 8
-    put turn my book to chapter $chapter
-    var option.index 0
-
-
-findCarvingDesignLoop:	  
-    math option.index add 1
-    if (%option.index < %option.length) then {
-	    matchre matchFound %2
-	    matchre findCarvingDesignLoop ^(You turn your book to page|You are already on page)
-	    put turn my book to page %option.index
-	    matchwait 5
+engFinishItem:
+    if ("$righthand" <> "Empty" && "$righthandnoun" = "$eng.craft.item") then {
+        matchre engErrorExit ^Roundtime
+        matchre engSetNextTool (shaper|rasp|knife)
+        put analyze $eng.craft.item
+        matchwait 5
     }
-    goto engExit
+    goto engCheckLumber
 
 
-matchFound:
-    put #var page option.index
-    goto engStudy
+engSetNextTool:
+    var eng.craft.nextTool $1
+    #TODO: gosub engLoop
+
+
+engCheckLumber:
+    matchre engLumberCount ^You rummage through.*?and see (.*)lumber\.$
+    matchre engNeedLumber ^You rummage through.*?and see (.*)\.$
+    gosub rummage my $char.craft.container
+    matchwait 5
+
+
+engLumberCount:
+    put count my lumber
+    if (%eng.lumber < %engCut) then {
+        goto engNeedLumber
+    }
+    goto engPrepareLumber
+
+
+engPrepareLumber:
+    gosub get my lumber
+    if (%eng.lumber <> %engCut) then {
+        gosub mark my lumber at %engCut
+        gosub get my scissors
+        gosub cut my lumber with my scissor
+        gosub stow
+        gosub stow left
+        gosub get my lumber
+    }
+    goto engPrepareItem
+
+
+engPrepareItem:
+    gosub get my shaping book
+    gosub turn my book to %engChapter
+    if (%engPage <> 0) then {
+        gosub turn my book to %engPage
+        goto engStudyItem
+    }
+    goto engFindItemPage
+
+
+#TODO:  Rewrite this to be smarter and less lazy.
+engFindItemPage:
+    var engChapterIndex 0
+
+    engFindItemPageLoop:
+        math engChapterIndex add 1
+        if (%engChapterIndex < %engChapterLength) then {
+            matchre engFindItemPageLoop $eng.craft.item
+            matchre engChapterIndex ^(You turn your book to page|You are already on page)
+            put turn my book to page %option.index
+            matchwait 5
+        }
+
+
+engPageFound:
+    var engPage %engChapterIndex
+    goto engStudyDesign
+
+
+engStudyItem:
+    gosub study my shaping book
+    gosub stow my shaping book
+    if ($eng.craft.item.design <> 0) then {
+        goto engPrepareDesign
+    }
+    goto engMain
+
+
+engMain:
+
+------
 
 
 ########################
@@ -143,26 +206,6 @@ checkForPartial:
     }
 
 
-setStore:
-    put #var craftNeed %1
-    put store default %engineeringContainer
-
-
-engGetLumber:
-    matchre engGetLumberStack ^You pick up
-    matchre engMarkLumber ^You get
-    matchre engExit ^What were you referring
-    matchre engMarkLumber ^You are already
-    put get my lumber
-    matchwait 5
-
-
-engGetLumberStack:
-    matchre engCombine ^You get
-    matchre engExit ^What were you referring
-    put get my lumber from %engineeringContainer
-    matchwait 5
-
 
 engCombine:
     matchre engMarkLumber ^You combine the stacks
@@ -170,65 +213,7 @@ engCombine:
     put combine
     matchwait 5
 
-engMarkLumber:
-    matchre engCount ^There is not enough of the lumber
-    matchre engGetScissors ^(You mark|You count)
-    put mark my lumber at $cut
-    matchwait 5
 
-engCount:
-    match engGetBook $cut
-    matchre engNeedLumber ^You count out
-    put count my lumber
-    matchwait 5
-
-
-engGetScissors:
-    matchre engStow ^You need a free hand
-    matchre engExit ^What were you
-    matchre engCut ^You get
-    put get my scissor
-    matchwait 5
-
-
-engStow:
-    gosub stow left
-    gosub stow right
-    if ($nextTool <> 0) then {
-        goto $nextTool
-    }
-    goto engGetLumberStack
-
-
-engCut:
-    put cut my lumber with my scissor
-    gosub stow right
-    gosub stow left
-    pause
-    matchre checkPageSetting ^You pick up
-    matchre engExit ^What were you
-    put get my lumber
-    matchwait 5
-
-
-checkPageSetting:
-    if (%page <> 0) then {
-        gosub get my shap book
-        goto engStudy
-    }
-
-
-engGetBook:
-    matchre findCarvingDesign ^(You get|You are already)
-    matchre engExit ^What were you
-    put get my shap book
-    matchwait 5
-
-
-engStudy:
-    matchre engStowBook ^(You scan|You review)
-    put study my book
-    matchwait 5
 
 
 engStowBook:
@@ -412,7 +397,7 @@ engExit:
     exit
 
 
-errorExit:
+engErrorExit:
     put #echo >log red Next Tool was not found.  Exiting.
     exit
 
