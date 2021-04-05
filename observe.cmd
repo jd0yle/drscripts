@@ -58,11 +58,9 @@ main:
 
     if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then {
         gosub runScript cast aus
-        waitforre ^CAST DONE$
     }
     if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
         gosub runScript cast pg
-        waitforre ^CAST DONE$
     }
 
     ###############################
