@@ -24,9 +24,11 @@ var weaponIndex 0
 var weaponItems 0
 var weaponSkills 0
 var useApp 0
+var useAstrology 0
 var useForage 0
 var useHunt 1
 var usePerc 1
+var useSano 0
 
 var opts %1
 if ("%opts" = "backtrain") then {
@@ -47,8 +49,7 @@ if ("$charactername" = "Inauri") then {
 if ("$charactername" = "Khurnaarti") then {
     var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Targeted_Magic
     var weaponItems nightstick|Empty|naphtha|wand|Empty
-    var useAstrology 0
-    var useSano 0
+
     if ("%opts" = "backtrain") then {
         var weaponSkills Light_Thrown|Heavy_Thrown
         var weaponItems naphtha|wand
@@ -154,13 +155,11 @@ combatAttack:
 ##############
 combatAstrology:
     if ($Astrology.LearningRate < 33) then gosub observe.onTimer
-    waitforre ^OBSERVE DONE
     return
 
 
 combatApp:
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
-    waitforre ^APPRAISE DONE
     return
 
 
@@ -207,7 +206,7 @@ combatHunt:
 
 combatPerc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
-    waitforre ^PERC DONE
+
     return
 
 
