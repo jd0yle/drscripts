@@ -35,10 +35,10 @@ put #tvar char.combat.prep.Debilitation 5
 put #tvar char.combat.charge.Debilitation 0
 put #tvar char.combat.harness.Debilitation 0
 
-put #tvar char.combat.spell.Targeted_Magic pd
-put #tvar char.combat.prep.Targeted_Magic 2
+put #tvar char.combat.spell.Targeted_Magic do
+put #tvar char.combat.prep.Targeted_Magic 4
 put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 2
+put #tvar char.combat.harness.Targeted_Magic 0
 
 
 ###############################
