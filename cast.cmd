@@ -49,7 +49,7 @@ if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty
     var stowedItemNoun $lefthandnoun
     if ("$lefthandnoun" = "telescope") then {
         gosub close my $char.observe.telescope
-        gosub stow my $char.observe.telescope in $char.observe.telescope.container
+        gosub put my $char.observe.telescope in $char.observe.telescope.container
     } else {
         gosub stow left
     }
@@ -103,7 +103,7 @@ if (%useCambrinth = 1) then {
     if (%charge > 0) then gosub charge my $char.cambrinth %charge
 
     var invokeAmount %charge
-    if (%chargeTimes = 2 && %cambrinthFull != 1) then {
+    if (1=0 && %chargeTimes = 2 && %cambrinthFull != 1) then {
         gosub charge my $char.cambrinth %charge
         evalmath invokeAmount (%invokeAmount * 2)
     }
@@ -135,7 +135,7 @@ ritualSpell:
     gosub invoke my $char.ritualFocus
     if %isFullyPrepped != 1 then gosub waitForPrep
     gosub cast
-    gosub stow my $char.ritualFocus in my $char.focusContainer
+    gosub put my $char.ritualFocus in my $char.focusContainer
     goto done
 
 

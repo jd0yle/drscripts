@@ -402,7 +402,7 @@ resetState:
     gosub stow left
     gosub release spell
     gosub release mana
-    gosub release symbi
+    #gosub release symbi
     gosub release shear
     gosub release cyclic
     gosub retrieveBolts

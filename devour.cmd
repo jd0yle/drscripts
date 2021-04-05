@@ -33,6 +33,7 @@ checkHealth:
 
 
 heal:
+    if ($standing != 1) then gosub stand
     gosub release spell
     var isFullyPrepped 0
     gosub prep devour

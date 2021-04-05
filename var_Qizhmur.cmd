@@ -76,18 +76,18 @@ put #tvar char.magic.train.wornSanowret 1
 
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 8
-put #tvar char.magic.train.harness.Augmentation 5
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 20
+put #tvar char.magic.train.harness.Augmentation 10
 
 put #tvar char.magic.train.spell.Utility eotb
 put #tvar char.magic.train.prep.Utility 1
-if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 8
-put #tvar char.magic.train.harness.Utility 6
+if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 20
+put #tvar char.magic.train.harness.Utility 10
 
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 8
-put #tvar char.magic.train.harness.Warding 6
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 20
+put #tvar char.magic.train.harness.Warding 10
 
 
 ###############################

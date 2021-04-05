@@ -25,7 +25,7 @@ favorLoop:
 
 getFavorOrb:
     #gosub get my prayer chain
-    gosub get my bead
+    gosub get my weasel bead
     #gosub stow chain
     gosub put my bead on mistwood altar
     gosub pray
@@ -42,16 +42,11 @@ placeOrb:
 collectRocks:
     put research fundamental 300
 
-    evalmath nextAppGametime $lastAppGametime + 120
-    if ($gametime > %nextAppGametime) then {
-        gosub get my gem pouch from my portal
-        gosub appraise my gem pouch
-        gosub put my gem pouch in my portal
-        put #var lastAppGametime $gametime
-    }
+    gosub appraise.onTimer
 
-    put .observe
-    waitforre ^OBSERVE DONE$
+    gosub observe.onTimer
+
+    gosub perc.onTimer
 
     if ($Astrology.LearningRate < 15) then {
         put .predict

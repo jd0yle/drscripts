@@ -61,10 +61,7 @@ findSkillSet:
             return
         }
         math index add 1
-        if (%index > %len) then {
-            put #echo >Log All pred pools empty
-            return
-        }
+        if (%index > %len) then return
     goto findSkillSetLoop
 
 

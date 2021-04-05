@@ -85,12 +85,6 @@ rtrPred:
     return
 
 
-waitForConcentration:
-    if ($concentration > 50) then return
-    pause 2
-    goto waitForConcentration
-
-
 rtrWait:
     pause 2
     goto rtrWait

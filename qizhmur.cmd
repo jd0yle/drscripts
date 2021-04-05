@@ -173,6 +173,8 @@ main:
             var startResearch 0
             put .research sorcery
             waitforre ^RESEARCH DONE$
+            if ($standing != 1) then gosub stand
+            gosub release roc
             if ($bleeding = 1) then gosub runScript devour all
         }
         put .reconnect

@@ -19,9 +19,9 @@ put #tvar char.wornFocus 0
 ###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.charge 60
-put #tvar char.cast.default.harness 40
-put #tvar char.cast.default.prep 40
+put #tvar char.cast.default.prep 30
+put #tvar char.cast.default.charge 70
+put #tvar char.cast.default.harness 0
 
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600

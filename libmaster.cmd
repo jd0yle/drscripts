@@ -654,6 +654,7 @@ close:
     matchre return ^Your dreamweave fan is already
     matchre return ^What were
     matchre return ^With a practiced flick of your wrist
+    matchre return ^You try to close
     put close %todo
     goto retry
 
@@ -1056,6 +1057,7 @@ invoke:
     matchre return ^You must begin preparing a ritual spell before you can focus it
     matchre return You reach for its center and forge a magical link
     matchre return ^You're not sure what would happen
+    matchre return ^You must be able to handle your (.*) with both hands to use it for a ritual.
     matchre invoke ^You reach for its center, attempting
     put invoke %todo
     goto retry
@@ -1180,6 +1182,7 @@ lock:
     matchre return ^You lock
     matchre return ^You quickly lock
     matchre return ^You rattle
+    matchre return ^What were you referring to
     put lock %todo
     goto retry
 
@@ -1282,6 +1285,7 @@ open:
     matchre return ^You rattle
     matchre return ^You try, but the telescope seems as extended as it will ever be\.
     matchre return ^Your dreamweave fan is already
+    matchre return seems to be closed.$
     put open %todo
     goto retry
 
@@ -1508,6 +1512,7 @@ prepare:
     matchre return ^You trace an angular sigil
     matchre return ^You trace an arcane sigil in the air,
     matchre return ^Your eyes darken to black as a starless night
+    matchre return ^You recall the exact details of the
     matchre prepare.ritualFix ^Magical rituals are exceedingly obvious.  You cannot do it while remaining hidden.
     put prepare %todo
     goto retry
@@ -1621,6 +1626,7 @@ release:
     matchre return ^The refractive field surrounding you
     matchre return ^You release
     matchre return ^Your corruption fades
+    matchre return ^Are you sure you'd lke to remove the Discern symbiosis from your memory
     put release %todo
     goto retry
 
