@@ -92,9 +92,10 @@ main:
             eval objlength count("%objects", "|")
         }
         if (%needPredict = true && $char.observe.predict = 1) then {
-            put .predict
-            waitforre ^PREDICT DONE
-            var nextPredict false
+            gosub close my telescope
+            gosub stow my telescope
+            gosub runScript predict
+            var needPredict false
         }
         if ($lastObserveAt != %previousLastObserveAt || %objindex > %objlength) then goto done
     goto main.loop
@@ -129,7 +130,7 @@ findSkillSet:
 
 nextSkillSet:
     math index add 1
-    if (%index > %len) then goto done
+    if (%index > %len) then goto doneAddCd
     var skillset %skillsets(%index)
     return
 
@@ -147,6 +148,13 @@ doneAllFull:
         put #var lastEchoPredStateAllAt $gametime
     }
     put #var lastObserveAt $gametime
+    goto done
+
+
+doneAddCd:
+    put #echo >Log [observe] Nothing found, setting cd
+    put #var lastObserveAt $gametime
+    put #var isObsOnCd true
     goto done
 
 

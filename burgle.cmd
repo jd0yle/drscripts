@@ -919,4 +919,5 @@ ERROR:
 
 END:
     put #parse SCRIPT FINISHED!
+    put #parse BURGLE DONE
 	exit
