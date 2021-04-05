@@ -159,7 +159,9 @@ workOrderRestock:
 # Exit and Log
 ##############
 workOrderDone:
-    gosub put my logbook in my $char.craft.container
+    if ("$righhthand" = "logbook" then {
+        gosub put my logbook in my $char.craft.container
+    }
     if (%workOrderTotalHave < %workOrderTotalNeed) then {
         put #echo >log yellow [workorder] More items needed. (%workOrderTotalHave/%workOrderTotalNeed)
     } else {
