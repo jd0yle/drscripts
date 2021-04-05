@@ -12,109 +12,74 @@
 include var_mobs.cmd
 include libmaster.cmd
 
-
-# DEFAULTS
-var arrangeForPart 0
-var debil.use 0
-var forceDebil 0
-var lootType treasure
-var useAlmanac 0
-var useApp 1
-var useBuffs 1
-var useHunt 1
-var usePerc 1
-var useSkin 1
-var useStealth 1
-
-var useSls 0
-
-var useCh 0
-var usePhp 0
-var useQe 0
-var useRog 0
-var useUsol 0
-var avoidDivineOutrage 0
-
-var useSanowret 0
-
+#debug 5
 
 ####################################################################################################
 # CONFIG
 ####################################################################################################
 var opts %1
 
-if ("%opts" = "backtrain") then {
-    var arrangeForPart 0
-    var debil.use 0
-    var forceShield 1
-    var useApp 0
-    var useBuffs 0
-    var useHunt 0
-    var usePerc 0
-    var useQe 0
-    var useRog 0
-    var useSkin 0
-    var useSls 0
-    var useStealth 0
-}
+action echo changed! %tmSpell $char.fight.tmSpell when eval %tmSpell
+
+put #tvar char.fight.tmSpell pd
 
 if ($charactername = Selesthiel && "%opts" != "backtrain") then {
-    #var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown
-    #var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata
+	var ammo.Crossbow $char.fight.ammo.Crossbow
+	var ammo.Bow $char.fight.ammo.Bow
+	var ammo.Sling $char.fight.ammo.Sling
 
-    # Without HT / Staves
-    var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
-    var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
+	var arrangeForPart $char.fight.arrangeForPart
+	var arrangeFull $char.fight.arrangeFull
 
-    # With HT / Staves
-    #var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown|Staves
-    #var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata|nightstick
+	var avoidDivineOutrage $char.fight.avoidDivineOutrage
 
-    var cambrinth mammoth calf
+	var debil.use $char.fight.debil.use
+	var debil.spell $char.fight.debil.spell
+	var debil.prepAt $char.fight.debil.prepAt
+	var forceDebil $char.fight.forceDebil
 
-    var tmSpell pd
-    var tmPrep 30
+	var forceShield $char.fight.forceShield
 
-    var debil.use 1
-    var debil.spell mb
-    var debil.prepAt 20
-    var forceDebil 1
+	var lootType $char.fight.lootType
 
-    var ignoreCoL 0
+	var necroRitual $char.fight.necroRitual
 
-    var arrangeForPart 0
-    var arrangeFull 0
+	#var opts $char.fight.opts
 
-    var doObserve 1
+    echo char.fight.tmSpell $char.fight.tmSpell
 
-    var useAlmanac 1
-    var useSanowret 1
-    var useApp 1
-    var useShw 1
-    var useSls 1
-}
+	var tmSpell $char.fight.tmSpell
+	var tmPrep $char.fight.tmPrep
 
-if ($charactername = Selesthiel && "%opts" = "backtrain") then {
-    #var weapons.skills Heavy_Thrown|Offhand_Weapon|Small_Blunt|Large_Blunt|Bow|Staves|Twohanded_Edged|Twohanded_Blunt|Polearms|Slings|Large_Edged
-    #var weapons.items ka'hurst hhr'ata|Empty|hunting bola|ka'hurst hhr'ata|competition shortbow|nightstick|bastard sword|footman's flail|narrow-bladed halberd|leather sling|bastard sword
-    var weapons.skills Heavy_Thrown|Staves
-    var weapons.items ka'hurst hhr'ata|nightstick
-    var cambrinth mammoth calf
-    var useSls 0
-    var tmSpell pd
-    var tmPrep 30
-    var debil.use 1
-    var debil.spell mb
-    var debil.prepAt 10
-    var useBuffs 1
-    var ignoreCoL 0
-    var arrangeForPart 0
-    var useAlmanac 1
-    var doObserve 1
-    var useStealth 0
-    var useSkin 0
+	var weapons.items $char.fight.weapons.items
+	var weapons.skills $char.fight.weapons.skills
 
-    var useApp 1
+	var useAlmanac $char.fight.useAlmanac
+	var useAppraise $char.fight.useAppraise
+	var useBuffs $char.fight.useBuffs
+	var useHunt $char.fight.useHunt
+	var usePerc $char.fight.usePerc
+	var useSanowret $char.fight.useSanowret
+	var useSkin $char.fight.useSkin
+	var useStealth $char.fight.useStealth
+
+	var useCol $char.fight.useCol
+	var useMaf $char.fight.useMaf
+	var useObserve $char.fight.useObserve
+	var useSeer $char.fight.useSeer
+	var useShadowling $char.fight.useShadowling
+	var useShadows $char.fight.useShadows
+	var useShw $char.fight.useShw
+	var useSls $char.fight.useSls
+
+	var useCh $char.fight.useCh
+	var useIvm $char.fight.useIvm
+	var usePhp $char.fight.usePhp
+	var useQe $char.fight.useQe
+	var useUsol $char.fight.useUsol
+
+
+
 }
 
 if ($charactername = Qizhmur && "%opts" != "backtrain") then {
@@ -129,7 +94,7 @@ if ($charactername = Qizhmur && "%opts" != "backtrain") then {
     var forceDebil 0
 
     var arrangeForPart 0
-    var useApp 1
+    var useAppraise 1
 
     var necroRitual dissection
     var useCh 0
@@ -143,16 +108,6 @@ if ($charactername = Qizhmur && "%opts" != "backtrain") then {
     var useAlmanac 1
 }
 
-if ($charactername = Qizhmur && "%opts" = "backtrain") then {
-    var weapons.skills Crossbow|Staves
-    var weapons.items spiritwood lockbow|white nightstick
-    var cambrinth aoustone muhenta
-    var useBuffs 0
-    var debil.use 1
-    var debil.spell pv
-    var debil.prepAt 2
-    var necroRitual dissection
-}
 
 ####################################################################################################
 
@@ -176,8 +131,6 @@ var stances.skills Shield_Usage|Parry_Ability
 var stances.targetLearningRate 5
 eval stances.length count("%stances.list", "|")
 var stances.index 0
-
-var lootables throwing blade|coin
 
 action send adv when ^You must be closer to use tactical abilities on your opponent.
 action var doAnalyze 1 when ^Utilizing \S+ tactics
@@ -341,24 +294,7 @@ loop:
 ###      almanac
 ###############################
 checkAlmanac:
-    if (%useAlmanac = 1) then {
-        if (!($lastAlmanacGametime > 0)) then put #var lastAlmanacGametime 1
-        evalmath nextStudyAt $lastAlmanacGametime + 600
-
-        if (%nextStudyAt < $gametime) then {
-            gosub stow left
-            if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
-                gosub get my almanac
-            }
-            if ("$lefthandnoun" != "almanac") then gosub swap
-            gosub retreat
-            gosub study my almanac
-            if ($charactername = Selesthiel) then gosub put my almanac in my thigh bag
-            if ($charactername = Qizhmur) then gosub stow almanac
-
-            put #var lastAlmanacGametime $gametime
-        }
-    }
+    if (%useAlmanac = 1) then gosub almanac.onTimer
     return
 
 
@@ -463,6 +399,8 @@ attackThrownWeapon:
 ###      attackTm
 ###############################
 attackTm:
+    echo $char.fight.tmSpell
+    echo $char.fight.tmPrep
     gosub target %tmSpell %tmPrep
     gosub checkHide
     pause 5
@@ -507,9 +445,9 @@ buffs:
     if ($charactername = Qizhmur) then {
         if (%usePhp = 1 && %avoidDivineOutrage != 1 && ($SpellTimer.PhilosophersPreservation.active != 1 || $SpellTimer.PhilosophersPreservation.duration < 3)) then {
             gosub prep php 10
-            gosub charge %cambrinth 25
-            gosub charge %cambrinth 25
-            gosub invoke %cambrinth
+            gosub charge $char.cambrinth 25
+            gosub charge $char.cambrinth 25
+            gosub invoke $char.cambrinth
             gosub waitForPrep
             gosub cast
             return
@@ -517,9 +455,9 @@ buffs:
 
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 2) then {
             gosub prep maf 40
-            gosub charge %cambrinth 30
-            gosub charge %cambrinth 30
-            gosub invoke %cambrinth
+            gosub charge $char.cambrinth 30
+            gosub charge $char.cambrinth 30
+            gosub invoke $char.cambrinth
             gosub waitForPrep
             gosub cast
             return
@@ -527,10 +465,10 @@ buffs:
 
         if ($SpellTimer.Obfuscation.active != 1 || $SpellTimer.Obfuscation.duration < 2) then {
             gosub prep obf 40
-            gosub charge %cambrinth 30
-            gosub charge %cambrinth 30
-            gosub invoke %cambrinth
-            gosub invoke %cambrinth
+            gosub charge $char.cambrinth 30
+            gosub charge $char.cambrinth 30
+            gosub invoke $char.cambrinth
+            gosub invoke $char.cambrinth
             gosub waitForPrep
             gosub cast
             return
@@ -538,8 +476,8 @@ buffs:
 
         if (%useCh = 1 &&  %avoidDivineOutrage != 1 && ($SpellTimer.CalcifiedHide.active != 1 || $SpellTimer.CalcifiedHide.duration < 3)) then {
             gosub prep ch 10
-            gosub charge %cambrinth 40
-            gosub invoke %cambrinth
+            gosub charge $char.cambrinth 40
+            gosub invoke $char.cambrinth
             gosub waitForPrep
             gosub cast
             return
@@ -574,8 +512,7 @@ buffs:
 ###############################
 ###      buffCol
 ###############################
-buffCol:
-    if (%ignoreCoL = 1) then return
+buffCol:    
     if ($Time.isKatambaUp = 1) then {
         put .cast col katamba
         waitforre ^CAST DONE
@@ -665,7 +602,7 @@ checkWeaponSkills:
 ###      checkStances
 ###############################
 checkStances:
-    if ($healh < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
         var stances.index 0
     } else {
         if ($%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate) then {
@@ -791,8 +728,8 @@ debil:
 ###      fight.observe
 ###############################
 fight.observe:
-    if (%doObserve = 1 && $Astrology.LearningRate < 32) then gosub runScript observe
-    if (%doObserve = 1 && $Astrology.LearningRate < 22) then gosub runScript predict
+    if (%useObserve = 1 && $Astrology.LearningRate < 32) then gosub runScript observe
+    if (%useObserve = 1 && $Astrology.LearningRate < 22) then gosub runScript predict
     return
 
 
@@ -805,7 +742,7 @@ huntApp:
        gosub hunt.onTimer
        return
     }
-    if (%useApp = 1 && $Appraisal.LearningRate < 30) then {
+    if (%useAppraise = 1 && $Appraisal.LearningRate < 30) then {
         gosub appraise.onTimer
         return
     }
