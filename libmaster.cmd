@@ -658,7 +658,7 @@ count:
 cut:
     var location cut1
     var todo $0
-    TODO:  add cut tables
+  #  TODO:  add cut tables
     cut1:
     put cut %todo
     goto retry
