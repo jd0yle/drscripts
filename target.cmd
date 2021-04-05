@@ -46,13 +46,11 @@ targetSkillCheck:
 #####################
 targetAstrology:
     if ($Astrology.LearningRate < 33) then gosub observe.onTimer
-    waitforre ^OBSERVE DONE
     return
 
 
 targetApp:
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
-    waitforre ^APPRAISE DONE
     return
 
 
@@ -76,7 +74,6 @@ targetHunt:
 
 targetPerc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
-    waitforre ^PERC DONE
     return
 
 
