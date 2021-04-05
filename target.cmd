@@ -1,7 +1,7 @@
 include libmaster.cmd
+include var_mobs.cmd
 action put #tvar noObserveRoom $roomid when (can|can't|cannot) see the sky\.$
 action goto targetLoop when ^Your concentration slips for a moment|^Your concentration lapses
-action goto targetSkin when eval $skin = 1
 action goto targetFaceNext when ^Target what|^Your pattern dissipates with the loss of your target\.
 
 #####################
@@ -18,6 +18,7 @@ var useAstrology 0
 # Main
 #####################
 targetSkillCheck:
+    gosub targetCheckDeadMob
     if ($Targeted_Magic.LearningRate < 30) then goto targetLoop
     goto targetExit
 
@@ -36,7 +37,8 @@ targetSkillCheck:
     waitforre ^You feel fully prepared
     gosub cast
     gosub target $char.combat.spell.Targeted_Magic $char.combat.prep.Targeted_Magic
-    waitforre ^Your formation of a targeting pattern around
+    pause 6
+    #waitforre ^Your formation of a targeting pattern around
     gosub cast
     goto targetSkillCheck
 
@@ -51,6 +53,20 @@ targetAstrology:
 
 targetApp:
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+    return
+
+
+targetCheckDeadMob:
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
+        var mobName $1
+
+        if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
+            if (%arrangeForPart = 1) then gosub arrange for part
+            if (%arrangeFull = 1) then gosub arrange full
+            gosub skin
+        }
+        gosub loot
+    }
     return
 
 
@@ -75,14 +91,6 @@ targetHunt:
 targetPerc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     return
-
-
-targetSkin:
-    pause 1
-    gosub skin
-    pause 1
-    gosub loot
-    goto targetLoop
 
 
 targetExit:

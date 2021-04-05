@@ -2,7 +2,6 @@ include libmaster.cmd
 ####################
 # Combat
 ####################
-action goto combatSkin when eval $lib.skin = 1
 action goto combatAnalyze when ^You fail to find any holes
 action goto combatFaceNext when ^Analyze what
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
@@ -131,6 +130,7 @@ combatAnalyzed:
 
 
 combatAttack:
+    gosub combatCheckDeadMob
     if (%useApp = 1) then gosub combatApp
     if (%useForage = 1) then gosub combatForage
     if (%useHunt = 1) then gosub combatHunt
@@ -160,6 +160,20 @@ combatAstrology:
 
 combatApp:
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+    return
+
+
+combatCheckDeadMob:
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
+        var mobName $1
+
+        if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
+            if (%arrangeForPart = 1) then gosub arrange for part
+            if (%arrangeFull = 1) then gosub arrange full
+            gosub skin
+        }
+        gosub loot
+    }
     return
 
 
@@ -208,11 +222,3 @@ combatPerc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
 
     return
-
-
-combatSkin:
-    pause 1
-    gosub skin
-    pause 1
-    gosub loot
-    goto combatAnalyze
