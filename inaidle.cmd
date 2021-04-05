@@ -52,7 +52,7 @@ loop:
     if ($poisonHeal = 1) then {
         gosub runScript cast fp
     }
-    if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+    if ($SpellTimer.Regenerate.duration < 1) then gosub runScript cast regen
     gosub waitAlmanac
     pause 1
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
@@ -90,13 +90,14 @@ waitEngineer:
     evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
         return
+    } else {
+        if ($Engineering.LearningRate = 0) then {
+            put #var lastEngineerGametime $gametime
+            put .eng 5 tiara
+            exit
+        }
     }
-    if ($Engineering.LearningRate = 0) then {
-        put #var lastEngineerGametime $gametime
-        put .eng 5 tiara
-        exit
-    }
-return
+    return
 
 
 waitFaSkin:

@@ -57,11 +57,11 @@ main:
     eval objlength count("%objects", "|")
 
     if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then {
-        put .cast aus
+        gosub runScript cast aus
         waitforre ^CAST DONE$
     }
     if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
-        put .cast pg
+        gosub runScript cast pg
         waitforre ^CAST DONE$
     }
 

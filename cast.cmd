@@ -97,7 +97,9 @@ gosub prep %spell %prepAt
 if (%useCambrinth = 1) then {
     if ($char.wornCambrinth != 1) then {
         gosub get my $char.cambrinth
-        gosub remove my $char.cambrinth
+        if ("$righthandnoun" <> "$char.cambrinth" || "$lefthandnoun" <> "$char.cambrinth") then {
+            gosub remove my $char.cambrinth
+        }
     }
 
     if (%charge > 0) then gosub charge my $char.cambrinth %charge
@@ -112,6 +114,13 @@ if (%useCambrinth = 1) then {
     if ($char.cast.invokeSpell = 1) then var invokeSpell spell
 
     gosub invoke my $char.cambrinth %charge %invokeSpell
+
+	if ($char.wornCambrinth != 1) then {
+	    gosub wear my $char.cambrinth
+	    if ("$righthand" <> "Empty" && "$lefthand" <> "Empty") then {
+	        gosub stow my $char.cambrinth
+	    }
+	}
 }
 
 if (%harness > 0) then gosub harness %harness
@@ -144,11 +153,6 @@ ritualSpell:
 ###############################
 done:
     if ("%spell" = "shadowling") then gosub invoke shadowling
-
-	if ($char.wornCambrinth != 1) then {
-	    gosub wear my $char.cambrinth
-	    gosub stow my $char.cambrinth
-	}
 
     if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
     pause .2

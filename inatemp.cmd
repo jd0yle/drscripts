@@ -6,8 +6,10 @@ include libmaster.cmd
 ###################
 # Variable Inits
 ###################
-var forageRoom 555
 var burgleRoom 91
+var forageRoom 555
+var homeRoom 252
+
 
 ###################
 # Main
@@ -26,4 +28,9 @@ shardLoop:
     gosub automove portal
     gosub automove %forageRoom
     put .forage
+    waitforre ^FORAGE DONE
+    gosub automove homeRoom
+    put .house
+    waitforre ^HOUSE DONE
+    put .inaidle
     exit

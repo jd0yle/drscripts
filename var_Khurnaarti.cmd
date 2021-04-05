@@ -8,7 +8,7 @@ put #tvar char.appraise.item my sail pouch
 ###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth armband
+put #tvar char.cambrinth shard
 put #tvar char.focusContainer null
 put #tvar char.ritualFocus kingsnake totem
 put #tvar char.wornCambrinth 0
