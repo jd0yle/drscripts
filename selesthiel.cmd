@@ -110,6 +110,10 @@ main:
         gosub getHealed
 
         if ($Sorcery.LearningRate < 2) then {
+            gosub remove my flame
+            gosub clean my flame
+            gosub wear my flame
+            
             put .research sorcery
             waitforre ^RESEARCH DONE$
             gosub getHealed

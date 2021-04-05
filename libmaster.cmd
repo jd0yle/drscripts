@@ -549,6 +549,19 @@ charge:
     goto retry
 
 
+clean:
+    var todo $0
+    var location clean1
+    clean1:
+    matchre return ^You gently buff
+    matchre return ^Clean
+    matchre return ^You need
+    matchre return ^That
+    matchre return ^I think that's a personal thing
+    put clean %todo
+    goto retry
+
+
 climb:
     var todo $0
     climb1:

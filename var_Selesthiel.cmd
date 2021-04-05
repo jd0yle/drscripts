@@ -50,6 +50,14 @@ var super.enemies null
 
 
 ###############################
+###      FRIENDS
+###############################
+put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
+put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.tempContainer shadows
+put #tvar char.inv.default steelsilk backpack
+
+###############################
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.useAlmanac 1
