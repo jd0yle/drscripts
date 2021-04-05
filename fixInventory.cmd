@@ -13,14 +13,14 @@ loop:
     if ("%numGems" = "500") then {
         gosub put my gem pouch in my $char.inv.fullGemPouchContainer
     } else {
-        gosub put my gem pouch in my $char.inv.tmpContainer
+        gosub put my gem pouch in my $char.inv.tempContainer
     }
 
     goto loop
 
 
 shadowToBack:
-    gosub get gem pouch from my $char.inv.tmpContainer
+    gosub get gem pouch from my $char.inv.tempContainer
     if ("$righthand" = "Empty") then goto done
     gosub put my gem pouch in my $char.inv.emptyGemPouchContainer
     goto shadowToBack

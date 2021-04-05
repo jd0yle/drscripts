@@ -129,7 +129,7 @@ findSkillSet:
 
 nextSkillSet:
     math index add 1
-    if (%index > %len) then goto done
+    if (%index > %len) then goto doneAddCd
     var skillset %skillsets(%index)
     return
 
@@ -147,6 +147,13 @@ doneAllFull:
         put #var lastEchoPredStateAllAt $gametime
     }
     put #var lastObserveAt $gametime
+    goto done
+
+
+doneAddCd:
+    put #echo >Log [observe] Nothing found, setting cd
+    put #var lastObserveAt $gametime
+    put #var isObsOnCd true
     goto done
 
 

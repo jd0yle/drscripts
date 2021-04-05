@@ -109,11 +109,13 @@ main:
         gosub moveToMagic
         gosub getHealed
 
+        gosub runScript fixInventory
+
         if ($Sorcery.LearningRate < 2) then {
             gosub remove my flame
             gosub clean my flame
             gosub wear my flame
-            
+
             put .research sorcery
             waitforre ^RESEARCH DONE$
             gosub getHealed
@@ -303,6 +305,7 @@ moveToMagic:
             gosub stop listen
             gosub teach tm to inauri
         }
+        gosub listen to Inauri
         pause 2
     }
 
