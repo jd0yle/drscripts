@@ -62,9 +62,9 @@ workOrderGet:
         gosub stow my logbook
         goto workOrderRestock
     }
-    pause 1
+    pause .2
     workOrderGet1:
-    matchre workOrderBundle $char.workorder.item
+    matchre workOrderBundle $char.craft.workorder.item
     matchre workOrderGet Alright, this is an order for
     matchre workOrderRead ^You realize you have items bundled with the logbook
     matchre workOrderFindMaster ^Usage: ASK
@@ -159,7 +159,9 @@ workOrderRestock:
 # Exit and Log
 ##############
 workOrderDone:
-    gosub put my logbook in my $char.craft.container
+    if ("$righthandnoun" = "logbook") then {
+        gosub put my logbook in my $char.craft.container
+    }
     if (%workOrderTotalHave < %workOrderTotalNeed) then {
         put #echo >log yellow [workorder] More items needed. (%workOrderTotalHave/%workOrderTotalNeed)
     } else {

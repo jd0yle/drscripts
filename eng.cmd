@@ -15,6 +15,8 @@ action var eng.lumber $1 when ^You count out (\d+) pieces of lumber remaining\.$
 ########################
 #  Variables
 ########################
+# $eng.book.basics/enhancements/accessories/images/weaponry
+# $eng.codex.races/immortals/animals
 var engChapter eng.book.chapter.%2
 var engChapterLength 0
 var engCut eng.book.cut.%2
@@ -104,7 +106,7 @@ engFindItemPage:
         if (%engChapterIndex < %engChapterLength) then {
             matchre engFindItemPageLoop $eng.craft.item
             matchre engChapterIndex ^(You turn your book to page|You are already on page)
-            put turn my book to page %option.index
+            put turn my book to page %engChapterIndex
             matchwait 5
         }
 
@@ -123,6 +125,9 @@ engStudyItem:
     goto engMain
 
 
+engPrepareDesign:
+
+
 engMain:
 
 ------
@@ -131,12 +136,6 @@ engMain:
 ########################
 # Codex Variables
 ########################
-setDesign:
-    if "%2" = "bead" then put #setvariable chapter 8;#setvariable page 2;#setvariable cut 1
-    if "%2" = "totem" then put #setvariable chapter 8;#setvariable page 3;#setvariable cut 2
-    if "%2" = "figurine" then put #setvariable chapter 8;#setvariable page 5;#setvariable cut 3
-
-
 setDesignRace:
     var race.list human|elf|dwarf|elothean|gor'tog|halfling|s'kra mur|rakash|prydaen|gnome|kaldar
     eval race.len count("%race.list", "|")

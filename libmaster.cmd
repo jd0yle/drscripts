@@ -658,7 +658,7 @@ count:
 cut:
     var location cut1
     var todo $0
-  #  TODO:  add cut tables
+    matchre return You carefully cut
     cut1:
     put cut %todo
     goto retry
@@ -899,13 +899,13 @@ give:
     var location give1
     var todo $0
     give1:
-    matchre return ^Randal looks over
-    matchre return ^You hand
-    matchre return ^What is it
-    matchre return ^Randal
-    matchre return ^The Servant accepts
+    matchre return ^A clerk looks over the
     matchre return ignores your offer
     matchre return Osmandikar|Lakyan
+    matchre return ^Randal looks over
+    matchre return ^The Servant accepts
+    matchre return ^What is it
+    matchre return ^You hand
     put give %todo
     goto retry
 
