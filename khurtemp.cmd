@@ -8,6 +8,7 @@ if ($stunned = 1) then {
 ##########
 # Variables
 ##########
+var avoidTrip 115
 var huntRoom 118
 
 ##########
@@ -15,6 +16,7 @@ var huntRoom 118
 ##########
 gosub automove west gate
 moveToHunt:
+    gosub automove %avoidTrip
     gosub automove %huntRoom
     put .khurcombat
     exit
