@@ -92,7 +92,9 @@ main:
             eval objlength count("%objects", "|")
         }
         if (%needPredict = true && $char.observe.predict = 1) then {
-            put .predict
+            gosub close my telescope
+            gosub stow my telescope
+            gosub runScript predict
             waitforre ^PREDICT DONE
             var nextPredict false
         }
