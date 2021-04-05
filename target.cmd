@@ -30,12 +30,14 @@ targetSkillCheck:
     if (%useHunt = 1) then gosub targetHunt
     if (%usePerc = 1) then gosub targetPerc
     if (%useAstrology = 1) then gosub targetAstrology
-    gosub prep $char.combat.spell.Debilitation $char.combat.prep.Debilitation
-    if ($char.combat.harness.Debilitation <> 0) then {
-        gosub harness $char.combat.prep.Debilitation
+    if ($Debilitation.LearningRate < 30) then {
+        gosub prep $char.combat.spell.Debilitation $char.combat.prep.Debilitation
+        if ($char.combat.harness.Debilitation <> 0) then {
+            gosub harness $char.combat.prep.Debilitation
+        }
+        waitforre ^You feel fully prepared
+        gosub cast
     }
-    waitforre ^You feel fully prepared
-    gosub cast
     gosub target $char.combat.spell.Targeted_Magic $char.combat.prep.Targeted_Magic
     pause 6
     #waitforre ^Your formation of a targeting pattern around
@@ -57,6 +59,7 @@ targetApp:
 
 
 targetCheckDeadMob:
+    put flag hidepoststring off
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
         var mobName $1
 
