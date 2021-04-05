@@ -17,6 +17,7 @@ if_1 then {
 # debug 10
 
 
+action send pat inauri head when ^A soft crackle briefly comes from Inauri's direction.
 
 var burgleCooldown 0
 var nextBurgleCheck 0
