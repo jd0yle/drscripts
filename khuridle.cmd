@@ -101,6 +101,8 @@ waitForage:
         put .forage
         waitforre ^FORAGE DONE
         gosub automove 252
+        gosub peer door
+        waitforre %A sandalwood door suddenly opens\!
         put .house
         waitforre ^HOUSE DONE
     }
