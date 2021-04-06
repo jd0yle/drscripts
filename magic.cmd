@@ -78,6 +78,7 @@ loop:
             }
         }
         gosub waitForPrep
+        gosub waitForConcentration $char.magic.train.minimumConcentration
         gosub cast
         if (%lastSpellBackfired = 1) then {
             evalmath tmp ($char.magic.train.charge.%skill - 1)
