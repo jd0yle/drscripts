@@ -74,6 +74,7 @@ put #tvar char.healing.poisonSelf 0
 ###############################
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
+put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.spell.Augmentation ags
 put #tvar char.magic.train.prep.Augmentation 10
