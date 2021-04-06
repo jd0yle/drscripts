@@ -55,8 +55,8 @@ put #tvar char.combat.harness.Targeted_Magic 0
 ###      FRIENDS
 ###############################
 var friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh)
-var enemies (Meiline|Nideya|Psaero)
-var super.enemies (Meiline|Nideya|Psaero)
+var enemies (Kattena|Nideya|Psaero|Zehira)
+var super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
 
 
 ###############################
