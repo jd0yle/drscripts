@@ -724,10 +724,10 @@ checkStancesOLDDEPRECATED:
 ###      checkDeadMob
 ###############################
 checkDeadMob:
-    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
 
-        if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName") then {
+        if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName")) then {
             gosub runScript devour %mobName
             gosub performRitual %mobName
         }
