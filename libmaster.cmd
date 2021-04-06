@@ -18,6 +18,9 @@
 ####################################################################################################
 var libmasterLoaded 1
 
+var retryAttempts 0
+action var retryAttempts 0 when eval %todo
+
 
 ###############################
 ###    CHAR VARIABLES
@@ -2518,6 +2521,7 @@ move:
     matchre return ^Obvious
     matchre return ^You look around in vain for the
     matchre return ^You see no dock.
+    matchre return seems to be closed\.$
     matchre stand.then.move ^You can't do that while kneeling.
     matchre stand.then.move ^You can't do that while lying down\.
     matchre stand.then.move ^You must be standing to do that\.
@@ -2590,6 +2594,16 @@ moveRandom:
     gosub move %direction
     return
 
+
+libmastertest:
+    echo [ libmaster -> libmastertest] Called from script: %scriptname
+    var todo $0
+    var location test1
+    test1:
+    matchre return ^FORCERETURN
+    put look %todo
+    goto retry
+
 ########################################################################
 #                            UTIL
 ########################################################################
@@ -2610,6 +2624,14 @@ retry:
     matchre location1 ^You are a bit too busy performing to do that\.
     matchre location1 ^You should stop playing before you do that\.
     matchwait 30
+    math retryAttempts add 1
+    echo [ libmaster -> retry ] No match found, %retryAttempts retries
+    put #tvar libmaster.retryAttempts %retryAttempts
+    if (%retryAttempts > 10) then {
+         put #echo #FF0000 RETRIED 10 TIMES, NO MATCHES! FORCING RETURN!
+         put #tvar libmaster.responseNotFound 1
+         return
+     }
     goto location
 
 
@@ -2659,6 +2681,13 @@ isDef:
     return
 
 
+restartScript:
+    put #echo >FF9900 [ libmaster -> restartScript ] RESTARTING SCRIPT: %scriptname
+    pause .2
+    put .%scriptname
+    exit
+
+
 runScript:
     var todo $0
     var scriptName $1
@@ -2667,17 +2696,17 @@ runScript:
     runScript1:
 	    eval doneString toupper(%scriptName)
 		put .%todo
-		pause .2
 
 	runScriptLoop:
-		if (!contains("$scriptlist", "%scriptName.cmd")) then {
-		    put #echo #FF9900 [runScript] *%scriptName.cmd* NOT IN SCRIPTLIST ($scriptlist), RETURNING
-		    put #echo >Log #FF9900 [runScript] %scriptName exited without #parse
-		    goto runScriptDone
-		}
 		matchre runScriptDone ^%doneString DONE$
 		matchwait 10
 
+        eval lowerScriptName tolower(%scriptName)
+		if (!contains("$scriptlist", "%lowerScriptName")) then {
+		    put #echo #FF9900 [runScript] *%lowerScriptName* NOT IN SCRIPTLIST ($scriptlist), RETURNING
+		    put #echo >Log #FF9900 [runScript] %lowerScriptName exited without #parse
+		    goto runScriptDone
+		}
 	    goto runScriptLoop
 
     runScriptDone:

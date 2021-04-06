@@ -1,11 +1,12 @@
 include libmaster.cmd
 
 
-
 var expectedNumBolts thirty-nine
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
+
+action send unlock door when ^Qizhmur's face appears in the Demrris window..
 
 
 
