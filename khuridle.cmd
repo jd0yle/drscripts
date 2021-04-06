@@ -43,6 +43,8 @@ loop:
     pause 1
     gosub waitPlay
     pause 1
+    gosub waitForage
+    pause 1
     gosub waitLook
     goto loop
 
@@ -87,6 +89,20 @@ waitFaSkin:
     	gosub repair my $char.trainer.firstaid
     	pause 2
     	gosub stow my $char.trainer.firstaid
+    }
+    return
+
+
+waitForage:
+    if ($Outdoorsmanship.LearningRate < 10) then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub automove 555
+        put .forage
+        waitforre ^FORAGE DONE
+        gosub automove 252
+        put .house
+        waitforre ^HOUSE DONE
     }
     return
 
