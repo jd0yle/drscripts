@@ -18,7 +18,7 @@ action put #script abort all except %scriptname; goto restartScript when eval $l
 eval characterScript tolower($charactername)
 
 loop:
-    if ($dead = 1) then goto donDead
+    if ($dead = 1 || $health < 50) then goto doneDead
     if (!contains("$scriptlist", "%characterScript")) then {
         put #echo >Log [train] Starting character script
         put .$charactername

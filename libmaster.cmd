@@ -1875,6 +1875,7 @@ stand:
     matchre return ^You climb off
     matchre return ^You stand back up\.
     matchre return ^You swim back up
+    matchre return ^You stand
     put stand %todo
     goto retry
 
@@ -2501,6 +2502,12 @@ move:
     move1:
     var location moving
     moving:
+    if ($standing != 1) then {
+        var moveTodo %todo
+        gosub stand
+        var todo %moveTodo
+        goto move1
+    }
     #Running heedlessly over the rough terrain|A bony hand reaches up out of the bog and clamps its cold skeletal fingers|can't seem to make much headway
     matchre dig.then.move ^Like a blind, lame duck, you wallow in the mud
     matchre dig.then.move ^The mud holds you tightly
@@ -2525,6 +2532,7 @@ move:
     matchre stand.then.move ^You can't do that while kneeling.
     matchre stand.then.move ^You can't do that while lying down\.
     matchre stand.then.move ^You must be standing to do that\.
+    matchre stand.then.move ^Perhaps you should stand up first.
     matchre stow.then.move ^Free up your hands first
     put %todo
     goto retry
@@ -2560,8 +2568,10 @@ retreat.then.move:
 
 
 stand.then.move:
+    var moveTodo %todo
     gosub stand
-    goto move1
+    gosub move %moveTodo
+    return
 
 
 stow.then.move:

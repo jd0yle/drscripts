@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 loop:
-    gosub get my gem pouch from my $char.inv.defaultContainer
+    gosub get my gem pouch from my $char.inv.default
     if ("$righthand" = "Empty") then goto shadowToBack
     matchre loopcont ^You sort through the contents of the gem pouch and find (\d+) gems in
     matchre loopcont ^The gem pouch

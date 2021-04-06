@@ -47,7 +47,7 @@ gosub release usol
 gosub release symbiosis
 gosub retrieveBolts
 gosub stow hhr'ata
-gosub stow bola
+gosub stow frying pan
 
 
 matchre startRepair ^You tap a
@@ -150,7 +150,7 @@ main:
     startMagic:
     if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
-        gosub moveToHouse
+        #gosub moveToHouse
 
         if ("$roomname" != "Private Home Interior") then {
             put #echo >Log #cc99ff House won't open, going to FC
@@ -170,6 +170,7 @@ main:
 		}
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
+            gosub release cyclic
             var startResearch 0
             put .research sorcery
             waitforre ^RESEARCH DONE$
@@ -699,7 +700,7 @@ put .reconnect
         gosub release eotb
         gosub retrieveBolts
         gosub stow hhr'ata
-        gosub stow bola
+        gosub stow frying pan
         return
     }
     goto waitForMagic
@@ -728,7 +729,7 @@ put .reconnect
         gosub stow left
         gosub retrieveBolts
         gosub stow hhr'ata
-        gosub stow bola
+        gosub stow frying pan
         return
     }
     goto waitForMainCombat
