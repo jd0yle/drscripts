@@ -55,8 +55,10 @@ var super.enemies null
 put #tvar guild Moon Mage
 put #tvar char.magic.train.almanacItem 0
 put #tvar char.magic.train.almanacContainer 0
+put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.useSymbiosis 0
+put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
