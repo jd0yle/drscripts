@@ -76,7 +76,7 @@ put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 1
 
-put #tvar char.magic.train.spell.Augmentation ags
+put #tvar char.magic.train.spell.Augmentation vigor
 put #tvar char.magic.train.prep.Augmentation 10
 put #tvar char.magic.train.charge.Augmentation 10
 put #tvar char.magic.train.harness.Augmentation 0
