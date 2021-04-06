@@ -8,7 +8,7 @@ put #tvar diapsid.fortuneTarget 0
 put #tvar diapsid.prize backpack
 put #tvar diapsid.prizeGiven 0
 put #tvar diapsid.prizeMoney 0
-put #tvar diapsid.winner Inauri
+put #tvar diapsid.winner Takrel
 
 pause .2
 put #parse CHARVARS DONE

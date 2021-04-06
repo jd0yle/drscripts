@@ -60,11 +60,19 @@ loop:
         gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
         if ($char.wornCambrinth != 1) then {
             gosub remove my $char.cambrinth
-            gosub get my $char.cambrinth
+            if ("$righthand" = "Empty") then {
+                gosub get my $char.cambrinth
+            }
         }
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
         gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
         if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
+        if ($char.wornCambrinth <> 1) then {
+            gosub wear my $char.cambrinth
+            if ("$righthand" <> "Empty") then {
+                gosub get my $char.cambrinth
+            }
+        }
         gosub waitForPrep
         gosub cast
         if (%lastSpellBackfired = 1) then {
@@ -104,10 +112,14 @@ doneNoVars:
 
 
 done:
-    if ($char.wornCambrinth = 1) then {
-        gosub wear my $char.cambrinth
+    if ("$righthandnoun" = "$char.cambrinth") then {
+        if ($char.wornCambrinth <> 1) then {
+            gosub wear my $char.cambrinth
+            if ("$righthand" <> "Empty") then {
+                gosub stow my $char.cambrinth
+            }
+        }
     }
-    gosub stow my $char.cambrinth
     pause .2
     put #parse MAGIC DONE
     exit

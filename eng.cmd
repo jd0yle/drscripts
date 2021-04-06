@@ -394,9 +394,12 @@ engDone:
 	goto setStore
   }
 engExit:
-  put #echo >log yellow [eng] Engineering done.  Beginning .inamagic
+  if ("$righthand" <> "Empty") then gosub stow
+  if ("$lefthand" <> "Empty") then gosub stow left
+  put #echo >log yellow [eng] Engineering done.  Beginning .inaidle
   put store default in %defaultContainer
-  put .inamagic
+  put .inaidle
+  put #script abort all except inaidle
   exit
   
 errorExit:
@@ -404,8 +407,7 @@ errorExit:
   exit
 
 engNeedLumber:
-  put #echo >log yellow [eng] Need more lumber.  Beginning .inaidle
+  put #echo >log yellow [eng] Need more lumber.
   put store default in %defaultContainer
-  put .inaidle
-  put #script abort all except inaidle
-  exit
+  goto engExit
+

@@ -139,10 +139,14 @@ goto done
 ###      ritualSpell
 ###############################
 ritualSpell:
+    if ("$righthand" <> "Empty" && "$lefthand" <> "Empty") then {
+        gosub stow
+        gosub stow left
+    }
     gosub get my $char.ritualFocus
     gosub prep %spell $char.cast.%spell.prep
     gosub invoke my $char.ritualFocus
-    if %isFullyPrepped != 1 then gosub waitForPrep
+    if (%isFullyPrepped != 1) then gosub waitForPrep
     gosub cast
     gosub put my $char.ritualFocus in my $char.focusContainer
     goto done

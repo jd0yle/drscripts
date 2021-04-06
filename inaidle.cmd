@@ -2,7 +2,9 @@ include libmaster.cmd
 ###################
 # Idle Action Triggers
 ###################
-action put #var heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+action var heal 1 ; put #var healTarget $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+action var justice 0 when ^You're fairly certain this area is lawless and unsafe\.
+action var justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Vohraus|Inahk|Estius)'s face appears in the
 action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
@@ -24,7 +26,15 @@ if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
+if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
+
+var disease $char.healing.disease
+var diseaseSelf $char.healing.diseaseSelf
+var heal $char.healing.heal
+var healTarget $char.healing.healTarget
+var poison $char.healing.poison
+var poisonSelf $char.healing.poisonSelf
 
 
 ###################
@@ -63,7 +73,13 @@ loop:
     pause 1
     if ($Empathy.LearningRate < 33) then gosub percHealth.onTimer
     pause 1
+    gosub waitArcana
+    pause 1
     gosub waitEngineer
+    pause 1
+    gosub waitMagic
+    pause 1
+    gosub waitResearch
     pause 1
     gosub waitLook
     goto loop
@@ -86,6 +102,17 @@ waitAlmanac:
     return
 
 
+waitArcana:
+    if ($Arcana.LearningRate > 15) then {
+        return
+    }
+    if ($concentration > 99) then {
+        gosub gaze my sano crystal
+        waitforre ^The light and crystal sound of your sanowret crystal fades slightly
+    }
+    return
+
+
 waitEngineer:
     evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
@@ -101,8 +128,10 @@ waitEngineer:
 
 
 waitFaSkin:
-    if (contains($time, "01\:(\d+)\:(\d+) AM")) then {
-        put #var lastTrainerGametime 0
+    if (contains($time, "(\d+)(.*)AM")) then {
+        if ($1 < 12) then {
+            put #var lastTrainerGametime 0
+        }
     }
     if ($lastTrainerGametime <> 0) then {
         return
@@ -123,6 +152,33 @@ waitLook:
     if (%nextLookAt < $gametime) then {
         gosub look
         put #var lastLookGametime $gametime
+    }
+    return
+
+
+waitMagic:
+    evalmath nextMagic $lastMagicGametime + 3600
+    if (%nextMagic < $gametime) then {
+        if ($Augmentation.LearningRate < 5) then {
+            put .look
+            put .magic noLoop
+            waitforre ^MAGIC DONE
+            put #abort all except inaidle
+        }
+    }
+    return
+
+
+waitResearch:
+    if ($Sorcery.LearningRate < 5) then {
+        put justice
+        if (%justice <> 0) then {
+            return
+        }
+        put .look
+        put .research sorcery
+        waitforre ^RESEARCH DONE
+        put #script abort all except inaidle
     }
     return
 

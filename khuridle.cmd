@@ -35,7 +35,7 @@ loop:
     pause 1
     gosub waitPerc
     pause 1
-    gosub waitAstrology
+    if ($Astrology.LearningRate < 30) then gosub waitAstrology
     pause 1
     gosub waitArcana
     pause 1
@@ -60,10 +60,8 @@ waitArcana:
         return
     }
     if ($concentration > 99) then {
-        gosub get my sano crystal
         gosub gaze my sano crystal
         waitforre ^The light and crystal sound of your sanowret crystal fades slightly
-        gosub stow my sano crystal
     }
     return
 
@@ -74,8 +72,10 @@ waitAstrology:
 
 
 waitFaSkin:
-    if (contains($time, "01\:(\d+)\:(\d+) AM")) then {
-        put #var lastTrainerGametime 0
+    if (contains($time, "(\d+)(.*)AM")) then {
+        if ($1 < 12) then {
+            put #var lastTrainerGametime 0
+        }
     }
     if ($lastTrainerGametime <> 0) then {
         return
