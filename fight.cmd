@@ -78,7 +78,7 @@ if ($charactername = Selesthiel && "%opts" != "backtrain") then {
 
 if ($charactername = Qizhmur && "%opts" != "backtrain") then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves
-    var weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|triple-weighted bola|spiritwood lockbow|white nightstick
+    var weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|frying pan|spiritwood lockbow|white nightstick
     var cambrinth cambrinth calf
     var tmSpell acs
     var tmPrep 10
@@ -653,10 +653,10 @@ checkStancesOLDDEPRECATED:
 ###      checkDeadMob
 ###############################
 checkDeadMob:
-    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
 
-        if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName") then {
+        if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName")) then {
             gosub runScript devour %mobName
             gosub performRitual %mobName
         }

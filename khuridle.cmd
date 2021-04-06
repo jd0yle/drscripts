@@ -35,13 +35,15 @@ loop:
     pause 1
     gosub waitPerc
     pause 1
-    gosub waitAstrology
+    if ($Astrology.LearningRate < 30) then gosub waitAstrology
     pause 1
     gosub waitArcana
     pause 1
     gosub waitMagic
     pause 1
     gosub waitPlay
+    pause 1
+    gosub waitForage
     pause 1
     gosub waitLook
     goto loop
@@ -60,10 +62,8 @@ waitArcana:
         return
     }
     if ($concentration > 99) then {
-        gosub get my sano crystal
         gosub gaze my sano crystal
         waitforre ^The light and crystal sound of your sanowret crystal fades slightly
-        gosub stow my sano crystal
     }
     return
 
@@ -74,8 +74,10 @@ waitAstrology:
 
 
 waitFaSkin:
-    if (contains($time, "01\:(\d+)\:(\d+) AM")) then {
-        put #var lastTrainerGametime 0
+    if (contains($time, "(\d+)(.*)AM")) then {
+        if ($1 < 12) then {
+            put #var lastTrainerGametime 0
+        }
     }
     if ($lastTrainerGametime <> 0) then {
         return
@@ -89,6 +91,25 @@ waitFaSkin:
     	gosub stow my $char.trainer.firstaid
     }
     return
+
+
+waitForage:
+    if ($Outdoorsmanship.LearningRate < 10) then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub automove 555
+        put .forage
+        waitforre ^FORAGE DONE
+        gosub automove 252
+        gosub peer door
+        waitforre %A sandalwood door suddenly opens\!
+        put .house
+        waitforre ^HOUSE DONE
+        put .khuridle
+        put #script abort all except khuridle
+    } else {
+        return
+    }
 
 
 waitLook:

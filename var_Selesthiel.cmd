@@ -129,11 +129,20 @@ var super.enemies null
 
 
 ###############################
+###      FRIENDS
+###############################
+put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
+put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.tempContainer shadows
+put #tvar char.inv.default steelsilk backpack
+
+###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.minimumConcentration 30
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
-put #tvar char.magic.train.wornSanowret 1
+put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10

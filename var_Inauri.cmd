@@ -34,7 +34,7 @@ put #tvar char.cast.pop.harness 0
 ###      CRAFTING
 ###############################
 put #tvar char.craft.container workbag
-put #tvar char.craft.item tiara
+put #tvar char.craft.item circlet
 
 
 ###############################
@@ -55,18 +55,29 @@ put #tvar char.combat.harness.Targeted_Magic 0
 ###      FRIENDS
 ###############################
 var friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh)
-var enemies (Meiline|Nideya|Psaero)
-var super.enemies (Meiline|Nideya|Psaero)
+var enemies (Kattena|Nideya|Psaero|Zehira)
+var super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
+
+
+###############################
+###      HEALING
+###############################
+put #tvar char.healing.disease 0
+put #tvar char.healing.heal 0
+put #tvar char.healing.healTarget 0
+put #tvar char.healing.poison 0
+put #tvar char.healing.poisonSelf 0
 
 
 ###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
-put #tvar char.magic.train.wornSanowret 0
+put #tvar char.magic.train.useInvokeSpell 1
 
-put #tvar char.magic.train.spell.Augmentation ags
+put #tvar char.magic.train.spell.Augmentation vigor
 put #tvar char.magic.train.prep.Augmentation 10
 put #tvar char.magic.train.charge.Augmentation 10
 put #tvar char.magic.train.harness.Augmentation 0
@@ -88,7 +99,7 @@ put #tvar char.magic.train.harness.Warding 0
 put #tvar char.compendium compendium
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 1
-put #tvar char.research.useSanowret 0
+put #tvar char.research.useSanowret 1
 
 
 ###############################

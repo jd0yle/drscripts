@@ -18,6 +18,9 @@
 ####################################################################################################
 var libmasterLoaded 1
 
+var retryAttempts 0
+action var retryAttempts 0 when eval %todo
+
 
 ###############################
 ###    CHAR VARIABLES
@@ -140,72 +143,6 @@ if ("$charactername" = "Inauri") then {
 ###############################
 ### SKINNING
 ###############################
-action put #tvar lib.skin 1 when ^The ship's rat screams one last time and lies still\.
-action put #tvar lib.skin 1 when ^The ship's rat falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^A granite gargoyle grumbles and falls over\.
-action put #tvar lib.skin 1 when ^A granite gargoyle grumbles and goes still\.
-action put #tvar lib.skin 1 when ^A quartz gargoyle grumbles and falls over with a
-action put #tvar lib.skin 1 when ^A quartz gargoyle grumbles and goes still\.
-action put #tvar lib.skin 1 when ^A silverfish lurches forward and collapses
-action put #tvar lib.skin 1 when ^A silverfish freezes a moment and falls into a heap
-action put #tvar lib.skin 1 when grows limp and seems to deflate slightly
-action put #tvar lib.skin 1 when ^A grass eel shudders, then goes limp\.
-action put #tvar lib.skin 1 when slaps around a few times and then grows still
-action put #tvar lib.skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing
-action put #tvar lib.skin 1 when ^A seordhevor kartais flaps its wings to no avail as it falls to the ground and goes
-action put #tvar lib.skin 1 when ^A seordhevor kartais lets out a shriek and goes
-action put #tvar lib.skin 1 when ^The striped badger screams one last time and lies still\.
-action put #tvar lib.skin 1 when ^The striped badger falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^The croff pothanit falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^The wild boar falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^The wild boar screams one last time and lies still\.
-action put #tvar lib.skin 1 when ^The majestic deer collapses to the ground, its mouth panting in a last few desperate gulps of air before that too fails and it goes completely limp\.
-action put #tvar lib.skin 1 when ^A.*gryphon collapses into a lifeless mound of fur and feathers\.
-action put #tvar lib.skin 1 when ^A.*snow goblin stares at you stupidly for a moment, before its eyes roll backwards into its head\.
-action put #tvar lib.skin 1 when ^A snowbeast lets loose a blood-curdling howl and falls into a heap\.
-action put #tvar lib.skin 1 when ^A snowbeast lets loose a blood-curdling howl and goes still\.
-action put #tvar lib.skin 1 when ^The forest geni's body explodes into a gaseous cloud\.
-action put #tvar lib.skin 1 when ^The forest geni cries out to the forest for protection\.  Getting no response, it collapses to the ground\.
-action put #tvar lib.skin 1 when ^A giant black leucro collapses to the ground, yelping like a lost puppy calling for its mother until finally it ceases all movement\.
-action put #tvar lib.skin 1 when ^A giant black leucro suddenly yelps like a puppy and stops all movement\.
-action put #tvar lib.skin 1 when ^The silver leucro screams one last time and lies
-action put #tvar lib.skin 1 when ^The silver leucro falls to the ground and lies
-action put #tvar lib.skin 1 when ^A giant thicket viper slaps around a few times and then grows still\.
-action put #tvar lib.skin 1 when ^A giant thicket viper rises up threateningly one last time before collapsing\.
-action put #tvar lib.skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
-action put #tvar lib.skin 1 when ^A grass eel thrashes about wildly for a few seconds, then lies still\.
-action put #tvar lib.skin 1 when ^A grass eel coils and uncoils rapidly before expiring\.
-action put #tvar lib.skin 1 when ^A grass eel shudders then goes limp\.
-action put #tvar lib.skin 1 when ^A grass eel shudders, then goes limp\.
-action put #tvar lib.skin 1 when ^The beisswurm falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^A rock troll collapses with a heavy thud\.
-action put #tvar lib.skin 1 when ^The bucca drops dead at your feet\!
-action put #tvar lib.skin 1 when ^A copperhead viper rises up threateningly one last time before collapsing\.
-action put #tvar lib.skin 1 when ^A copperhead viper slaps around a few times and then grows still\.
-action put #tvar lib.skin 1 when ^An Endrus serpent jackknifes a few times, then grows still, its body rapidly settling until it is little more than a pile of wood and vine\.
-action put #tvar lib.skin 1 when ^A suw bizar loses its cohesion, oozing outwards as a murky puddle\.
-action put #tvar lib.skin 1 when ^A blood wolf whines briefly before closing its eyes forever\.
-action put #tvar lib.skin 1 when ^A silver-backed bear growls one last time and collapses\.
-action put #tvar lib.skin 1 when ^The fire maiden screams and collapses, her dance stilled at last\.
-action put #tvar lib.skin 1 when ^The immature firecat falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^The immature firecat screams one last time and lies still\.
-action put #tvar lib.skin 1 when ^The young firecat falls to the ground and lies still\.
-action put #tvar lib.skin 1 when ^A fire sprite screams and collapses, her dance stilled at last\.
-action put #tvar lib.skin 1 when ^A fire sprite screams in anguish and lies still\.
-action put #tvar lib.skin 1 when ^A blue-belly crocodile sinks into the water and turns belly up, clawing in vain at the air until it ceases all movement\.
-action put #tvar lib.skin 1 when ^A caracal tips over, limbs extended stiffly, and exp
-action put #tvar lib.skin 1 when ^A caracal trembles violently before finally exp
-action put #tvar lib.skin 1 when ^A peccary flops in a porky heap, squealing one last time before passing into obliv
-action put #tvar lib.skin 1 when ^A peccary kicks and spasms as the last vestiges of life flee this mortal c
-action put #tvar lib.skin 1 when ^A bristle-backed peccary flops in a porky heap, squealing one last time before passing into ob
-action put #tvar lib.skin 1 when ^A bristle-backed peccary kicks and spasms as the last vestiges of life flee this mortal
-action put #tvar lib.skin 1 when ^The asaren celpeze thrashes about for a moment, then lies s
-action put #tvar lib.skin 1 when ^The asaren celpeze's flared crest wobbles, then collapses as the celpeze falls over and lies s
-action put #tvar lib.skin 1 when ^The asaren celpeze slumps and goes limp\.  Its tail twitches once or twice, and the light fades from its baleful e
-action put #tvar lib.skin 1 when ^The asaren celpeze's chest heaves slowly and it emits a rasping hiss before finally lying st
-action put #tvar lib.skin 1 when ^An.*desert armadillo falls over and, after a couple of spasms, is still\.
-put #tvar lib.skin 0
-
 #var pelts.keep (celpeze eye)
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
 
@@ -612,6 +549,19 @@ charge:
     matchre return ^You are in no condition to do that
     matchre return ^You strain, but lack the mental stamina to charge the muhenta this much.
     put charge %todo
+    goto retry
+
+
+clean:
+    var todo $0
+    var location clean1
+    clean1:
+    matchre return ^You gently buff
+    matchre return ^Clean
+    matchre return ^You need
+    matchre return ^That
+    matchre return ^I think that's a personal thing
+    put clean %todo
     goto retry
 
 
@@ -1049,6 +999,7 @@ invoke:
     var todo $0
     invoke1:
     matchre return ^A finely balanced tago suddenly leaps
+    matchre return By directing your focus, you ensure that energy drawn only when spells are cast\.
     matchre return ^Invoke what?
     matchre return ^Roundtime
     matchre return ^The cambrinth
@@ -1925,6 +1876,7 @@ stand:
     matchre return ^You climb off
     matchre return ^You stand back up\.
     matchre return ^You swim back up
+    matchre return ^You stand
     put stand %todo
     goto retry
 
@@ -2263,6 +2215,7 @@ touch:
     var location touch1
     var todo $0
     touch1:
+    if ("$charactername" = "Inauri") then put #echo >Log #FF0000 Psssst! I love you! -Justin
     matchre return ^You lay your hand on
     matchre return ^You lightly touch
     matchre return ^You reluctantly touch
@@ -2550,6 +2503,12 @@ move:
     move1:
     var location moving
     moving:
+    if ($standing != 1) then {
+        var moveTodo %todo
+        gosub stand
+        var todo %moveTodo
+        goto move1
+    }
     #Running heedlessly over the rough terrain|A bony hand reaches up out of the bog and clamps its cold skeletal fingers|can't seem to make much headway
     matchre dig.then.move ^Like a blind, lame duck, you wallow in the mud
     matchre dig.then.move ^The mud holds you tightly
@@ -2570,9 +2529,11 @@ move:
     matchre return ^Obvious
     matchre return ^You look around in vain for the
     matchre return ^You see no dock.
+    matchre return seems to be closed\.$
     matchre stand.then.move ^You can't do that while kneeling.
     matchre stand.then.move ^You can't do that while lying down\.
     matchre stand.then.move ^You must be standing to do that\.
+    matchre stand.then.move ^Perhaps you should stand up first.
     matchre stow.then.move ^Free up your hands first
     put %todo
     goto retry
@@ -2608,8 +2569,10 @@ retreat.then.move:
 
 
 stand.then.move:
+    var moveTodo %todo
     gosub stand
-    goto move1
+    gosub move %moveTodo
+    return
 
 
 stow.then.move:
@@ -2642,6 +2605,16 @@ moveRandom:
     gosub move %direction
     return
 
+
+libmastertest:
+    echo [ libmaster -> libmastertest] Called from script: %scriptname
+    var todo $0
+    var location test1
+    test1:
+    matchre return ^FORCERETURN
+    put look %todo
+    goto retry
+
 ########################################################################
 #                            UTIL
 ########################################################################
@@ -2662,6 +2635,14 @@ retry:
     matchre location1 ^You are a bit too busy performing to do that\.
     matchre location1 ^You should stop playing before you do that\.
     matchwait 30
+    math retryAttempts add 1
+    echo [ libmaster -> retry ] No match found, %retryAttempts retries
+    put #tvar libmaster.retryAttempts %retryAttempts
+    if (%retryAttempts > 10) then {
+         put #echo #FF0000 RETRIED 10 TIMES, NO MATCHES! FORCING RETURN!
+         put #tvar libmaster.responseNotFound 1
+         return
+     }
     goto location
 
 
@@ -2711,16 +2692,36 @@ isDef:
     return
 
 
+restartScript:
+    put #echo >FF9900 [ libmaster -> restartScript ] RESTARTING SCRIPT: %scriptname
+    pause .2
+    put .%scriptname
+    exit
+
+
 runScript:
     var todo $0
     var scriptName $1
     var location runScript1
+
     runScript1:
-    #echo [runScript] .%todo
-	put .%todo
-	eval doneString toupper(%scriptName)
-    waitforre ^%doneString DONE$
-    return
+	    eval doneString toupper(%scriptName)
+		put .%todo
+
+	runScriptLoop:
+		matchre runScriptDone ^%doneString DONE$
+		matchwait 10
+
+        eval lowerScriptName tolower(%scriptName)
+		if (!contains("$scriptlist", "%lowerScriptName")) then {
+		    put #echo #FF9900 [runScript] *%lowerScriptName* NOT IN SCRIPTLIST ($scriptlist), RETURNING
+		    put #echo >Log #FF9900 [runScript] %lowerScriptName exited without #parse
+		    goto runScriptDone
+		}
+	    goto runScriptLoop
+
+    runScriptDone:
+        return
 
 
 waitForConcentration:

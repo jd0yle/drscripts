@@ -8,7 +8,7 @@ action var lastSpellBackfired 1 when ^Your spell.*backfire
 #if (!($char.magic.train.charge.Utility > 0)) then gosub doneNoVars
 #if (!($char.magic.train.charge.Warding > 0)) then gosub doneNoVars
 
-if ($char.magic.train.charge.Utility = 0) then put #tvar char.magic.train.charge.Utility 1
+if ("$charactername" = "Qizhmur") then put #tvar char.magic.train.charge.Utility 1
 
 var noLoop 0
 if_1 then {
@@ -46,14 +46,7 @@ loop:
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         if ($hidden = 1) then gosub shiver
-        if ($char.magic.train.wornSanowret = 0) then {
-            gosub get my sanowret crystal
-            gosub gaze my sanowret crystal
-            waitforre ^The light and crystal sound of your sanowret crystal fades slightly
-            gosub stow my sano crystal
-        } else {
-           gosub gaze my sanowret crystal
-        }
+        gosub gaze my sanowret crystal
     }
 
     gosub findMinLearnRate
@@ -67,12 +60,25 @@ loop:
         gosub prep $char.magic.train.spell.%skill $char.magic.train.prep.%skill
         if ($char.wornCambrinth != 1) then {
             gosub remove my $char.cambrinth
-            gosub get my $char.cambrinth
+            if ("$righthand" = "Empty") then {
+                gosub get my $char.cambrinth
+            }
         }
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
-        gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
+        if ($char.magic.train.useInvokeSpell = 1) then {
+            gosub invoke my $char.cambrinth $char.magic.train.charge.%skill spell
+        } else {
+            gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
+        }
         if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
+        if ($char.wornCambrinth <> 1) then {
+            gosub wear my $char.cambrinth
+            if ("$righthand" <> "Empty") then {
+                gosub get my $char.cambrinth
+            }
+        }
         gosub waitForPrep
+        gosub waitForConcentration $char.magic.train.minimumConcentration
         gosub cast
         if (%lastSpellBackfired = 1) then {
             evalmath tmp ($char.magic.train.charge.%skill - 1)
@@ -111,10 +117,14 @@ doneNoVars:
 
 
 done:
-    if ($char.wornCambrinth = 1) then {
-        gosub wear my $char.cambrinth
+    if ("$righthandnoun" = "$char.cambrinth") then {
+        if ($char.wornCambrinth <> 1) then {
+            gosub wear my $char.cambrinth
+            if ("$righthand" <> "Empty") then {
+                gosub stow my $char.cambrinth
+            }
+        }
     }
-    gosub stow my $char.cambrinth
     pause .2
     put #parse MAGIC DONE
     exit

@@ -35,10 +35,10 @@ put #tvar char.combat.prep.Debilitation 5
 put #tvar char.combat.charge.Debilitation 0
 put #tvar char.combat.harness.Debilitation 0
 
-put #tvar char.combat.spell.Targeted_Magic pd
-put #tvar char.combat.prep.Targeted_Magic 2
+put #tvar char.combat.spell.Targeted_Magic do
+put #tvar char.combat.prep.Targeted_Magic 4
 put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 2
+put #tvar char.combat.harness.Targeted_Magic 0
 
 
 ###############################
@@ -55,9 +55,10 @@ var super.enemies null
 put #tvar guild Moon Mage
 put #tvar char.magic.train.almanacItem 0
 put #tvar char.magic.train.almanacContainer 0
+put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.useSymbiosis 0
-put #tvar char.magic.train.wornSanowret 0
+put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
@@ -97,7 +98,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song ballad
+put #tvar char.performance.song lullaby
 put #tvar char.performance.mood quiet
 
 

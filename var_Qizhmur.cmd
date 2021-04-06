@@ -70,24 +70,25 @@ var super.enemies null
 ###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.minimumConcentration 30
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
-put #tvar char.magic.train.wornSanowret 1
+put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 20
-put #tvar char.magic.train.harness.Augmentation 10
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 10
+put #tvar char.magic.train.harness.Augmentation 8
 
 put #tvar char.magic.train.spell.Utility eotb
 put #tvar char.magic.train.prep.Utility 1
-if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 20
-put #tvar char.magic.train.harness.Utility 10
+if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 10
+put #tvar char.magic.train.harness.Utility 8
 
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 20
-put #tvar char.magic.train.harness.Warding 10
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 10
+put #tvar char.magic.train.harness.Warding 8
 
 
 ###############################

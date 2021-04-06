@@ -2,7 +2,7 @@ include libmaster.cmd
 action goto workOrderBadQuality when ^The work order requires items of a higher quality, so you decide against bundling that\.|^Only completed items can be bundled with the work order\.
 action var workOrderBundleSuccess 1 when ^waitforre ^You notate the $char.craft.item in the logbook then bundle it up for delivery\.
 action goto workOrderDone when ^What were you referring to\?
-action var workOrderTotalNeed $1 when I need (\d+) of exceptional quality
+action var workOrderTotalNeed $1 when I need (\d+) of (exceptional|superior) quality
 action var workOrderTotalNeed $1 when You must bundle and deliver (\d+)(.*)\.$
 action var workOrderTotalNeed 0 when This work order appears to be complete\.
 action var workOrderMaster $3 when ^You also see(.*)Engineering(.*)(Master|Mistress)(.*)\.$
@@ -62,7 +62,7 @@ workOrderGet:
         gosub stow my logbook
         goto workOrderRestock
     }
-    pause 1
+    pause .2
     workOrderGet1:
     matchre workOrderBundle $char.craft.item
     matchre workOrderGet Alright, this is an order for
@@ -74,6 +74,7 @@ workOrderGet:
 
 workOrderBundle:
     if (%workOrderTotalNeed <> 0) then {
+        echo %workOrderTotalHave / %workOrderTotalNeed
         if (%workOrderTotalHave >= %workOrderTotalNeed) then {
             gosub get $char.craft.item from my $char.craft.container
             gosub bundle $char.craft.item with my logbook
@@ -159,7 +160,9 @@ workOrderRestock:
 # Exit and Log
 ##############
 workOrderDone:
-    gosub put my logbook in my $char.craft.container
+    if ("$righhthand" = "logbook") then {
+        gosub put my logbook in my $char.craft.container
+    }
     if (%workOrderTotalHave < %workOrderTotalNeed) then {
         put #echo >log yellow [workorder] More items needed. (%workOrderTotalHave/%workOrderTotalNeed)
     } else {
