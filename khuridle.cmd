@@ -105,8 +105,11 @@ waitForage:
         waitforre %A sandalwood door suddenly opens\!
         put .house
         waitforre ^HOUSE DONE
+        put .khuridle
+        put #script abort all except khuridle
+    } else {
+        return
     }
-    return
 
 
 waitLook:
