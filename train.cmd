@@ -19,9 +19,17 @@ eval characterScript tolower($charactername)
 
 loop:
     if ($dead = 1 || $health < 50) then goto doneDead
-    if (!contains("$scriptlist", "%characterScript")) then {
-        put #echo >Log [train] Starting character script
-        put .$charactername
+
+    if ("$charactername" = "Qizhmur") then {
+        if (!contains("$scriptlist", "magic")) then {
+            put #echo >Log [train] Starting magic
+            put .magic
+        }
+    } else {
+        if (!contains("$scriptlist", "%characterScript")) then {
+            put #echo >Log [train] Starting character script
+            put .$charactername
+        }
     }
     if (!contains("$scriptlist", "reconnect.cmd")) then {
         put #echo >Log [train] Starting reconnect

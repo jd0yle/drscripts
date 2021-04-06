@@ -67,7 +67,7 @@ loop:
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
         if ($char.magic.train.useInvokeSpell = 1) then {
             gosub invoke my $char.cambrinth $char.magic.train.charge.%skill spell
-        else {
+        } else {
             gosub invoke my $char.cambrinth $char.magic.train.charge.%skill
         }
         if ($char.magic.train.harness.%skill > 0) then gosub harness $char.magic.train.harness.%skill
