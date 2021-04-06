@@ -2,7 +2,7 @@ include libmaster.cmd
 ###################
 # Idle Action Triggers
 ###################
-action put #var heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+action var heal 1 ; put #var healTarget $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
 action var justice 0 when ^You're fairly certain this area is lawless and unsafe\.
 action var justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
@@ -28,6 +28,13 @@ if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
+
+var disease $char.healing.disease
+var diseaseSelf $char.healing.diseaseSelf
+var heal $char.healing.heal
+var healTarget $char.healing.healTarget
+var poison $char.healing.poison
+var poisonSelf $char.healing.poisonSelf
 
 
 ###################

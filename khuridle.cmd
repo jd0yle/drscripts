@@ -35,13 +35,15 @@ loop:
     pause 1
     gosub waitPerc
     pause 1
-    gosub waitAstrology
+    if ($Astrology.LearningRate < 30) then gosub waitAstrology
     pause 1
     gosub waitArcana
     pause 1
     gosub waitMagic
     pause 1
     gosub waitPlay
+    pause 1
+    gosub waitForage
     pause 1
     gosub waitLook
     goto loop
@@ -89,6 +91,25 @@ waitFaSkin:
     	gosub stow my $char.trainer.firstaid
     }
     return
+
+
+waitForage:
+    if ($Outdoorsmanship.LearningRate < 10) then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub automove 555
+        put .forage
+        waitforre ^FORAGE DONE
+        gosub automove 252
+        gosub peer door
+        waitforre %A sandalwood door suddenly opens\!
+        put .house
+        waitforre ^HOUSE DONE
+        put .khuridle
+        put #script abort all except khuridle
+    } else {
+        return
+    }
 
 
 waitLook:

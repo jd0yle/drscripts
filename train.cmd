@@ -9,7 +9,11 @@
 # Ensures that the script with your charactername is running, and .reconnect
 ####################################################################################################
 
+include libmaster.cmd
+
 put #var afk 1
+
+action put #script abort all except %scriptname; goto restartScript when eval $libmaster.retryAttempts > 10
 
 eval characterScript tolower($charactername)
 
