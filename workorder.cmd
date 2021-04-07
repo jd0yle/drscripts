@@ -2,7 +2,7 @@ include libmaster.cmd
 action goto workOrderBadQuality when ^The work order requires items of a higher quality, so you decide against bundling that\.|^Only completed items can be bundled with the work order\.
 action var workOrderBundleSuccess 1 when ^waitforre ^You notate the $char.craft.workorder.item in the logbook then bundle it up for delivery\.
 action goto workOrderDone when ^What were you referring to\?
-action var workOrderTotalNeed $1 when I need (\d+) of exceptional quality
+action var workOrderTotalNeed $1 when I need (\d+) of (exceptional|superior) quality
 action var workOrderTotalNeed $1 when You must bundle and deliver (\d+)(.*)\.$
 action var workOrderTotalNeed 0 when This work order appears to be complete\.
 action var workOrderMaster $3 when ^You also see(.*)Engineering(.*)(Master|Mistress)(.*)\.$

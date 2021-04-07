@@ -4,6 +4,13 @@
 put #tvar char.appraise.container portal
 put #tvar char.appraise.item my gem pouch
 
+
+###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown 0
+
+
 ###############################
 ###      CAMBRINTH
 ###############################
@@ -60,6 +67,7 @@ put #tvar char.inv.default steelsilk backpack
 ###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.minimumConcentration 30
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0

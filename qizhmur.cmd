@@ -11,7 +11,6 @@ action goto logout when eval $dead = 1
 timer start
 
 var useBurgle 1
-var burgleCooldown 0
 var nextBurgleCheck -1
 
 var isFullyPrepped 0
@@ -19,7 +18,6 @@ action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
 action var isFullyPrepped 0 when ^You trace an angular sigil in the air
 
-action var burgleCooldown $1 when ^You should wait at least (\d+) roisaen
 action var numBolts $1 when ^You count some basilisk bolts in the sheath and see there are (\S+) left\.$
 
 action put #var galleyDocked 1 when ^The galley \S+ reaches the dock
@@ -47,7 +45,7 @@ gosub release usol
 gosub release symbiosis
 gosub retrieveBolts
 gosub stow hhr'ata
-gosub stow bola
+gosub stow frying pan
 
 
 matchre startRepair ^You tap a
@@ -73,9 +71,9 @@ if_1 then {
 }
 
 main:
-    if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub checkBurgleCd
+    if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub burgle.onTimer
 
-    if (%useBurgle = 1 &&  %burgleCooldown = 0) then {
+    if (%useBurgle = 1 &&  $char.burgle.cooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
 
         if ($SpellTimer.EyesoftheBlind.active != 1 || $SpellTimer.EyesoftheBlind.duration < 5) then {
@@ -150,7 +148,7 @@ main:
     startMagic:
     if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
-        gosub moveToHouse
+        #gosub moveToHouse
 
         if ("$roomname" != "Private Home Interior") then {
             put #echo >Log #cc99ff House won't open, going to FC
@@ -170,6 +168,7 @@ main:
 		}
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
+            gosub release cyclic
             var startResearch 0
             put .research sorcery
             waitforre ^RESEARCH DONE$
@@ -687,8 +686,8 @@ put .reconnect
         put .qizhmur
         pause 1
     }
-    #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
-    if (%burgleCooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
+    #if ($char.burgle.cooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
+    if ($char.burgle.cooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
         put #script abort all except qizhmur
 put .reconnect
         pause 1
@@ -699,7 +698,7 @@ put .reconnect
         gosub release eotb
         gosub retrieveBolts
         gosub stow hhr'ata
-        gosub stow bola
+        gosub stow frying pan
         return
     }
     goto waitForMagic
@@ -717,7 +716,7 @@ put .reconnect
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
+    if ($char.burgle.cooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
         put #script abort all except qizhmur
 put .reconnect
         pause 1
@@ -728,7 +727,7 @@ put .reconnect
         gosub stow left
         gosub retrieveBolts
         gosub stow hhr'ata
-        gosub stow bola
+        gosub stow frying pan
         return
     }
     goto waitForMainCombat
@@ -759,30 +758,11 @@ retrieveBoltsLoop:
     return
 
 
-
-checkBurgleCd:
-    var burgleCooldown 0
-
-    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
-    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
-    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
-
-    if (%burgleCooldown = 0) then {
-        gosub burgle recall
-        pause
-    }
-
-    evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
-    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
-    return
-
-
-
 waitForBurgleCd:
     if (%nextBurgleCheck < %t) then {
         gosub checkBurgleCd
     }
-    if (%burgleCooldown = 0) then return
+    if ($char.burgle.cooldown = 0) then return
     pause 2
     goto waitForBurgleCd
 

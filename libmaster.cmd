@@ -47,9 +47,17 @@ var todo
 
 
 ###############################
+###    BURGLE
+###############################
+action put #tvar char.burgle.cooldown $1 when ^You should wait at least (\d+) roisaen
+action put #tvar char.burgle.cooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
+
+
+###############################
 ### CROSSBOWS
 ###############################
 var crossbowItems crossbow|stonebow|latchbow|pelletbow|lockbow
+
 
 ###############################
 ### HE/2HE SWAPPING
@@ -162,6 +170,12 @@ if ("$charactername" = "Inauri") then {
 
 
 ###############################
+###    STANCE
+###############################
+put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime $gametime;#var stance \$1} {stance}
+
+
+###############################
 ###    STAND
 ###############################
 #action put STAND when eval $standing = 0
@@ -174,9 +188,9 @@ action send stand when ^You'd have better luck standing up
 action send stand when ^You'll have to move off the sandpit first\.
 
 
-###################
-## TEACHING
-###################
+###############################
+###    TEACHING
+###############################
 #action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
 
 if ("$charactername" = "Inauri") then {
@@ -198,24 +212,6 @@ action var observeOffCooldown false when ^While the sighting wasn't quite what y
 action var observeOffCooldown false when ^You are unable to make use of this latest observation
 action var observeOffCooldown false when ^You have not pondered your last observation sufficiently\.$
 action var observeOffCooldown false when ^You learned something useful from your observation\.$
-
-
-###############################
-###    STANCE
-###############################
-put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime $gametime;#var stance \$1} {stance}
-
-
-###############################
-###    STAND
-###############################
-action send stand when ^You must stand first
-action send stand when ^You might want to stand up first
-action send stand when ^You had better stand up first
-action send stand when ^You can't do that while lying down
-action send stand when ^You'd have better luck standing up
-action send stand when ^You should stand up first.
-action send stand when ^You'll have to move off the sandpit first.
 
 #######################################################################################################################################
 
@@ -1008,6 +1004,7 @@ invoke:
     var todo $0
     invoke1:
     matchre return ^A finely balanced tago suddenly leaps
+    matchre return By directing your focus, you ensure that energy drawn only when spells are cast\.
     matchre return ^Invoke what?
     matchre return ^Roundtime
     matchre return ^The cambrinth
@@ -1076,7 +1073,7 @@ khri.stop:
 kick:
     var location kick
     if ($standing = 0) then put stand
-    matchre kick ^Bringing your foot
+    matchre kick Bringing your foot
     matchre kick ^Loosing your footing at the last moment
     matchre kick ^You can't do that from your position\.
     matchre kick ^You can't quite manage
@@ -1887,6 +1884,7 @@ stand:
     matchre return ^You climb off
     matchre return ^You stand back up\.
     matchre return ^You swim back up
+    matchre return ^You stand
     put stand %todo
     goto retry
 
@@ -2384,6 +2382,23 @@ almanac.onTimer:
 	return
 
 
+burgle.onTimer:
+    put #tvar char.burgle.cooldown 0
+
+    if ($Stealth.LearningRate > 0) then put #tvar char.burgle.cooldown $Stealth.LearningRate
+    if ($Athletics.LearningRate < $char.burgle.cooldown) then put #tvar char.burgle.cooldown $Athletics.LearningRate
+    if ($Locksmithing.LearningRate < $char.burgle.cooldown) then put #tvar char.burgle.cooldown $Locksmithing.LearningRate
+
+    if ($char.burgle.cooldown = 0) then {
+        gosub burgle recall
+        pause
+    }
+
+    evalmath nextBurgleCheck ($char.burgle.cooldown * 60) + 60 + %t
+    put #echo >Log #adadad Next burgle check in $char.burgle.cooldown minutes
+    return
+
+
 appraise.onTimer:
     var todo $0
     var location appraise.onTimer1
@@ -2394,17 +2409,6 @@ appraise.onTimer:
 
     if ($gametime > %nextAppGametime) then gosub runScript appraise %todo
     return
-
-
-healPoisonSelf:
-  gosub prep fp 10
-  pause 2
-  gosub charge my $cambItem 10
-  pause 2
-  gosub invoke my $cambItem spell
-  waitforre ^You feel fully prepared
-  gosub cast
-  return
 
 
 hunt.onTimer:
@@ -2514,6 +2518,12 @@ move:
     move1:
     var location moving
     moving:
+    if ($standing != 1) then {
+        var moveTodo %todo
+        gosub stand
+        var todo %moveTodo
+        goto move1
+    }
     #Running heedlessly over the rough terrain|A bony hand reaches up out of the bog and clamps its cold skeletal fingers|can't seem to make much headway
     matchre dig.then.move ^Like a blind, lame duck, you wallow in the mud
     matchre dig.then.move ^The mud holds you tightly
@@ -2538,6 +2548,7 @@ move:
     matchre stand.then.move ^You can't do that while kneeling.
     matchre stand.then.move ^You can't do that while lying down\.
     matchre stand.then.move ^You must be standing to do that\.
+    matchre stand.then.move ^Perhaps you should stand up first.
     matchre stow.then.move ^Free up your hands first
     put %todo
     goto retry
@@ -2573,8 +2584,10 @@ retreat.then.move:
 
 
 stand.then.move:
+    var moveTodo %todo
     gosub stand
-    goto move1
+    gosub move %moveTodo
+    return
 
 
 stow.then.move:

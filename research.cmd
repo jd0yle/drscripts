@@ -33,15 +33,11 @@ action var researchProject $1 when ^You.*begin to bend the mana streams.*(utilit
 action var researchProject stream when ^You focus your magical perception as tightly as possible
 action var researchProject sorcery when ^Abandoning the normal discipline required to manipulate the mana streams
 action var researchProject fundamental when ^You tentatively reach out and begin manipulating the mana streams
-
 action var researchProject notNull when ^You are already busy at research!
-
 action var researchProject null when ^You decide to cancel your project
 action var researchProject null when ^Breakthrough!
 action var researchProject null when However, there is still more to learn before you arrive at a breakthrough.
 action var researchProject null when ^You complete reviewing your knowledge
-
-action echo researchProject %researchProject when eval %researchProject
 action var usingCrystal 0 when ^The light and crystal sound of your sanowret crystal fades slightly as you come to the end
 
 var stallCheckGametime $gametime

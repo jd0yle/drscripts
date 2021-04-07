@@ -6,6 +6,12 @@ put #tvar char.appraise.item my gem pouch
 
 
 ###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown 0
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth viper
@@ -35,8 +41,9 @@ put #tvar char.cast.pop.harness 0
 ###############################
 put #tvar char.craft.container workbag
 put #tvar char.craft.default.container satchel
+put #tvar char.craft.item circlet
 put #tvar char.craft.tool.container workbag
-put #tvar char.craft.workorder.item tiara
+put #tvar char.craft.workorder.item circlet
 
 
 ###############################
@@ -57,8 +64,8 @@ put #tvar char.combat.harness.Targeted_Magic 0
 ###      FRIENDS
 ###############################
 var friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh)
-var enemies (Meiline|Nideya|Psaero)
-var super.enemies (Meiline|Nideya|Psaero)
+var enemies (Kattena|Nideya|Psaero|Zehira)
+var super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
 
 
 ###############################
@@ -74,11 +81,12 @@ put #tvar char.healing.poisonSelf 0
 ###############################
 ###      MAGIC
 ###############################
+put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 1
 
-put #tvar char.magic.train.spell.Augmentation ags
+put #tvar char.magic.train.spell.Augmentation vigor
 put #tvar char.magic.train.prep.Augmentation 10
 put #tvar char.magic.train.charge.Augmentation 10
 put #tvar char.magic.train.harness.Augmentation 0

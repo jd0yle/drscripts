@@ -28,6 +28,7 @@ var useForage 0
 var useHunt 1
 var usePerc 1
 var useSano 0
+var useSkin 1
 
 var opts %1
 if ("%opts" = "backtrain") then {
@@ -35,6 +36,7 @@ if ("%opts" = "backtrain") then {
     var useForage 0
     var useHunt 0
     var usePerc 0
+    var useSkin 1
 }
 ####################
 # Character Specific
@@ -168,9 +170,8 @@ combatApp:
 
 
 combatCheckDeadMob:
-    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
-
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
             if (%arrangeForPart = 1) then gosub arrange for part
             if (%arrangeFull = 1) then gosub arrange full
