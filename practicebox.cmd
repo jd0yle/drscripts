@@ -15,11 +15,14 @@ practiceBoxLoop:
   gosub get my %box
   gosub lock my %box
   gosub pick my %box
-  if $Locksmithing.LearningRate < 30 then goto practiceBoxLoop
+  if ($Locksmithing.LearningRate < 30) then goto practiceBoxLoop
   goto practiceBoxExit
   
 practiceBoxExit:
   gosub stow my %box
+
+  pause .2
+  put #parse LOCKS DONE
   exit
 
 newBox:
