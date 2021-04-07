@@ -18,11 +18,8 @@ if ($zoneid = 112 || $zoneid = 61 || $zoneid = 150) then {
 
 
 
-var burgleCooldown 0
 var nextBurgleCheck 0
 
-action var burgleCooldown $1 when ^You should wait at least (\d+) roisaen
-action var burgleCooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
 action var numBolts $1 when ^You count some basilisk bolts in the \S+ and see there are (\S+) left\.$
 action var numArrows $1 when ^You count some basilisk arrows in the \S+ and see there are (\S+) left\.$
 action send stand when ^You'll have to move off the sandpit first.
@@ -34,9 +31,9 @@ timer start
 main:
     gosub abortScripts
     gosub resetState
-    gosub checkBurgleCd
+    gosub burgle.onTimer
 
-    if (%burgleCooldown = 0) then {
+    if ($char.burgle.cooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
         if (%inLeth = true) then {
             gosub moveToBurgleRoom
@@ -111,15 +108,6 @@ abortScripts:
     pause .2
     gosub stow right
     gosub stow left
-    return
-
-
-checkBurgleCd:
-    var burgleCooldown 0
-    gosub burgle recall
-    pause
-    evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
-    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
     return
 
 
@@ -347,7 +335,7 @@ waitForBurgleCd:
         gosub stow left
         gosub checkBurgleCd
     }
-    if (%burgleCooldown = 0) then return
+    if ($char.burgle.cooldown = 0) then return
     pause 2
     goto waitForBurgleCd
     
@@ -364,7 +352,7 @@ waitForBacktrain:
         put .fight backtrain
         pause 1
     }
-    if (%burgleCooldown = 0 || $Heavy_Thrown.LearningRate > 30 || $Shield_Usage.LearningRate < 5 || $Evasion.LearningRate < 0) then {
+    if ($char.burgle.cooldown = 0 || $Heavy_Thrown.LearningRate > 30 || $Shield_Usage.LearningRate < 5 || $Evasion.LearningRate < 0) then {
         put #script abort all except seltrain
         pause 1
         put #script abort all except seltrain
@@ -393,7 +381,7 @@ waitForMagic:
         pause 1
     }
     if (%inLeth = 1) then {
-        if (%burgleCooldown = 0 || $Crossbow.LearningRate < 5 || $Small_Edged.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Brawling.LearningRate < 5 || $Light_Thrown.LearningRate < 5 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5) then {
+        if ($char.burgle.cooldown = 0 || $Crossbow.LearningRate < 5 || $Small_Edged.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Brawling.LearningRate < 5 || $Light_Thrown.LearningRate < 5 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5) then {
             put #script abort all except seltrain
             pause 1
             put #script abort all except seltrain
@@ -401,7 +389,7 @@ waitForMagic:
             return
         }
     } else {
-        if (%burgleCooldown = 0 || $Enchanting.LearningRate > 31) then {
+        if ($char.burgle.cooldown = 0 || $Enchanting.LearningRate > 31) then {
             put #script abort all except seltrain
             pause 1
             put #script abort all except seltrain
@@ -425,7 +413,7 @@ waitForMainCombat:
         put .fight
         pause 1
     }
-    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > -1)) then {
+    if ($char.burgle.cooldown = 0 || ($Crossbow.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > -1)) then {
         put #script abort all except seltrain
         pause 1
         put #script abort all except seltrain

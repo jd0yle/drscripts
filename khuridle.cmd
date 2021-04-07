@@ -80,7 +80,7 @@ waitBurgle:
         gosub burgle.onTimer
 
     }
-    if (%burgleCooldown = 0) then {
+    if ($char.burgle.cooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
         put .house
         waitforre ^HOUSE DONE
