@@ -45,6 +45,8 @@ loop:
     pause 1
     gosub waitForage
     pause 1
+    gosub waitBurgle
+    pause 1
     gosub waitLook
     goto loop
 
@@ -71,6 +73,29 @@ waitArcana:
 waitAstrology:
     if ($Astrology.LearningRate < 33) then gosub observe.onTimer
     return
+
+
+waitBurgle:
+    if ($char.burgle.cooldown <> 0) then {
+        gosub burgle.onTimer
+
+    }
+    if (%burgleCooldown = 0) then {
+        put #echo >Log #cc99ff Train: Going to burgle
+        put .house
+        waitforre ^HOUSE DONE
+        gosub automove steelclaw
+        gosub automove 91
+        put .burgle
+        waitforre ^BURGLE DONE
+        gosub automove 252
+        gosub peer door
+        waitforre %A sandalwood door suddenly opens\!
+        put .house
+        waitforre ^HOUSE DONE
+    }
+    return
+
 
 
 waitFaSkin:
@@ -105,11 +130,9 @@ waitForage:
         waitforre %A sandalwood door suddenly opens\!
         put .house
         waitforre ^HOUSE DONE
-        put .khuridle
         put #script abort all except khuridle
-    } else {
-        return
     }
+    return
 
 
 waitLook:

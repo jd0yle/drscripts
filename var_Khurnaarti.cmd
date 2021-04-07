@@ -6,6 +6,12 @@ put #tvar char.appraise.item my sail pouch
 
 
 ###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown 0
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth shard

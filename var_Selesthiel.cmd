@@ -4,6 +4,13 @@
 put #tvar char.appraise.container portal
 put #tvar char.appraise.item my gem pouch
 
+
+###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown 0
+
+
 ###############################
 ###      CAMBRINTH
 ###############################

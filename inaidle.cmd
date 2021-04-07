@@ -120,7 +120,7 @@ waitEngineer:
     } else {
         if ($Engineering.LearningRate = 0) then {
             put #var lastEngineerGametime $gametime
-            put .eng 5 tiara
+            put .eng 5 $char.craft.item
             exit
         }
     }
