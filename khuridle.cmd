@@ -78,7 +78,6 @@ waitAstrology:
 waitBurgle:
     if ($char.burgle.cooldown <> 0) then {
         gosub burgle.onTimer
-
     }
     if ($char.burgle.cooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
@@ -90,7 +89,7 @@ waitBurgle:
         waitforre ^BURGLE DONE
         gosub automove 252
         gosub peer door
-        waitforre %A sandalwood door suddenly opens\!
+        waitforre ^A sandalwood door suddenly opens\!
         put .house
         waitforre ^HOUSE DONE
     }
@@ -127,7 +126,7 @@ waitForage:
         waitforre ^FORAGE DONE
         gosub automove 252
         gosub peer door
-        waitforre %A sandalwood door suddenly opens\!
+        waitforre ^A sandalwood door suddenly opens\!
         put .house
         waitforre ^HOUSE DONE
         put #script abort all except khuridle

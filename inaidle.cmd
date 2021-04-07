@@ -62,7 +62,9 @@ loop:
     if ($poisonHeal = 1) then {
         gosub runScript cast fp
     }
-    if ($SpellTimer.Regenerate.duration < 1) then gosub runScript cast regen
+    if ($mana > 30) then {
+        if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+    }
     gosub waitAlmanac
     pause 1
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
@@ -77,10 +79,12 @@ loop:
     pause 1
     gosub waitEngineer
     pause 1
-    gosub waitMagic
-    pause 1
-    gosub waitResearch
-    pause 1
+    if ($mana > 30) then {
+        gosub waitMagic
+        pause 1
+        gosub waitResearch
+        pause 1
+    }
     gosub waitLook
     goto loop
 
