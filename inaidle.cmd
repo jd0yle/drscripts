@@ -160,7 +160,6 @@ waitMagic:
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
-            put .look
             put .magic noLoop
             waitforre ^MAGIC DONE
             put #abort all except inaidle
@@ -175,7 +174,6 @@ waitResearch:
         if (%justice <> 0) then {
             return
         }
-        put .look
         put .research sorcery
         waitforre ^RESEARCH DONE
         put #script abort all except inaidle
