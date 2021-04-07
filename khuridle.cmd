@@ -88,6 +88,7 @@ waitBurgle:
         put .burgle
         waitforre ^BURGLE DONE
         gosub automove 252
+        gosub release rf
         gosub peer door
         waitforre ^A sandalwood door suddenly opens\!
         put .house
