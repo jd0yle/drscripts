@@ -39,13 +39,13 @@ loop:
     pause 1
     gosub waitArcana
     pause 1
+    gosub waitBurgle
+    pause 1
     gosub waitMagic
     pause 1
     gosub waitPlay
     pause 1
     gosub waitForage
-    pause 1
-    gosub waitBurgle
     pause 1
     gosub waitLook
     goto loop
