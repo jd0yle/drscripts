@@ -2370,8 +2370,6 @@ almanac.onTimer:
 
 
 burgle.onTimer:
-    put #tvar char.burgle.cooldown 0
-
     if ($Stealth.LearningRate > 0) then put #tvar char.burgle.cooldown $Stealth.LearningRate
     if ($Athletics.LearningRate < $char.burgle.cooldown) then put #tvar char.burgle.cooldown $Athletics.LearningRate
     if ($Locksmithing.LearningRate < $char.burgle.cooldown) then put #tvar char.burgle.cooldown $Locksmithing.LearningRate
