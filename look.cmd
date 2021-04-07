@@ -48,7 +48,9 @@ loop:
             put #var poison 0
         }
         if ($poisonHeal = 1) then gosub healPoisonSelf
-        if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+        if ($mana > 30) then {
+            if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+        }
     }
     pause 2
     gosub waitLook
