@@ -20,7 +20,7 @@ eval characterScript tolower($charactername)
 loop:
     if ($dead = 1 || $health < 50) then goto doneDead
 
-    if ("$charactername" = "Qizhmur") then {
+    if (1 = 0 && "$charactername" = "Qizhmur") then {
         if (!contains("$scriptlist", "magic")) then {
             put #echo >Log [train] Starting magic
             put .magic

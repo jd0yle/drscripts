@@ -30,7 +30,7 @@ action var skills %skills|$1; var ranks %ranks|$2 when (\S.*):.*34\) \+(\d+\.\d+
 
 delay .5
 put /track report
-delay 2
+waitforre ^EXP HELP
 
 var i 0
 eval len count("%skills", "|")
@@ -54,10 +54,12 @@ loop:
 	        evalmath ranksToGain round(%skillRanksToCheck - $%skillToCheck.Ranks, 2)
 	        evalmath hoursToRanks round(%ranksToGain * %hpr, 2)
 	        evalmath daysToRanks round(%ranksToGain * %dpr, 2)
-	        var echoSkillRanks Time To Gain %ranksToGain: %hoursToRanks hrs  (%daysToRanks days)
+	        var echoSkillRanks Time To Gain %ranksToGain ranks (%skillRanksToCheck): %hoursToRanks hrs  (%daysToRanks days)
 	    }
 
-	    echo %rph  |  %rpd  |  %hpr  |  %dpr  - %skills(%i) $%skills(%i).Ranks (+%ranks(%i))  %echoSkillRanks
+	    eval skillNameVar replacere("%skills(%i)", " ", "_")
+
+	    echo %rph  |  %rpd  |  %hpr  |  %dpr  - %skills(%i) $%skillNameVar.Ranks (+%ranks(%i))  %echoSkillRanks
     }
     math i add 1
     if (%i > %len) then goto done

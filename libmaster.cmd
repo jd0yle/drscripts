@@ -1235,6 +1235,7 @@ open:
     matchre return ^You rattle
     matchre return ^You try, but the telescope seems as extended as it will ever be\.
     matchre return ^Your dreamweave fan is already
+    matchre return ^is already open
     matchre return seems to be closed.$
     put open %todo
     goto retry
