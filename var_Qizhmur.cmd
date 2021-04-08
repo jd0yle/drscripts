@@ -6,6 +6,12 @@ put #tvar char.appraise.item my gem pouch
 
 
 ###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown null
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth cambrinth calf

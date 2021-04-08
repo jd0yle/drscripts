@@ -39,9 +39,13 @@ loop:
     pause 1
     gosub waitArcana
     pause 1
+    gosub waitBurgle
+    pause 1
     gosub waitMagic
     pause 1
     gosub waitPlay
+    pause 1
+    gosub waitLock
     pause 1
     gosub waitForage
     pause 1
@@ -73,6 +77,29 @@ waitAstrology:
     return
 
 
+waitBurgle:
+    if ($char.burgle.cooldown <> 0) then {
+        gosub burgle.onTimer
+    }
+    if ($char.burgle.cooldown = 0) then {
+        put #echo >Log #cc99ff Train: Going to burgle
+        put .house
+        waitforre ^HOUSE DONE
+        gosub automove steelclaw
+        gosub automove 91
+        put .burgle
+        waitforre ^BURGLE DONE
+        gosub automove 252
+        gosub release rf
+        gosub peer door
+        waitforre ^A sandalwood door suddenly opens\!
+        put .house
+        waitforre ^HOUSE DONE
+    }
+    return
+
+
+
 waitFaSkin:
     if (contains($time, "(\d+)(.*)AM")) then {
         if ($1 < 12) then {
@@ -102,14 +129,20 @@ waitForage:
         waitforre ^FORAGE DONE
         gosub automove 252
         gosub peer door
-        waitforre %A sandalwood door suddenly opens\!
+        waitforre ^A sandalwood door suddenly opens\!
         put .house
         waitforre ^HOUSE DONE
-        put .khuridle
         put #script abort all except khuridle
-    } else {
-        return
     }
+    return
+
+
+waitLock:
+    if ($Locksmithing.LearningRate < 10) then {
+        put .practicebox
+        waitforre ^LOCKS DONE
+    }
+    return
 
 
 waitLook:

@@ -6,10 +6,16 @@ put #tvar char.appraise.item my sail pouch
 
 
 ###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown null
+
+
+###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth shard
-put #tvar char.focusContainer null
+put #tvar char.cambrinth armband
+put #tvar char.focusContainer rucksack
 put #tvar char.ritualFocus kingsnake totem
 put #tvar char.wornCambrinth 0
 put #tvar char.wornFocus 0
@@ -50,6 +56,14 @@ var super.enemies null
 
 
 ###############################
+###      LOCKSMITHING
+###############################
+put #tvar char.locks.boxType box
+put #tvar char.locks.lockpickType lockpick
+put #tvar char.locks.boxContainer wallet
+
+
+###############################
 ###      MAGIC
 ###############################
 put #tvar guild Moon Mage
@@ -61,18 +75,18 @@ put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation cv
-put #tvar char.magic.train.prep.Augmentation 10
-put #tvar char.magic.train.charge.Augmentation 10
+put #tvar char.magic.train.prep.Augmentation 12
+put #tvar char.magic.train.charge.Augmentation 15
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility pg
 put #tvar char.magic.train.prep.Utility 10
-put #tvar char.magic.train.charge.Utility 5
+put #tvar char.magic.train.charge.Utility 15
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding psy
 put #tvar char.magic.train.prep.Warding 10
-put #tvar char.magic.train.charge.Warding 5
+put #tvar char.magic.train.charge.Warding 15
 put #tvar char.magic.train.harness.Warding 0
 
 

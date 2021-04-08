@@ -6,6 +6,12 @@ put #tvar char.appraise.item my gem pouch
 
 
 ###############################
+###      BURGLE
+###############################
+put #tvar char.burgle.cooldown null
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth viper
@@ -35,6 +41,7 @@ put #tvar char.cast.pop.harness 0
 ###############################
 put #tvar char.craft.container workbag
 put #tvar char.craft.item circlet
+put #tvar char.craft.workorder.item circlet
 
 
 ###############################
