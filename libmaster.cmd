@@ -1124,6 +1124,7 @@ lock:
     var todo $0
     lock1:
     matchre return is already locked
+    matchre return ^Maybe you should close
     matchre return ^That is
     matchre return ^You don't
     matchre return ^You do not
@@ -1334,7 +1335,7 @@ pick:
     pick1:
     matchre return isn't locked
     matchre return ^The lock looks weak
-    matchre return ^With a faint
+    matchre return ^You set about picking
     put pick %todo
     goto retry
 

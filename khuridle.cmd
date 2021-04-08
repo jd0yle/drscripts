@@ -45,6 +45,8 @@ loop:
     pause 1
     gosub waitPlay
     pause 1
+    gosub waitLock
+    pause 1
     gosub waitForage
     pause 1
     gosub waitLook
@@ -131,6 +133,14 @@ waitForage:
         put .house
         waitforre ^HOUSE DONE
         put #script abort all except khuridle
+    }
+    return
+
+
+waitLock:
+    if ($Locksmithing.LearningRate < 10) then {
+        put .practicebox
+        waitforre ^LOCKS DONE
     }
     return
 
