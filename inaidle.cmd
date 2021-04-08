@@ -125,7 +125,8 @@ waitEngineer:
         if ($Engineering.LearningRate = 0) then {
             put #var lastEngineerGametime $gametime
             put .eng 5 $char.craft.item
-            exit
+            waitforre ^ENG DONE
+            put #script abort all except inaidle
         }
     }
     return
