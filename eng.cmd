@@ -19,7 +19,6 @@ var engineeringContainer workbag
 var page 0
 var crafted 0
 put #var craftNeed %1
-put #script abort all except eng
 put .look
 ##############################
 
@@ -396,10 +395,10 @@ engDone:
 engExit:
   if ("$righthand" <> "Empty") then gosub stow
   if ("$lefthand" <> "Empty") then gosub stow left
-  put #echo >log yellow [eng] Engineering done.  Beginning .inaidle
+  put #echo >log yellow [eng] Engineering done.
   put store default in %defaultContainer
-  put .inaidle
-  put #script abort all except inaidle
+  pause .2
+  put #parse ENG DONE
   exit
   
 errorExit:
