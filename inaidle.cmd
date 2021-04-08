@@ -167,7 +167,7 @@ waitMagic:
             put .look
             put .magic noLoop
             waitforre ^MAGIC DONE
-            put #abort all except inaidle
+            put #script abort all except inaidle
         }
     }
     return
