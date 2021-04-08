@@ -45,7 +45,7 @@ loop:
     pause 1
     gosub waitPlay
     pause 1
-    gosub waitLocks
+    gosub waitLock
     pause 1
     gosub waitForage
     pause 1
