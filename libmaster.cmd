@@ -2381,7 +2381,8 @@ burgle.onTimer:
     }
 
     evalmath nextBurgleCheck ($char.burgle.cooldown * 60) + 60 + %t
-    put #echo >Log #adadad Next burgle check in $char.burgle.cooldown minutes
+    # TODO:  Fix this from being spammy.
+    #put #echo >Log #adadad Next burgle check in $char.burgle.cooldown minutes
     return
 
 
