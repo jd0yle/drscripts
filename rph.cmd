@@ -1,15 +1,17 @@
 include libmaster.cmd
 
 var skillToCheck null
-if_1 then {
-    var skillToCheck %0
-} else {
+var skillRanksToCheck 0
 
-    #echo
-    #echo MUST SPECIFY NUMBER OF HOURS
-    #echo .rph <numHours>
-    #exit
+if_1 then {
+    var skillToCheck %1
 }
+
+if_2 then {
+    var skillRanksToCheck %2
+}
+
+
 
 evalmath numHours (($gametime - $lastLoginTime) / 60 / 60)
 evalmath numDays (($gametime - $lastLoginTime) / 60 / 60 / 24)
@@ -46,7 +48,16 @@ loop:
 	    evalmath rpd round(%ranks(%i) / %numDays, 2)
 	    evalmath hpr round(1 / %rph, 2)
 	    evalmath dpr round(1 / %rpd, 2)
-	    echo %rph  |  %rpd  |  %hpr  |  %dpr  - %skills(%i): %ranks(%i)
+
+        var echoSkillRanks
+	    if (%skillRanksToCheck != 0) then {
+	        evalmath ranksToGain round(%skillRanksToCheck - $%skillToCheck.Ranks, 2)
+	        evalmath hoursToRanks round(%ranksToGain * %hpr, 2)
+	        evalmath daysToRanks round(%ranksToGain * %dpr, 2)
+	        var echoSkillRanks Time To Gain %ranksToGain: %hoursToRanks hrs  (%daysToRanks days)
+	    }
+
+	    echo %rph  |  %rpd  |  %hpr  |  %dpr  - %skills(%i) $%skills(%i).Ranks (+%ranks(%i))  %echoSkillRanks
     }
     math i add 1
     if (%i > %len) then goto done

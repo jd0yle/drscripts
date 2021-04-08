@@ -19,8 +19,12 @@ if_2 then {
 ###############################
 ###      Main
 ###############################
-if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2) then {
-      if ($monstercount > 0) then gosub retreat
+if ($monstercount = 0 && ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2)) then {
+      if ($monstercount > 0) then {
+          gosub stance shield
+          gosub stow right
+          gosub retreat
+      }
       gosub runScript cast dc
 }
 

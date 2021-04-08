@@ -174,6 +174,8 @@ action send stand when ^You'd have better luck standing up
 action send stand when ^You'll have to move off the sandpit first\.
 
 
+action send climb track when ^You will have to climb that.
+
 ###################
 ## TEACHING
 ###################

@@ -23,7 +23,7 @@ var magic.skills Augmentation|Warding|Utility
 eval magic.length count("%magic.skills", "|")
 if (!($magic.index > -1)) then put #tvar magic.index 0
 
-gosub release cyclic
+if ($SpellTimer.Regenerate.active != 1) then gosub release cyclic
 
 
 ###############################
