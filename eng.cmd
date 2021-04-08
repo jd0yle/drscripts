@@ -336,23 +336,32 @@ shape:
   matchwait 5
   
 shortCord:
-  matchre engStow ^You need a free hand
-  matchre engAssemble ^You get
-  matchre engExit ^What were you
-  put get my short cord
-  matchwait 5
+    var location shortCord1
+    shortCord1:
+    matchre engExtraStow ^You need a free hand
+    matchre engAssemble ^You get
+    matchre engExit ^What were you
+    put get my short cord
+    matchwait 5
 
 strips:
-  matchre engStow ^You need a free hand
-  matchre engAssemble ^You get
-  matchre engExit ^What were you
-  put get my strips
-  matchwait 5
+    var location strips1
+    strips1:
+    matchre engExtraStow ^You need a free hand
+    matchre engAssemble ^You get
+    matchre engExit ^What were you
+    put get my strips
+    matchwait 5
+
+engExtraStow:
+    gosub tieTool
+    goto %location
+
 
 engAssemble:
   matchre shaper ^You place your
   matchre engExit ^What were you
-  put assemble my %2 with my $lefthandnoun
+  put assemble my $righthandnoun with my $lefthandnoun
   matchwait 5
   
 tieTool:
