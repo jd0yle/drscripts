@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 
-var expectedNumBolts thirty-nine
+var expectedNumBolts thirty-eight
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
