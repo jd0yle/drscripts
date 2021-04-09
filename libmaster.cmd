@@ -152,6 +152,8 @@ var foragable 0
 ###############################
 if ("$charactername" = "Inauri") then {
     action goto refreshRegen when eval $health < 50
+    action put #var magicInert 1 when ^The spell pattern resists the influx of unstable mana, overloading your arcane senses and rendering you magically inert\.
+    action put #var magicInert 0 when ^Awareness enfolds you like the embrace of a loving parent as your attunement to Life mana returns\.
 }
 
 
