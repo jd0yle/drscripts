@@ -53,6 +53,7 @@ action put #tvar char.burgle.cooldown $1 when ^You should wait at least (\d+) ro
 action put #tvar char.burgle.cooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
 action put #tvar char.burgle.cooldown 0 when ^The heat has died down from your last caper\.
 
+
 ###############################
 ### CROSSBOWS
 ###############################
@@ -670,6 +671,15 @@ count:
     goto retry
 
 
+cut:
+    var location cut1
+    var todo $0
+    matchre return You carefully cut
+    cut1:
+    put cut %todo
+    goto retry
+
+
 dance:
     var location dance1
     var todo $0
@@ -905,13 +915,13 @@ give:
     var location give1
     var todo $0
     give1:
-    matchre return ^Randal looks over
-    matchre return ^You hand
-    matchre return ^What is it
-    matchre return ^Randal
-    matchre return ^The Servant accepts
+    matchre return ^A clerk looks over the
     matchre return ignores your offer
     matchre return Osmandikar|Lakyan
+    matchre return ^Randal looks over
+    matchre return ^The Servant accepts
+    matchre return ^What is it
+    matchre return ^You hand
     put give %todo
     goto retry
 
@@ -1197,8 +1207,11 @@ mark:
     matchre return ^It's dead
     matchre return ^Mark what\?
     matchre return ^Roundtime
+    matchre return ^There is not enough
     matchre return ^You carefully size up
     matchre return ^You begin to
+    matchre return ^You mark
+    matchre return ^You count
     put mark all %todo
     goto retry
 
@@ -2051,6 +2064,7 @@ study:
     matchre return ^You are unable to sense additional information\.
     matchre return ^You attempt
     matchre return ^You feel it is too soon to grasp anything new in the skies above\.
+    matchre return ^You review
     matchre return ^You scan
     matchre return ^You set about
     matchre return ^You should try that where you can see the sky\.

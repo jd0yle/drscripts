@@ -1,6 +1,6 @@
 include libmaster.cmd
 action goto workOrderBadQuality when ^The work order requires items of a higher quality, so you decide against bundling that\.|^Only completed items can be bundled with the work order\.
-action var workOrderBundleSuccess 1 when ^waitforre ^You notate the $char.craft.item in the logbook then bundle it up for delivery\.
+action var workOrderBundleSuccess 1 when ^waitforre ^You notate the $char.craft.workorder.item in the logbook then bundle it up for delivery\.
 action goto workOrderDone when ^What were you referring to\?
 action var workOrderTotalNeed $1 when I need (\d+) of (exceptional|superior) quality
 action var workOrderTotalNeed $1 when You must bundle and deliver (\d+)(.*)\.$
@@ -35,7 +35,7 @@ workOrderDoCount:
     var numCount 0
 
     workOrderDoCountDoCountLoop:
-        if (matchre("%itemArr(%index)", "$char.craft.item")) then math numCount add 1
+        if (matchre("%itemArr(%index)", "$char.craft.workorder.item")) then math numCount add 1
         math index add 1
         if (%index > %itemLength) then goto workOrderCountDone
         goto workOrderDoCountDoCountLoop
@@ -64,7 +64,7 @@ workOrderGet:
     }
     pause .2
     workOrderGet1:
-    matchre workOrderBundle $char.craft.item
+    matchre workOrderBundle $char.craft.workorder.item
     matchre workOrderGet Alright, this is an order for
     matchre workOrderRead ^You realize you have items bundled with the logbook
     matchre workOrderFindMaster ^Usage: ASK
@@ -74,10 +74,9 @@ workOrderGet:
 
 workOrderBundle:
     if (%workOrderTotalNeed <> 0) then {
-        echo %workOrderTotalHave / %workOrderTotalNeed
         if (%workOrderTotalHave >= %workOrderTotalNeed) then {
-            gosub get $char.craft.item from my $char.craft.container
-            gosub bundle $char.craft.item with my logbook
+            gosub get $char.craft.workorder.item from my $char.craft.container
+            gosub bundle $char.craft.workorder.item with my logbook
             evalmath workOrderTotalNeed (%workOrderTotalNeed - 1)
             evalmath workOrderTotalHave (%workOrderTotalHave - 1)
         } else {
@@ -102,7 +101,7 @@ workOrderTurnIn:
 # Utility
 ##############
 workOrderBadQuality:
-    gosub drop my $char.craft.item
+    gosub drop my $char.craft.workorder.item
     evalmath workOrderTotalNeed (%workOrderTotalNeed + 1)
     goto workOrderBundle
 
@@ -160,7 +159,7 @@ workOrderRestock:
 # Exit and Log
 ##############
 workOrderDone:
-    if ("$righhthand" = "logbook") then {
+    if ("$righthandnoun" = "logbook") then {
         gosub put my logbook in my $char.craft.container
     }
     if (%workOrderTotalHave < %workOrderTotalNeed) then {
