@@ -26,7 +26,7 @@ put #tvar char.wornFocus 0
 ###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.charge 3
+put #tvar char.cast.default.charge 5
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
@@ -71,6 +71,7 @@ put #tvar char.magic.train.almanacItem 0
 put #tvar char.magic.train.almanacContainer 0
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 0
+put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.useInvokeSpell 0
 
