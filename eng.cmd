@@ -10,6 +10,7 @@ action put #var nextTool rasp when ^A bulbous knot will make continued shaping d
 action put #var nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
 action put #var nextTool engDone when ^Applying the final touches
 action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
+action goto shortCord when ^You need another finished short leather cord
 
 ########### CONFIG ###########
 var chapter 0
@@ -32,7 +33,7 @@ setVariables:
   # Chapter 2 - Shortbow
   # Chapter 3 - Longbow
   # Chapter 4 - Composite Bow
-  # Chapter 5 - Fletching
+  # Chapter 5 - Fletching  
   # Chapter 6 - Shaping Enhancements and Materials
   if "%2" = "burin" then put #setvariable chapter 6;#setvariable cut 4
   # Chapter 7 - Accessories
@@ -66,7 +67,7 @@ setVariables:
   goto checkForPartial
 
 findCarvingDesign:
-  if ($chapter = 1) then {
+  if ($chapter = 1) then {      
 	var option.length 8
   }
   if ($chapter = 6) then {
@@ -83,13 +84,13 @@ findCarvingDesign:
     }
   put turn my book to chapter $chapter
   var option.index 0
-findCarvingDesignLoop:
+findCarvingDesignLoop:	  
   math option.index add 1
-  if (%option.index < %option.length) then {
+  if (%option.index < %option.length) then {    	
 	matchre matchFound %2
 	matchre findCarvingDesignLoop ^(You turn your book to page|You are already on page)
 	put turn my book to page %option.index
-	matchwait 5
+	matchwait 5	
   }
   echo Could not find design %2, exiting.
   goto exit
@@ -155,12 +156,12 @@ designAnimalLoop:
 ########################
 # Main
 ########################
-checkForPartial:
+checkForPartial:    
   if ($nextTool <> 0) then {
 	  var %2 $righthandnoun
       goto $nextTool
 	}
-  }
+  } 
 setStore:
   put #var craftNeed %1
   put store default %engineeringContainer
@@ -232,7 +233,7 @@ engGetBook:
   matchre engExit ^What were you
   put get my shap book
   matchwait 5
-
+  
 engStudy:
   matchre engStowBook ^(You scan|You review)
   put study my book
@@ -274,18 +275,18 @@ studyCodex:
   matchwait 5
 
 engScrapeLumber:
-  put #var nextTool 0
+  put #var nextTool 0  
 engScrapeLumber1:
   matchre codex ^You must study a design
   matchre findNextTool ^Roundtime
   put scrape my lumber with my drawknife
   matchwait 5
-
-findNextTool:
+  
+findNextTool:  
   if ($nextTool <> 0 ) then {
     goto $nextTool
   }
-  goto errorExit
+  goto errorExit   
 
 knife:
   gosub tieTool
@@ -317,7 +318,7 @@ scrape:
   matchre findNextTool ^Roundtime
   put scrape my %2 with my rasp
   matchwait 5
-
+  
 shaper:
   gosub tieTool
   pause
@@ -334,15 +335,14 @@ shape:
   matchre strips ^You need another finished leather strips
   put shape my %2 with my shaper
   matchwait 5
-
+  
 shortCord:
     var location shortCord1
-    shortCord1:
-    matchre engExtraStow ^You need a free hand
-    matchre engAssemble ^You get
-    matchre engExit ^What were you
-    put get my short cord
-    matchwait 5
+    if ("$lefthand" <> "Empty") then {
+        gosub tie my $lefthand to my tool
+    }
+    gosub get my cord
+    goto engAssemble
 
 strips:
     var location strips1
@@ -357,13 +357,18 @@ engExtraStow:
     gosub tieTool
     goto %location
 
+engStowCord:
+    gosub stow my cord
+    goto shaper
+
 
 engAssemble:
-  matchre shaper ^You place your
-  matchre engExit ^What were you
-  put assemble my $righthandnoun with my $lefthandnoun
-  matchwait 5
-
+    matchre engStowCord ^The short cord is not required to continue
+    matchre findNextTool ^You place your
+    matchre engExit ^What were you
+    put assemble my $righthandnoun with my $lefthandnoun
+    matchwait 5
+  
 tieTool:
   pause
   if ("$lefthandnoun" = "shaper") then {
@@ -395,7 +400,7 @@ engDone:
   put analyze my %2
   waitfor Roundtime:
   pause
-  put stow
+  put stow  
   evalmath crafted (%crafted + 1)
   if (%crafted < $craftNeed) then {
     put #echo >log yellow [eng] Progress %crafted/$craftNeed
@@ -409,7 +414,7 @@ engExit:
   pause .2
   put #parse ENG DONE
   exit
-
+  
 errorExit:
   put #echo >log red Next Tool was not found.  Exiting.
   exit
