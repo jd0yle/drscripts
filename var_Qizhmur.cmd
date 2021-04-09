@@ -26,18 +26,12 @@ put #tvar char.wornFocus 0
 ###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.prep 20
+put #tvar char.cast.default.prep 40
 put #tvar char.cast.default.charge 40
 put #tvar char.cast.default.harness 0
 
-put #tvar char.cast.obf.prep 40
-put #tvar char.cast.obf.charge 50
-put #tvar char.cast.obf.chargeTimes 1
-put #tvar char.cast.obf.harness 0
-
-put #tvar char.cast.maf.prep 40
-put #tvar char.cast.maf.charge 50
-put #tvar char.cast.maf.chargeTimes 1
+put #tvar char.cast.ch.prep 20
+put #tvar char.cast.ch.charge 40
 
 put #tvar char.cast.devour.prep 30
 put #tvar char.cast.devour.charge 10
@@ -50,6 +44,14 @@ put #tvar char.cast.gaf.prep 40
 put #tvar char.cast.gaf.charge 40
 put #tvar char.cast.gaf.chargeTimes 1
 
+put #tvar char.cast.maf.prep 40
+put #tvar char.cast.maf.charge 50
+put #tvar char.cast.maf.chargeTimes 1
+
+put #tvar char.cast.obf.prep 40
+put #tvar char.cast.obf.charge 50
+put #tvar char.cast.obf.chargeTimes 1
+put #tvar char.cast.obf.harness 0
 
 ###############################
 ###      COMBAT
@@ -95,6 +97,11 @@ put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 10
 put #tvar char.magic.train.harness.Warding 8
+
+put #tvar char.magic.train.cyclic.Utility 1
+put #tvar char.magic.train.cyclic.spell.Utility roc
+put #tvar char.magic.train.cyclic.spell.fullName RightofContrition
+put #tvar char.magic.train.cyclic.prep.Utility 15
 
 
 ###############################
