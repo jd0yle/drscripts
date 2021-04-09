@@ -77,7 +77,7 @@ loop:
     pause 1
     gosub waitArcana
     pause 1
-    #gosub waitEngineer
+    gosub waitEngineer
     pause 1
     if ($mana > 30) then {
         gosub waitMagic

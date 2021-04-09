@@ -51,7 +51,7 @@ var todo
 ###############################
 action put #tvar char.burgle.cooldown $1 when ^You should wait at least (\d+) roisaen
 action put #tvar char.burgle.cooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
-
+action put #tvar char.burgle.cooldown 0 when ^The heat has died down from your last caper\.
 
 ###############################
 ### CROSSBOWS
