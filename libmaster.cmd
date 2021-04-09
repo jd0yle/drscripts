@@ -1411,6 +1411,7 @@ play:
     var todo $0
     play1:
     matchre return with only the slightest hint
+    matchre return ^You begin
     matchre return ^You effortlessly
     matchre return ^You fumble
     matchre return ^You play
