@@ -38,9 +38,12 @@ loop:
 
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
 
-    if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling = 1 && $SpellTimer.Shadowling.duration < 3) then {
-        put .cast shadowling
-        gosub invoke shadowling
+    if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling =1) then {
+        if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
+            gosub release shadowling
+            put .cast shadowling
+            waitforre ^CAST DONE
+        }
     }
 
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer

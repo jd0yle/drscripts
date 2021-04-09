@@ -1017,7 +1017,7 @@ invoke:
     matchre return ^The cambrinth
     matchre return ^You are in no condition
     matchre return ^You don't have any
-    matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane.$
+    matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane\.
     matchre return ^You must begin preparing a ritual spell before you can focus it
     matchre return You reach for its center and forge a magical link
     matchre return ^You're not sure what would happen
