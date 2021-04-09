@@ -20,10 +20,16 @@ if_1 then {
 var lastSpellBackfired 0
 var magic.skills Augmentation|Warding|Utility
 
+# TODO: Expand this to not be specific to Utility and Rite of Contrition
+if ($char.magic.train.cyclic.Utility = 1) then {
+    var magic.skills Augmentation|Warding
+}
+
+
 eval magic.length count("%magic.skills", "|")
 if (!($magic.index > -1)) then put #tvar magic.index 0
 
-if ($SpellTimer.Regenerate.active != 1) then gosub release cyclic
+if ($SpellTimer.Regenerate.active != 1 && $SpellTimer.RiteofContrition.active != 1) then gosub release cyclic
 
 
 ###############################
@@ -57,8 +63,33 @@ loop:
         gosub gaze my sanowret crystal
     }
 
-    gosub findMinLearnRate
+    if ($char.magic.train.cyclic.Utility = 1) then {
+        var shouldCastRoc 1
 
+        if ($SpellTimer.RiteofContrition.active = 1) then var shouldCastRoc 0
+        if ($mana < 75) then var shouldCastRoc 0
+        if ($Utility.LearningRate > 32) then var shouldCastRoc 0
+
+        if (%shouldCastRoc = 1) then {
+            gosub prep $char.magic.train.cyclic.spell.Utility $char.magic.train.cyclic.prep.Utility
+            gosub waitForPrep
+            gosub cast
+        }
+
+        if ($SpellTimer.RiteofContrition.active = 1) then {
+			var shouldReleaseRoc 0
+
+	        evalmath nextCastCyclicGametime (300 + $char.cast.cyclic.lastCastGametime.roc)
+
+	        if (%nextCastCyclicGametime < $gametime) then var shouldReleaseRoc 1
+            if ($mana < 50) then var shouldReleaseRoc 1
+            if ($Utility.LearningRate > 33) then var shouldReleaseRoc 1
+
+            if (%shouldReleaseRoc = 1) then gosub release roc
+        }
+    }
+
+    gosub findMinLearnRate
     var skill %magic.skills($magic.index)
 
     if ($%skill.LearningRate < 34) then {

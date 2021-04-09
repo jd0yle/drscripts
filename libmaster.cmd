@@ -61,6 +61,40 @@ var crossbowItems crossbow|stonebow|latchbow|pelletbow|lockbow
 
 
 ###############################
+### CYCLICS
+###############################
+put #class cyclicBarbarian off
+put #class cyclicBard off
+put #class cyclicCleric off
+put #class cyclicEmpath off
+put #class cyclicMoonMage off
+put #class cyclicNecromancer off
+put #class cyclicPaladin off
+put #class cyclicRanger off
+put #class cyclicThief off
+put #class cyclicTrader off
+put #class cyclicWarriorMage off
+
+# NECROMANCER
+put #trigger {^You weave a field of sublime corruption, concealing the scars in your aura under a layer of magical pretense\.$} {#tvar char.cast.cyclic.lastCastGametime.roc $gametime} {cyclicNecromancer}
+put #trigger {^You project your self-image outward on a gust} {#tvar char.cast.cyclic.lastCastGametime.rog $gametime} {cyclicNecromancer}
+if ("$guild" = "Necromancer") then {
+    if (!($char.cast.cyclic.lastCastGametime.roc > 0)) then put #tvar char.cast.cyclic.lastCastGametime.roc 1
+    if (!($char.cast.cyclic.lastCastGametime.rog > 0)) then put #tvar char.cast.cyclic.lastCastGametime.rog 1
+
+    put #class cyclicNecromancer on
+}
+
+# MOON MAGE
+put #trigger {^Several motes of light gather, briefly forming} {#tvar char.cast.cyclic.lastCastGametime.sls $gametime} {cyclicMoonMage}
+if ("$guild" = "Moon Mage") then {
+    if (!($char.cast.cyclic.lastCastGametime.sls > 0)) then put #tvar char.cast.cyclic.lastCastGametime.sls 1
+
+    put #class cyclicMoonMage on
+}
+
+
+###############################
 ### HE/2HE SWAPPING
 ###############################
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
@@ -527,6 +561,7 @@ cast:
     matchre return ^You make a holy gesture
     matchre return ^You mutter incoherently to yourself
     matchre return ^You place your hands
+    matchre return ^You project
     matchre return ^You raise your palms and face to the heavens
     matchre return ^You wave your hand\.
     matchre return ^You whisper the final word of your spell
@@ -534,6 +569,7 @@ cast:
     matchre return ^Your spell backfires
     matchre return ^Your spell pattern collapses
     matchre return ^Your target pattern dissipates
+    matchre return ^You weave
     put cast %todo
     goto retry
 
@@ -1603,6 +1639,7 @@ release:
     matchre return ^You have no cyclic spell active to release.
     matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
     matchre return ^The refractive field surrounding you
+    matchre return ^You have no
     matchre return ^You release
     matchre return ^Your corruption fades
     matchre return ^Are you sure you'd lke to remove the Discern symbiosis from your memory

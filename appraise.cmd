@@ -23,7 +23,6 @@ if ($gametime > %nextAppGametime || %force = 1) then {
         }
     }
 
-    if ($monstercount > 0) then gosub advance
     put #var lastAppGametime $gametime
 }
 
