@@ -9,10 +9,11 @@ goto loop
 
 
 logout:
+    put #var afk 0
     put exit
-    put #script abort all except qiztrainshard
+    put #script abort all
     pause 1
-    put #script abort all except qiztrainshard
+    put #script abort all
     put exit
     exit
 

@@ -141,6 +141,7 @@ if ($charactername = Qizhmur && "%opts" != "backtrain") then {
     var avoidDivineOutrage 1
 
     var useAlmanac 1
+    var useSanowret 1
 }
 
 if ($charactername = Qizhmur && "%opts" = "backtrain") then {
@@ -429,7 +430,7 @@ attackThrownWeapon:
             gosub get my %weapons.items(%weapons.index)
         }
 
-        if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata") then {
+        if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata" || "$righthandnoun" = "pan") then {
             gosub debil
             gosub checkHide
             gosub attack throw
@@ -516,22 +517,21 @@ buffs:
         }
 
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 2) then {
-            gosub prep maf 40
-            gosub charge %cambrinth 30
-            gosub charge %cambrinth 30
-            gosub invoke %cambrinth
+            gosub prep maf 20
+            gosub charge %cambrinth 40
+            gosub invoke %cambrinth 40
             gosub waitForPrep
+            gosub harness 20
             gosub cast
             return
         }
 
         if ($SpellTimer.Obfuscation.active != 1 || $SpellTimer.Obfuscation.duration < 2) then {
-            gosub prep obf 40
-            gosub charge %cambrinth 30
-            gosub charge %cambrinth 30
-            gosub invoke %cambrinth
-            gosub invoke %cambrinth
+            gosub prep obf 20
+            gosub charge %cambrinth 40
+            gosub invoke %cambrinth 40
             gosub waitForPrep
+            gosub harness 20
             gosub cast
             return
         }
@@ -770,10 +770,7 @@ checkHide:
 ###############################
 debil:
     var force 0
-    if ("$1" = "force") then {
-        var force 1
-        echo \$1 is $1     force is %force
-    }
+    if ("$1" = "force") then var force 1
     var debilConditions sleeping|immobilized|writhing
     if (%debil.use = 1 && $mana > 80 && (%force = 1 || !contains("$monsterlist", "%debilConditions")) then {
     #if (%debil.use = 1 && $mana > 80 && (%force = 1 || (!contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") && !contains("$roomobjs", "writhing web of shadows") )) ) then {
@@ -803,15 +800,12 @@ fight.observe:
 huntApp:
     if (%useHunt = 1 && $Perception.LearningRate < 33) then {
        gosub hunt.onTimer
-       return
     }
     if (%useApp = 1 && $Appraisal.LearningRate < 30) then {
         gosub appraise.onTimer
-        return
     }
     if (%usePerc = 1 && $Attunement.LearningRate < 33) then {
         gosub perc.onTimer
-        return
     }
 
     return

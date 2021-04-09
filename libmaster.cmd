@@ -1884,10 +1884,7 @@ stance:
     var todo $0
     var current.stance $0
     if ("%todo" != "shield" && contains("$righthandnoun", "%crossbowItems")) then var todo shield
-    if ("$stance" = "%todo") then {
-        echo [libmaster stance:] Not stancing to %todo, \$stance is $stance
-        return
-    }
+    if ("$stance" = "%todo") then return
     stance1:
     matchre return ^You are now set to use your
     matchre return ^Your (attack|evasion|parry|shield) ability is now set at
@@ -1998,12 +1995,12 @@ stow:
     if ("%todo" = "right" && "$righthand" = "Empty") then return
     if ("%todo" = "left" && "$lefthand" = "Empty") then return
     if ("$charactername" = "Selesthiel") then {
-        if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope")) then {
+        if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope") || ("%todo" = "left" && "$lefthand" = "clockwork telescope")) then {
             gosub put my telescope in my telescope case
             return
         }
-        if (contains("%todo", "sunstone runestone") || ("%todo" = "right" && "$righthand" = "sunstone runestone")) then {
-            gosub put my sunstone runestone in my telescope case
+        if (contains("%todo", "bones") || ("%todo" = "right" && "$righthand" = "divination bones") || ("%todo" = "left" && "$lefthand" = "divination bones")) then {
+            gosub put my divination bones in my telescope case
             return
         }
         if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = "compendium")) then {
@@ -2012,7 +2009,7 @@ stow:
         }
     }
     if ("$charactername" = "Qizhmur") then {
-        if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material")) then {
+        if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material") || ("%todo" = "left" && "$lefthandnoun" = "material")) then {
             gosub put my material in my satchel
             return
         }
@@ -2440,7 +2437,7 @@ appraise.onTimer:
 
     appraise.onTimer1:
     if (!($lastAppGametime > 0)) then put #var lastAppGametime 1
-    evalmath nextAppGametime $lastAppGametime + 121
+    evalmath nextAppGametime $lastAppGametime + 61
 
     if ($gametime > %nextAppGametime) then gosub runScript appraise %todo
     return
@@ -2482,7 +2479,11 @@ perc.onTimer:
 	evalmath nextPercGametime $lastPercGametime + 61
 
 	if ($gametime > %nextPercGametime) then {
-	    gosub perc mana
+	    if ("$guild" = "Moon Mage") then {
+	        gosub perc mana
+        } else {
+            gosub perc
+        }
 	    put #var lastPercGametime $gametime
 	}
     return
