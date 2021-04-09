@@ -443,8 +443,8 @@ moveToHouse:
 
 enterHouse:
     gosub release eotb
-    matchre enterHouseCont ^A sandalwood door's handle suddenly rattles!
-    matchre enterHouseCont ^A sandalwood door suddenly opens!
+    matchre enterHouseCont suddenly rattles
+    matchre enterHouseCont suddenly opens
     gosub peer door
     matchwait 10
     gosub open door
