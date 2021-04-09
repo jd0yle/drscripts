@@ -20,9 +20,12 @@ if_1 then {
 
 action send pat inauri head when ^A soft crackle briefly comes from Inauri's direction.
 
+var burgleCooldown 0
 var nextBurgleCheck 0
 var injured 0
 
+action var burgleCooldown $1 when ^You should wait at least (\d+) roisaen
+action var burgleCooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
 action var numBolts $1 when ^You count some basilisk bolts in the \S+ and see there are (\S+) left\.$
 action var numArrows $1 when ^You count some basilisk arrows in the \S+ and see there are (\S+) left\.$
 action send stand when ^You'll have to move off the sandpit first.
@@ -37,9 +40,9 @@ if ("%startAt" = "fight") then goto startFight
 main:
     gosub abortScripts
     gosub resetState
-    gosub burgle.onTimer
+    gosub checkBurgleCd
 
-    if ($char.burgle.cooldown = 0) then {
+    if (%burgleCooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
 
         gosub moveToBurgle
@@ -179,6 +182,24 @@ abortScripts:
     gosub stow right
     gosub stow left
     return
+
+
+checkBurgleCd:
+    var burgleCooldown 0
+
+    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
+    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
+    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
+
+    if (%burgleCooldown = 0) then {
+        gosub burgle recall
+        pause
+    }
+
+    evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
+    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
+    return
+
 
 
 getHealed:
@@ -450,7 +471,7 @@ waitForBurgleCd:
         gosub stow left
         gosub checkBurgleCd
     }
-    if ($char.burgle.cooldown = 0) then return
+    if (%burgleCooldown = 0) then return
     pause 2
     goto waitForBurgleCd
 
@@ -467,7 +488,7 @@ waitForMagic:
         pause 1
     }
 
-    if ($char.burgle.cooldown = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
+    if (%burgleCooldown = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
         put #script abort all except selesthiel
         gosub resetState
         return
@@ -492,9 +513,9 @@ waitForMainCombat:
         put .fight
         pause 1
     }
-    if ($char.burgle.cooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
-    #if ($char.burgle.cooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
-    #if ($char.burgle.cooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
+    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    #if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    #if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
         put #script abort all except selesthiel
         put .reconnect
         pause 1

@@ -77,7 +77,7 @@ loop:
     pause 1
     gosub waitArcana
     pause 1
-    gosub waitEngineer
+    #gosub waitEngineer
     pause 1
     if ($mana > 30) then {
         gosub waitMagic
@@ -125,7 +125,8 @@ waitEngineer:
         if ($Engineering.LearningRate = 0) then {
             put #var lastEngineerGametime $gametime
             put .eng 5 $char.craft.item
-            exit
+            waitforre ^ENG DONE
+            put #script abort all except inaidle
         }
     }
     return
@@ -167,7 +168,7 @@ waitMagic:
             put .look
             put .magic noLoop
             waitforre ^MAGIC DONE
-            put #abort all except inaidle
+            put #script abort all except inaidle
         }
     }
     return

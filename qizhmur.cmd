@@ -13,6 +13,9 @@ timer start
 var useBurgle 1
 var nextBurgleCheck -1
 
+action var burgleCooldown $1 when ^You should wait at least (\d+) roisaen
+action var burgleCooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
+
 var isFullyPrepped 0
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
@@ -71,9 +74,9 @@ if_1 then {
 }
 
 main:
-    if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub burgle.onTimer
+    if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub checkBurgleCd
 
-    if (%useBurgle = 1 &&  $char.burgle.cooldown = 0) then {
+    if (%useBurgle = 1 &&  %burgleCooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
 
         if ($SpellTimer.EyesoftheBlind.active != 1 || $SpellTimer.EyesoftheBlind.duration < 5) then {
@@ -148,7 +151,7 @@ main:
     startMagic:
     if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
-        #gosub moveToHouse
+        gosub moveToHouse
 
         if ("$roomname" != "Private Home Interior") then {
             put #echo >Log #cc99ff House won't open, going to FC
@@ -407,13 +410,7 @@ moveToHouse:
     if ("%zone" = "66") then {
         if ("$roomname" = "Private Home Interior") then return
         if ("$roomid" = "252") then {
-            gosub release eotb
-            gosub peer door
-            pause 10
-            gosub open door
-            gosub move go door
-            gosub close door
-            gosub lock door
+            gosub enterHouse
             return
         } else {
             gosub automove 252
@@ -442,7 +439,27 @@ moveToHouse:
     }
 
     goto moveToHouse
-    
+
+
+enterHouse:
+    gosub release eotb
+    matchre enterHouseCont ^A sandalwood door's handle suddenly rattles!
+    matchre enterHouseCont ^A sandalwood door suddenly opens!
+    gosub peer door
+    matchwait 10
+    gosub open door
+    gosub move go door
+    return
+
+
+
+enterHouseCont:
+    gosub open door
+    gosub move go door
+    gosub close door
+    gosub lock door
+    return
+
 
 moveToMagic:
     gosub setZone
@@ -686,8 +703,8 @@ put .reconnect
         put .qizhmur
         pause 1
     }
-    #if ($char.burgle.cooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
-    if ($char.burgle.cooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
+    #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
+    if (%burgleCooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
         put #script abort all except qizhmur
 put .reconnect
         pause 1
@@ -716,7 +733,7 @@ put .reconnect
         put .fight
         pause 1
     }
-    if ($char.burgle.cooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
+    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
         put #script abort all except qizhmur
 put .reconnect
         pause 1
@@ -756,13 +773,30 @@ retrieveBoltsLoop:
     if (%retrieveAttempts < 10 && $monstercount > 0) then goto retrieveBoltsLoop
     var expectedNumBolts %numBolts
     return
+    
+    
+checkBurgleCd:
+    var burgleCooldown 0
+
+    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
+    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
+    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
+
+    if (%burgleCooldown = 0) then {
+        gosub burgle recall
+        pause
+    }
+
+    evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
+    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
+    return
 
 
 waitForBurgleCd:
     if (%nextBurgleCheck < %t) then {
         gosub checkBurgleCd
     }
-    if ($char.burgle.cooldown = 0) then return
+    if (%burgleCooldown = 0) then return
     pause 2
     goto waitForBurgleCd
 

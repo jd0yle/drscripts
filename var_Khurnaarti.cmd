@@ -8,7 +8,7 @@ put #tvar char.appraise.item my sail pouch
 ###############################
 ###      BURGLE
 ###############################
-put #tvar char.burgle.cooldown 0
+put #tvar char.burgle.cooldown null
 
 
 ###############################
@@ -53,6 +53,14 @@ put #tvar char.combat.harness.Targeted_Magic 0
 var friends (Inauri|Qizhmur|Selesthiel)
 var enemies null
 var super.enemies null
+
+
+###############################
+###      LOCKSMITHING
+###############################
+put #tvar char.locks.boxType box
+put #tvar char.locks.lockpickType ring
+put #tvar char.locks.boxContainer wallet
 
 
 ###############################
