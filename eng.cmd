@@ -10,6 +10,7 @@ action put #var nextTool rasp when ^A bulbous knot will make continued shaping d
 action put #var nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
 action put #var nextTool engDone when ^Applying the final touches
 action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
+action goto shortCord when ^You need another finished short leather cord
 
 ########### CONFIG ###########
 var chapter 0
@@ -336,24 +337,37 @@ shape:
   matchwait 5
   
 shortCord:
-  matchre engStow ^You need a free hand
-  matchre engAssemble ^You get
-  matchre engExit ^What were you
-  put get my short cord
-  matchwait 5
+    var location shortCord1
+    if ("$lefthand" <> "Empty") then {
+        gosub tie my $lefthand to my tool
+    }
+    gosub get my cord
+    goto engAssemble
 
 strips:
-  matchre engStow ^You need a free hand
-  matchre engAssemble ^You get
-  matchre engExit ^What were you
-  put get my strips
-  matchwait 5
+    var location strips1
+    strips1:
+    matchre engExtraStow ^You need a free hand
+    matchre engAssemble ^You get
+    matchre engExit ^What were you
+    put get my strips
+    matchwait 5
+
+engExtraStow:
+    gosub tieTool
+    goto %location
+
+engStowCord:
+    gosub stow my cord
+    goto shaper
+
 
 engAssemble:
-  matchre shaper ^You place your
-  matchre engExit ^What were you
-  put assemble my %2 with my $lefthandnoun
-  matchwait 5
+    matchre engStowCord ^The short cord is not required to continue
+    matchre findNextTool ^You place your
+    matchre engExit ^What were you
+    put assemble my $righthandnoun with my $lefthandnoun
+    matchwait 5
   
 tieTool:
   pause
