@@ -152,6 +152,8 @@ var foragable 0
 ###############################
 if ("$charactername" = "Inauri") then {
     action goto refreshRegen when eval $health < 50
+    action put #var magicInert 1 when ^The spell pattern resists the influx of unstable mana, overloading your arcane senses and rendering you magically inert\.
+    action put #var magicInert 0 when ^Awareness enfolds you like the embrace of a loving parent as your attunement to Life mana returns\.
 }
 
 
@@ -1411,6 +1413,7 @@ play:
     var todo $0
     play1:
     matchre return with only the slightest hint
+    matchre return ^You begin
     matchre return ^You effortlessly
     matchre return ^You fumble
     matchre return ^You play
@@ -1619,57 +1622,34 @@ release:
     matchre return ^A faint groan echoes
     matchre return ^A faint growl echoes from the depths
     matchre return ^A.*Shadow Servant.*disappears\.$
+    matchre return ^Are you sure you'd lke to remove the Discern symbiosis from your memory
     matchre return ^But you haven't prepared
     matchre return disappears\.$
+    matchre return ^Release\?  You can't even sense mana right now\.$
     matchre return ^Release what
-    matchre return sphere suddenly flares with a cold light and vaporizes!$
-    matchre return ^That would be a neat trick.  Try finding a shadowling first.$
+    matchre return sphere suddenly flares with a cold light and vaporizes\!$
+    matchre return ^That would be a neat trick.  Try finding a shadowling first\.$
     matchre return ^The greenish hues
-    matchre return ^Release\?  You can't even sense mana right now.$
-    matchre return ^The Refractive Field pattern fades from you.
+    matchre return ^The Refractive Field pattern fades from you\.
+    matchre return ^The refractive field surrounding you
     matchre return ^The Rite of Contrition
     matchre return ^The Rite of Grace matrix loses
     matchre return ^The shimmering globe of blue fire
     matchre return ^The tingling across your body diminishes as you feel the motes of energy fade away
     matchre return ^Type RELEASE HELP for more options\.
-    matchre return ^You aren't harnessing any mana.
+    matchre return ^You aren't harnessing any mana\.
     matchre return ^You aren't preparing
-    matchre return ^You cease your shadow weaving.$
+    matchre return ^You cease your shadow weaving\.
     matchre return ^You don't have a Shadow Servant
-    matchre return ^You have no cyclic spell active to release.
-    matchre return ^You let your concentration lapse and feel the spell's energies dissipate.
-    matchre return ^The refractive field surrounding you
-    matchre return ^You have no
-    matchre return ^You release
-    matchre return ^Your corruption fades
-    matchre return ^Are you sure you'd lke to remove the Discern symbiosis from your memory
-    put release %todo
-    goto retry
-
-
-rel.shadow:
-    var location rel.shadow
-    matchre return ^That would be a neat trick.  Try finding a shadowling first\.
     matchre return ^You gesture, attempting to unravel the pattern binding the shadowling to this plane\.
     matchre return ^You gesture, completing the pattern to unravel the mystical bonds binding the shadowling to this plane\.
-    put release shadowling
-    goto retry
-
-
-release.spell:
-    if $preparedspell = None then return
-    var location release.spell
+    matchre return ^You have no
+    matchre return ^You have no cyclic spell active to release\.
     matchre return ^You let your concentration lapse and feel the spell's energies dissipate\.
-    matchre return ^You aren't preparing a spell\.
-    put release spell
-    goto retry
-
-
-release.mana:
-    var location release.mana
+    matchre return ^You release
     matchre return ^You release the mana you were holding\.
-    matchre return ^You aren't holding any mana\.
-    put release mana
+    matchre return ^Your corruption fades
+    put release %todo
     goto retry
 
 

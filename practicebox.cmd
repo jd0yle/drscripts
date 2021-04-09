@@ -3,7 +3,7 @@ include libmaster.cmd
 # Lockpicking Practice Boxes
 ###############
 action var newBox 1 when ^The lock looks weak
-action put close %box when ^Maybe you should close the (.*) first\.$
+action put close $char.locks.boxType when ^Maybe you should close the (.*) first\.$
 
 ###############
 # Main

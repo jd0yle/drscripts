@@ -71,9 +71,9 @@ loop:
     pause 1
     gosub waitFaSkin
     pause 1
-    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+    if ($Attunement.LearningRate < 33 && $magicInert <> 1) then gosub perc.onTimer
     pause 1
-    if ($Empathy.LearningRate < 33) then gosub percHealth.onTimer
+    if ($Empathy.LearningRate < 33  && $magicInert <> 1) then gosub percHealth.onTimer
     pause 1
     gosub waitArcana
     pause 1
@@ -107,6 +107,9 @@ waitAlmanac:
 
 
 waitArcana:
+    if ($magicInert = 1) then {
+        return
+    }
     if ($Arcana.LearningRate > 15) then {
         return
     }
@@ -162,6 +165,9 @@ waitLook:
 
 
 waitMagic:
+    if ($magicInert = 1) then {
+        return
+    }
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
@@ -175,6 +181,9 @@ waitMagic:
 
 
 waitResearch:
+    if ($magicInert = 1) then {
+        return
+    }
     if ($Sorcery.LearningRate < 5) then {
         put justice
         if (%justice <> 0) then {
