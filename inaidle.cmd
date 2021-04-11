@@ -41,6 +41,10 @@ var poisonSelf $char.healing.poisonSelf
 # Main
 ###################
 loop:
+    if (!contains("$scriptlist", "reconnect.cmd")) then {
+        put #echo >Log [inaidle] Starting reconnect
+        put .reconnect
+    }
     if ($teach = 1) then gosub waitTeach
     if ($standing = 0) then gosub stand
     if ($heal = 1) then {
