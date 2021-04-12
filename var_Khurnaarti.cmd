@@ -6,12 +6,6 @@ put #tvar char.appraise.item my sail pouch
 
 
 ###############################
-###      BURGLE
-###############################
-put #tvar char.burgle.cooldown null
-
-
-###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband
@@ -60,7 +54,7 @@ var super.enemies null
 ###############################
 put #tvar char.locks.boxType box
 put #tvar char.locks.lockpickType ring
-put #tvar char.locks.boxContainer wallet
+put #tvar char.locks.boxContainer rucksack
 
 
 ###############################
