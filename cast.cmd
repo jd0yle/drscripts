@@ -115,6 +115,11 @@ if (%useCambrinth = 1) then {
 
     gosub invoke my $char.cambrinth %charge %invokeSpell
 
+    if ("%spell" = "qe") then {
+        gosub push my vial
+        gosub perform cut
+    }
+
 	if ($char.wornCambrinth != 1) then {
 	    gosub wear my $char.cambrinth
 	    if ("$righthand" <> "Empty" && "$lefthand" <> "Empty") then {
@@ -157,6 +162,8 @@ ritualSpell:
 ###############################
 done:
     if ("%spell" = "shadowling") then gosub invoke shadowling
+
+    if ("%spell" = "qe" && ("$lefthandnoun" = "dirt" || "$righthandnoun" = "dirt")) then gosub put my dirt in my vial
 
     if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
     pause .2

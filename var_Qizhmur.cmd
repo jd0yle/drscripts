@@ -24,7 +24,7 @@ put #tvar char.wornFocus 0
 ###############################
 ###      CAST
 ###############################
-put #tvar char.cast.invokeSpell 0
+put #tvar char.cast.invokeSpell 1
 
 put #tvar char.cast.default.prep 40
 put #tvar char.cast.default.charge 40
@@ -52,6 +52,14 @@ put #tvar char.cast.obf.prep 40
 put #tvar char.cast.obf.charge 50
 put #tvar char.cast.obf.chargeTimes 1
 put #tvar char.cast.obf.harness 0
+
+put #tvar char.cast.php.prep 40
+put #tvar char.cast.php.charge 50
+put #tvar char.cast.php.chargeTimes 1
+
+put #tvar char.cast.qe.prep 35
+put #tvar char.cast.qe.charge 60
+put #tvar char.cast.qe.chargeTimes 1
 
 ###############################
 ###      COMBAT

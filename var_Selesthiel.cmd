@@ -75,7 +75,7 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 70
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 60
 
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
@@ -83,7 +83,7 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 10
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 70
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
 
 
 

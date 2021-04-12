@@ -205,6 +205,9 @@ timer start
 # Sometimes fails to get crossbow? Not sure, hack fix for now. - JD, 4/1/21
 action send get %weapons.items(%weapons.index); send load when ^You need to hold the.*in your right hand to load it.
 
+action var useHunt 0 when ^You find yourself unable to hunt in this area.
+
+
 
 ###############################
 ###      init
@@ -260,13 +263,17 @@ loop:
 
     if (%useSanowret = 1 && $Arcana.LearningRate < 33 && $concentration = 100) then gosub gaze my sanowret crystal
 
+    var numMobs $monstercount
+
+    if (contains("$roomobjs", (dirt construct)) then math numMobs subtract 1
+
     var attackContinue 1
-    if (%attackContinue = 1 && $monstercount < 2) then {
-        if ($monstercount = 1) then {
+    if (%attackContinue = 1 && %numMobs < 2) then {
+        if (%numMobs = 1) then {
             gosub attack circle
             gosub attack bob
         }
-        if ($monstercount = 0) then {
+        if (%numMobs = 0) then {
             gosub collect dirt
 
             if (contains("$roomobjs", "a pile of")) then {
@@ -276,7 +283,7 @@ loop:
         var attackContinue 0
     }
 
-    if (%attackContinue = 1 && $monstercount > 0) then {
+    if (%attackContinue = 1 && %numMobs > 0) then {
         var continue = 1
         if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
             if ($mana > 80) then {
@@ -507,59 +514,30 @@ buffs:
 
     if ($charactername = Qizhmur) then {
         if (%usePhp = 1 && %avoidDivineOutrage != 1 && ($SpellTimer.PhilosophersPreservation.active != 1 || $SpellTimer.PhilosophersPreservation.duration < 3)) then {
-            gosub prep php 10
-            gosub charge %cambrinth 25
-            gosub charge %cambrinth 25
-            gosub invoke %cambrinth
-            gosub waitForPrep
-            gosub cast
+            gosub runScript cast php
             return
         }
 
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 2) then {
-            gosub prep maf 20
-            gosub charge %cambrinth 40
-            gosub invoke %cambrinth 40
-            gosub waitForPrep
-            gosub harness 20
-            gosub cast
+            gosub runScript cast maf
             return
         }
 
         if ($SpellTimer.Obfuscation.active != 1 || $SpellTimer.Obfuscation.duration < 2) then {
-            gosub prep obf 20
-            gosub charge %cambrinth 40
-            gosub invoke %cambrinth 40
-            gosub waitForPrep
-            gosub harness 20
-            gosub cast
+            gosub runScript cast obf
             return
         }
 
         if (%useCh = 1 &&  %avoidDivineOutrage != 1 && ($SpellTimer.CalcifiedHide.active != 1 || $SpellTimer.CalcifiedHide.duration < 3)) then {
-            gosub prep ch 10
-            gosub charge %cambrinth 40
-            gosub invoke %cambrinth
-            gosub waitForPrep
-            gosub cast
+            gosub runScript cast ch
             return
         }
         if ( %avoidDivineOutrage != 1 && $SpellTimer.IvoryMask.active != 1 && "%weapons.skills(%weapons.index)" = "Targeted_Magic" && %useIvm = 1) then {
-            gosub prep ivm 10
-            pause 10
-            gosub cast
+            gosub runScript cast ivm
             return
         }
-        if (%useQe = 1 && %avoidDivineOutrage != 1 && $SpellTimer.QuickentheEarth.active != 1) then {
-            return
-            gosub prep qe 12
-            pause 10
-            gosub stance shield
-            gosub stow left
-            put push my vial
-            pause
-            gosub perform cut
-            gosub cast
+        if (%useQe = 1 && $SpellTimer.QuickentheEarth.active != 1) then {
+            gosub runScript cast qe
             return
         }
 
@@ -726,6 +704,19 @@ checkStancesOLDDEPRECATED:
 checkDeadMob:
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
+
+        if ("$charactername" = "Qizhmur") then {
+            if ("%mobName" = "basilisk") then {
+                gosub skin basilisk for part
+                gosub put my fang in my satchel
+            }
+            if ("$righthandnoun" = "hide" || "$lefthandnoun" = "hide") then {
+                gosub put my hide in my bundle
+                gosub drop hide
+            }
+            gosub loot %lootType
+            return
+        }
 
         if ("$guild" = "Necromancer" && matchre("%ritualcritters", "%mobName")) then {
             gosub runScript devour %mobName

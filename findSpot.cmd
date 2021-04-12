@@ -55,13 +55,13 @@ if ("%mob" = "warklin") then {
 if ("%mob" = "wyvern") then {
     var checkRoomId 567
     var maxRoomId 572
-    var waitroomid 436
+    var waitroomid 435
 }
 
 if ("%mob" = "wyvern2") then {
     var checkRoomId 480
     var maxRoomId 487
-    var waitroomid 436
+    var waitroomid 435
 }
 
 if ("%mob" = "adanf") then {

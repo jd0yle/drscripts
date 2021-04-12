@@ -2,5 +2,7 @@ include libmaster.cmd
 
 var item %0
 
-gosub get my %item from my portal
-gosub drop %item
+loop:
+    gosub get my %item from my satchel
+    gosub put my %item in my silver backpack
+goto loop
