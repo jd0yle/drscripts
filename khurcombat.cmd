@@ -49,7 +49,7 @@ if ("$charactername" = "Inauri") then {
 
 if ("$charactername" = "Khurnaarti") then {
     var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Targeted_Magic
-    var weaponItems nightstick|Empty|naphtha|wand|Empty
+    var weaponItems tanbo|Empty|naphtha|wand|Empty
 
     if ("%opts" = "backtrain") then {
         var weaponSkills Light_Thrown|Heavy_Thrown
