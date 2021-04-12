@@ -1393,6 +1393,8 @@ perform:
     matchre return ^You bend over the
     matchre return ^You cannot harvest useful material from the corpse unless it is preserved first\.
     matchre return ^You've already performed
+    matchre return ^You draw
+    matchre return ^Roundtime
     put perform %todo
     goto retry
 
@@ -1561,6 +1563,7 @@ push:
     push1:
     matchre return ^You wave the loop near
     matchre return ^Roundtime
+    matchre return ^You push
     put push %todo
     goto retry
 
@@ -1584,6 +1587,7 @@ put:
     matchre return ^Roundtime
     matchre return ^That's too heavy to go in there\!$
     matchre return ^Perhaps you should be holding that first.$
+    matchre return ^You carefully fit
     matchre closeTelescope telescope is too long
     put put %todo
     goto retry

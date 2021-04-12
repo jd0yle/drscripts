@@ -18,8 +18,9 @@ if ("$charactername" = "Selesthiel") then {
 var scrolls scroll|ostracon|\broll|leaf|vellum|tablet|(?<!of )parchment|bark|papyrus
 var treasuremaps \bmap\b
 var gems1 agate|alexandrite|amber|amethyst|andalusite|aquamarine|bead|beryl|bloodgem|bloodstone|carnelian|chrysoberyl|carnelian|chalcedony
-var gems2 chrysoberyl|chrysoprase|citrine|coral|crystal|diamond\b|diopside|emerald|egg|eggcase|garnet|gem|goldstone|glossy malachite
-var gems3 hematite|iolite|ivory|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
+var gems2 chrysoberyl|chrysoprase|citrine|coral|crystal|diamond\b|diopside|emerald|egg\b|eggcase|garnet|gem|goldstone|glossy malachite
+#var gems3 hematite|iolite|ivory|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
+var gems3 hematite|iolite|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
 var gems4 quartz|opal|pearl|pebble|peridot|quartz.(?!gargoyle)|ruby|sapphire|spinel|star-stone|sunstone|talon|tanzanite|tooth|topaz|tourmaline|tsavorite|turquoise|zircon
 var gweths (?:jadeite|kyanite|lantholite|sjatmal|waermodi|lasmodi) stones
 var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
@@ -33,7 +34,7 @@ var gems %gems1|%gems2|%gems3|%gems4
 #var box (?:%boxtype) (?:%boxes)
 #var boxes (?:brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox)
 
-var lootables %ammo|%scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%miscKeep|%coin
+var lootables %ammo|%coin|%scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%miscKeep
 
 var toLoot null
 action (invFeet) var toLoot %toLoot|$1 when (%lootables)
@@ -73,7 +74,9 @@ pickupLoot:
     pickupLootLoop:
         eval preLootLen len("$roomobjs")
         if (contains("$roomobjs", "%lootables(%loot.index)")) then {
-            if (matchre("$roomobjs", "%gems")) then {
+            if (matchre("$roomobjs", "(%gems)")) then {
+                var itemGem $1
+                echo Found gem: %itemGem
                 gosub stow gem
             } else {
                 gosub stow %lootables(%loot.index)
