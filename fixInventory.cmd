@@ -1,5 +1,8 @@
 include libmaster.cmd
 
+gosub stow right
+gosub stow left
+
 loop:
     gosub get my gem pouch from my $char.inv.default
     if ("$righthand" = "Empty") then goto shadowToBack
