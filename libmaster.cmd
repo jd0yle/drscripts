@@ -660,9 +660,11 @@ close:
     put close %todo
     goto retry
 
+
 closeTelescope:
   put close my telescope
   goto %location
+
 
 coll:
 collect:
@@ -692,6 +694,7 @@ combine:
     matchre return ^Perhaps you should be holding that first\.
     matchre return ^Roundtime
     matchre return ^You combine
+    matchre return ^You must be holding both substances to combine them
     put combine %todo
     goto retry
     
@@ -700,6 +703,7 @@ count:
     var location Count1
     var todo $0
     count1:
+    matchre return ^I could not find what
     matchre return ^That doesn't tell you much of anything.
     matchre return ^You count out
     matchre return ^You count some
@@ -2669,6 +2673,21 @@ libmastertest:
 ########################################################################
 #                            UTIL
 ########################################################################
+
+checkMoons:
+    if (!($moon >0)) then put #var moon null
+    put #var moon null
+    if ($Time.isYavashUp = 1) then {
+        put #var moon yavash
+    }
+    if ($Time.isXibarUp = 1) then {
+        put #var moon xibar
+    }
+    if ($Time.isKatambaUp = 1) then {
+        put #var moon katamba
+    }
+    return
+
 
 retry:
     matchre location ^\.\.\.wait
