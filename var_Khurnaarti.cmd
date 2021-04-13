@@ -52,7 +52,7 @@ var super.enemies null
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType box
+put #tvar char.locks.boxType puzzle
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
@@ -69,19 +69,19 @@ put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.useInvokeSpell 0
 
-put #tvar char.magic.train.spell.Augmentation cv
-put #tvar char.magic.train.prep.Augmentation 12
-put #tvar char.magic.train.charge.Augmentation 15
+put #tvar char.magic.train.spell.Augmentation seer
+put #tvar char.magic.train.prep.Augmentation 15
+put #tvar char.magic.train.charge.Augmentation 10
 put #tvar char.magic.train.harness.Augmentation 0
 
-put #tvar char.magic.train.spell.Utility pg
-put #tvar char.magic.train.prep.Utility 10
-put #tvar char.magic.train.charge.Utility 15
+put #tvar char.magic.train.spell.Utility seer
+put #tvar char.magic.train.prep.Utility 15
+put #tvar char.magic.train.charge.Utility 10
 put #tvar char.magic.train.harness.Utility 0
 
-put #tvar char.magic.train.spell.Warding psy
-put #tvar char.magic.train.prep.Warding 10
-put #tvar char.magic.train.charge.Warding 15
+put #tvar char.magic.train.spell.Warding col
+put #tvar char.magic.train.prep.Warding 15
+put #tvar char.magic.train.charge.Warding 10
 put #tvar char.magic.train.harness.Warding 0
 
 
@@ -95,7 +95,7 @@ put #tvar char.observe.telescope alerce telescope
 put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie
-put #tvar char.observe.lore Xibar|Raven
+put #tvar char.observe.lore Xibar|Raven|Phoenix
 put #tvar char.observe.magic Yavash|Wolf
 put #tvar char.observe.offense Cat|Viper
 put #tvar char.observe.survival Heart|Ram
@@ -107,7 +107,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song march
+put #tvar char.performance.song jig
 put #tvar char.performance.mood quiet
 
 

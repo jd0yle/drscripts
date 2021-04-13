@@ -1,7 +1,23 @@
 #debuglevel 10
-# automapper.cmd version 7.1
-# last changed: Dec 31, 2019
+put #class racial off
+put #class rp off
+put #class arrive off
+put #class combat off
+put #class joust off
 
+# automapper.cmd version 7.3
+# last changed: Jan 23, 2021
+
+# - Added move_PAUSE routine for better handling of walking through areas with long RT causing automapper to trip up on itself
+# - Added support for getting ice skates from portal bag as a secondary check
+# Shroom - Updated matches for closed shops in Shard
+# 1 - to work with shops in Shard that let you in at night when you ARE a citizen (was exiting out before instead of continuing)
+# 2 - to properly exit out when you get the message and are NOT a citizen
+# Added standing checks before quitting automapper
+# Increased wait time on Ice as was going too fast in some cases
+# Added Special Support for the Stone Wall in Cragstone Vale
+# Fixed a bug in the Retry Logic
+#
 # VTCifer -  Changed default debug level at the top to be more useful
 # Fixed whitespace
 # Added match for powerwalk
@@ -115,9 +131,11 @@ ABSOLUTE_TOP:
      var checked 0
      var slow_on_ice 0
      var wearingskates 0
-     var move_OK ^Obvious (paths|exits)|^It's pitch dark
+     var move_TORCH You push up on the (stone basin|torch)\, and the stone wall closes\.
+     var move_OK ^Obvious (paths|exits)|^It's pitch dark|The shop appears to be closed\, but you catch the attention of a night attendant inside\,
      var move_FAIL ^You can't swim in that direction|You can't go there|^A powerful blast of wind blows you to the|^What were you referring to|^I could not find what you were referring to\.|^You can't sneak in that direction|^You can't ride your.+(broom|carpet) in that direction|^You can't ride your.+(broom|carpet) in that direction|^You can't ride that way\.$
-     var move_RETRY ^\.\.\.wait|^Sorry, you may only|^Sorry, system is slow|^You can't ride your.+(broom|carpet) in that direction|^You can't ride your.+(broom|carpet) in that direction|^The weight of all|lose your balance during the effort|^You are still stunned|^You're still recovering from your recent|You push up on the (stone basin|torch)\, and the stone wall closes\.
+     var move_RETRY_GO ^You can't climb that\.$
+     var move_RETRY ^\.\.\.wait|^Sorry, you may only|^Sorry, system is slow|^You can't ride your.+(broom|carpet) in that direction|^You can't ride your.+(broom|carpet) in that direction|^The weight of all|lose your balance during the effort|^You are still stunned|^You're still recovering from your recent|^The mud gives way beneath your feet as you attempt to climb higher, sending you sliding back down the slope instead\!
      var move_RETREAT ^You are engaged to|^You try to move, but you're engaged|^While in combat|^You can't do that while engaged|^You can't do that\!  You\'re in combat\!
      var move_WEB ^You can't do that while entangled in a web|As you start to move, you find yourself snared
      var move_WAIT ^You continue climbing|^You begin climbing|^You really should concentrate on your journey|^You step onto a massive stairway
@@ -126,13 +144,13 @@ ABSOLUTE_TOP:
      var move_NO_SNEAK ^You can't do that here|^In which direction are you trying to sneak|^Sneaking is an inherently stealthy|^You can't sneak that way|^You can't sneak in that direction
      var move_GO ^Please rephrase that command
      var move_MUCK ^You fall into the .+ with a loud \*SPLUT\*|^You slip in .+ and fall flat on your back\!|^The .+ holds you tightly, preventing you from making much headway\.|^You make no progress in the mud|^You struggle forward, managing a few steps before ultimately falling short of your goal\.|^You find yourself stuck in the mud
-     var climb_FAIL ^Trying to judge the climb, you peer over the edge\.  A wave of dizziness hits you, and you back away from .+\.|^You start down .+, but you find it hard going\.  Rather than risking a fall, you make your way back up\.|^You attempt to climb down .+, but you can't seem to find purchase\.|^You pick your way up .+, but reach a point where your footing is questionable\.  Reluctantly, you climb back down\.|^You make your way up .+\.  Partway up, you make the mistake of looking down\.  Struck by vertigo, you cling to .+ for a few moments, then slowly climb back down\.|^You approach .+, but the steepness is intimidating\.|^The ground approaches you at an alarming rate|^You start up .+, but slip after a few feet and fall to the ground\!  You are unharmed but feel foolish\.|^You almost make it to the top
-     var move_CLOSED ^The door is locked up tightly for the night|^You stop as you realize that the|^(?:\w+ )+I'm sorry\, but you need to be a citizen|^BONK\! You smash your nose|^Bonk\! You smash your nose|^(?:\w+ )+I'm sorry\, I can only allow citizens in at night|^(?:\w+ )+shop is closed for the night|^A guard appears and says\, "I'm sorry\,
+     var climb_FAIL ^Trying to judge the climb, you peer over the edge\.  A wave of dizziness hits you, and you back away from .+\.|^You start down .+, but you find it hard going\.  Rather than risking a fall, you make your way back up\.|^You attempt to climb down .+, but you can't seem to find purchase\.|^You pick your way up .+, but reach a point where your footing is questionable\.  Reluctantly, you climb back down\.|^You make your way up .+\.  Partway up, you make the mistake of looking down\.  Struck by vertigo, you cling to .+ for a few moments, then slowly climb back down\.|^You approach .+, but the steepness is intimidating\.|^The ground approaches you at an alarming rate|^You start up .+, but slip after a few feet and fall to the ground\!  You are unharmed but feel foolish\.|^You almost make it to the top|^You start the climb and slip|^You start to climb .+, but then stop to reconsider\.
+     var move_CLOSED ^The door is locked up tightly for the night|^You stop as you realize that the|^(?:\w+ )+I'm sorry\, but you need to be a citizen|^BONK\! You smash your nose|^Bonk\! You smash your nose|^(?:\w+ )+I'm sorry\, I can only allow citizens in at night|^(?:\w+ )+shop is closed for the night|^A guard appears and says\, \"I'm sorry\,|The shop appears to be closed\, but you catch the attention of a night attendant inside\, and he says\, \"I'm sorry\, I can only allow citizens in at night\.\""?
      var swim_FAIL ^You struggle (?!to maintain)|^You work(?! your way (?:up|down) the cliff)|^You slap|^You flounder
      var move_DRAWBRIDGE ^The guard yells, "Lower the bridge|^The guard says, "You'll have to wait|^A guard yells, "Hey|^The guard yells, "Hey
      var move_ROPE.BRIDGE is already on the rope\.|You'll have to wait
      var move_STOW ^You need to empty your hands|^You should empty your hands first\!|^You can't possibly manage to cross|^You'll need to free up your hands|^Not while carrying something in your hands|^You must first free up your hands\.|^The going gets quite difficult and highlights the need to free up your hands|^You must have your hands free
-     var move_FATIGUE ^You're too tired to try climbing
+     var move_FATIGUE ^You're too tired to try climbing|^You need to rest
      var move_BOAT ^The galley has just left|^You look around in vain for the galley
      var move_INVIS ^The .* can\'t see you\!|^But no one can see you\!|^How can you .* can\'t even see you\?
      var climb_mount_FAIL climb what?
@@ -142,9 +160,12 @@ ABSOLUTE_TOP:
      # ---------------
 actions:
      action (mapper) if %movewait = 0 then shift;if %movewait = 0 then math depth subtract 1;if len("%2") > 0 then echo Next move: %2 when %move_OK
+     action (mapper) goto move.torch when %move_TORCH
      action (mapper) goto move.failed when %move_FAIL
+     action (mapper) goto move.retry.go when %move_RETRY_GO
      action (mapper) goto move.retry when %move_RETRY|%move_WEB
      action (mapper) goto move.stand when %move_STAND
+     action (mapper) goto move.pause when %move_PAUSE
      action (mapper) var movewait 1;goto move.wait when %move_WAIT
      action (mapper) goto move.retreat when %move_RETREAT
      action (mapper) var movewait 0 when %move_END_DELAY
@@ -174,13 +195,15 @@ actions:
      return
 loop:
      gosub wave
-     pause 0.1
+     delay 0.1
      goto loop
 wave:
+     delay 0.0001
      if (%depth > 0) then return
      if_1 goto wave_do
      goto done
 wave_do:
+     delay 0.01
      var depth 0
      if_1 gosub move %1
      if %typeahead < 1 then
@@ -188,28 +211,33 @@ wave_do:
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
+     delay 0.01
      if_2 gosub move %2
      if %typeahead < 2 then
 	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
+     delay 0.01
      if_3 gosub move %3
      if %typeahead < 3 then
 	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
+     delay 0.01
      if_4 gosub move %4
      if %typeahead < 4 then
 	 {
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
+     delay 0.01
      if_5 gosub move %5
      return
 done:
-     pause 0.1
+     pause 0.001
+     if ($standing = 0) then gosub STAND
      put #parse YOU HAVE ARRIVED!
      put #class arrive off
      exit
@@ -364,8 +392,17 @@ skate.check:
      pause 0.01
      echo *** Checking for Ice Skates! ***
      matchre skate.yes ^You tap
-     matchre skate.no ^I could not|^What were you
+     matchre skate.check.2 ^I could not|^What were you
      put tap my skate
+     matchwait 7
+skate.check.2:
+     var checked 1
+     action (mapper) off
+     pause 0.01
+     echo *** Checking for Ice Skates! ***
+     matchre skate.yes ^You tap
+     matchre skate.no ^I could not|^What were you
+     put tap my skate in my watery portal
      matchwait 7
 skate.no:
      var slow_on_ice 1
@@ -375,7 +412,7 @@ skate.no:
      echo **** Collecting rocks in every room like the other peasants
      return
 skate.yes:
-     action (mapper) on
+     action (mapper) off
      echo *** Winner! Ice Skates Found! ***
      echo
 footwear.check:
@@ -405,8 +442,15 @@ skate.get:
      pause 0.001
 	match wear.skates You get
 	match footwear.stow You need a free hand
-     matchre skate.no ^I could not|^What were you
+     matchre skate.get.2 ^I could not|^What were you
      put get my skates
+	matchwait 5
+skate.get.2:
+     pause 0.001
+	match wear.skates You get
+	match footwear.stow You need a free hand
+     matchre skate.no ^I could not|^What were you
+     put get my skates from my watery portal
 	matchwait 5
 footwear.stow:
 	put stow left
@@ -420,13 +464,14 @@ wearing.skates:
      pause 0.1
      var wearingskates 1
      var slow_on_ice 0
+     action (mapper) on
      return
 ice.collect.p:
      pause 0.5
 ice.collect:
      pause 0.1
      action (mapper) off
-     echo *** Collecting rocks and pausing so we don't slip and crack our head open
+     echo *** Collecting rocks and pausing so we don't slip and crack our head open..
      matchre ice.collect ^\.\.\.wait|^Sorry\,
      matchre ice.return ^\s*Roundtime\s*\:?
      matchre ice.return ^\s*\[Roundtime\s*\:?
@@ -435,7 +480,10 @@ ice.collect:
      matchwait
 ice.return:
      var slow_on_ice 0
-     pause 3
+     pause 0.5
+     echo ** Pausing....
+     pause 4
+     pause 5
      action (mapper) on
      return
 move.knock:
@@ -475,10 +523,24 @@ move.rt:
      put %movement
      pause 0.1
      goto move.done
+move.torch:
+     action (mapper) off
+     pause 0.1
+     echo *** RESETTING STONE WALL
+     pause 0.3
+     pause 0.1
+     if ($roomid = 264) then send turn torch on wall
+     if ($roomid = 263) then send turn basin on wall
+     action (mapper) on
+     pause 0.3
+     pause 0.1
+     put go wall
+     goto move.done
 move.web:
      if ($webbed) then waiteval (!$webbed)
      pause 0.1
      put %movement
+     pause 0.1
      pause 0.1
      goto move.done
 move.muck:
@@ -591,14 +653,16 @@ move.script.done:
      goto move.done
 move.pause:
      pause 0.3
+     pause 0.1
      put %movement
-     pause
-     pause 0.2
+     pause 0.5
+     pause 0.5
      pause 0.2
      goto move.done
 move.fatigue:
-     echo *** YOU ARE TOO FATIGUED TO CLIMB! ***
+     echo *** TOO FATIGUED TO CLIMB! ***
 fatigue.check:
+     pause 0.5
      if ("$guild" = "Barbarian") then
           {
                put berserk avalanche
@@ -607,31 +671,32 @@ fatigue.check:
      if ("$guild" = "Bard") then
           {
                put prep hodi 20
-               pause 14
+               pause 18
                put -cast;-2 gesture
                pause
           }
      if ("$guild" = "Empath") then
           {
                put prep refresh 20
-               pause 14
+               pause 18
                put -cast;-2 gesture
                pause
           }
      if ("$guild" = "Warrior Mage") then
           {
                put prep zephyr 20
-               pause 14
+               pause 18
                put -cast;-2 gesture
                pause
           }
      if ("$guild" = "Cleric") then
           {
                put prep EF 20
-               pause 14
+               pause 18
                put -cast;-2 gesture
                pause
           }
+     pause
 move.invis:
      pause 0.001
      if ("$guild" = "Thief") then put khri stop silence vanish
@@ -668,7 +733,7 @@ move.stand:
      matchre return.clear ^You stand back up
      matchre return.clear ^You are already standing
      put stand
-     matchwait 20
+     matchwait
 move.retreat:
      pause 0.0001
      pause 0.0001
@@ -729,8 +794,21 @@ move.retry:
                pause
                goto move.retry
           }
-     pause
+     pause 0.5
      goto return.clear
+move.retry.go:
+     echo
+     echo *** Retry movement
+     echo
+     eval movement replacere("%movement", "climb ", "go ")
+     if ($webbed) then waiteval (!$webbed)
+     if ($stunned) then
+          {
+               pause
+               goto move.retry
+          }
+     pause 0.5
+     goto move.rt
 move.closed:
      echo
      echo ********************************
@@ -739,7 +817,7 @@ move.closed:
      echo
      put #parse SHOP IS CLOSED
      put #parse SHOP CLOSED
-     put #parse AUTOMAPPER MOVEMENT FAILED!
+	 put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
 jailed:
      echo
@@ -751,12 +829,13 @@ jailed:
      put #parse JAILED
      put #parse NAILED AND JAILED!
      put #parse THROWN IN JAIL
-     put #parse AUTOMAPPER MOVEMENT FAILED!
+	 put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
 move.failed:
      evalmath failcounter %failcounter + 1
      if (%failcounter > 4) then
           {
+               put #parse MOVE FAILED
                put #parse AUTOMAPPER MOVEMENT FAILED!
                put #flash
                exit
@@ -769,18 +848,19 @@ move.failed:
      eval remaining_path replace ("%0", " ", "|")
      echo %remaining_path(1)
      echo %remaining_path(2)
-     echo RETRYING Movement...%failcounter / 5 Tries.
-     echo ********************************
      pause 0.1
-     put #parse MOVE FAILED!
+     ### ADDED EXIT HERE ON FAILURE TO LET AUTOMOVE ROUTINES TAKE OVER AND RETRY
+     ### AS THE AUTO-RETRY FEATURE IN HERE NO ONE CAN SEEM TO GET TO WORK RIGHT
+     put #parse MOVE FAILED
      put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
+     echo RETRYING Movement...%failcounter / 3 Tries.
+     echo ********************************
      if (%failcounter > 3) then
           {
                echo [Trying: go %remaining_path(2) due to possible movement overload]
                put go %remaining_path(2)
           }
-     put #parse MOVE FAILED
      if (%type = "search") then put %type
      pause
      echo [Moving: %movement]
@@ -851,6 +931,8 @@ move.done:
      gosub clear
      goto loop
 return:
+     pause 0.001
+     if ($standing = 0) then gosub STAND
      if ($caravan) then
           {
                goto caravan
@@ -880,3 +962,29 @@ stowfootitem:
      pause 0.3
      pause 0.2
      goto ABSOLUTE_TOP
+STAND:
+     pause 0.001
+     pause 0.1
+     var LOCATION STAND_1
+     STAND_1:
+     pause 0.001
+     matchre STAND ^\.\.\.wait|^Sorry\,|^Please wait\.
+     matchre STAND ^Roundtime\:?|^\[Roundtime\:?|^\(Roundtime\:?|^\[Roundtime|^Roundtime
+     matchre STAND ^The weight of all your possessions prevents you from standing\.
+     matchre STAND ^You are overburdened and cannot manage to stand\.
+     matchre STAND ^You\'re unconscious\!
+     matchre DONE ^You are a ghost\!
+     matchre STAND ^You are still stunned
+     matchre STAND ^You can't do that while entangled in a web
+     matchre STAND ^You don't seem to be able to move to do that
+     matchre STAND_RETURN ^You stand (?:back )?up\.
+     matchre STAND_RETURN ^You stand up in the water
+     matchre STAND_RETURN ^You are already standing\.
+     matchre STAND_RETURN ^As you stand
+     send stand
+     matchwait 20
+     STAND_RETURN:
+     pause 0.1
+     pause 0.1
+     if ($standing = 0) then goto STAND
+     return

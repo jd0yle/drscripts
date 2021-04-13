@@ -43,7 +43,7 @@ put #tvar char.craft.container workbag
 put #tvar char.craft.default.container satchel
 put #tvar char.craft.item necklace
 put #tvar char.craft.tool.container workbag
-put #tvar char.craft.workorder.item circlet
+put #tvar char.craft.workorder.item necklace
 
 
 ###############################

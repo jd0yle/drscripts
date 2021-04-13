@@ -6,6 +6,7 @@ include libmaster.cmd
 ##########
 # Main
 ##########
+goto moveToHunt
 
 moveToHunt:
     gosub automove west gate

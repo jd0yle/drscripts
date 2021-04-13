@@ -45,7 +45,7 @@ loop:
     pause 1
     gosub waitPlay
     pause 1
-    #gosub waitLock
+    gosub waitLock
     pause 1
     gosub waitForage
     pause 1
@@ -78,6 +78,7 @@ waitAstrology:
 
 
 waitBurgle:
+    put burgle recall
     if ($char.burgle.cooldown <> 0) then {
         gosub burgle.onTimer
     }

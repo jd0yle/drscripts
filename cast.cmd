@@ -59,17 +59,11 @@ if ("$preparedspell" != "None") then gosub release spell
 
 if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop") then goto ritualSpell
 if ("%spell" = "col") then {
-    var target null
-    if ($Time.isYavashUp = 1) then {
-        var target yavash
+    gosub checkMoons
+    if ($moon = null) then {
+        put #echo #FF0000 [cast] NO MOON AVAILABLE for Cage of Light!
+        goto done
     }
-    if ($Time.isXibarUp = 1) then {
-        var target xibar
-    }
-    if ($Time.isKatambaUp = 1) then {
-        var target katamba
-    }
-    if ("%moon" = "null") then goto done
 }
 
 # Init to character spell defaults

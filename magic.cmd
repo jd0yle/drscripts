@@ -118,7 +118,16 @@ loop:
         }
         gosub waitForPrep
         gosub waitForConcentration $char.magic.train.minimumConcentration
-        gosub cast
+        if ("$char.magic.train.spell.%skill" = "col") then {
+            gosub checkMoons
+            if ($moon = null) then {
+                put #echo #FF0000 [magic] NO MOON AVAILABLE for Cage of Light!
+                goto done
+            }
+            gosub cast $moon
+        } else {
+            gosub cast
+        }
         if (%lastSpellBackfired = 1) then {
             evalmath tmp ($char.magic.train.charge.%skill - 1)
             put #tvar char.magic.train.charge.%skill %tmp
