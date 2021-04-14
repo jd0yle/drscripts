@@ -78,6 +78,9 @@ waitAstrology:
 
 
 waitBurgle:
+    if ($Stealth.LearningRate > 10) then {
+        return
+    }
     put burgle recall
     if ($char.burgle.cooldown <> 0) then {
         gosub burgle.onTimer
@@ -102,12 +105,8 @@ waitBurgle:
 
 
 waitFaSkin:
-    if (contains($time, "(\d+)(.*)AM")) then {
-        if ($1 < 12) then {
-            put #var lastTrainerGametime 0
-        }
-    }
-    if ($lastTrainerGametime <> 0) then {
+    eval nextTrainerAt $lastTrainerGametime + 3600
+    if (%nextTrainerAt > $gametime) then {
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {

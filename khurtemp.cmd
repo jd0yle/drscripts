@@ -6,7 +6,7 @@ include libmaster.cmd
 ##########
 # Main
 ##########
-goto moveToHunt
+goto moveToShard
 
 moveToHunt:
     gosub automove west gate
@@ -27,6 +27,7 @@ moveToShard:
     gosub automove 45
     # Icy Road
     gosub automove 60
+    gosub automove raven
     put go gate
     waitforre ^A fur-clad Dwarven guard bellows, \"The gear gate is open, second guard take up a defensive position and stand ready\!\"$
     gosub move go gate

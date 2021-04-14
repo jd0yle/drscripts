@@ -52,7 +52,7 @@ var super.enemies null
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType puzzle
+put #tvar char.locks.boxType box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
@@ -91,7 +91,7 @@ put #tvar char.magic.train.harness.Warding 0
 put #tvar char.predict.tool divination bones
 put #tvar char.predict.tool.container rucksack
 
-put #tvar char.observe.telescope alerce telescope
+put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie

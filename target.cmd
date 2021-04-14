@@ -59,7 +59,7 @@ targetApp:
 
 
 targetCheckDeadMob:
-    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") then {
+    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
 
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {

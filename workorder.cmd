@@ -167,4 +167,7 @@ workOrderDone:
     } else {
         put #echo >log yellow [workorder] Unable to turn in more orders. %workOrderTotalHave remaining in $char.craft.container.
     }
+
+    pause .2
+    put #parse WORKORDER DONE
     exit

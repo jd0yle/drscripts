@@ -6,6 +6,7 @@ action var heal 1 ; put #var healTarget $1 when ^(Khurnaarti|Selesthiel|Vohraus|
 action var justice 0 when ^You're fairly certain this area is lawless and unsafe\.
 action var justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
+action var lumberCount $1 when ^You count out (\d+) pieces of lumber remaining\.
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Vohraus|Inahk|Estius)'s face appears in the
 action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action put #var poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
@@ -13,9 +14,9 @@ action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a 
 action put #var poisonHeal 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
 action put #var teach 1; put #var topic $2 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 
-###################
-# Variable Inits
-###################
+###############################
+###    CHAR VARIABLES
+###############################
 if (!($activeResearch >0)) then put #var activeResearch 0
 if (!($expSleep >0)) then put #var expSleep 0
 if (!($heal >0)) then put #var heal 0
@@ -37,9 +38,9 @@ var poison $char.healing.poison
 var poisonSelf $char.healing.poisonSelf
 
 
-###################
-# Main
-###################
+###############################
+###    MAIN
+###############################
 loop:
     if (!contains("$scriptlist", "reconnect.cmd")) then {
         put #echo >Log [inaidle] Starting reconnect
@@ -93,9 +94,9 @@ loop:
     goto loop
 
 
-###################
-# Wait Methods
-###################
+###############################
+###    WAIT METHODS
+###############################
 waitAlmanac:
     evalmath nextStudyAt $lastAlmanacGametime + 600
     if (%nextStudyAt < $gametime) then {
@@ -130,6 +131,11 @@ waitEngineer:
         return
     } else {
         if ($Engineering.LearningRate = 0) then {
+            var %lumberCount 0
+            put count my lumber
+            if (%lumberCount < 16) then {
+                gosub moveToEngineer
+            }
             put #var lastEngineerGametime $gametime
             put .eng 5 $char.craft.item
             waitforre ^ENG DONE
@@ -140,12 +146,8 @@ waitEngineer:
 
 
 waitFaSkin:
-    if (contains($time, "(\d+)(.*)AM")) then {
-        if ($1 < 12) then {
-            put #var lastTrainerGametime 0
-        }
-    }
-    if ($lastTrainerGametime <> 0) then {
+    eval nextTrainerAt $lastTrainerGametime + 3600
+    if (%nextTrainerAt > $gametime) then {
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
@@ -213,4 +215,26 @@ waitTeach:
     }
     gosub teach $topic to $target
     put #var teach 0
+    return
+
+
+
+###############################
+###    MOVE TO UTIL
+###############################
+moveToEngineer:
+    if ($zoneid = 66) then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub automove east gate
+        gosub automove engineer
+        put .workorder
+        waitforre ^WORKORDER DONE
+        put .deposit
+        waitforre ^DEPOSIT DONE
+        gosub automove portal
+        gosub automove 252
+        put .house
+        waitforre ^HOUSE DONE
+    }
     return
