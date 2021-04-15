@@ -1,6 +1,6 @@
 ## Reveler's Burgle Script
-## v.4.7.3
-## 06/28/2020
+## v.4.10
+## 04/03/2021
 ## Discord Reveler#6969
 ##
 ## TO USE:
@@ -12,11 +12,11 @@
 ##		hit .burgle and go at it!
 ##
 ##
-##		You need to have the latest .travel script if you want to set a burgle location
+##		BURGLE LOCATION AND PAWNING NOT SUPPORTED
 ##		You need to have Spelltimer plugin for buff checks
 ##		DISCLAIMER: NOT RESPONSIBLE FOR YOUR ASTRONOMICAL FINES
 
-##		V 4.7 updates
+##		V 4.9 updates
 ##		Robustified actions to test for errors
 ##		More guard checks
 ##		More options for worn/stored lockpick rings and ropes
@@ -37,7 +37,10 @@
 ##		Added option to skip rooms.  Set your variable in variable script
 ##		Added out when encountering clan justice
 ##		Added option to start burgle from inside the house as a failsafe - will immediately exit
-
+##		Added support for eddy container
+##		Added new bedroom loots
+##		Added new kitchen loots
+##		Added ability to put certain items in your trash list to drop if looted
 
 
 
@@ -86,6 +89,7 @@ var priorexit(sanctum)
 var priorexit(armory)
 var priorexit(library)
 var guards Gwaerd|guard|Shard sentinel|Sentinel|Elven Warden|Riverhaven Warden|Warden|Baronial guardsman|sickly tree|Muspar'i constable
+var trashitems NULL
 var item1 NULL
 var item2 NULL
 var item3 NULL
@@ -95,8 +99,8 @@ var item6 NULL
 var rooms_captured kitchen
 var pawnmoveloop 0
 if ($standing = 0) then put stand
-var kitchenloot bowl|sieve|stove|stick|mortar|pestle|helm|knife|towel|broom|skillet|lunchbox|cylinder|sphere
-var bedroomloot pajamas|cloak|fabric|bathrobe|cube|comb|locket|bangles|box|bear|handkerchief|blanket|pillow|mirror
+var kitchenloot bowl|sieve|stove|stick|mortar|pestle|helm|knife|towel|broom|skillet|lunchbox|cylinder|sphere|vase|napkin|tankard|shakers|snare|knives|twine|cider jug|house mouse|kitchen rat|basket|recipe box|basket|canvas tote|tote
+var bedroomloot pajamas|cloak|fabric|bathrobe|cube|comb|locket|bangles|box|bear|handkerchief|blanket|pillow|mirror|top|bottoms|nightcap|cufflinks|razor|diary|slippers|choker|nightgown|bank
 var armoryloot stones|arrows|bolts|plate|gloves|hauberk|leathers|shield|briquet|scimitar|cudgel|crossbow|dagger|longsword|stick|hammer|sipar
 var workroomloot rod|burin|shaper|rasp|oil|apron|brush|scissors|pins|distaff|case|ledger
 var sanctumloot bracer|ring|amulet|blossom|statuette|charts|opener|orb|kaleidoscope|rod|ball|case|telescope|prism|lens
@@ -106,6 +110,7 @@ var lootpool %kitchenloot|%bedroomloot|%armoryloot|%workroomloot|%sanctumloot|%l
 
 
 #### RUN .BURGLEVARIABLES TO SET THESE UP FOR EACH CHARACTER OR JUST FILL THEM IN HERE #####
+var eddy $BURGLE.EDDY
 var pack $BURGLE.PACK
 var method $BURGLE.METHOD
 var ringtype $BURGLE.RINGTYPE
@@ -114,7 +119,8 @@ var worn $BURGLE.WORN
 var travel $BURGLE.TRAVEL
 var maxgrabs $BURGLE.MAXGRABS
 var keep $BURGLE.KEEP
-var trash $BURGLE.TRASH
+var trashall $BURGLE.TRASHALL
+var trashitems $BURGLE.TRASHITEMS
 var hideme $BURGLE.HIDE
 var skip $BURGLE.SKIP
 
@@ -208,7 +214,7 @@ CAST:
 	if ("$preparedspell" = "NONE") then goto CAST1
 	CAST2:
 	pause 10
-	matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
     matchre RETURN ^You gesture
     matchre RETURN ^Roundtime\:?|^\[Roundtime\:?|^\(Roundtime\:?|^\[Roundtime|^Roundtime
     matchre RETURN ^You raise your hand in an imaginary
@@ -236,33 +242,23 @@ GETREADY:
 		gosub STAND
 	}
 
-	if matchre("%method", "(?i)RING") && matchre("%worn", "(?i)(YES|ON|1)") then
+	if matchre("%method", "(?i)RING") then
 	{
 		matchre HIDEPREP ^You tap (.+) you are wearing
 		matchre NOTWORN ^You tap (.*) in your
-		matchre NORING ^I could not|^What
-		matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+	    matchre NORING ^I could not|^What
+		matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
 		put tap my %ringtype
-		matchwait 6
-		gosub ERROR LOCKPICKS
-	}
-	if matchre("%method", "(?i)RING") && matchre("%worn", "(?i)(NO|NULL|OFF|0)") then
-	{
-		matchre WORN ^But that is
-		matchre HIDEPREP ^You get
-		matchre HIDEPREP ^You are already holding that\.
-		matchre NORING ^I could not|^What
-		matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
-		put get my %ringtype
 		matchwait 6
 		gosub ERROR LOCKPICKS
 	}
 	if matchre("%method", "(?i)LOCKPICK") then
 	{
+		if matchre("%eddy","(?i)LOCKPICK") then goto EDDYPICK
 		matchre HIDEPREP ^You get
 		matchre HIDEPREP ^You are already holding that\.
-		matchre NOLOCKPICK ^I could not|^What
-		matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+		matchre EDDYPICK ^I could not|^What
+		matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
 		put get my lockpick
 		matchwait 6
 		gosub ERROR LOCKPICKS
@@ -272,25 +268,51 @@ GETREADY:
 		matchre HIDEPREP ^You sling
 		matchre HIDEPREP ^You aren\'t
 		matchre NOTWORN ^Remove what
-		matchre NOROPE ^I could not|^What
-		matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+		matchre EDDYROPE ^I could not|^What
+		matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
 		put remove my %ropetype
 		matchwait 6
 		gosub ERROR LOCKPICKS
 	}
 	if matchre("%method", "(?i)ROPE") && matchre("%worn", "(?i)(NO|NULL|OFF|0)") then
 	{
+		if matchre("%eddy","(?i)ROPE") then goto EDDYROPE
 		matchre HIDEPREP ^You get
 		matchre HIDEPREP ^You are already holding that\.
-		matchre NOROPE ^I could not|^What
-		matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+		matchre EDDYROPE ^I could not|^What
+		matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
 		put get my %ropetype
 		matchwait 6
 		gosub ERROR ROPE
 	}
 	gosub error METHOD_VARIABLE
 
+EDDYPICK:
+	matchre HIDEPREP ^You get
+	matchre HIDEPREP ^You fade in
+	matchre HIDEPREP ^You are already holding that\.
+	matchre NOLOCKPICK ^I could not|^What
+	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
+	put get my lockpick from my portal
+	matchwait 6
+	gosub ERROR LOCKPICKS
+
+EDDYROPE:
+	matchre HIDEPREP ^You get
+	matchre HIDEPREP ^You fade in
+	matchre HIDEPREP ^You are already holding that\.
+	matchre NOROPE ^I could not|^What
+	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
+	put get my %ropetype from my portal
+	matchwait 6
+	gosub ERROR ROPE
+
 NOTWORN:
+   	if matchre("%method", "(?i)RING") then
+	{
+		echo YOU CANNOT BURGLE WITH A LOCKPICK RING UNLESS IT IS WORN.
+		gosub ERROR LOCKPICKS
+	}
 	var worn NO
 	goto %last
 
@@ -320,7 +342,7 @@ BURGLE:
 	matchre NOLOCKPICK ^And how were you planning to get in\?
 	matchre NOBURGLE ^You don't see any likely marks in the area\.
 	matchre SEARCH ^\[Someone Else\'s Home\,
-	matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
 #	matchre SEARCH ^You make short work of the lock
 #	matchre SEARCH ^You scale up the side of a wall
 	if (($hidden = 1) || ($invisible = 1)) then put burgle
@@ -423,6 +445,7 @@ MOVEROOMS:
 	var movement $0
 	MOVEROOMS1:
 	var last MOVEROOMS1
+	matchre ESCAPE ^Please rephrase
 	matchre RETURN ^Obvious
 	matchre RETURN ^You can't
 	matchre WAIT \.\.\.wait
@@ -434,7 +457,8 @@ LEAVE:
 	if matchre("$roomname", "Kitchen") then
 	{
 	matchre DONE ^You take a moment to reflect on the caper you just pulled as you slip out the kitchen window\.\.\.
-	matchre ERROR ^What were you referring to\?
+	matchre ESCAPE ^What were you referring to\?
+	matchre ESCAPE ^Please rephrase
 	matchre WAIT \.\.\.wait
 	put go window
 	matchwait 6
@@ -448,7 +472,7 @@ ESCAPE:
 	if matchre("$roomname", "Kitchen") then
 	{
 	matchre ESCAPED ^You take a moment to reflect on the caper you just pulled as you slip out the kitchen window\.\.\.
-	matchre ERROR ^What were you referring to\?
+	matchre ESCAPE ^What were you referring to\?
 	matchre WAIT \.\.\.wait
 	put go window
 	matchwait 6
@@ -525,11 +549,10 @@ DONE_3:
 	matchwait 5
 
 BURGLETIMER:
-	put #echo >log red [burgle] New Burgle Cooldown: $1 Rois
-	#put #echo >log red Burgled %successful items
-	#put #echo >log red Found following rooms: %rooms_captured
-	goto END
-     if ("%item3" != "NULL") then
+	put #echo >log red New Burgle Cooldown: $1 Rois
+	put #echo >log red Burgled %successful items
+	put #echo >log red Found following rooms: %rooms_captured
+	     if ("%item3" != "NULL") then
           {
                put #echo >log red Found: %item1, %item2, %item3
                goto END
@@ -570,7 +593,7 @@ PAWN:
      pause 0.1
 	 PAWN_1:
 	 matchre PAWN_2 ^YOU HAVE ARRIVED\!
-	 matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+	 matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
 	 matchre PAWNMOVELOOP ^MOVE FAILED
 	 matchre PAWNMOVELOOP ^DESTINATION NOT FOUND
      put #goto pawn
@@ -641,17 +664,24 @@ STOWLOOT:
 	if !matchre("$righthand", "Empty") then
           {
                if matchre("$righthandnoun", "%lootpool") then gosub ITEM_SET $righthand
-			   if !matchre("$righthandnoun", "(%keep|rope|lockpick|ring)") && matchre("%trash", "(?i)(YES|ON)") then put empty right
+			   if (!matchre("$righthandnoun", "(%keep|rope|lockpick|ring)") && (matchre("%trashall", "(?i)(YES|ON)"))||matchre("$righthandnoun", "%trashitems")) then gosub DROP right
 			   else gosub PUTLOOT put my $righthandnoun in my %pack
-#			   if (!matchre("$righthand", "Empty") && matchre("$righthandnoun", "%lootpool")) then put empty right
-
+			   if ((%nofit = 1) && !matchre("$righthandnoun", "(%keep|rope|lockpick|ring)")) then
+			   {
+				gosub DROP right
+				var nofit 0
+			   }
           }
 	if !matchre("$lefthand", "Empty") then
           {
                if matchre("$lefthandnoun", "%lootpool") then gosub ITEM_SET $lefthand
-			   if !matchre("$lefthandnoun", "(%keep|rope|lockpick|ring)") && matchre("%trash", "(?i)(YES|ON)") then put empty left
-               else gosub PUTLOOT put my $lefthandnoun in my %pack
-#			   if (!matchre("$righthand", "Empty") && matchre("$lefthandnoun", "%lootpool")) then put empty left
+			   if (!matchre("$lefthandnoun", "(%keep|rope|lockpick|ring)") && (matchre("%trashall", "(?i)(YES|ON)")) || matchre("$lefthandnoun", "%trashitems")) then gosub DROP left
+			   else gosub PUTLOOT put my $lefthandnoun in my %pack
+			   if ((%nofit = 1) && !matchre("$lefthandnoun", "(%keep|rope|lockpick|ring)")) then
+			   {
+				gosub DROP left
+				var nofit 0
+			   }
           }
 #    pause 0.4
 	return
@@ -675,7 +705,7 @@ PUT:
 	PUT_1:
 	var last PUT_1
 #	pause .1
-	matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
     matchre RETURN ^You put|^You sling|^You attach|^You attempt to relax|^You rummage|^What were|^You sell|^You get|not worth anything to me\.\"$
 #" added for formatting
 	matchre RETURN ^You slip into a hiding|^You melt into the background|^Eh\?  But you're already hidden\!|^You blend in with your surroundings
@@ -691,21 +721,21 @@ PUTLOOT:
 	PUTLOOT_1:
 	var last PUTLOOT_1
 #	pause .1
-	matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
     matchre RETURN ^You put|^You sling|^You attach|^You attempt to relax|^You rummage|^What were|^You sell|^You get
 	matchre NOWEAR ^You can\'t wear
-	matchre NOFIT ^But that\'s closed|^That\'s too heavy|too long to fit|too long\, even after stuffing it\, to fit
+	matchre NOFIT ^But that\'s closed|^That\'s too heavy|^The .* too long to fit|too long\, even after stuffing it\, to fit|^Weirdly, you can\'t manage
 	put %put
 	matchwait 5
 	return
 
 NOFIT:
 	echo Could not fit looted item! Get a bigger bag.
-	if !matchre("%thing","$BURGLE.KEEP") then put drop %thing
+	var nofit 1
 	return
 
 STAND:
-     matchre WAIT ^\.\.\.wait|^Sorry\,|^Please wait\.
+     matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
      matchre WAIT ^Roundtime\:?|^\[Roundtime\:?|^\(Roundtime\:?|^\[Roundtime|^Roundtime
      matchre WAIT ^The weight of all your possessions prevents you from standing\.
      matchre WAIT ^You are overburdened and cannot manage to stand\.
@@ -726,6 +756,15 @@ STORAGEERROR:
 	echo ###################################
 	goto LEAVE
 
+DROP:
+	 var drophand $0
+     matchre DROP ^\.\.\.wait|^Sorry,|^Please wait\.
+     matchre return ^You drop
+     matchre DROP ^\[If you still wish to drop it
+     put empty %drophand
+     matchwait 5
+     return
+
 WAIT:
 #	pause .01
 	goto %last
@@ -742,7 +781,7 @@ JAIL:
 
 PLEA:
 	pause .1
-    matchre PLEA ^\.\.\.wait|^Sorry\,
+    matchre PLEA ^\.\.\.wait|^Sorry,
 	matchre TAKEOVER ^After a weighty pause\,
 	put plead guilty
 	matchwait 5
