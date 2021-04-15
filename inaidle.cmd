@@ -28,6 +28,7 @@ if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
+if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 var disease $char.healing.disease
