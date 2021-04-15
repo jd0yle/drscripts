@@ -188,6 +188,7 @@ actions:
      action (mapper) goto move.lie when ^The passage is too small to walk that way\.  You'll have to get down and crawl\.|There's just barely enough room here to squeeze through, and no more.
      action (mapper) goto stowfootitem when ^You notice (?:an?|some).*at your feet, and do not wish to leave it behind\.
      action (skates) var wearingskates 1 when ^You slide your ice skates on your feet and tightly tie the laces\.|^Your ice skates help you traverse the frozen terrain\.|^Your movement is hindered a little by your ice skates\.
+     action (skates) var wearingskates 1 ; goto move.real when ^You stumble around a bit, nearly breaking an ankle, before realizing you are trying to walk around in ice skates on normal ground\.
      action (skates) var wearingskates 0 when ^You untie your skates and slip them off of your feet\.
      action var slow_on_ice 1; echo Ice detected! when ^You had better slow down\! The ice is|^At the speed you are traveling
      action goto jailed when a sound not unlike that of a tomb|binds you in chains|firmly off to jail|drag you off to jail|brings you to the jail|the last thing you see before you black out|your possessions have been stripped|You are a wanted criminal, $charactername
@@ -450,7 +451,7 @@ skate.get.2:
 	match wear.skates You get
 	match footwear.stow You need a free hand
      matchre skate.no ^I could not|^What were you
-     put get my skates from my watery portal
+     put get my skates
 	matchwait 5
 footwear.stow:
 	put stow left
