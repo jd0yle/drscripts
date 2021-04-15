@@ -1,12 +1,12 @@
 include libmaster.cmd
 
 
-var expectedNumBolts thirty-six
+var expectedNumBolts sixty-six
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
-action send unlock door when ^Qizhmur's face appears in the Demrris window..
+action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the Demrris window.
 
 
 
@@ -18,7 +18,7 @@ if_1 then {
 # debug 10
 
 
-action send pat inauri head when ^A soft crackle briefly comes from Inauri's direction.
+action send pat inauri when ^A soft crackle briefly comes from Inauri's direction.
 
 var burgleCooldown 0
 var nextBurgleCheck 0
@@ -31,6 +31,9 @@ action var numArrows $1 when ^You count some basilisk arrows in the \S+ and see 
 action send stand when ^You'll have to move off the sandpit first.
 
 action put whisper inauri teach $1 when ^Inauri stops trying to teach (.*) to you.$
+
+
+action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmur|Khurnaarti) whispers, "(?:C|c)ast (\S+)"
 
 
 timer start
@@ -252,6 +255,14 @@ checkHealthInjured:
 checkHealthNotInjured:
     var injured 0
     return
+
+
+
+buffPlayer:
+    put #script abort all except selesthiel
+    gosub release spell
+    gosub runScript cast %buffSpell %playerName
+    put .selesthiel
 
 
 
