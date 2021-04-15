@@ -7,8 +7,8 @@ action put close $char.locks.boxType when ^Maybe you should close the (.*) first
 
 
 pbCount:
-    matchre pbDoCount ^You rummage through.*?and see (.*)\.$
-    gosub rummage my $char.locks.boxContainer
+    matchre pbDoCount ^In the.*?you see (.*)\.$
+    gosub look in my $char.locks.boxContainer
     matchwait 5
     goto pbCountDone
 
@@ -21,7 +21,7 @@ pbDoCount:
     var numCount 0
 
     pbDoCountLoop:
-        if (matchre("%itemArr(%index)", "$char.locks.boxType")) then math numCount add 1
+        if (matchre("%itemArr(%index)", "\b$char.locks.boxType\b")) then math numCount add 1
         math index add 1
         if (%index > %itemLength) then goto pbCountDone
         goto pbDoCountLoop
@@ -29,11 +29,13 @@ pbDoCount:
 pbCountDone:
     pause .2
     var pbTotalHave %numCount
-    if (%pbTotalHave <> 0) then {
+    if (%pbTotalHave = null || %pbTotalHave = 0) then {
+        put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
+        goto practiceBoxExit
+    }
+    if (%pbTotalHave > 0) then {
         goto practiceBoxLoop
     }
-    put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
-    goto practiceBoxExit
 
 ###############
 # Main
@@ -55,7 +57,9 @@ practiceBoxExit:
     if ("$char.locks.lockpickType" <> "ring") then {
         gosub stow my lockpick
     }
-    gosub stow my $char.locks.boxType
+    if ("$righthand" <> "Empty") then {
+        gosub stow my $char.locks.boxType
+    }
 
     pause .2
     put #parse LOCKS DONE
@@ -63,10 +67,11 @@ practiceBoxExit:
 
 newBox:
     gosub drop my $char.locks.boxType
+    put dump junk
     gosub open my $char.locks.boxContainer
     gosub get my $char.locks.boxType
     var newBox 0
-    if ($righthandnoun = null) then {
+    if ("$righthand" = "Empty") then {
         goto practiceBoxExit
     }
     goto practiceBoxLoop

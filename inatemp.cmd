@@ -10,10 +10,27 @@ var burgleRoom 91
 var forageRoom 555
 var homeRoom 252
 
-
+goto engineerLoop
 ###################
 # Main
 ###################
+engineerLoop:
+    put .house
+    waitforre ^HOUSE DONE
+    gosub automove east gate
+    gosub automove engineer
+    put .workorder
+    waitforre ^WORKORDER DONE
+    put .deposit
+    waitforre ^DEPOSIT DONE
+    gosub automove portal
+    gosub automove %homeRoom
+    put .house
+    waitforre ^HOUSE DONE
+    put .inaidle
+    put #script abort all except inaidle
+    exit
+
 shardLoop:
     gosub automove steelclaw
     put #walk %burgleRoom
