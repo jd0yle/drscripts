@@ -2785,7 +2785,7 @@ runScript:
 	runScriptLoop:
 		matchre runScriptDone ^%doneString DONE$
 		matchwait 10
-
+        pause
         eval lowerScriptName tolower(%scriptName)
 		if (!contains("$scriptlist", "%lowerScriptName")) then {
 		    put #echo #FF9900 [runScript] *%lowerScriptName* NOT IN SCRIPTLIST ($scriptlist), RETURNING
