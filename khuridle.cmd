@@ -103,6 +103,27 @@ waitBurgle:
     return
 
 
+waitClass:
+    if ($student = 1 || $instructor <> 0) then {
+        return
+    }
+    if ($student = 0 && $class = 0 && $instructor = 0) then {
+        if (contains("$roomplayers", "Inauri")) then {
+            matchre waitClassSetClass Targeted Magic|Enchanting|Crossbow
+            matchre waitClassNewClass ^No one seems to be teaching\.$
+            put assess teach
+            matchwait 5
+
+            var classTopic $1
+            if ("%classTopic" = "Enchanting") then {
+                gosub listen inauri observe
+            } else {
+                gosub listen inauri
+            }
+            return
+        }
+    }
+
 
 waitFaSkin:
      evalmath nextTrainerAt $lastTrainerGametime + 3600
