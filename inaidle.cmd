@@ -120,7 +120,6 @@ waitArcana:
     }
     if ($concentration > 99) then {
         gosub gaze my sano crystal
-        waitforre ^The light and crystal sound of your sanowret crystal fades slightly
     }
     return
 
