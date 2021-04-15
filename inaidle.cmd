@@ -146,7 +146,7 @@ waitEngineer:
 
 
 waitFaSkin:
-    eval nextTrainerAt $lastTrainerGametime + 3600
+    evalmath nextTrainerAt $lastTrainerGametime + 3600
     if (%nextTrainerAt > $gametime) then {
         return
     }
