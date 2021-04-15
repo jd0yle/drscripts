@@ -6,7 +6,7 @@ var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|box
 action var baddisarm 1 when ^However, a \w+ \w+ \w+ is not fully disarmed, making any chance of picking it unlikely\.
 
 var baddisarm 0
-var pouch dark pouch
+var pouch pouch
 
 if_1 then
 else

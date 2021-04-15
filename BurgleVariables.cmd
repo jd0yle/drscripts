@@ -39,7 +39,7 @@ var pack portal
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
 if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
-var method ROPE
+else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
 # Use your adjective-noun for your rope
@@ -75,7 +75,7 @@ var pack shadows
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
 if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
-var method ROPE
+else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
 # Use your adjective-noun for your rope
@@ -109,7 +109,8 @@ var eddy NULL
 var pack rucksack
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
-var method ROPE
+if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
+else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
 # Use your adjective-noun for your rope
@@ -143,7 +144,8 @@ var eddy NULL
 var pack satchel
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
-var method ROPE
+if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
+else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
 # Use your adjective-noun for your rope
