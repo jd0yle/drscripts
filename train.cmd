@@ -35,7 +35,7 @@ loop:
         put #echo >Log [train] Starting reconnect
         put .reconnect
     }
-    pause 5
+    pause 300
     goto loop
 
 

@@ -1,4 +1,4 @@
-
+put #var afk 0
 
 
 send sort auto headtotoe
