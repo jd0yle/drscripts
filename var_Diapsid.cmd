@@ -1,6 +1,7 @@
 ###############################
 ###      DONATIONS
 ###############################
+# 0 - Disabled  1 - Enabled
 put #tvar diapsid.acceptCoinDonation 0
 put #tvar diapsid.acceptItemDonation 0
 put #tvar diapsid.coinDonation 0

@@ -10,7 +10,7 @@ action goto givePrize when ^$diapsid.winner whispers, "(.*)prize(.*)"$/i
 ###      VARIABLES
 ###############################
 if (!($lastCoinGametime >0)) then put #var lastCoinGametime 0
-var avoidCoin 0
+var avoidCoin null
 
 
 ###############################
@@ -47,12 +47,12 @@ botAcceptCoin:
 
 
 botAvoids:
-    if ($diapsid.acceptCoinDonation = 1 && %avoidCoin = 0) then {
-        gosub avoid !coin
+    if ($diapsid.acceptCoinDonation = 1 && %avoidCoin <> 1) then {
+        gosub avoid coins
         var avoidCoin 1
     }
-    if ($diapsid.acceptCoinDonation = 0 && %avoidCoin = 1) then {
-        gosub avoid coin
+    if ($diapsid.acceptCoinDonation = 0 && %avoidCoin <> 0) then {
+        gosub avoid !coins
         var avoidCoin 0
     }
     return
