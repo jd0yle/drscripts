@@ -961,6 +961,7 @@ give:
     matchre return ignores your offer
     matchre return Osmandikar|Lakyan
     matchre return ^Randal looks over
+    matchre return ^The apprentice repairman
     matchre return ^The Servant accepts
     matchre return ^What is it
     matchre return ^You hand
