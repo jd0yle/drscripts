@@ -10,9 +10,9 @@ put #tvar char.appraise.item my sail pouch
 ###############################
 put #tvar char.cambrinth armband
 put #tvar char.focusContainer rucksack
-put #tvar char.ritualFocus kingsnake totem
+put #tvar char.ritualFocus ouroboros ring
 put #tvar char.wornCambrinth 0
-put #tvar char.wornFocus 0
+put #tvar char.wornFocus 1
 
 
 ###############################
@@ -25,6 +25,15 @@ put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
 put #tvar char.cast.dc.prep 50
+
+
+###############################
+###      FRIENDS
+###############################
+put #tvar char.inv.emptyGemPouchContainer rucksack
+put #tvar char.inv.fullGemPouchContainer rucksack
+put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.default rucksack
 
 
 ###############################
@@ -116,7 +125,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song lament
+put #tvar char.performance.song jig
 put #tvar char.performance.mood quiet
 
 

@@ -356,25 +356,6 @@ analyze:
     goto retry
 
 
-ask:
-    var location ask1
-    var todo $0
-    ask1:
-    matchre return ^A pure white alfar avenger peers at you
-    matchre return hands it to you\.$
-    matchre return ^The Shadow Servant stares at you in confusion.
-    matchre return ^To whom are you speaking\?
-    matchre return ^With a sad look
-    matchre ask.retreat ^You cannot do that while focusing on combat!
-    put ask %todo
-    goto retry
-
-
-ask.retreat:
-    gosub retreat
-    goto %location
-
-
 app:
 appraise:
     var location appraise1
@@ -406,6 +387,40 @@ arrange1:
     matchre arrange ...wait
     matchre arrange Sorry
     put arrange %todo
+    goto retry
+
+
+ask:
+    var location ask1
+    var todo $0
+    ask1:
+    matchre return ^A pure white alfar avenger peers at you
+    matchre return hands it to you\.$
+    matchre return ^The Shadow Servant stares at you in confusion.
+    matchre return ^To whom are you speaking\?
+    matchre return ^With a sad look
+    matchre ask.retreat ^You cannot do that while focusing on combat!
+    put ask %todo
+    goto retry
+
+
+ask.retreat:
+    gosub retreat
+    goto %location
+
+
+assess:
+    var location assess1
+    var todo $0
+    assess1:
+    matchre return ^Members of your group\:$
+    matchre return ^No one appears to be protected by a Paladin\.$
+    matchre return ^Roundtime
+    matchre return ^This isn't the place for that\.$
+    matchre return ^You assess the teaching environment\.\.\.$
+    matchre return ^You assess your combat situation\.\.\.$
+    matchre return ^You study the area\.\.\.$
+    put assess %todo
     goto retry
 
 
@@ -461,6 +476,16 @@ libAwake:
     goto retry
     put awake
     goto %location
+
+
+avoid:
+    var location avoid1
+    var todo $0
+    avoid1:
+    matchre return ^You are now allowing
+    matchre return ^You are now avoiding
+    put avoid %todo
+    goto retry
 
 
 block.stop:

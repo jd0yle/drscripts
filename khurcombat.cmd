@@ -27,7 +27,7 @@ var useAstrology 0
 var useForage 0
 var useHunt 1
 var usePerc 1
-var useSano 0
+var useSano 1
 var useSkin 1
 
 var opts %1
@@ -90,7 +90,7 @@ combatSkillCheck:
         if ("%weaponSkills(%weaponIndex)" = "Light_Thrown" || "%weaponSkills(%weaponIndex)" = "Heavy_Thrown") then {
             goto combatAttack
         }
-        if ("%weaponSkills(%weaponIndex" = "Targeted_Magic") then {
+        if ("%weaponSkills(%weaponIndex)" = "Targeted_Magic") then {
             put .target
             exit
         }
@@ -142,6 +142,9 @@ combatAttack:
     if (%useHunt = 1) then gosub combatHunt
     if (%usePerc = 1) then gosub combatPerc
     if (%useAstrology = 1) then gosub combatAstrology
+    if (%useSano = 1 && $Arcana.LearningRate < 15 && $concentration > 99) then {
+        gosub gaze my sano crystal
+    }
     if ("%weaponSkills(%weaponIndex)" = "Light_Thrown" || "%weaponSkills(%weaponIndex)" = "Heavy_Thrown") then {
         if ("$righthand" = "Empty") then {
               gosub get my %weaponItems(%weaponIndex)
@@ -178,6 +181,8 @@ combatCheckDeadMob:
             gosub skin
         }
         gosub loot
+        put .loot
+        waitforre ^LOOT DONE
     }
     return
 

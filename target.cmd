@@ -13,6 +13,7 @@ var useApp 0
 var useHunt 1
 var usePerc 1
 var useAstrology 0
+var useSano 1
 
 #####################
 # Main
@@ -30,6 +31,9 @@ targetSkillCheck:
     if (%useHunt = 1) then gosub targetHunt
     if (%usePerc = 1) then gosub targetPerc
     if (%useAstrology = 1) then gosub targetAstrology
+    if (%useSano = 1 && $Arcana.LearningRate < 15 && $concentration > 99) then {
+        gosub gaze my sano crystal
+    }
     if ($Debilitation.LearningRate < 30) then {
         gosub prep $char.combat.spell.Debilitation $char.combat.prep.Debilitation
         if ($char.combat.harness.Debilitation <> 0) then {
@@ -68,6 +72,8 @@ targetCheckDeadMob:
             gosub skin
         }
         gosub loot
+        put .loot
+        waitforre ^LOOT DONE
     }
     return
 
@@ -97,6 +103,6 @@ targetPerc:
 
 targetExit:
     if ("$charactername" = "Khurnaarti") then {
-        put .magic
+        put .khurcombat
     }
     exit
