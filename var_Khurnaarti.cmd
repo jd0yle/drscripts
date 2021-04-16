@@ -28,6 +28,15 @@ put #tvar char.cast.dc.prep 50
 
 
 ###############################
+###      FRIENDS
+###############################
+put #tvar char.inv.emptyGemPouchContainer rucksack
+put #tvar char.inv.fullGemPouchContainer rucksack
+put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.default rucksack
+
+
+###############################
 ###      COMBAT
 ###############################
 put #tvar char.combat.spell.Debilitation calm
@@ -107,7 +116,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song lament
+put #tvar char.performance.song jig
 put #tvar char.performance.mood quiet
 
 

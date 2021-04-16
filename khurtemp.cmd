@@ -7,7 +7,7 @@ include libmaster.cmd
 # Main
 ##########
 
-goto moveToHunt
+goto moveToShard
 
 moveToHunt:
     gosub automove west gate
@@ -22,8 +22,9 @@ moveToHunt:
 
 moveToShard:
     gosub automove 198
-    gosub automove 60
+    gosub automove 87
     gosub automove 282
+    gosub move go rock wall
     gosub automove west gate
     gosub automove portal
     exit
