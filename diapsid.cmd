@@ -6,29 +6,53 @@ action put #tvar diapsid.donator $1; put #tvar diapsid.coinDonation $2 ; goto bo
 action put #tvar diapsid.fortuneTarget $1; goto giveFortune when ^(\S+) whispers, "(.*)fortune(.*)"$/i
 action goto givePrize when ^$diapsid.winner whispers, "(.*)prize(.*)"$/i
 
-##############
-# Variables
-##############
+###############################
+###      VARIABLES
+###############################
 if (!($lastCoinGametime >0)) then put #var lastCoinGametime 0
+var avoidCoin 0
 
 
-##############
-# Basic Methods
-##############
-botWait:  
+###############################
+###      METHODS
+###############################
+botWait:
+    gosub botAvoids
+    pause 2
     gosub look
     pause 200
     goto botWait
 
 
 botAccept:
-    put accept
-    goto botThank
+    if ($diapsid.acceptItemDonation = 1) then {
+        put accept
+        goto botThank
+    } else {
+        put decline
+        put ooc $diapsid.donator [DR Discord Giveaways] Thank you, but I am not accepting donations at this time.  Please speak to Spicy on discord if you need this feature turned on.
+        goto botWait
+    }
 
 
 botAcceptCoin:
-    put accept tip
-    goto botThank
+    if ($diapsid.acceptCoinDonation = 1) then {
+        put accept tip
+        goto botThank
+   } else {
+        gosub decline tip
+        put ooc $diapsid.donator [DR Discord Giveaways] Thank you, but I am not accepting donations at this time.  Please speak to Spicy on discord if you need this feature turned on.
+        goto botWait
+    }
+
+
+botAvoids:
+    if ($diapsid.acceptCoinDonation = 1 && %avoidCoin = 0) then {
+        gosub avoid !coin
+    }
+    if ($diapsid.acceptCoinDonation = 0 $$ %avoidCoin = 1) then {
+        gosub avoid coin
+    }
 
 
 botThank:
@@ -50,9 +74,9 @@ botStow:
     goto botWait
 
 
-##############
-# Fortunes
-##############
+###############################
+###      FORTUNES
+###############################
 giveFortune:    
     eval fortune.number count("$fortune.list", "|")
     Random 1 %fortune.number
@@ -61,9 +85,10 @@ giveFortune:
     var $diapsid.fortuneTarget 0
     goto botWait
 
-##############
-# Prize Distribution
-##############
+
+###############################
+###      PRIZE DISTRIBUTION
+###############################
 giveCongrats:
     put ooc $diapsid.winner [DR Discord Giveaways] Here are your $diapsid.prize platinums!  Enjoy!
     var $diapsid.prizeGiven 1
