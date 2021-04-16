@@ -49,10 +49,13 @@ botAcceptCoin:
 botAvoids:
     if ($diapsid.acceptCoinDonation = 1 && %avoidCoin = 0) then {
         gosub avoid !coin
+        var avoidCoin 1
     }
-    if ($diapsid.acceptCoinDonation = 0 $$ %avoidCoin = 1) then {
+    if ($diapsid.acceptCoinDonation = 0 && %avoidCoin = 1) then {
         gosub avoid coin
+        var avoidCoin 0
     }
+    return
 
 
 botThank:
