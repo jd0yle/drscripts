@@ -47,7 +47,9 @@ loop:
             gosub take $target poison quick
             put #var poison 0
         }
-        if ($poisonHeal = 1) then gosub healPoisonSelf
+        if ($poisonHeal = 1) then {
+            gosub runScript cast fp
+        }
         if ($mana > 30) then {
             if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
         }
