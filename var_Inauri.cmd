@@ -79,6 +79,15 @@ put #tvar char.healing.poisonSelf 0
 
 
 ###############################
+###      LOOT
+###############################
+put #tvar char.inv.emptyGemPouchContainer backpack
+put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.tempContainer shadows
+put #tvar char.inv.defaultContainer backpack
+
+
+###############################
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.minimumConcentration 50

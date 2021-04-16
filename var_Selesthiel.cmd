@@ -51,18 +51,19 @@ put #tvar char.combat.harness.Targeted_Magic 0
 ###############################
 ###      FRIENDS
 ###############################
-var friends Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch
+var friends Inauri|Qizhmur|Selesthiel|Khurnaarti
 var enemies null
 var super.enemies null
 
 
 ###############################
-###      FRIENDS
+###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
 put #tvar char.inv.fullGemPouchContainer portal
 put #tvar char.inv.tempContainer shadows
-put #tvar char.inv.default steelsilk backpack
+put #tvar char.inv.defaultContainer steelsilk backpack
+
 
 ###############################
 ###      MAGIC

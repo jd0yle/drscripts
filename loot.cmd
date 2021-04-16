@@ -83,16 +83,16 @@ pickupLoot:
             }
             if (%newGemPouch = 1) then {
                 if ("$lefthand" != "Empty") then {
-                    gosub put my $lefthandnoun in my %container
+                    gosub put my $lefthandnoun in my $char.inv.defaultContainer
                 }
                 gosub stow right
                 gosub stow left
                 gosub remove my gem pouch
-                gosub put my gem pouch in my portal
-                gosub get gem pouch from my %gemPouchContainer
+                gosub put my gem pouch in my $char.inv.fullGemPouchContainer
+                gosub get gem pouch from my $char.inv.emptyGemPouchContainer
                 gosub wear my gem pouch
                 gosub store gem gem pouch
-                gosub fill my gem pouch with my %container
+                gosub fill my gem pouch with my $char.inv.defaultContainer
                 gosub tie my gem pouch
                 gosub drop my %lootables(%loot.index)
                 var newGemPouch 0

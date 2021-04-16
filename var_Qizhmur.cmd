@@ -78,9 +78,18 @@ put #tvar char.combat.harness.Targeted_Magic 0
 ###############################
 ###      FRIENDS
 ###############################
-var friends Inauri|Asherasa|Sorhhn|Xenris|Xomfor|Fostisch
+var friends Inauri|Qizhmur|Selesthiel|Khurnaarti
 var enemies null
 var super.enemies null
+
+
+###############################
+###      LOOT
+###############################
+put #tvar char.inv.emptyGemPouchContainer wyvern skull
+put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.tempContainer wyvern skull
+put #tvar char.inv.defaultContainer wyvern skull
 
 
 ###############################

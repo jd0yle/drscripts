@@ -67,6 +67,15 @@ put #tvar char.locks.boxContainer rucksack
 
 
 ###############################
+###      LOOT
+###############################
+put #tvar char.inv.emptyGemPouchContainer backpack
+put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.tempContainer shadows
+put #tvar char.inv.defaultContainer backpack
+
+
+###############################
 ###      MAGIC
 ###############################
 put #tvar guild Moon Mage
