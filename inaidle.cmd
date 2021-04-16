@@ -55,10 +55,12 @@ loop:
         gosub take $target ever quick
         put #var heal 0
     }
-    if ($openDoor = 1) then {
-        gosub unlock door
-        gosub open door
-        put #var openDoor 0
+    if !(contains("$roomplayers", "Selesthiel")) then {
+        if ($openDoor = 1) then {
+            gosub unlock door
+            gosub open door
+            put #var openDoor 0
+        }
     }
     if ($poison = 1) then {
         gosub touch $target
@@ -103,7 +105,7 @@ waitAlmanac:
     if (%nextStudyAt < $gametime) then {
     if ("$lefthandnoun" != "chronicle" && "$righthandnoun" != "chronicle") then {
         gosub get my $char.trainer.almanacItem
-        }
+    }
         gosub study my $char.trainer.almanacItem
 	    pause 2
         gosub stow my $char.trainer.almanacItem
