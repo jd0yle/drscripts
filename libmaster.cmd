@@ -482,8 +482,12 @@ avoid:
     var location avoid1
     var todo $0
     avoid1:
-    matchre return ^You are now allowing
-    matchre return ^You are now avoiding
+    matchre return ^You're now (?:allowing|avoiding) attempts to dance with you\.$
+    matchre return ^You're now (?:allowing|avoiding) attempts to (?:drag|hold|join)\.$
+    matchre return ^You're now (?:allowing|avoiding) attempts to hand you coins\.$
+    matchre return ^You're now (?:allowing|avoiding) attempts to lead you into crime\.$
+    matchre return ^You're now (?:allowing|avoiding) attempts to (?:teach|touch) you\.$
+    matchre return ^You're now (?:allowing|avoiding) attempts to whisper to you\.$
     put avoid %todo
     goto retry
 
