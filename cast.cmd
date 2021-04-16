@@ -142,12 +142,20 @@ ritualSpell:
         gosub stow
         gosub stow left
     }
-    gosub get my $char.ritualFocus
+    if ($char.wornFocus = 1) then {
+        gosub remove my $char.ritualFocus
+    } else {
+        gosub get my $char.ritualFocus
+    }
     gosub prep %spell $char.cast.%spell.prep
     gosub invoke my $char.ritualFocus
     if (%isFullyPrepped != 1) then gosub waitForPrep
     gosub cast
-    gosub put my $char.ritualFocus in my $char.focusContainer
+    if ($char.wornFocus = 1) then {
+        gosub wear my $char.ritualFocus
+    } else {
+        gosub put my $char.ritualFocus in my $char.focusContainer
+    }
     goto done
 
 

@@ -68,10 +68,4 @@ practiceBoxExit:
 newBox:
     gosub drop my $char.locks.boxType
     put dump junk
-    gosub open my $char.locks.boxContainer
-    gosub get my $char.locks.boxType
-    var newBox 0
-    if ("$righthand" = "Empty") then {
-        goto practiceBoxExit
-    }
-    goto practiceBoxLoop
+    goto pbCount
