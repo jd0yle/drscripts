@@ -175,11 +175,12 @@ combatApp:
 combatCheckDeadMob:
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
+        echo %mobName
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
             if (%arrangeForPart = 1) then gosub arrange for part
             if (%arrangeFull = 1) then gosub arrange full
             gosub skin
-        }
+        } else gosub skin
         gosub loot
         put .loot
         waitforre ^LOOT DONE

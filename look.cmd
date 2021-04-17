@@ -4,7 +4,8 @@ include libmaster.cmd
 ###################
 if ("$charactername" = "Inauri") then {
     action put #var heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
-    action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Vohraus|Inahk|Estius)'s face appears in the
+    action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
+    action put #var openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
     action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
     action put #var poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your
@@ -37,11 +38,6 @@ loop:
             gosub take $target ever quick
             put #var heal 0
         }
-        if ($openDoor = 1) then {
-            gosub unlock door
-            gosub open door
-            put #var openDoor 0
-        }
         if ($poison = 1) then {
             gosub touch $target
             gosub take $target poison quick
@@ -54,6 +50,17 @@ loop:
             if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
         }
     }
+    if ($openDoor = 1) then {
+        if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
+            gosub unlock door
+            gosub open door
+        }
+    }
+    if ($openDoor = 2) then {
+        gosub unlock door
+        gosub open door
+    }
+    put #var openDoor 0
     pause 2
     gosub waitLook
     goto loop
