@@ -2394,6 +2394,7 @@ wear:
     var location wear1
     var todo $0
     wear1:
+    matchre return can't fit over
     matchre return ^Wear what\?
     matchre return ^The contours of the
     matchre return ^You are already wearing that\.
@@ -2720,6 +2721,7 @@ checkMoons:
 
 
 retry:
+    matchre return ^Roundtime
     matchre location ^\.\.\.wait
     matchre location ^Sorry, system is slow
     matchre location.tooFast ^Sorry, you may

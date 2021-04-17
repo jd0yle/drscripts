@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 
-var expectedNumBolts sixty-three
+var expectedNumBolts sixty-one
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -108,7 +108,7 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Arcana.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 20 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
@@ -135,7 +135,7 @@ main:
     # Main Combat
     startFight:
     #if ($bleeding = 1) then goto startMagic
-    #if ($Evasion.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Parry_Ability.LearningRate < 20 || $Targeted_Magic.LearningRate < 20 || $Light_Thrown.LearningRate < 20 || $Brawling.LearningRate < 20 || $Small_Edged.LearningRate < 20) then {
+    #if ($Evasion.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Parry_Ability.LearningRate < 20 || $Targeted_Magic.LearningRate < -1 || $Light_Thrown.LearningRate < 20 || $Brawling.LearningRate < 20 || $Small_Edged.LearningRate < 20) then {
 	    put #echo >Log #cc99ff Moving to combat
 	    gosub moveToWyverns
 	    put .fight

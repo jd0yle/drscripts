@@ -18,7 +18,7 @@ if ("$charactername" = "Qizhmur") then {
 }
 
 if ("$charactername" = "Selesthiel") then {
-    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick
+    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
 }
 
 ############
@@ -74,6 +74,8 @@ getArmorFromRepairLoop:
     goto getArmorFromRepairLoop
 
 armorDone:
+    gosub stow right
+    gosub stow left
     pause .2
     put #parse ARMOR DONE
     exit

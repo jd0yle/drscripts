@@ -20,6 +20,7 @@ var forceDebil 0
 var lootType treasure
 var useAlmanac 0
 var useApp 1
+var useArmor 0
 var useBuffs 1
 var useHunt 1
 var usePerc 1
@@ -66,9 +67,9 @@ if ($charactername = Selesthiel && "%opts" != "backtrain") then {
     var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
     var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
 
-    # With HT / Staves
-    #var weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown|Staves
-    #var weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata|nightstick
+    var armor.skills Chain_Armor|Brigandine|Plate_Armor
+    var armor.items ring greaves|scale greaves|light greaves
+    var useArmor 1
 
     var cambrinth mammoth calf
 
@@ -172,6 +173,11 @@ eval weapons.length count("%weapons.skills", "|")
 var weapons.lastChangeAt 0
 var weapons.targetLearningRate 5
 
+var armor.index 0
+eval armor.length count("%armor.skills", "|")
+var armor.lastChangeAt 0
+var armor.targetLearningRate 5
+
 var stances.list shield|parry
 var stances.skills Shield_Usage|Parry_Ability
 var stances.targetLearningRate 5
@@ -253,6 +259,8 @@ loop:
     gosub checkStances
 
     gosub checkWeaponSkills
+
+    if (%useArmor = 1) then gosub checkArmorSkills
 
     gosub buffs
     gosub manageCyclics
@@ -572,6 +580,37 @@ buffCol:
         return
     }
     return
+    
+    
+checkArmorSkills:
+    if ($%armor.skills(%armor.index).LearningRate >= %armor.targetLearningRate) then {
+        # By default, don't switch armor faster than once every 30 seconds.
+        # But if all the weapon skills are moving, wait 60 seconds before swapping
+        var timeBetweenArmorSwaps 30
+        if (%armor.targetLearningRate > 10) then var timeBetweenArmorSwaps 60
+        evalmath changeArmorAt %armor.lastChangeAt + %timeBetweenArmorSwaps
+        if (%t > %changeArmorAt) then {
+            math armor.index add 1
+            if (%armor.index > %armor.length) then {
+                var armor.index 0
+                evalmath armor.targetLearningRate (5 + $%armor.skills(%armor.index).LearningRate)
+                if (%armor.targetLearningRate > 34) then var armor.targetLearningRate 34
+            }
+            var armor.lastChangeAt %t
+            #put #echo >Log #805b00 [$time] Switching to %armor.skills(%armor.index) ($%armor.skills(%armor.index).LearningRate)
+        }
+    }
+    if ("%currentArmor" != "%armor.items(%armor.index)") then {
+        gosub remove greaves
+        gosub stow greaves
+        gosub remove moonsilk pants
+        gosub stow pants
+        gosub get my %armor.items(%armor.index)
+        gosub wear my %armor.items(%armor.index)
+        var currentArmor %armor.items(%armor.index)
+    }
+    put #statusbar 8 Armor: %armor.skills(%armor.index) $%armor.skills(%armor.index).LearningRate/%armor.targetLearningRate
+    return
 
 
 
@@ -659,10 +698,12 @@ checkStances:
             if (%stances.index > %stances.length) then {
                 var stances.index 0
                 evalmath stances.targetLearningRate (5 + $%stances.skills(%stances.index).LearningRate)
-                if (%stances.targetLearningRate > 32) then var stances.targetLearningRate = 32
+                if (%stances.targetLearningRate > 32) then var stances.targetLearningRate 32
             }
         }
     }
+
+    echo stance is $stance  stance.list(stance.index) is %stances.list(%stances.index)   LR is $%stances.skills(%stances.index).LearningRate    Target LR is %stances.targetLearningRate
 
     if ("$stance" != "%stances.list(%stances.index)") then {
         gosub stance %stances.list(%stances.index)
