@@ -7,9 +7,16 @@ include libmaster.cmd
 # Main
 ##########
 
-goto moveToShard
+goto moveToHuntFC
 
-moveToHunt:
+moveToHuntFC:
+    gosub automove portal
+    gosub move go portal
+    gosub automove 80
+    put .khurcombat
+    exit
+
+moveToHuntShard:
     gosub automove west gate
     gosub automove raven
     gosub automove 282

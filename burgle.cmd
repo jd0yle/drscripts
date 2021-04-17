@@ -724,7 +724,7 @@ PUTLOOT:
 	matchre WAIT ^\.\.\.wait|^Sorry,|^Please wait\.
     matchre RETURN ^You put|^You sling|^You attach|^You attempt to relax|^You rummage|^What were|^You sell|^You get
 	matchre NOWEAR ^You can\'t wear
-	matchre NOFIT ^But that\'s closed|^That\'s too heavy|^The .* too long to fit|too long\, even after stuffing it\, to fit|^Weirdly, you can\'t manage
+	matchre NOFIT ^But that\'s closed|^That\'s too heavy|^The .* too long to fit|too long\, even after stuffing it\, to fit|^Weirdly, you can\'t manage|^There isn't anymore room
 	put %put
 	matchwait 5
 	return

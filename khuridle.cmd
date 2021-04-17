@@ -3,7 +3,9 @@ include libmaster.cmd
 # Idle Action Triggers
 ###################
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Vohraus|Inahk|Estius)'s face appears in the
+action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
+action put #var openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
+action goto movetoHouseRetry when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
 
 ###################
 # Variable Inits
@@ -12,6 +14,7 @@ if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
+if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 
@@ -21,13 +24,17 @@ put #script abort all except khuridle
 ###################
 loop:
     if ($standing = 0) then gosub stand
-    if !(contains("$roomplayers", "Inauri")) then {
-        if ($openDoor = 1) then {
+    if ($openDoor = 1) then {
+        if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
             gosub unlock door
             gosub open door
-            put #var openDoor 0
         }
     }
+    if ($openDoor = 2) then {
+        gosub unlock door
+        gosub open door
+    }
+    put #var openDoor 0
     pause 1
     gosub waitAppraisal
     pause 1
@@ -148,16 +155,20 @@ waitForage:
         put .forage
         waitforre ^FORAGE DONE
         gosub automove 252
-        gosub peer door
-        waitforre ^A sandalwood door suddenly opens\!
-        put .house
-        waitforre ^HOUSE DONE
+        gosub moveToHouse
         put #script abort all except khuridle
     }
     return
 
 
 waitLock:
+    # Limit how often we're looking for locksmithing practice boxes.
+    if ($practicebox.haveBox = 1) then
+        evalmath nextPracticeBoxAt $lastPracticeBoxGametime + 3600
+        if (%nextPracticeBoxAt > $gametime) then {
+            return
+        }
+    }
     if ($Locksmithing.LearningRate < 10) then {
         put .practicebox
         waitforre ^LOCKS DONE
@@ -200,3 +211,18 @@ waitPlay:
     waitforre ^You finish playing
     gosub stow my $char.performance.instrument
     return
+
+
+###################
+# Move to Methods
+###################
+movetoHouse:
+    put .house
+    waitforre ^HOUSE DONE$
+    return
+
+
+movetoHouseRetry:
+    put .house
+    waitforre ^HOUSE DONE$
+    goto loop
