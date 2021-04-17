@@ -31,6 +31,8 @@ pbCountDone:
     var pbTotalHave %numCount
     if (%pbTotalHave = null || %pbTotalHave = 0) then {
         put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
+        put #var practicebox.haveBox 1
+        put #var lastPracticeBoxGametime $gametime
         goto practiceBoxExit
     }
     if (%pbTotalHave > 0) then {

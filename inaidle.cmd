@@ -7,7 +7,8 @@ action var justice 0 when ^You're fairly certain this area is lawless and unsafe
 action var justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action var lumberCount $1 when ^You count out (\d+) pieces of lumber remaining\.
-action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Vohraus|Inahk|Estius)'s face appears in the
+action put #var openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
+action put #var openDoor 1 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action put #var poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action put #var poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
 action put #var poisonHeal 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
@@ -55,13 +56,17 @@ loop:
         gosub take $target ever quick
         put #var heal 0
     }
-    if !(contains("$roomplayers", "Selesthiel")) then {
-        if ($openDoor = 1) then {
+    if ($openDoor = 1) then {
+        if !(contains("$roomplayers", "Selesthiel")) then {
             gosub unlock door
             gosub open door
-            put #var openDoor 0
         }
     }
+    if ($openDoor = 2) then {
+        gosub unlock door
+        gosub open door
+    }
+    put #var openDoor 0
     if ($poison = 1) then {
         gosub touch $target
         gosub take $target poison quick

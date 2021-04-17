@@ -776,6 +776,64 @@ dip:
     goto retry
 
 
+disarm:
+    var location disarm1
+    var todo $0
+    put #var disarmArgs 0
+    disarm1:
+    matchre disarm1 fails to reveal to you what type of trap protects it\.$
+    matchre disarm1 ^You get the distinct feeling your careless examination caused something to shift inside the trap mechanism\.  This is not likely to be a good thing\.$
+    matchre disarm1 ^You work with the trap for a while but are unable to make any progress\.$
+    matchre disarmCareful ^A pitiful snowball encased in the Flames of Ushnish would fare better than you\.$
+    matchre disarmCareful ^Prayer would be a good start for any attempt of yours at disarming the
+    matchre disarmCareful should not take long with your skills\.$
+    matchre disarmCareful ^The odds are against you, but with persistence you believe you could disarm the
+    matchre disarmCareful ^The trap has the edge on you, but you've got a good shot at disarming the
+    matchre disarmCareful with only minor troubles\.$
+    matchre disarmCareful would be a longshot\.$
+    matchre disarmCareful ^You could just jump off a cliff and save yourself the frustration of attempting this
+    matchre disarmCareful ^You have an amazingly minimal chance at disarming the
+    matchre disarmCareful ^You have some chance of being able to disarm the
+    matchre disarmCareful ^You probably have the same shot as a snowball does crossing the desert.
+    matchre disarmCareful ^You really don't have any chance at disarming this
+    matchre disarmCareful ^You think this trap is precisely at your skill level\.$
+    matchre disarmIdentify is not yet fully disarmed\.$
+    matchre disarmQuick ^An aged grandmother could defeat this trap in her sleep\.$
+    matchre disarmQuick ^This trap is a laughable matter, you could do it blindfolded\!$
+    matchre disarmQuick trap is a trivially constructed gadget which you can take down any time.
+    matchre disarmQuick will be a simple matter for you to disarm\.$
+    matchre return ^You guess it is already disarmed\.$
+    put disarm %todo
+    goto retry
+
+
+disarmCareful:
+    put #var disarmArgs careful
+    return
+
+disarmIdentify:
+    put #var disarmArgs identify
+    return
+
+disarmQuick:
+    put #var disarmArgs quick
+    return
+
+
+dismantle:
+    var location dismantle1
+    var todo $0
+    dismantle1:
+    matchre return ^Aren't those generally found outdoors\?$
+    matchre return Count yourself fortunate that the only thing truly injured is your pride\.$
+    matchre return ^Dismantle what\?$
+    matchre return ^While bunnies are useful for a great many things, they do not as a general rule serve well as janitors\.$
+    matchre return ^You must be holding the object you wish to dismantle\.$
+    matchre dismantle1 ^You cannot dismantle the
+    put dismantle %todo
+    goto retry
+
+
 dodge:
     var location Dodge
     matchre return ^But you are already dodging\!
@@ -1436,12 +1494,49 @@ perform:
 pick:
     var location pick1
     var todo $0
+    put #var pickArgs 0
     pick1:
     matchre return isn't locked
     matchre return ^The lock looks weak
     matchre return ^You set about picking
+    matchre pick1 fails to teach you anything about the lock guarding it\.$
+    matchre pick1 ^You are unable to make any progress towards opening the lock\.$
+    matchre pickQuick ^An aged grandmother could open this in her sleep\.$
+    matchre pickQuick ^This lock is a laughable matter, you could do it blindfolded\!$
+    matchre pickQuick ^The lock is a trivially constructed piece of junk barely worth your time\.$
+    matchre pickQuick will be a simple matter for you to unlock\.$
+    matchre pickIdentify ^You discover another lock protecting the
+    matchre pickCareful ^A pitiful snowball encased in the Flames of Ushnish would fare better than you\.$
+    matchre pickCareful ^Prayer would be a good start for any attempt of yours at picking open the
+    matchre pickCareful should not take long with your skills\.$
+    matchre pickCareful ^The lock has the edge on you, but you've got a good shot at picking open the
+    matchre pickCareful ^The odds are against you, but with persistence you believe you could pick open the
+    matchre pickCareful with only minor troubles\.$
+    matchre pickCareful would be a longshot\.$
+    matchre pickCareful ^You could just jump off a cliff and save yourself the frustration of attempting this
+    matchre pickCareful ^You have an amazingly minimal chance at picking open the
+    matchre pickCareful ^You have some chance of being able to pick open the
+    matchre pickCareful ^You probably have the same shot as a snowball does crossing the desert\.$
+    matchre pickCareful ^You really don't have any chance at picking open this
+    matchre pickCareful ^You think this lock is precisely at your skill level\.$
+    matchre return ^It's not even locked, why bother\?$
     put pick %todo
     goto retry
+
+
+pickCareful:
+    put #var pickArgs careful
+    return
+
+
+pickIdentify:
+    put #var pickArgs identify
+    return
+
+
+pickQuick:
+    put #var pickArgs careful
+    return
 
 
 play:

@@ -21,8 +21,8 @@ if ("%workOrderMaster" = null) then {
 
 
 workOrderCount:
-    matchre workOrderDoCount ^You rummage through.*?and see (.*)\.$
-    gosub rummage my $char.craft.container
+    matchre workOrderDoCount ^In the.*?you see (.*)\.$
+    gosub look in my $char.craft.container
     matchwait 5
     goto workOrderCountDone
 
@@ -35,7 +35,7 @@ workOrderDoCount:
     var numCount 0
 
     workOrderDoCountDoCountLoop:
-        if (matchre("%itemArr(%index)", "$char.craft.workorder.item")) then math numCount add 1
+        if (matchre("%itemArr(%index)", "\b$char.craft.workorder.item\b")) then math numCount add 1
         math index add 1
         if (%index > %itemLength) then goto workOrderCountDone
         goto workOrderDoCountDoCountLoop
@@ -63,13 +63,14 @@ workOrderGet:
         goto workOrderRestock
     }
     pause .2
+    var location workOrderGet1
     workOrderGet1:
     matchre workOrderBundle $char.craft.workorder.item
     matchre workOrderGet Alright, this is an order for
     matchre workOrderRead ^You realize you have items bundled with the logbook
     matchre workOrderFindMaster ^Usage: ASK
     put ask %workOrderMaster for hard shaping work
-    matchwait 5
+    goto retry
 
 
 workOrderBundle:
