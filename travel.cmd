@@ -1387,7 +1387,7 @@ if (("$zoneid" = "67") && matchre("%detour", "ye{2,}t")) then gosub AUTOMOVE wes
 if (("$zoneid" = "67") && matchre("(steel|ylono|fayrin|horse|spire|wyvern|corik|adan'f)","%detour")) then gosub AUTOMOVE 132
 if (("$zoneid" = "66") && matchre("(steel|fayrin|ylono|corik|adan'f)","%detour")) then
           {
-              if ("%detour" = "steel") then gosub AUTOMOVE 99
+              if ("%detour" = "steel") then gosub AUTOMOVE 252
               if ("%detour" = "fayrin") then gosub AUTOMOVE 127
               if ("%detour" = "ylono") then gosub AUTOMOVE 495
               if matchre("(corik|adan'f)","%detour") then
