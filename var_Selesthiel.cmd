@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container portal
-put #tvar char.appraise.item my gem pouch
+put #tvar char.appraise.container telescope case
+put #tvar char.appraise.item clockwork telescope
 
 
 ###############################
@@ -46,6 +46,97 @@ put #tvar char.combat.spell.Targeted_Magic 0
 put #tvar char.combat.prep.Targeted_Magic 0
 put #tvar char.combat.charge.Targeted_Magic 0
 put #tvar char.combat.harness.Targeted_Magic 0
+
+
+###############################
+###      FIGHT
+###############################
+#***** AMMO *****
+put #tvar char.fight.ammo.Crossbow basilisk bolt
+put #tvar char.fight.ammo.Bow basilisk arrow
+put #tvar char.fight.ammo.Slings rock
+
+put #tvar char.fight.wornCrossbow 0
+
+#***** ARRANGE *****
+put #tvar char.fight.arrangeForPart 0
+put #tvar char.fight.arrangeFull 0
+
+#***** DEBLITATION *****
+put #tvar char.fight.debil.use 1
+
+# The debilitation spell to use
+put #tvar char.fight.debil.spell mb
+
+# The amount of mana to prep debilitation at
+put #tvar char.fight.debil.prepAt 20
+
+# Setting to 1 will force casting a debilitation spell for every attack
+# (Otherwise it only does it for learning)
+put #tvar char.fight.forceDebil 0
+
+#***** STANCE *****
+# Force always using stance shield, never stance parry
+put #tvar char.fight.forceShield 0
+
+#***** LOOT *****
+# all|treasure|gems whatever the loot options are
+put #tvar char.fight.lootType treasure
+
+# DEPRECATED Script-specifc options (ex: 'backtrain')
+put #tvar char.fight.opts null
+
+#***** TM *****
+# Spell to use for TM
+put #tvar char.fight.tmSpell pd
+
+#Amount to prep tm spell at
+# (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
+put #tvar char.fight.tmPrep 30
+
+#***** WEAPONS *****
+put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
+
+#***** ARMOR *****
+put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
+put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
+put #tvar char.fight.useArmor 1
+
+#***** USE *****
+# Use vars are all "Do this thing or not"
+# All default to 0
+put #tvar char.fight.useAlmanac 1
+put #tvar char.fight.useAppraise 1
+put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useHunt 1
+put #tvar char.fight.usePerc 1
+put #tvar char.fight.useSanowret 1
+put #tvar char.fight.useSkin 1
+put #tvar char.fight.useStealth 1
+
+#***** MOON MAGE *****
+put #tvar char.fight.useCol 1
+put #tvar char.fight.useMaf 1
+put #tvar char.fight.useObserve 1
+put #tvar char.fight.useSeer 1
+put #tvar char.fight.useShadowling 1
+put #tvar char.fight.useShadows 1
+put #tvar char.fight.useShw 1
+put #tvar char.fight.useSls 1
+
+#***** NECRO *****
+# The necro ritual to use for training
+# (Will still use harvest when low on material, consume for devour, etc.)
+put #tvar char.fight.necroRitual dissection
+
+put #tvar char.fight.avoidDivineOutrage 0
+
+put #tvar char.fight.useCh 0
+put #tvar char.fight.useIvm 0
+put #tvar char.fight.usePhp 0
+put #tvar char.fight.useQe 0
+put #tvar char.fight.useUsol 0
 
 
 ###############################
@@ -121,7 +212,6 @@ put #tvar char.research.useSanowret 1
 put #tvar char.trainer.almanacContainer thigh bag
 put #tvar char.trainer.almanacItem almanac
 put #tvar char.trainer.firstaid 0
-
 
 pause .2
 put #parse CHARVARS DONE

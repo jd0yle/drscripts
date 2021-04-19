@@ -448,7 +448,7 @@ attack:
     matchre return ^The .* is already debilitated\!
     matchre return ^The khuj is too heavy for you to use like that\.
     matchre return ^There is nothing else to face
-    matchre return ^What are you trying to throw?
+    matchre return ^What are you trying to (?:throw|lob)\?
     matchre return ^Wouldn't it be better
     matchre return ^You can not slam with that
     matchre return ^You don't have a weapon to draw with\!

@@ -51,6 +51,86 @@ put #tvar char.combat.harness.Targeted_Magic 0
 
 
 ###############################
+###      FIGHT
+###############################
+#***** AMMO *****
+put #tvar char.fight.ammo.Crossbow bolt
+put #tvar char.fight.ammo.Bow 0
+put #tvar char.fight.ammo.Slings 0
+
+#***** ARRANGE *****
+put #tvar char.fight.arrangeForPart 0
+put #tvar char.fight.arrangeFull 0
+
+#***** DEBILITATION *****
+put #tvar char.fight.debil.use 1
+
+# The debilitation spell to use
+put #tvar char.fight.debil.spell calm
+
+# The amount of mana to prep debilitation at
+put #tvar char.fight.debil.prepAt 3
+
+# Setting to 1 will force casting a debilitation spell for every attack
+# (Otherwise it only does it for learning)
+put #tvar char.fight.forceDebil 0
+
+#***** STANCE *****
+# Force always using stance shield, never stance parry
+put #tvar char.fight.forceShield 0
+
+#***** LOOT *****
+# all|treasure|gems whatever the loot options are
+put #tvar char.fight.lootType treasure
+
+# DEPRECATED Script-specifc options (ex: 'backtrain')
+put #tvar char.fight.opts null
+
+#***** TM *****
+# Spell to use for TM
+put #tvar char.fight.tmSpell do
+
+#Amount to prep tm spell at
+# (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
+put #tvar char.fight.tmPrep 4
+
+#***** WEAPONS *****
+put #tvar char.fight.weapons.items Empty|Empty|wand|naphtha|forester crossbow|tanbo
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+put #tvar char.fight.wornCrossbow 1
+
+#***** ARMOR *****
+put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
+put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
+put #tvar char.fight.useArmor 0
+
+#***** USE *****
+# Use vars are all "Do this thing or not"
+# All default to 0
+put #tvar char.fight.useAlmanac 0
+put #tvar char.fight.useAppraise 1
+put #tvar char.fight.useBuffs 0
+put #tvar char.fight.useHunt 1
+put #tvar char.fight.usePerc 1
+put #tvar char.fight.useSanowret 1
+put #tvar char.fight.useSkin 1
+put #tvar char.fight.useStealth 0
+
+#***** GENERAL *****
+put #tvar char.fight.useMaf 1
+
+#***** MOON MAGE *****
+put #tvar char.fight.useCol 0
+put #tvar char.fight.useObserve 0
+put #tvar char.fight.useSeer 0
+put #tvar char.fight.useShadowling 0
+put #tvar char.fight.useShadows 0
+put #tvar char.fight.useShw 0
+put #tvar char.fight.useSls 0
+
+
+
+###############################
 ###      FRIENDS
 ###############################
 var friends (Inauri|Qizhmur|Selesthiel)
@@ -69,10 +149,10 @@ put #tvar char.locks.boxContainer rucksack
 ###############################
 ###      LOOT
 ###############################
-put #tvar char.inv.emptyGemPouchContainer backpack
-put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.tempContainer shadows
-put #tvar char.inv.defaultContainer backpack
+put #tvar char.inv.emptyGemPouchContainer rucksack
+put #tvar char.inv.fullGemPouchContainer rucksack
+put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.defaultContainer rucksack
 
 
 ###############################

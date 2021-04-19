@@ -4,7 +4,7 @@ var force 0
 
 if_1 then {
     if (%1 = careful) then var appraiseArgs %appraiseArgs careful
-    if (%1 = careful) then var force 1
+    if (%1 = force) then var force 1
 }
 
 if (!($lastAppGametime > 0)) then put #var lastAppGametime 1
@@ -18,7 +18,7 @@ if ($gametime > %nextAppGametime || %force = 1) then {
 
     gosub appraise $char.appraise.item
     if ($char.appraise.container <> 0) then {
-        if ("$righthandnoun" = "pouch" || "$lefthandnoun" = "pouch") then {
+        if ("$righthandnoun" = "pouch" || "$lefthandnoun" = "pouch" || "$righthand" = "$char.appraise.item" || "$lefthand" = "$char.appraise.item") then {
             gosub put $char.appraise.item in my $char.appraise.container
         }
     }

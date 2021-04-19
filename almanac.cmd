@@ -28,6 +28,7 @@ main:
             gosub sleep
             var isAsleep 0
         }
+        if ("$lefthand" != "Empty" || "$righthand" != "Empty") then gosub swap
         put #var lastAlmanacGametime $gametime
     }
     pause 2
