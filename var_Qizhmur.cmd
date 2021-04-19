@@ -34,7 +34,7 @@ put #tvar char.cast.ch.prep 20
 put #tvar char.cast.ch.charge 40
 
 put #tvar char.cast.devour.prep 30
-put #tvar char.cast.devour.charge 10
+put #tvar char.cast.devour.charge 30
 
 put #tvar char.cast.eotb.prep 20
 put #tvar char.cast.eotb.charge 40

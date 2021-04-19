@@ -83,6 +83,8 @@ main:
 
         gosub automove bundle
 
+        gosub release rf
+
         gosub remove my bundle
         gosub sell my bundle
         gosub stow right
