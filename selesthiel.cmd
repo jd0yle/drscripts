@@ -65,18 +65,24 @@ main:
         put .burgle
         waitforre ^BURGLE DONE$
 
-        gosub release rf
+        #gosub release rf
 
         put .armor wear
         waitforre ^ARMOR DONE$
 
         gosub automove n gate
 
+        gosub prep rf
+
         gosub automove portal
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         gosub move go meeting portal
 
+        gosub cast
+        gosub prep rf
+
         gosub automove bundle
+
         gosub remove my bundle
         gosub sell my bundle
         gosub stow right
@@ -100,6 +106,9 @@ main:
 
         put .dep
         waitforre ^DEP DONE$
+        gosub move up
+        gosub move out
+        gosub cast
     }
 
 
@@ -215,7 +224,7 @@ getHealed:
             if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
             eval nextHealTime (300 + $lastHealedGametime)
 
-            if ($gametime > %nextHealTime) then {
+            if ($bleeding = 1 && $gametime > %nextHealTime) then {
 	            put .house
 	            waitforre ^HOUSE DONE$
 
@@ -325,6 +334,12 @@ moveToMagic:
         return
     }
 
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
+
     # Shard East Gate Area
     if ("$zoneid" = "66") then {
         if ("$roomid" != "252") then gosub automove 252
@@ -407,6 +422,9 @@ moveToHeal:
     gosub retrieveBolts
     gosub stow hhr'ata
     gosub stow bola
+    gosub prep rf
+    pause 3
+    gosub cast
     gosub moveToMagic
     gosub getHealed
     put #script abort all except selesthiel

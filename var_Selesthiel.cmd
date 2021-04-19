@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container portal
-put #tvar char.appraise.item my gem pouch
+put #tvar char.appraise.container telescope case
+put #tvar char.appraise.item clockwork telescope
 
 
 ###############################
