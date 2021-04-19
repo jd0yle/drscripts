@@ -57,6 +57,9 @@ getLogbook:
 
 
 workOrderGet:
+    if !(contains("$roomobjs", "Master") || contains("$roomobjs", "Mistress")) then {
+        goto workOrderFindMaster
+    }
     var workOrderLocation workOrderGet
     if (%workOrderTotalHave < 3) then {
         gosub stow my logbook

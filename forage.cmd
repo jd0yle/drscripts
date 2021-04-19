@@ -14,7 +14,7 @@ if_1 then {
 ###############
 forageCollect:
     if ($monstercount > 0) then goto forageExit
-    gosub collect dirt
+    gosub collect rock
     if (contains("$roomobjs", "a pile of")) then {
         gosub kick pile
     }

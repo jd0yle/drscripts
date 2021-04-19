@@ -2306,6 +2306,7 @@ target:
     var todo $0
     target1:
     matchre return ^But you're already preparing
+    matchre return ^There is nothing else to face\!$
     matchre return ^This spell cannot be targeted\.$
     matchre return ^You begin to weave
     matchre return ^You deftly remove

@@ -404,8 +404,8 @@ engErrorExit:
 engNeedLumber:
     if ("$righthand" <> "Empty") then gosub stow
     if ("$lefthand" <> "Empty") then gosub stow left
-    put #echo >log yellow [eng] Need more lumber.  Beginning .inaidle
+    put #echo >log yellow [eng] Need more lumber.  Beginning .inauri
     put store default in %defaultContainer
-    put .inaidle
-    put #script abort all except inaidle
+    put .inauri
+    put #script abort all except inauri
     exit

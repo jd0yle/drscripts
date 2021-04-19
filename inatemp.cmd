@@ -27,8 +27,8 @@ engineerLoop:
     gosub automove %homeRoom
     put .house
     waitforre ^HOUSE DONE
-    put .inaidle
-    put #script abort all except inaidle
+    put .inauri
+    put #script abort all except inauri
     exit
 
 shardLoop:
@@ -50,7 +50,7 @@ shardLoop:
     put .house
     waitforre ^HOUSE DONE
     if ("$charactername" = "Inauri") then {
-        put .inaidle
+        put .inauri
     }
     if ("$charactername" = "Khurnaarti") then {
         put .khuridle
