@@ -122,7 +122,7 @@ action send get %weapons.items(%weapons.index); send load when ^You need to hold
 
 action var useHunt 0 when ^You find yourself unable to hunt in this area.
 
-
+action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
 ###############################
 ###      init
@@ -511,21 +511,16 @@ checkWeaponSkills:
             if ("$charactername" = "Selesthiel") then var weapons.targetLearningRate 0
         }
     }
+
+    if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
+
     if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate) then {
         # By default, don't switch weapons faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 60 seconds before swapping
         var timeBetweenWeaponSwaps 30
         if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
         evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
-        if (%t > %changeWeaponAt) then {
-            math weapons.index add 1
-            if (%weapons.index > %weapons.length) then {
-                var weapons.index 0
-                evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
-                if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
-            }
-            var weapons.lastChangeAt %t
-        }
+        if (%t > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
     }
 
     var handItem $righthand
@@ -541,12 +536,25 @@ checkWeaponSkills:
         if ("%weapons.skills(%weapons.index)" = "Twohanded_Edged" && "%weapon_hand" != "The") then gosub swap my sword
     }
 
+    if ("%weapons.skills(%weapons.index)" = "Crossbow" && $char.fight.wornCrossbow = 1) then gosub remove my %weapons.items(%weapons.index)
+
     put #statusbar 6 Weapon: %weapons.skills(%weapons.index) $%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate
 
     if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow") then gosub stance shield
 
     return
 
+
+
+checkWeaponSkills.nextWeapon:
+    math weapons.index add 1
+	if (%weapons.index > %weapons.length) then {
+	    var weapons.index 0
+	    evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
+	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+	}
+	var weapons.lastChangeAt %t
+	return
 
 
 ##

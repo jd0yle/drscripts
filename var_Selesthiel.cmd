@@ -56,6 +56,8 @@ put #tvar char.fight.ammo.Crossbow basilisk bolt
 put #tvar char.fight.ammo.Bow basilisk arrow
 put #tvar char.fight.ammo.Slings rock
 
+put #tvar char.fight.wornCrossbow 0
+
 #***** ARRANGE *****
 put #tvar char.fight.arrangeForPart 0
 put #tvar char.fight.arrangeFull 0
