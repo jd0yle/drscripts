@@ -51,6 +51,75 @@ put #tvar char.combat.harness.Targeted_Magic 0
 
 
 ###############################
+###      FIGHT
+###############################
+# Ammo to use for crossbow
+put #tvar char.fight.ammo.Crossbow null
+put #tvar char.fight.ammo.Bow null
+put #tvar char.fight.ammo.Sling null
+
+put #tvar char.fight.arrangeForPart 0
+put #tvar char.fight.arrangeFull 0
+
+put #tvar char.fight.avoidDivineOutrage 0
+
+# Whether to use a debilitation spell or not
+put #tvar char.fight.debil.use 1
+
+# The debilitation spell to use
+put #tvar char.fight.debil.spell calm
+
+# The amount of mana to prep debilitation at
+put #tvar char.fight.debil.prepAt 5
+
+# Setting to 1 will force casting a debilitation spell for every attack
+# (Otherwise it only does it for learning)
+put #tvar char.fight.forceDebil 0
+
+# Force always using stance shield, never stance parry
+put #tvar char.fight.forceShield 0
+
+# all|treasure|gems whatever the loot options are
+put #tvar char.fight.lootType treasure
+
+# DEPRECATED Script-specifc options (ex: 'backtrain')
+put #tvar char.fight.opts null
+
+# Spell to use for TM
+put #tvar char.fight.tmSpell pd
+
+#Amount to prep tm spell at
+# (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
+put #tvar char.fight.tmPrep 4
+
+# Weapons
+put #tvar char.fight.weapons.items nightstick|Empty|naphtha|wand|Empty
+put #tvar char.fight.weapons.skills Staves|Brawling|Light_Thrown|Heavy_Thrown|Targeted_Magic
+
+# Use vars are all "Do this thing or not"
+# All default to 0
+put #tvar char.fight.useAlmanac 0
+put #tvar char.fight.useAppraise 1
+put #tvar char.fight.useBuffs 0
+put #tvar char.fight.useHunt 1
+put #tvar char.fight.usePerc 1
+put #tvar char.fight.useSanowret 1
+put #tvar char.fight.useSkin 1
+put #tvar char.fight.useStealth 1
+
+# Moon Mage
+put #tvar char.fight.useCol 0
+put #tvar char.fight.useMaf 1
+put #tvar char.fight.useObserve 0
+put #tvar char.fight.useSeer 0
+put #tvar char.fight.useShadowling 0
+put #tvar char.fight.useShadows 0
+put #tvar char.fight.useShw 0
+put #tvar char.fight.useSls 0
+
+
+
+###############################
 ###      FRIENDS
 ###############################
 var friends (Inauri|Qizhmur|Selesthiel)

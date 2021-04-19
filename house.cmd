@@ -16,6 +16,8 @@ if ($roomid = 252) then {
 
 if ("$roomname" = "Private Home Interior") then var obj door
 
+if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+
 gosub unlock %obj
 gosub open %obj
 gosub move go %obj
