@@ -6,6 +6,7 @@ action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
 action put #var openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action goto movetoHouseRetry when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
+action put #var instructor $1 when ^(Inauri|Selesthiel|Qizhmur) is teaching a class on .*$
 
 ###################
 # Variable Inits
@@ -35,6 +36,8 @@ loop:
         gosub open door
     }
     put #var openDoor 0
+    pause 1
+    gosub waitClass
     pause 1
     gosub waitAppraisal
     pause 1
@@ -110,25 +113,32 @@ waitBurgle:
 
 
 waitClass:
-    if ($student = 1 || $instructor <> 0) then {
+    if ($student = 1) then {
         return
-    }
-    if ($student = 0 && $class = 0 && $instructor = 0) then {
+    } else {
         if (contains("$roomplayers", "Inauri")) then {
             matchre waitClassSetClass Targeted Magic|Enchanting|Crossbow
             matchre waitClassNewClass ^No one seems to be teaching\.$
             put assess teach
             matchwait 5
-
-            var classTopic $1
-            if ("%classTopic" = "Enchanting") then {
-                gosub listen inauri observe
-            } else {
-                gosub listen inauri
-            }
-            return
         }
     }
+    return
+
+
+waitClassNewClass:
+    gosub whisper inauri teach cross
+    pause 2
+    goto waitClass
+
+waitClassSetClass:
+    var classTopic $1
+    if ("%classTopic" = "Enchanting") then {
+        gosub listen $instructor observe
+    } else {
+        gosub listen $instructor
+    }
+    goto waitClass
 
 
 waitFaSkin:
@@ -217,12 +227,16 @@ waitPlay:
 # Move to Methods
 ###################
 movetoHouse:
+    gosub peer door
+    waitforre ^A sandalwood door suddenly opens\!$
     put .house
     waitforre ^HOUSE DONE$
     return
 
 
 movetoHouseRetry:
+    gosub peer door
+    waitforre ^A sandalwood door suddenly opens\!$
     put .house
     waitforre ^HOUSE DONE$
     goto loop

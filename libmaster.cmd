@@ -1340,6 +1340,7 @@ mark:
     matchre return ^There is not enough
     matchre return ^You carefully size up
     matchre return ^You begin to
+    matchre return ^You hold
     matchre return ^You mark
     matchre return ^You count
     put mark all %todo

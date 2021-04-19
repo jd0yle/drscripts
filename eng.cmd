@@ -8,7 +8,7 @@ action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait
 action put #var nextTool shaper when ^Shaping with a wood shaper is needed to further smooth the material's surface\.
 action put #var nextTool rasp when ^A bulbous knot will make continued shaping difficult unless rubbed out with a rasp\.
 action put #var nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
-action put #var nextTool engDone when ^Applying the final touches
+action put #var nextTool engMark when ^Applying the final touches
 action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
 action goto shortCord when ^You need another finished short leather cord
 
@@ -301,7 +301,7 @@ knife2:
 
 carve:
   matchre findNextTool ^Roundtime
-  matchre engDone ^Applying the final touches
+  matchre engMark ^Applying the final touches
   put carve my %2 with my knife
   matchwait 5
 
@@ -392,16 +392,21 @@ engStunPause:
   }
   goto checkForPartial
 
+engMark:
+    put #var nextTool 0
+    gosub tieTool
+    gosub get my stamp
+    gosub mark $righthandnoun with stamp
+    gosub stow my stamp
+    goto engDone
+
 ########################
 # Exit
 ########################
 engDone:
-  put #var nextTool 0
-  gosub tieTool
-  put analyze my %2
-  waitfor Roundtime:
+  gosub analyze my %2
   pause
-  put stow  
+  gosub stow
   evalmath crafted (%crafted + 1)
   if (%crafted < $craftNeed) then {
     put #echo >log yellow [eng] Progress %crafted/$craftNeed
