@@ -61,6 +61,7 @@ put #tvar char.cast.qe.prep 35
 put #tvar char.cast.qe.charge 60
 put #tvar char.cast.qe.chargeTimes 1
 
+
 ###############################
 ###      COMBAT
 ###############################
@@ -73,6 +74,97 @@ put #tvar char.combat.spell.Targeted_Magic 0
 put #tvar char.combat.prep.Targeted_Magic 0
 put #tvar char.combat.charge.Targeted_Magic 0
 put #tvar char.combat.harness.Targeted_Magic 0
+
+
+###############################
+###      FIGHT
+###############################
+#***** AMMO *****
+put #tvar char.fight.ammo.Crossbow basilisk bolt
+put #tvar char.fight.ammo.Bow basilisk arrow
+put #tvar char.fight.ammo.Slings rock
+
+#***** ARRANGE *****
+put #tvar char.fight.arrangeForPart 0
+put #tvar char.fight.arrangeFull 0
+
+#***** DEBLITATION *****
+put #tvar char.fight.debil.use 1
+
+# The debilitation spell to use
+put #tvar char.fight.debil.spell pv
+
+# The amount of mana to prep debilitation at
+put #tvar char.fight.debil.prepAt 3
+
+# Setting to 1 will force casting a debilitation spell for every attack
+# (Otherwise it only does it for learning)
+put #tvar char.fight.forceDebil 0
+
+#***** STANCE *****
+# Force always using stance shield, never stance parry
+put #tvar char.fight.forceShield 0
+
+#***** LOOT *****
+# all|treasure|gems whatever the loot options are
+put #tvar char.fight.lootType treasure
+
+# DEPRECATED Script-specifc options (ex: 'backtrain')
+put #tvar char.fight.opts null
+
+#***** TM *****
+# Spell to use for TM
+put #tvar char.fight.tmSpell acs
+
+#Amount to prep tm spell at
+# (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
+put #tvar char.fight.tmPrep 10
+
+#***** WEAPONS *****
+put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|frying pan|spiritwood lockbow|white nightstick
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+
+#***** ARMOR *****
+put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
+put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
+put #tvar char.fight.useArmor 0
+
+#***** USE *****
+# Use vars are all "Do this thing or not"
+# All default to 0
+put #tvar char.fight.useAlmanac 1
+put #tvar char.fight.useAppraise 1
+put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useHunt 1
+put #tvar char.fight.usePerc 1
+put #tvar char.fight.useSanowret 1
+put #tvar char.fight.useSkin 1
+put #tvar char.fight.useStealth 1
+
+#***** GENERAL *****
+put #tvar char.fight.useMaf 1
+
+#***** MOON MAGE *****
+put #tvar char.fight.useCol 0
+put #tvar char.fight.useObserve 0
+put #tvar char.fight.useSeer 0
+put #tvar char.fight.useShadowling 0
+put #tvar char.fight.useShadows 0
+put #tvar char.fight.useShw 0
+put #tvar char.fight.useSls 0
+
+#***** NECRO *****
+# The necro ritual to use for training
+# (Will still use harvest when low on material, consume for devour, etc.)
+put #tvar char.fight.necroRitual dissection
+
+put #tvar char.fight.avoidDivineOutrage 1
+
+put #tvar char.fight.useCh 0
+put #tvar char.fight.useIvm 0
+put #tvar char.fight.usePhp 0
+put #tvar char.fight.useQe 0
+put #tvar char.fight.useUsol 1
 
 
 ###############################
