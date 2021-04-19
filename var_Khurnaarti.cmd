@@ -115,7 +115,7 @@ put #tvar char.observe.telescope.container khor'vela case
 put #tvar char.observe.defense Katamba|Magpie
 put #tvar char.observe.lore Xibar|Raven|Phoenix
 put #tvar char.observe.magic Yavash|Wolf
-put #tvar char.observe.offense Cat|Viper
+put #tvar char.observe.offense Cat|Viper|Spider
 put #tvar char.observe.survival Heart|Ram
 
 put #tvar char.observe.predict 1

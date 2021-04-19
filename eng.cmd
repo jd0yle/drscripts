@@ -84,7 +84,8 @@ findCarvingDesign:
     }
   put turn my book to chapter $chapter
   var option.index 0
-findCarvingDesignLoop:	  
+findCarvingDesignLoop:
+  pause .2
   math option.index add 1
   if (%option.index < %option.length) then {    	
 	matchre matchFound %2
@@ -420,6 +421,7 @@ errorExit:
   exit
 
 engNeedLumber:
+  put #var eng.needLumber 1
   put #echo >log yellow [eng] Need more lumber.
   put store default in %defaultContainer
   goto engExit

@@ -22,9 +22,9 @@ if (!($staveWeapon >0)) then put #var staveWeapon 0
 var weaponIndex 0
 var weaponItems 0
 var weaponSkills 0
-var useApp 0
+var useApp 1
 var useAstrology 0
-var useForage 0
+var useForage 1
 var useHunt 1
 var usePerc 1
 var useSano 1
@@ -50,6 +50,8 @@ if ("$charactername" = "Inauri") then {
 if ("$charactername" = "Khurnaarti") then {
     var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Targeted_Magic
     var weaponItems tanbo|Empty|naphtha|wand|Empty
+    #var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Crossbow|Targeted_Magic
+    #var weaponItems tanbo|Empty|naphtha|wand|crossbow|Empty
 
     if ("%opts" = "backtrain") then {
         var weaponSkills Light_Thrown|Heavy_Thrown
@@ -79,7 +81,19 @@ combatSkillCheck:
                 gosub stow
                 gosub stow left
             }
-            gosub get my %weaponItems(%weaponIndex)
+            if ("%weaponItems(%weaponIndex)" = "crossbow") then {
+                gosub remove my %weaponItems(%weaponIndex)
+                if ("$righthandnoun" = "%weaponItems(%weaponIndex)") then {
+                    goto combatRanged
+                } else {
+                    put #echo >Log red [combat] Missing weapon!  %weaponItems(%weaponIndex) not found.
+                    exit
+                }
+            } else {
+                if ("$righthandnoun" <> "%weaponItems(%weaponIndex)") then {
+                    gosub get my %weaponItems(%weaponIndex)
+                }
+            }
         }
         # Brawling and Targeted Magic
         if ("%weaponItems(%weaponIndex)" = "Empty") then {
@@ -91,7 +105,7 @@ combatSkillCheck:
             goto combatAttack
         }
         if ("%weaponSkills(%weaponIndex)" = "Targeted_Magic") then {
-            put .target
+            put .target backtrain
             exit
         }
         goto combatAnalyze
@@ -138,12 +152,14 @@ combatAttack:
         goto combatAttack
     }
     if (%useApp = 1) then gosub combatApp
-    if (%useForage = 1) then gosub combatForage
     if (%useHunt = 1) then gosub combatHunt
     if (%usePerc = 1) then gosub combatPerc
     if (%useAstrology = 1) then gosub combatAstrology
     if (%useSano = 1 && $Arcana.LearningRate < 15 && $concentration > 99) then {
         gosub gaze my sano crystal
+    }
+    if ($monstercount = 0 && %useForage = 1) then {
+        gosub combatForage
     }
     if ("%weaponSkills(%weaponIndex)" = "Light_Thrown" || "%weaponSkills(%weaponIndex)" = "Heavy_Thrown") then {
         if ("$righthand" = "Empty") then {
@@ -175,7 +191,6 @@ combatApp:
 combatCheckDeadMob:
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
-        echo %mobName
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
             if (%arrangeForPart = 1) then gosub arrange for part
             if (%arrangeFull = 1) then gosub arrange full
@@ -210,8 +225,8 @@ combatFaceNext:
 combatForage:
     if (%monstercount <> 0) then return
     if ($Outdoorsmanship.LearningRate < 30) then {
-        gosub runScript forage
-        waitforre ^FORAGE DONE
+        gosub collect dirt
+        gosub kick pile
     }
     return
 
@@ -233,3 +248,24 @@ combatPerc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
 
     return
+
+
+combatRanged:
+    gosub combatCheckDeadMob
+    if ($stamina < 85) then {
+        pause 5
+        goto combatRanged
+    }
+    if (%useApp = 1) then gosub combatApp
+    if (%useForage = 1) then gosub combatForage
+    if (%useHunt = 1) then gosub combatHunt
+    if (%usePerc = 1) then gosub combatPerc
+    if (%useAstrology = 1) then gosub combatAstrology
+    if (%useSano = 1 && $Arcana.LearningRate < 15 && $concentration > 99) then {
+        gosub gaze my sano crystal
+    }
+    gosub load my $righthandnoun
+    gosub aim
+    waitforre ^You feel
+    gosub fire
+
