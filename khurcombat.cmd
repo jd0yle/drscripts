@@ -50,12 +50,12 @@ if ("$charactername" = "Inauri") then {
 if ("$charactername" = "Khurnaarti") then {
     var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Targeted_Magic
     var weaponItems tanbo|Empty|naphtha|wand|Empty
-    #var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Crossbow|Targeted_Magic
-    #var weaponItems tanbo|Empty|naphtha|wand|crossbow|Empty
+    #var weaponSkills Staves|Brawling|Light_Thrown|Heavy_Thrown|Targeted_Magic
+    #var weaponItems tanbo|Empty|naphtha|wand|Empty
 
     if ("%opts" = "backtrain") then {
-        var weaponSkills Light_Thrown|Heavy_Thrown
-        var weaponItems naphtha|wand
+        var weaponSkills Crossbow
+        var weaponItems forester's crossbow
         var useAstrology 0
     }
 }

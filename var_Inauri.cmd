@@ -69,16 +69,6 @@ var super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Ka
 
 
 ###############################
-###      HEALING
-###############################
-put #tvar char.healing.disease 0
-put #tvar char.healing.heal 0
-put #tvar char.healing.healTarget 0
-put #tvar char.healing.poison 0
-put #tvar char.healing.poisonSelf 0
-
-
-###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer backpack
@@ -90,6 +80,7 @@ put #tvar char.inv.defaultContainer backpack
 ###############################
 ###      MAGIC
 ###############################
+put #tvar guild Empath
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1

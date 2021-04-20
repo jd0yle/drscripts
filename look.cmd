@@ -77,15 +77,16 @@ waitLook:
 return
 
 waitTeach:
-    if ($class <> 0) then {
-        put stop teach
-        put #var class 0
+    if ($lib.class = 1) then {
+        if ("$class" = "Enchanting") then {
+            var inauri.teach 0
+            return
+        }
+        gosub stop teach
     }
-    pause 2
-    if ($student <> 0) then {
-        put stop listen
-        put #var student 0
+    if ($lib.student = 1) then {
+        gosub stop listen
     }
-    gosub teach $topic to $target
-    put #var teach 0
+    gosub teach %inauri.topic to %inauri.target
+    var inauri.teach 0
     return
