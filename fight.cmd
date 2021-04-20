@@ -124,8 +124,8 @@ action var useHunt 0 when ^You find yourself unable to hunt in this area.
 
 action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
-put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime $gametime;#var stance $1} {stance}
-put #trigger {e/$stance/} {#statusbar 7 Stance: $stance} {stance}
+put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime \$gametime;#var stance \$1} {stance}
+put #trigger {e/\$stance/} {#statusbar 7 Stance: \$stance} {stance}
 
 ###############################
 ###      init
