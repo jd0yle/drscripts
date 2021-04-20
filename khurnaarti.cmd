@@ -59,6 +59,7 @@ khurnaarti.loop:
     gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
+    pause 1
     goto khurnaarti.loop
 
 
@@ -94,7 +95,7 @@ khurnaarti.burgle:
         gosub burgle.onTimer
     }
     if ($char.burgle.cooldown = 0) then {
-        put #echo >Log #cc99ff Train: Going to burgle
+        put #echo >Log #cc99ff [khurnaarti] Going to burgle
         gosub moveToBurgle
         put .burgle
         waitforre ^BURGLE DONE
@@ -138,10 +139,12 @@ khurnaarti.classSetClass:
 
 
 khurnaarti.combatCheck:
+    echo Checking Combat..
     if ($Crossbow.LearningRate < 10) then {
         put #echo >Log Green [khurnaarti] Going to combat.
         gosub moveToHunt
         put .fight
+        put .afk
         goto khurnaarti.combatLoop
     }
     return
@@ -284,7 +287,7 @@ moveToFangCove:
     if ($zoneid = 66) then {
         gosub automove portal
         gosub move go portal
-        gosub automove 106
+        gosub automove 52
         goto khurnaarti.loop
     }
     return
@@ -319,18 +322,20 @@ moveToHouse:
     moveToHouse1:
     gosub peer door
     pause 10
-    if (%khurnaarti.houseOpen = 1) then {
-        put .house
-        waitforre ^HOUSE DONE$
-        var houseOpen 0
-    } else {
+    if (%khurnaarti.houseOpen = 0) then {
         pause 5
         evalmath maxHouseTime %lastHouseGametime + 300
         if (%maxHouseTime > $gametime) then {
             gosub moveToHouse
-        } else {
-            goto moveToFangCove
+            return
         }
+        goto moveToFangCove
+        return
+    }
+    if (%khurnaarti.houseOpen = 1) then {
+        put .house
+        waitforre ^HOUSE DONE$
+        var houseOpen 0
     }
     if (%khurnaarti.houseRetry = 1) then {
         goto khurnaarti.loop
