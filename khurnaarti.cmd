@@ -1,16 +1,16 @@
 include libmaster.cmd
-###################
-# Idle Action Triggers
-###################
+###############################
+###    IDLE ACTION TRIGGERS
+###############################
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
-action put #var openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
-action var houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
-action var houseOpen 1 when ^A sandalwood door suddenly opens\!$
+action put var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
+action put var khurnaarti.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
+action var khurnaarti.houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
+action var khurnaarti.houseOpen 1 when ^A sandalwood door suddenly opens\!$
 
-###################
-# Variable Inits
-###################
+###############################
+###    VARIABLES
+###############################
 if (!($khurnaarti.student >0)) then put #var khurnaarti.student 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
@@ -19,60 +19,58 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
+var khurnaarti.houseOpen 0
+var khurnaarti.houseRetry 0
+var khurnaarti.openDoor 0
 
-put #script abort all except khuridle
-###################
-# Main
-###################
-loop:
+put #script abort all except khurnaarti
+
+
+###############################
+###    MAIN
+###############################
+khurnaarti.loop:
     if ($standing = 0) then gosub stand
-    if ($openDoor = 1) then {
-        if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
-            gosub unlock door
-            gosub open door
-        }
-    }
-    if ($openDoor = 2) then {
-        gosub unlock door
-        gosub open door
-    }
-    put #var openDoor 0
     pause 1
-    gosub waitClass
+    if (%khurnaarti.openDoor = 1) then gosub khurnaarti.door
     pause 1
-    gosub waitAppraisal
+    gosub khurnaarti.class
     pause 1
-    gosub waitFaSkin
+    gosub khurnaarti.appraisal
     pause 1
-    gosub waitPerc
+    gosub khurnaarti.faSkin
     pause 1
-    if ($Astrology.LearningRate < 30) then gosub waitAstrology
+    gosub khurnaarti.perc
     pause 1
-    gosub waitArcana
+    if ($Astrology.LearningRate < 30) then gosub khurnaarti.astrology
     pause 1
-    gosub waitBurgle
+    gosub khurnaarti.arcana
     pause 1
-    gosub waitMagic
+    gosub khurnaarti.burgle
     pause 1
-    gosub waitPlay
+    gosub khurnaarti.magic
     pause 1
-    gosub waitLock
+    gosub khurnaarti.play
     pause 1
-    gosub waitForage
+    gosub khurnaarti.lock
     pause 1
-    gosub waitLook
-    goto loop
+    gosub khurnaarti.forage
+    pause 1
+    gosub khurnaarti.combatCheck
+    pause 1
+    gosub khurnaarti.look
+    goto khurnaarti.loop
 
 
-###################
-# Wait Methods
-###################
-waitAppraisal:
+###############################
+###    SKILL METHODS
+###############################
+khurnaarti.appraisal:
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     return
 
 
-waitArcana:
+khurnaarti.arcana:
     if ($Arcana.LearningRate > 15) then {
         return
     }
@@ -82,12 +80,12 @@ waitArcana:
     return
 
 
-waitAstrology:
+khurnaarti.astrology:
     if ($Astrology.LearningRate < 33) then gosub observe.onTimer
     return
 
 
-waitBurgle:
+khurnaarti.burgle:
     if ($Stealth.LearningRate > 10) then {
         return
     }
@@ -97,8 +95,6 @@ waitBurgle:
     }
     if ($char.burgle.cooldown = 0) then {
         put #echo >Log #cc99ff Train: Going to burgle
-        put .house
-        waitforre ^HOUSE DONE
         gosub moveToBurgle
         put .burgle
         waitforre ^BURGLE DONE
@@ -108,13 +104,13 @@ waitBurgle:
     return
 
 
-waitClass:
+khurnaarti.class:
     if ($lib.student = 1) then {
         return
     } else {
         if (contains("$roomplayers", "Inauri")) then {
-            matchre waitClassSetClass Crossbow|Enchanting|Sorcery|Targeted Magic
-            matchre waitClassNewClass ^No one seems to be teaching\.$
+            matchre khurnaarti.classSetClass Crossbow|Enchanting|Sorcery|Targeted Magic
+            matchre khurnaarti.classNewClass ^No one seems to be teaching\.$
             put assess teach
             matchwait 5
         }
@@ -122,13 +118,13 @@ waitClass:
     return
 
 
-waitClassNewClass:
+khurnaarti.classNewClass:
     gosub whisper inauri teach cross
     pause 2
-    goto waitClass
+    goto khurnaarti.Class
 
 
-waitClassSetClass:
+khurnaarti.classSetClass:
     var classTopic $1
     echo %classTopic
     if ("$instructor" = "Inauri") then {
@@ -138,10 +134,48 @@ waitClassSetClass:
         gosub listen $lib.instructor
         put #var lib.student 1
     }
-    goto waitClass
+    goto khurnaarti.Class
 
 
-waitFaSkin:
+khurnaarti.combatCheck:
+    if ($Crossbow.LearningRate < 10) then {
+        put #echo >Log Green [khurnaarti] Going to combat.
+        gosub moveToHunt
+        put .fight
+        goto khurnaarti.combatLoop
+    }
+    return
+
+
+khurnaarti.combatLoop:
+    pause 1800
+    if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10) then {
+        put #script abort all except khurnaarti
+        put #echo >Log Green [khurnaarti] Combat complete.
+        gosub stow
+        gosub stow left
+        gosub moveToHouse
+        goto khurnaarti.loop
+   }
+   goto khurnaarti.combatLoop
+
+
+khurnaarti.door:
+    if (%khurnaarti.openDoor = 1) then {
+        if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
+            gosub unlock door
+            gosub open door
+        }
+    }
+    if (%khurnaarti.openDoor = 2) then {
+        gosub unlock door
+        gosub open door
+    }
+    var khurnaarti.openDoor 0
+    return
+
+
+khurnaarti.faSkin:
      evalmath nextTrainerAt $lastTrainerGametime + 3600
     if (%nextTrainerAt > $gametime) then {
         return
@@ -157,20 +191,20 @@ waitFaSkin:
     return
 
 
-waitForage:
+khurnaarti.forage:
     if ($Outdoorsmanship.LearningRate < 10) then {
-        put .house
-        waitforre ^HOUSE DONE
+        put #echo >Log Orange [khurnaarti] Going to forage.
         gosub moveToForage
         put .forage
         waitforre ^FORAGE DONE
-        put #script abort all except khuridle
+        put #script abort all except khurnaarti
+        put #echo >Log Orange [khurnaarti] Forage complete.
         gosub moveToHouse
     }
     return
 
 
-waitLock:
+khurnaarti.lock:
     # Limit how often we're looking for locksmithing practice boxes.
     if ($practicebox.haveBox = 1) then
         evalmath nextPracticeBoxAt $lastPracticeBoxGametime + 3600
@@ -185,7 +219,7 @@ waitLock:
     return
 
 
-waitLook:
+khurnaarti.look:
     evalmath nextLookAt $lastLookGametime + 240
     if (%nextLookAt < $gametime) then {
         gosub look
@@ -194,7 +228,7 @@ waitLook:
     return
 
 
-waitMagic:
+khurnaarti.magic:
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
@@ -206,12 +240,12 @@ waitMagic:
     return
 
 
-waitPerc:
+khurnaarti.perc:
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     return
 
 
-waitPlay:
+khurnaarti.play:
     if ($Performance.LearningRate > 15) then {
         return
     }
@@ -222,10 +256,15 @@ waitPlay:
     return
 
 
-###################
-# Move to Methods
-###################
+###############################
+###    MOVE TO
+###############################
 moveToBurgle:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub moveToBurgle
+    }
     # Fang Cove
     if ($zoneid = 150) then {
         gosub automove portal
@@ -246,12 +285,17 @@ moveToFangCove:
         gosub automove portal
         gosub move go portal
         gosub automove 106
-        goto loop
+        goto khurnaarti.loop
     }
     return
 
 
 moveToForage:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub moveToForage
+    }
     # Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove 555
@@ -274,32 +318,38 @@ moveToHouse:
     var lastHouseGametime $gametime
     moveToHouse1:
     gosub peer door
-    pause 5
-    if (%houseOpen <> 1) then {
-        pause 5
-        evalmath maxHouseTime %lastHouseGametime + 300
-        if (%maxHouseTime < $gametime) then {
-            goto moveToHouseRetry
-        } else {
-            goto moveToFangCove
-    } else {
+    pause 10
+    if (%khurnaarti.houseOpen = 1) then {
         put .house
         waitforre ^HOUSE DONE$
         var houseOpen 0
+    } else {
+        pause 5
+        evalmath maxHouseTime %lastHouseGametime + 300
+        if (%maxHouseTime > $gametime) then {
+            gosub moveToHouse
+        } else {
+            goto moveToFangCove
+        }
     }
-    if (%houseRetry = 1) then {
-        goto loop
+    if (%khurnaarti.houseRetry = 1) then {
+        goto khurnaarti.loop
     }
     return
 
 
 moveToHunt:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub moveToHunt
+    }
     # Fang Cove
     if ($zoneid = 150) then {
         gosub automove 28
     }
     #Shard - East Gate
-    if ($zoneif = 66) then {
+    if ($zoneid = 66) then {
         gosub automove portal
         gosub move go portal
         gosub moveToHunt

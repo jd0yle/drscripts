@@ -1642,7 +1642,7 @@ prepare:
     matchre return ^You close your eyes and breathe deeply,
     matchre return ^You deftly waggle your fingers in the precise motions needed to prepare
     matchre return ^You don't seem to be able to move to do that\.
-    matchre return ^You have already
+    matchre return ^You have already fully prepared
     matchre return ^You have no idea how
     matchre return ^You hastily shout the arcane phrasings needed to prepare
     matchre return ^You make a careless gesture as you chant the words

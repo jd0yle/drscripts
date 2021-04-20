@@ -105,17 +105,17 @@ put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
-put #tvar char.fight.useStealth 0
+put #tvar char.fight.useStealth 1
 
 #***** GENERAL *****
 put #tvar char.fight.useMaf 1
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 0
-put #tvar char.fight.useObserve 0
-put #tvar char.fight.useSeer 0
+put #tvar char.fight.useObserve 1
+put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
-put #tvar char.fight.useShadows 0
+put #tvar char.fight.useShadows 1
 put #tvar char.fight.useShw 0
 put #tvar char.fight.useSls 0
 

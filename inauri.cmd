@@ -45,7 +45,7 @@ var inauri.target 0
 ###############################
 ###    MAIN
 ###############################
-loop:
+inauri.loop:
     if (!contains("$scriptlist", "reconnect.cmd")) then {
         put #echo >Log [inauri] Starting reconnect
         put .reconnect
@@ -111,13 +111,13 @@ loop:
         pause 1
     }
     gosub waitLook
-    goto loop
+    goto inauri.loop
 
 
 ###############################
 ###    WAIT METHODS
 ###############################
-waitAlmanac:
+inauri.almanac:
     evalmath nextStudyAt $lastAlmanacGametime + 600
     if (%nextStudyAt < $gametime) then {
     if ("$lefthandnoun" != "chronicle" && "$righthandnoun" != "chronicle") then {
@@ -131,7 +131,7 @@ waitAlmanac:
     return
 
 
-waitArcana:
+inauri.arcana:
     if ($lib.magicInert = 1) then {
         return
     }
@@ -144,7 +144,7 @@ waitArcana:
     return
 
 
-waitEngineer:
+inauri.engineer:
     evalmath nextTrainer $lastEngineerGametime + 3600
     if (%nextTrainer > $gametime) then {
         return
@@ -162,7 +162,7 @@ waitEngineer:
     return
 
 
-waitFaSkin:
+inauri.faSkin:
     evalmath nextTrainerAt $lastTrainerGametime + 3600
     if (%nextTrainerAt > $gametime) then {
         return
@@ -178,7 +178,7 @@ waitFaSkin:
     return
 
 
-waitLook:
+inauri.look:
     evalmath nextLookAt $lastLookGametime + 240
     if (%nextLookAt < $gametime) then {
         gosub look
@@ -187,7 +187,7 @@ waitLook:
     return
 
 
-waitMagic:
+inauri.magic:
     if ($lib.magicInert = 1) then {
         return
     }
@@ -203,7 +203,7 @@ waitMagic:
     return
 
 
-waitResearch:
+inauri.research:
     if ($lib.magicInert = 1) then {
         return
     }
@@ -220,7 +220,7 @@ waitResearch:
     return
 
 
-waitTeach:
+inauri.teach:
     if ($lib.class = 1) then {
         if ("$class" = "Enchanting") then {
             var inauri.teach 0
@@ -240,19 +240,37 @@ waitTeach:
 ###    MOVE TO UTIL
 ###############################
 moveToEngineer:
-    if ($zoneid = 66) then {
+    if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE
+        gosub moveToEngineer
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
         gosub automove east gate
         gosub automove engineer
         put .workorder
         waitforre ^WORKORDER DONE
+        put #var eng.needLumber 0
         put .deposit
         waitforre ^DEPOSIT DONE
-        gosub automove portal
-        gosub automove %homeRoom
+        gosub moveToHouse
         put .house
         waitforre ^HOUSE DONE
-        put #var eng.needLumber 0
     }
-    goto loop
+    goto inauri.loop
+
+
+moveToHouse:
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go portal
+        gosub moveToHouse
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub automove 252
+    }
+    return
