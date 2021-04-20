@@ -152,9 +152,9 @@ var foragable 0
 ###############################
 if ("$charactername" = "Inauri") then {
     action goto refreshRegen when eval $health < 50
-    action put #var magicInert 1 when ^The spell pattern resists the influx of unstable mana, overloading your arcane senses and rendering you magically inert\.
-    action put #var magicInert 0 when ^Awareness enfolds you like the embrace of a loving parent as your attunement to Life mana returns\.
 }
+action put #var lib.magicInert 1 when ^The spell pattern resists the influx of unstable mana, overloading your arcane senses and rendering you magically inert\.
+action put #var lib.magicInert 0 when ^Awareness enfolds you like the embrace of a loving parent as your attunement to (Life|Lunar|Arcane|Elemental|Holy) mana returns\.
 
 
 ###############################
@@ -229,17 +229,24 @@ action send climb track when ^You will have to climb that.
 ###############################
 ###    TEACHING
 ###############################
-if ("$charactername" = "Khurnaarti") then {
-    action put #var khurnaarti.student 1 when ^You begin to listen to \w+ teach.*$
-    action put #var khurnaarti.student 1 when You are (in|observing) this class\!$
-    action put #var khurnaarti.student 0 when ^\S+ is teaching a class on .* which is still open to new students\.$
-    action put #var khurnaarti.student 0 when ^Being unconscious, you make a lousy student, so \w+ stops teaching you\.$
-    action put #var khurnaarti.student 0 when ^But you aren't listening to anyone\.$
-    action put #var khurnaarti.student 0 when ^No one seems to be teaching\.$
-    action put #var khurnaarti.student 0 when ^You stop listening to \w+\.$`
-    action put #var khurnaarti.student 0 when ^Your teacher (has left|is not here), so you are no longer learning anything\.$
-    action put #var khurnaarti.student 0 when ^You're unconscious\!$
-}
+action put #var lib.class 0 when ^All of your students have left, so you stop teaching\.$
+action put #var lib.class 0 when ^Because you have no more students, your class ends\.$
+action put #var lib.class 0 when ^But you aren't teaching anyone\.$
+action put #var lib.class 0 when ^You stop teaching so as not to disturb the aura of quiet here\.$
+action put #var lib.class 0 when ^You stop teaching\.$
+action put #var lib.class 1 when ^\S+ begins to listen to you teach the .* skill\.$
+action put #var lib.class 1 when ^You are teaching a class on .*$
+action put #var lib.class 1 when ^You continue to instruct your students? on (.*)\.$
+action put #var lib.student 1 when ^You begin to listen to \w+ teach.*$
+action put #var lib.student 1 when You are (in|observing) this class\!$
+action put #var lib.student 0 ; put #var lib.instructor $1 when ^(\S+) is teaching a class on .* which is still open to new students\.$
+action put #var lib.student 0 when ^Being unconscious, you make a lousy student, so \w+ stops teaching you\.$
+action put #var lib.student 0 when ^But you aren't listening to anyone\.$
+action put #var lib.student 0 ; put #var lib.class 0 when ^No one seems to be teaching\.$
+action put #var lib.student 0 when ^You stop listening to \w+\.$`
+action put #var lib.student 0 when ^Your teacher (has left|is not here), so you are no longer learning anything\.$
+action put #var lib.student 0 ; put #var lib.class 0 when ^You're unconscious\!$
+
 
 ###############################
 ### WAIT FOR PREP

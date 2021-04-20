@@ -69,16 +69,6 @@ var super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Ka
 
 
 ###############################
-###      HEALING
-###############################
-put #tvar char.healing.disease 0
-put #tvar char.healing.heal 0
-put #tvar char.healing.healTarget 0
-put #tvar char.healing.poison 0
-put #tvar char.healing.poisonSelf 0
-
-
-###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer backpack

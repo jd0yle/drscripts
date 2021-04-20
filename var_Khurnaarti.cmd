@@ -92,7 +92,7 @@ put #tvar char.fight.wornCrossbow 0
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
-put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
+put #tvar char.fight.armor.items 0
 put #tvar char.fight.useArmor 0
 
 #***** USE *****
@@ -100,7 +100,7 @@ put #tvar char.fight.useArmor 0
 # All default to 0
 put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
-put #tvar char.fight.useBuffs 0
+put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1

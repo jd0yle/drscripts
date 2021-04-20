@@ -5,7 +5,6 @@ include libmaster.cmd
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
 action put #var openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
-action put #var khurnaarti.student 0 ; put #var khurnaarti.instructor $1 when ^(Selesthiel|Inauri|Qizhmur) is teaching a class on .* which is still open to new students\.$
 action var houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
 action var houseOpen 1 when ^A sandalwood door suddenly opens\!$
 
@@ -110,7 +109,7 @@ waitBurgle:
 
 
 waitClass:
-    if ($khurnaarti.student = 1) then {
+    if ($lib.student = 1) then {
         return
     } else {
         if (contains("$roomplayers", "Inauri")) then {
@@ -133,11 +132,11 @@ waitClassSetClass:
     var classTopic $1
     echo %classTopic
     if ("$instructor" = "Inauri") then {
-        gosub listen $khurnaarti.instructor observe
-        put #var khurnaarti.student 1
+        gosub listen $lib.instructor observe
+        put #var lib.student 1
     } else {
-        gosub listen $khurnaarti.instructor
-        put #var khurnaarti.student 1
+        gosub listen $lib.instructor
+        put #var lib.student 1
     }
     goto waitClass
 
@@ -290,5 +289,19 @@ moveToHouse:
     }
     if (%houseRetry = 1) then {
         goto loop
+    }
+    return
+
+
+moveToHunt:
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove 28
+    }
+    #Shard - East Gate
+    if ($zoneif = 66) then {
+        gosub automove portal
+        gosub move go portal
+        gosub moveToHunt
     }
     return

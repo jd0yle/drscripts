@@ -3,7 +3,7 @@ var monsters1 ashu hhinvi|atik'et|bloodvine|bucca|cabalist|\bcrag\b|creeper|cutt
 var monsters2 Dragon Priest (assassin|crone|fanatic|imperial warden|intercessor|juggernaut|purifier|sentinel|zealot)|Dragon Priest|Dragon Priestess|blood dryad|dummy|dusk ogre|dyrachis|eviscerator|faenrae assassin|fendryad|fire maiden|folsi immola
 var monsters3 footpad|frostweaver|gam chaga|\bgeni\b|gidii|goblin shaman|graverobber|guardian|gypsy marauder|\bimp\b|juggernaut
 var monsters4 kelpie|kra'hei|kra'hei hatchling|intercessor|lipopod|lun'shele hunter|madman|malchata|mountain giant|nipoh oshu|\bnyad\b|orc bandit
-var monsters5 orc clan chief|orc raider|orc reiver|orc scout|pile of rubble|pirate|river sprite|ruffian|scavenger troll|scout ogre|screamer
+var monsters5 orc clan chief|orc raider|orc reiver|orc scout|pile of rubble|pirate|puddle|river sprite|ruffian|scavenger troll|scout ogre|screamer
 var monsters6 sentinel|shadow master|shadoweaver|sky giant|sleazy lout|sprite|swain|swamp troll|telga moradu|\bthug\b|trekhalo
 var monsters7 umbramagii|velver|\bvine\b|vykathi builder|vykathi excavator|wind hound|wood troll|Xala'shar (archer|archmage|conjurer|lookout|magus|overseer|shredder|slayer|thrall|vanquisher|vindicator)|young ogre|zealot
 
