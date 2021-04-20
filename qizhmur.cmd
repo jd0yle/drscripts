@@ -96,8 +96,7 @@ main:
         gosub release spell
 
 
-        put .armor remove
-        waitforre ^ARMOR DONE$
+        gosub runScript armor remove
 
         gosub cast
 
@@ -107,7 +106,7 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        gosub automove n gate
+        gosub automove crossing
         gosub automove portal
 
         gosub release eotb
@@ -151,7 +150,7 @@ main:
     startMagic:
     if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
-        gosub moveToHouse
+        #gosub moveToHouse
 
         if ("$roomname" != "Private Home Interior") then {
             put #echo >Log #cc99ff House won't open, going to FC
@@ -188,7 +187,7 @@ main:
     #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToAdanf
+        gosub moveToWarklin
         put .fight
         gosub waitForMainCombat
         goto main
@@ -655,7 +654,7 @@ moveToWarklin:
 
     # Crossing
     if ("%zone" = "1") then {
-        gosub automove ne gate
+        gosub automove n gate
         goto moveToWarklin
     }
 
@@ -802,7 +801,7 @@ waitForBurgleCd:
 
 
 waitForRepair:
-    matchre waitForRepairLoop You recall that the repairs won't be ready for another (\d+) roisaen.
+    matchre waitForRepairLoop won't be ready for another (\d+) roisaen.
     matchre waitForRepairLoop any moment
     matchre repairDone ready by now
     matchre return ^I could not find

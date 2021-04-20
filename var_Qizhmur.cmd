@@ -34,7 +34,7 @@ put #tvar char.cast.ch.prep 20
 put #tvar char.cast.ch.charge 40
 
 put #tvar char.cast.devour.prep 30
-put #tvar char.cast.devour.charge 10
+put #tvar char.cast.devour.charge 30
 
 put #tvar char.cast.eotb.prep 20
 put #tvar char.cast.eotb.charge 40
@@ -190,7 +190,7 @@ put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.magic.train.minimumConcentration 30
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
-put #tvar char.magic.train.useInvokeSpell 0
+put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1

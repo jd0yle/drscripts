@@ -42,4 +42,5 @@ loop:
 doneDead:
     put #var afk 0
     echo [train] EXITING BECAUSE DEAD!
+    put #script abort all
     exit

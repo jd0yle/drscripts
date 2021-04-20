@@ -125,6 +125,9 @@ if (%useCambrinth = 1) then {
 if (%harness > 0) then gosub harness %harness
 
 gosub waitForPrep
+
+if ("%spell" = "devour") then gosub get my material
+
 if ("%target" != "0arget") then {
     gosub cast %target
 } else {

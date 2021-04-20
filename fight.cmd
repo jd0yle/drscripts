@@ -124,6 +124,9 @@ action var useHunt 0 when ^You find yourself unable to hunt in this area.
 
 action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
+put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime \$gametime;#var stance \$1} {stance}
+put #trigger {e/\$stance/} {#statusbar 7 Stance: \$stance} {stance}
+
 ###############################
 ###      init
 ###############################
@@ -133,6 +136,7 @@ init:
     #gosub runScript armor wear
 
     gosub sortWeaponRanks
+    gosub sortArmorRanks
 
     var weapons.lowestLearningRateIndex 0
 
@@ -146,10 +150,10 @@ init:
         goto initContinue
 
     initContinue:
-    var weapons.index %weapons.lowestLearningRateIndex
-    var weapons.targetLearningRate $%weapons.skills(%weapons.index).LearningRate
-    math weapons.targetLearningRate add 5
-    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+	    var weapons.index %weapons.lowestLearningRateIndex
+	    var weapons.targetLearningRate $%weapons.skills(%weapons.index).LearningRate
+	    math weapons.targetLearningRate add 5
+	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
     goto loop
 
 
@@ -514,7 +518,9 @@ checkWeaponSkills:
 
     if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
 
-    if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate) then {
+    evalmath timeSinceLastWeaponChange ($gametime - %weapons.lastChangeAt)
+
+    if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate || %timeSinceLastWeaponChange > 300) then {
         # By default, don't switch weapons faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 60 seconds before swapping
         var timeBetweenWeaponSwaps 30
@@ -814,7 +820,7 @@ manageCyclics:
         if ($SpellTimer.ShadowWeb.active = 1) then var shouldCastShw 0
         if ($mana < 80) then var shouldCastShw 0
         if ($monstercount < 2) then var shouldCastShw 0
-        if ($Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30) then var shouldCastShw 0
+        if ($Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30 || $Evasion.LearningRate < 30) then var shouldCastShw 0
         if ($SpellTimer.StarlightSphere.active = 1) then var shouldCastShw 0
 
         if (%shouldCastShw = 1) then {
@@ -828,11 +834,10 @@ manageCyclics:
         if ($SpellTimer.ShadowWeb.active = 1) then {
             var shouldReleaseShw 0
             if ($mana < 60) then var shouldReleaseShw 1
-            if ($Parry_Ability.LearningRate < 10 || $Shield_Usage.LearningRate < 10) then var shouldReleaseShw 1
+            if ($Parry_Ability.LearningRate < 10 || $Shield_Usage.LearningRate < 10 || $Evasion.LearningRate < 10) then var shouldReleaseShw 1
             if (%nextCastShw < $gametime) then {
                 var shouldReleaseShw 1
             }
-
 
             if (%shouldReleaseShw = 1) then gosub release shw
         }
@@ -914,6 +919,37 @@ releaseUnwantedSpells:
 
     return
 
+
+###############################
+###      sortArmorRanks
+###############################
+sortArmorRanks:
+    var newArmor.skills null
+    var newArmor.items null
+    sortArmorNext:
+        var lowestSkillIndex null
+        var currIndex 0
+        sortArmorLoop:
+            if (!contains("%newArmor.skills", "%armor.skills(%currIndex)")) then {
+                if (%lowestSkillIndex = null || $%armor.skills(%currIndex).Ranks < $%armor.skills(%lowestSkillIndex).Ranks) then {
+                    var lowestSkillIndex %currIndex
+                }
+            }
+            math currIndex add 1
+            if (%currIndex <= %armor.length) then goto sortArmorLoop
+            if (%newArmor.skills = null) then {
+                var newArmor.skills %armor.skills(%lowestSkillIndex)
+                var newArmor.items %armor.items(%lowestSkillIndex)
+            } else {
+                var newArmor.skills %newArmor.skills|%armor.skills(%lowestSkillIndex)
+                var newArmor.items %newArmor.items|%armor.items(%lowestSkillIndex)
+            }
+            if (count("%newArmor.skills", "|") < %armor.length) then {
+                goto sortArmorNext
+            }
+            var armor.skills %newArmor.skills
+            var armor.items %newArmor.items
+            return
 
 
 ###############################

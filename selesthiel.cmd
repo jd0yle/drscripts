@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 
-var expectedNumBolts fifty-four
+var expectedNumBolts forty-eight
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -82,6 +82,8 @@ main:
         gosub prep rf
 
         gosub automove bundle
+
+        gosub release rf
 
         gosub remove my bundle
         gosub sell my bundle
