@@ -229,28 +229,16 @@ action send climb track when ^You will have to climb that.
 ###############################
 ###    TEACHING
 ###############################
-#action var listen $2 when ^To learn from (him|her), you must LISTEN TO (\w+)
-if ("$charactername" = "Inauri" || "$charactername" = "Khurnaarti") then {
-    action put #var student 1 when ^You begin to listen to (\S+) teach
-    action put #var class 0 when ^All of your students have left, so you stop teaching\.
-    action put #var class 0 when ^Because you have no more students, your class ends\.
-    action put #var class 0 when ^Being unconscious, you make a lousy student, so \w+ stops teaching you
-    action put #var class 0 when ^But you aren't listening to anyone
-    action put #var class 0 when ^But you aren't teaching anyone
-    action put #var class 0 when cannot concentrate to teach .+ in combat\.
-    action put #var class 0 ; put #var instructor 0 when ^No one seems to be teaching
-    #action put #var class 0 when stops teaching and looks around quietly
-    action put #var class 0 ; put #var instructor 0 ; put #var student 0 when ^You stop listening to
-    action put #var class 0 when ^You stop teaching so as not to disturb the aura of quiet here
-    action put #var class 0 when ^You stop teaching\.
-    action put #var class 0 ; put #var student 0 when ^Your teacher (has left|is not here), so you are no longer learning anything
-    action put #var class 0 ; put #var student 0 ; put #var teacher 0 when ^You're unconscious\!$
-    action put #var class $2 ; put #var instructor self when ^(\S+) begins to listen to you teach the (.*) skill
-    action put #var class $3 ; put #var instructor $1 when ^(\S+) is teaching a class on (.*)\) (.*) which is still open to new students\.  You are in this class\!
-    action put #var class $3 ; put #var instructor $1 when ^(\S+) is teaching a class on (.*)\) (.*) which is still open to new students\.  You are observing this class\!
-    action put #var class $1 ; put #var instructor self when ^You are teaching a class on (.*) which
-    action put #var class $2 ; put #var instructor $1 when ^You begin to listen to (\w+) teach the (.*) skill\.$
-    action put #var class $1 ; put #var instructor self when ^You continue to instruct your students? on (.*)\.$
+if ("$charactername" = "Khurnaarti") then {
+    action put #var khurnaarti.student 1 when ^You begin to listen to \w+ teach.*$
+    action put #var khurnaarti.student 1 when You are (in|observing) this class\!$
+    action put #var khurnaarti.student 0 when ^\S+ is teaching a class on .* which is still open to new students\.$
+    action put #var khurnaarti.student 0 when ^Being unconscious, you make a lousy student, so \w+ stops teaching you\.$
+    action put #var khurnaarti.student 0 when ^But you aren't listening to anyone\.$
+    action put #var khurnaarti.student 0 when ^No one seems to be teaching\.$
+    action put #var khurnaarti.student 0 when ^You stop listening to \w+\.$`
+    action put #var khurnaarti.student 0 when ^Your teacher (has left|is not here), so you are no longer learning anything\.$
+    action put #var khurnaarti.student 0 when ^You're unconscious\!$
 }
 
 ###############################
@@ -1343,7 +1331,7 @@ mark:
     matchre return ^You hold
     matchre return ^You mark
     matchre return ^You count
-    put mark all %todo
+    put mark %todo
     goto retry
 
 

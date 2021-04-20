@@ -23,6 +23,7 @@ if (!($expSleep >0)) then put #var expSleep 0
 if (!($heal >0)) then put #var heal 0
 if (!($poison >0)) then put #var poison 0
 if (!($poisonHeal >0)) then put #var poisonHeal 0
+if (!($magicInert >0)) then put #var magicInert 0
 if (!($teach >0)) then put #var teach 0
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
@@ -36,6 +37,7 @@ var disease $char.healing.disease
 var diseaseSelf $char.healing.diseaseSelf
 var heal $char.healing.heal
 var healTarget $char.healing.healTarget
+var justice 0
 var poison $char.healing.poison
 var poisonSelf $char.healing.poisonSelf
 

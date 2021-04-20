@@ -5,12 +5,14 @@ include libmaster.cmd
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action put #var openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
 action put #var openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
-action goto movetoHouseRetry when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
-action put #var instructor $1 when ^(Inauri|Selesthiel|Qizhmur) is teaching a class on .*$
+action put #var khurnaarti.student 0 ; put #var khurnaarti.instructor $1 when ^(Selesthiel|Inauri|Qizhmur) is teaching a class on .* which is still open to new students\.$
+action var houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
+action var houseOpen 1 when ^A sandalwood door suddenly opens\!$
 
 ###################
 # Variable Inits
 ###################
+if (!($khurnaarti.student >0)) then put #var khurnaarti.student 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
@@ -98,26 +100,21 @@ waitBurgle:
         put #echo >Log #cc99ff Train: Going to burgle
         put .house
         waitforre ^HOUSE DONE
-        gosub automove steelclaw
-        gosub automove 91
+        gosub moveToBurgle
         put .burgle
         waitforre ^BURGLE DONE
-        gosub automove 252
         gosub release rf
-        gosub peer door
-        waitforre ^A sandalwood door suddenly opens\!
-        put .house
-        waitforre ^HOUSE DONE
+        gosub movetoHouse
     }
     return
 
 
 waitClass:
-    if ($student = 1) then {
+    if ($khurnaarti.student = 1) then {
         return
     } else {
         if (contains("$roomplayers", "Inauri")) then {
-            matchre waitClassSetClass Targeted Magic|Enchanting|Crossbow
+            matchre waitClassSetClass Crossbow|Enchanting|Sorcery|Targeted Magic
             matchre waitClassNewClass ^No one seems to be teaching\.$
             put assess teach
             matchwait 5
@@ -131,12 +128,16 @@ waitClassNewClass:
     pause 2
     goto waitClass
 
+
 waitClassSetClass:
     var classTopic $1
-    if ("%classTopic" = "Enchanting") then {
-        gosub listen $instructor observe
+    echo %classTopic
+    if ("$instructor" = "Inauri") then {
+        gosub listen $khurnaarti.instructor observe
+        put #var khurnaarti.student 1
     } else {
-        gosub listen $instructor
+        gosub listen $khurnaarti.instructor
+        put #var khurnaarti.student 1
     }
     goto waitClass
 
@@ -161,12 +162,11 @@ waitForage:
     if ($Outdoorsmanship.LearningRate < 10) then {
         put .house
         waitforre ^HOUSE DONE
-        gosub automove 555
+        gosub moveToForage
         put .forage
         waitforre ^FORAGE DONE
-        gosub automove 252
-        gosub moveToHouse
         put #script abort all except khuridle
+        gosub moveToHouse
     }
     return
 
@@ -226,17 +226,69 @@ waitPlay:
 ###################
 # Move to Methods
 ###################
-movetoHouse:
-    gosub peer door
-    waitforre ^A sandalwood door suddenly opens\!$
-    put .house
-    waitforre ^HOUSE DONE$
+moveToBurgle:
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go portal
+        gosub moveToBurgle
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove steelclaw
+        gosub automove 91
+    }
     return
 
 
-movetoHouseRetry:
+moveToFangCove:
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub move go portal
+        gosub automove 106
+        goto loop
+    }
+    return
+
+
+moveToForage:
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove 555
+    }
+    return
+
+
+moveToHouse:
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go portal
+        gosub moveToHouse
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove 252
+    }
+
+    var lastHouseGametime $gametime
+    moveToHouse1:
     gosub peer door
-    waitforre ^A sandalwood door suddenly opens\!$
-    put .house
-    waitforre ^HOUSE DONE$
-    goto loop
+    pause 5
+    if (%houseOpen <> 1) then {
+        pause 5
+        evalmath maxHouseTime %lastHouseGametime + 300
+        if (%maxHouseTime < $gametime) then {
+            goto moveToHouseRetry
+        } else {
+            goto moveToFangCove
+    } else {
+        put .house
+        waitforre ^HOUSE DONE$
+        var houseOpen 0
+    }
+    if (%houseRetry = 1) then {
+        goto loop
+    }
+    return

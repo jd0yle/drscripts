@@ -90,6 +90,7 @@ put #tvar char.inv.defaultContainer backpack
 ###############################
 ###      MAGIC
 ###############################
+put #tvar guild Empath
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
