@@ -1332,6 +1332,7 @@ mark:
     matchre return ^It's dead
     matchre return ^Mark what\?
     matchre return ^Roundtime
+    matchre return ^The stamp is too badly damaged to be used for that\.$
     matchre return ^There is not enough
     matchre return ^You carefully size up
     matchre return ^You begin to

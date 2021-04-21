@@ -1,9 +1,10 @@
 include libmaster.cmd
 
+
 ################
 # Variables Init
 ################
-var craftTools carving knife|shaper|rasp|drawknife
+var craftTools carving knife|shaper|rasp|drawknife|stamp
 var craftToolsLength 4
 var craftToolsIndex 0
 var npc clerk
@@ -43,7 +44,13 @@ repairCheckTicket:
     gosub get my ticket
     if ($righthandnoun = "ticket") then {
         gosub give %npc
-        gosub tie my $righthandnoun to my toolbelt
+        if ("$righthandnoun" = "ticket") then {
+            gosub stow ticket
+            goto repairGetTool
+        }
+        if ("$righthandnoun" = "stamp") then {
+            gosub put my stamp in my workbag
+        } else gosub tie my $righthandnoun to my toolbelt
         pause
         goto repairCheckTicket
     } else {
@@ -54,10 +61,13 @@ repairCheckTicket:
 # Repair
 ################
 repairGetTool:
-    if (%craftToolsIndex >= $craftToolsLength) then {
+    if (%craftTools(%craftToolsIndex) = null || %craftToolsIndex >= $craftToolsLength) then {
         goto repairExit
     }
-    gosub untie %craftTools(%craftToolsIndex) from my toolbelt
+    if ("%craftTools(%craftToolsIndex)" = "stamp") then {
+        gosub get my stamp
+    } else gosub untie %craftTools(%craftToolsIndex) from my toolbelt
+
     if ($righthandnoun <> null) then {
         gosub give %npc
         gosub give %npc

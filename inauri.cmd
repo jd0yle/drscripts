@@ -50,7 +50,7 @@ inauri.loop:
         put #echo >Log [inauri] Starting reconnect
         put .reconnect
     }
-    if (%inauri.teach = 1) then gosub waitTeach
+    if (%inauri.teach = 1) then gosub inauri.teach
     if ($standing = 0) then gosub stand
     if ($inauri.heal = 1) then {
         gosub redirect all to left leg
@@ -58,17 +58,7 @@ inauri.loop:
         gosub take $inauri.healTarget ever quick
         put #var inauri.heal 0
     }
-    if (%inauri.openDoor = 1) then {
-        if !(contains("$roomplayers", "Selesthiel")) then {
-            gosub unlock door
-            gosub open door
-        }
-    }
-    if (%inauri.openDoor = 2) then {
-        gosub unlock door
-        gosub open door
-    }
-    var inauri.openDoor 0
+    if (%inauri.openDoor = 1) then gosub inauri.door
     if (%inauri.poison = 1) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget poison quick
@@ -90,27 +80,27 @@ inauri.loop:
     if ($mana > 30) then {
         if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     }
-    gosub waitAlmanac
+    gosub inauri.almanac
     pause 1
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     pause 1
-    gosub waitFaSkin
+    gosub inauri.faSkin
     pause 1
     if ($Attunement.LearningRate < 33 && $lib.magicInert <> 1) then gosub perc.onTimer
     pause 1
     if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
     pause 1
-    gosub waitArcana
+    gosub inauri.arcana
     pause 1
-    gosub waitEngineer
+    gosub inauri.engineer
     pause 1
     if ($mana > 30) then {
-        gosub waitMagic
+        gosub inauri.magic
         pause 1
-        gosub waitResearch
+        gosub inauri.research
         pause 1
     }
-    gosub waitLook
+    gosub inauri.look
     goto inauri.loop
 
 
@@ -142,6 +132,19 @@ inauri.arcana:
         gosub gaze my sano crystal
     }
     return
+
+
+inauri.door:
+   if !(contains("$roomplayers", "Selesthiel")) then {
+        gosub unlock door
+        gosub open door
+   }
+   if (%inauri.openDoor = 2) then {
+        gosub unlock door
+        gosub open door
+   }
+   var inauri.openDoor 0
+   return
 
 
 inauri.engineer:
@@ -268,8 +271,8 @@ moveToHouse:
         gosub move go portal
         gosub moveToHouse
     }
-    # Shard - East Gate
-    if ($zoneid = 66) then {
+    # Shard - East Gate, City
+    if ($zoneid = 66 || $zoneid = 67) then {
         gosub automove portal
         gosub automove 252
     }

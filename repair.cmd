@@ -1,16 +1,40 @@
 include libmaster.cmd
 
-var weapons nightstick|diamondique hhr'ata|triple-weighted bola|assassin's blade
+###############################
+###      VARIABLES
+###############################
+var armorLeather $char.repair.armor.leather
+var armorMetal $char.repair.armor.metal
+var toolMetal $char.repair.tool.metal
+var toolLeather $char.repair.tool.leather
+var weaponLeather $char.repair.weapon.leather
+var weaponMetal $char.repair.weapon.metal
 
-if ("$zoneid" != "1" && "$zoneid" != "150") then {
-    echo "***** NOT IN VALID START (CROSSING, FC) *****"
-    exit
-}
+var repairForceFangCove false
 
 gosub stow right
 gosub stow left
+###############################
+###      MAIN
+###############################
+repair.startLocation:
+    if ("$guild" = "Necromancer") then {
+        var repair.forceFangCove true
+        if ($Time.isDay = 0) then {
+            put #echo >Log [repair] Repair skipped due to night.
+            goto repair.exit
+        }
+        goto repair.checkInventory
+    }
 
+    if ($zoneid <> 1 || $zoneid <> 150 || $zoneid <> 66 || $zoneid <> 67) then {
+        put #echo >Log Orange [repair] Not in a supported zone.  Must be in Crossing, Fang Cove, or Shard.
+        goto repair.exit
+    }
 
+#--------------------------------------
+repair.GetTicket:
+    gosub get my ticket
 getTicket:
 gosub get my ticket
 if ("$righthandnoun" = "ticket") then goto pickupArmor
@@ -29,7 +53,7 @@ goto done
 
 
 pickupArmor:
-    matchre pickupArmor2 (Catrox|Randal|Lakyan|Osmandikar)
+    matchre pickupArmor2 (Catrox|Randal|Lakyan|Osmandikar|Ylono|Granzer)
     put read my ticket
     matchwait 5
     gosub stow ticket
@@ -192,3 +216,73 @@ done:
     pause .2
     put #parse REPAIR DONE
     exit
+
+###############################
+###      METHODS
+###############################
+
+
+repair.exit:
+    pause .2
+    put #parse REPAIR DONE
+    exit
+
+###############################
+###      MOVE TO
+###############################
+moveToRepairMetal:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE$
+        gosub moveToRepairMetal
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        gosub automove repair metal
+        return
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) {
+        gosub automove repair metal
+        return
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+        gosub moveToRepairMetal
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove repair metal
+        return
+    }
+    return
+
+
+moveToRepairLeather:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE$
+        gosub moveToRepairLeather
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        gosub automove repair leather
+        return
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) {
+        gosub automove repair leather
+        return
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+        gosub moveToRepairLeather
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove repair leather
+        return
+    }
+    return

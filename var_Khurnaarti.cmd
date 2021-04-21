@@ -209,6 +209,19 @@ put #tvar char.performance.mood quiet
 
 
 ###############################
+###      REPAIR
+###############################
+put #var char.repair.armor.leather hauberk
+put #var char.repair.armor.metal chain balaclava|chain gloves|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps
+
+put #tvar char.repair.tools.leather 0
+put #tvar char.repair.tools.metal 0
+
+put #var char.repair.weapons.leather 0
+put #var char.repair.weapons.metal rockwood tanbo|forester's crossbow|naphtha|lead-banded wand
+
+
+###############################
 ###      RESEARCH
 ###############################
 put #tvar char.compendium compendium

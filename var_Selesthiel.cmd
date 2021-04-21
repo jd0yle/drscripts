@@ -198,6 +198,20 @@ put #tvar char.observe.predict 0
 
 
 ###############################
+###      REPAIR
+###############################
+put #var char.repair.armor.leather
+put #var char.repair.armor.metal
+
+put #tvar char.repair.tools.leather 0
+put #tvar char.repair.tools.metal 0
+put #tvar char.repair.tools.tied 0
+
+put #var char.repair.weapons.leather
+put #var char.repair.weapons.metal
+
+
+###############################
 ###      RESEARCH
 ###############################
 put #tvar char.compendium third compendium

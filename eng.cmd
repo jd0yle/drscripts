@@ -11,6 +11,7 @@ action put #var nextTool knife when ^The wood is ready to have more fine detail 
 action put #var nextTool engMark when ^Applying the final touches
 action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
 action goto shortCord when ^You need another finished short leather cord
+action goto eng.repairTools when ^The stamp is too badly damaged to be used for that\.$
 
 ########### CONFIG ###########
 var chapter 0
@@ -399,6 +400,34 @@ engMark:
     gosub mark $righthandnoun with stamp
     gosub stow my stamp
     goto engDone
+
+
+eng.repairTools:
+    gosub stow stamp
+    put #echo >log Pink [eng] Stamp is broken.  Repair your tools.
+    goto engDone
+    #gosub moveToEngineer
+
+
+moveToEngineer:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        gosub moveToEngineer
+    }
+    # Shard - East Gate, City
+    if ($zoneid = 66 || $zoneid = 67) then {
+        gosub automove east gate
+        gosub automove engineering books
+        put .repairtool
+        waitforre ^REPAIR DONE
+        put #var eng.needLumber 0
+        put .deposit
+        waitforre ^DEPOSIT DONE
+        gosub moveToHouse
+        put .house
+        waitforre ^HOUSE DONE
+    }
 
 ########################
 # Exit
