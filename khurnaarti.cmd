@@ -338,7 +338,7 @@ moveToHouse:
     if (%khurnaarti.houseOpen = 1) then {
         put .house
         waitforre ^HOUSE DONE$
-        var houseOpen 0
+        var khurnaarti.houseOpen 0
     }
     if (%khurnaarti.houseRetry = 1) then {
         goto khurnaarti.loop

@@ -86,8 +86,10 @@ put #tvar char.fight.tmSpell do
 put #tvar char.fight.tmPrep 4
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+#put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+put #tvar char.fight.weapons.items Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
 #***** ARMOR *****
@@ -105,7 +107,7 @@ put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
-put #tvar char.fight.useStealth 1
+put #tvar char.fight.useStealth 0
 
 #***** GENERAL *****
 put #tvar char.fight.useMaf 1
