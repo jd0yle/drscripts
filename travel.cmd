@@ -167,6 +167,7 @@ NODESTINATION:
   Echo ## Aesy Surlaenis'a | Ratha | M'riss     ##
   Echo ## Mer'Kresh | Hara'jaal (TF only)       ##
   Echo -------------------------------------------
+  put #parse TRAVEL DONE
   exit
 INIT:
 # debug 5
@@ -2603,6 +2604,7 @@ ARRIVED:
      ## "
   put #parse YOU ARRIVED!
   put #parse REACHED YOUR DESTINATION
+  put #parse TRAVEL DONE
   # put #play Just Arrived.wav
   echo ## WOW! YOU ARRIVED AT YOUR DESTINATION: %destination in %t seconds!  That's FAST! ##
   put #echo >Log Travel script arrival at: $zonename (map $zoneid: room $roomid)
@@ -3289,6 +3291,7 @@ COINQUIT:
     echo EITHER GET MORE ATHLETICS, OR MORE MONEY, FKING NOOB!
     put #echo >Log Red Travel Script Aborted! No money in bank to ride ferry in $zonename!
     put #parse OUT OF MONEY!
+    put #parse TRAVEL DONE
     exit
 LIRUMS:
      var Target.Currency LIRUMS

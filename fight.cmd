@@ -91,6 +91,8 @@ eval weapons.length count("%weapons.skills", "|")
 var weapons.lastChangeAt 0
 var weapons.targetLearningRate 5
 
+var weapons.lastChangeAt $gametime
+
 var armor.index 0
 eval armor.length count("%armor.skills", "|")
 var armor.lastChangeAt 0
@@ -526,7 +528,7 @@ checkWeaponSkills:
         var timeBetweenWeaponSwaps 30
         if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
         evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
-        if (%t > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
+        if ($gametime > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
     }
 
     var handItem $righthand
@@ -559,7 +561,7 @@ checkWeaponSkills.nextWeapon:
 	    evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 	}
-	var weapons.lastChangeAt %t
+	var weapons.lastChangeAt $gametime
 	return
 
 
@@ -662,7 +664,7 @@ checkHide:
 debil:
     var force 0
     if ("$1" = "force") then var force 1
-    var debilConditions sleeping|immobilized|writhing
+    var debilConditions sleeping|immobilized|writhing|webbed
     if (%debil.use = 1 && $mana > 80 && (%force = 1 || !contains("$monsterlist", "%debilConditions")) then {
     #if (%debil.use = 1 && $mana > 80 && (%force = 1 || (!contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") && !contains("$roomobjs", "writhing web of shadows") )) ) then {
         if ($Debilitation.LearningRate < 33 || %forceDebil = 1) then {
@@ -679,7 +681,7 @@ debil:
 ###      fight.observe
 ###############################
 fight.observe:
-    if (%useObserve = 1 && $Astrology.LearningRate < 32) then gosub runScript observe
+    if (%useObserve = 1 && $Astrology.LearningRate < 30) then gosub runScript observe
     if (%useObserve = 1 && $Astrology.LearningRate < 22) then gosub runScript predict
     return
 
@@ -697,7 +699,7 @@ huntApp:
         gosub appraise.onTimer
         return
     }
-    if (%usePerc = 1 && $Attunement.LearningRate < 33) then {
+    if (%usePerc = 1 && $Attunement.LearningRate < 31) then {
         gosub perc.onTimer
         return
     }
@@ -765,7 +767,7 @@ manageCyclics:
         var shouldCastUsol 1
         if ($SpellTimer.UniversalSolvent.active = 1) then var shouldCastUsol 0
         if ($mana < 80) then var shouldCastUsol 0
-        if ($Targeted_Magic.LearningRate > 26) then var shouldCastUsol 0
+        if ($Targeted_Magic.LearningRate > 2) then var shouldCastUsol 0
         if ($monstercount < 2) then var shouldCastUsol 0
 
         if (%shouldCastUsol = 1) then {
@@ -778,7 +780,7 @@ manageCyclics:
             var shouldReleaseUsol 0
             if ($mana < 60) then var shouldReleaseUsol 1
             if ("$roomplayers" != "") then var shouldReleaseUsol 1
-            if ($Targeted_Magic.LearningRate > 32) then var shouldReleaseUsol 1
+            if ($Targeted_Magic.LearningRate > 4) then var shouldReleaseUsol 1
 
             if (%shouldReleaseUsol = 1) then gosub release usol
         }
