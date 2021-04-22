@@ -28,15 +28,6 @@ put #tvar char.cast.dc.prep 50
 
 
 ###############################
-###      FRIENDS
-###############################
-put #tvar char.inv.emptyGemPouchContainer rucksack
-put #tvar char.inv.fullGemPouchContainer rucksack
-put #tvar char.inv.tempContainer rucksack
-put #tvar char.inv.default rucksack
-
-
-###############################
 ###      COMBAT
 ###############################
 put #tvar char.combat.spell.Debilitation calm
@@ -95,13 +86,13 @@ put #tvar char.fight.tmSpell do
 put #tvar char.fight.tmPrep 4
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|wand|naphtha|forester crossbow|tanbo
+put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
-put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
+put #tvar char.fight.armor.items 0
 put #tvar char.fight.useArmor 0
 
 #***** USE *****
@@ -109,25 +100,24 @@ put #tvar char.fight.useArmor 0
 # All default to 0
 put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
-put #tvar char.fight.useBuffs 0
+put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
-put #tvar char.fight.useStealth 0
+put #tvar char.fight.useStealth 1
 
 #***** GENERAL *****
 put #tvar char.fight.useMaf 1
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 0
-put #tvar char.fight.useObserve 0
-put #tvar char.fight.useSeer 0
+put #tvar char.fight.useObserve 1
+put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
-put #tvar char.fight.useShadows 0
+put #tvar char.fight.useShadows 1
 put #tvar char.fight.useShw 0
 put #tvar char.fight.useSls 0
-
 
 
 ###############################
@@ -136,6 +126,15 @@ put #tvar char.fight.useSls 0
 var friends (Inauri|Qizhmur|Selesthiel)
 var enemies null
 var super.enemies null
+
+
+###############################
+###      INVENTORY
+###############################
+put #tvar char.inv.emptyGemPouchContainer rucksack
+put #tvar char.inv.fullGemPouchContainer rucksack
+put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.default rucksack
 
 
 ###############################
@@ -205,7 +204,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song jig
+put #tvar char.performance.song lament
 put #tvar char.performance.mood quiet
 
 

@@ -26,7 +26,7 @@ var gweths (?:jadeite|kyanite|lantholite|sjatmal|waermodi|lasmodi) stones
 var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox
 var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover|kirmhiro draught
-var ammo basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock|frying pan
+var ammo basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock|frying pan|naphtha|wand
 var coin coin
 
 var gems %gems1|%gems2|%gems3|%gems4
