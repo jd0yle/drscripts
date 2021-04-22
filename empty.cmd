@@ -4,26 +4,28 @@
 # Inauri - snmurphy95@gmail.com
 #
 # USAGE
-# .empty [nowear] <container>
+# .empty [--from] [--to] [--nowear=1|0] [--filter]
 #
-# .empty large sack
-# .empty nowear thigh bag
+# If no --to is specified, the item will be STOWed
+# if --wear=1 is specified, the item will not be WORN
+#
+# .empty --from=large sack --to=backpack
+# .empty --from=thigh bag --nowear=1
+# .empty --from=large sack --to=haversack --filter=gloves|sword|pants
 #
 ####################################################################################################
 include libmaster.cmd
+include args.cmd
 
 var nowear 0
 
-if_1 then {
-    if ("%1" = "nowear") then var nowear 1
-    shift
-    var container %0
-} else {
-    echo MUST SPECIFY CONTAINER
-    echo .%scriptname [nowear] <container>
-    echo
-    goto done
-}
+var fromContainer %args.from
+var toContainer %args.to
+if (%args.nowear = 1) then var nowear 1
+var filter %args.filter
+eval filter replacere("%filter", ",", "|")
+
+if ("%toContainer" = ".to") then var empty.stow 1
 
 eval whitelistLength count("$empty.whitelist", "|")
 if (%whitelistLength = 0) then put #var empty.whitelist shield
@@ -34,8 +36,10 @@ if (%blacklistLength = 0) then put #var empty.blacklist the
 #action var items %items|$1  when ^  (\w+.*)
 action var contents $1 when ^In the.*you see (.*)
 
+
+
 pause .2
-gosub look in my %container
+gosub look in my %fromContainer
 pause .2
 
 # contents example: "In the large sack you see some black moonsilk pants, a tiny blue aquamarine and some throwing blades."
@@ -47,7 +51,7 @@ var index 0
 eval numItems count("%items", "|")
 
 if (%numItems = 0) then {
-    echo CONTAINER %container IS EMPTY!
+    echo CONTAINER %fromContainer IS EMPTY!
     goto done
 }
 
@@ -63,8 +67,14 @@ loop:
 
     wordLoop:
         var word %words(%wordIndex)
-        if (matchre("$empty.whitelist", "%word") || !matchre("$empty.blacklist", "%word")) then {
-            gosub get my %word from my %container
+
+        var isInFilter 1
+        if ("%filter" != ".filter") then {
+            if (!matchre("%filter", "%word")) then var isInFilter 0
+        }
+
+        if (%isInFilter = 1 && "%word" != "a" && (matchre("($empty.whitelist)", "%word") || !matchre("($empty.blacklist)", "%word"))) then {
+            gosub get my %word from my %fromContainer
             if ("$lefthand" != "Empty") then {
                 if (!matchre("$empty.whitelist", "%word") then {
 	                put #echo >Log [empty] ADDING %word to empty.whitelist
@@ -72,7 +82,11 @@ loop:
                 }
 	            if ("%nowear" != "1") then gosub wear my %word
 	            if ("$lefthand" != "Empty") then {
-	                gosub stow my %word
+	                if (%empty.stow = 1) then {
+	                    gosub stow my %word
+	                } else {
+	                    gosub put my %word in my %toContainer
+                    }
                 }
             } else {
                 if (!matchre("$empty.blacklist", "%word")) then {
