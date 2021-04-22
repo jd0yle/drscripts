@@ -404,30 +404,9 @@ engMark:
 
 eng.repairTools:
     gosub stow stamp
+    put #var eng.repairNeeded 1
     put #echo >log Pink [eng] Stamp is broken.  Repair your tools.
     goto engDone
-    #gosub moveToEngineer
-
-
-moveToEngineer:
-    if ("$roomname" = "Private Home Interior") then {
-        put .house
-        waitforre ^HOUSE DONE
-        gosub moveToEngineer
-    }
-    # Shard - East Gate, City
-    if ($zoneid = 66 || $zoneid = 67) then {
-        gosub automove east gate
-        gosub automove engineering books
-        put .repairtool
-        waitforre ^REPAIR DONE
-        put #var eng.needLumber 0
-        put .deposit
-        waitforre ^DEPOSIT DONE
-        gosub moveToHouse
-        put .house
-        waitforre ^HOUSE DONE
-    }
 
 ########################
 # Exit

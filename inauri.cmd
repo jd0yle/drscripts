@@ -9,11 +9,11 @@ action var inauri.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appear
 action var inauri.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action var inauri.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action var inauri.poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
-action var inauri.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
+action var inauri.poisonSelf 1 when The presence of a faint greenish tinge about yourself\.$|^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
 action var inauri.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
 action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
-action var justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
-action var justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
+action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
+action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 
 
@@ -34,12 +34,13 @@ if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 var inauri.disease 0
 var inauri.diseaseSelf 0
+var inauri.justice 0
 var inauri.openDoor 0
 var inauri.poison 0
 var inauri.poisonSelf 0
+var inauri.target 0
 var inauri.teach 0
 var inauri.topic 0
-var inauri.target 0
 
 
 ###############################
@@ -135,10 +136,10 @@ inauri.arcana:
 
 
 inauri.door:
-   if !(contains("$roomplayers", "Selesthiel")) then {
+   #if !(contains("$roomplayers", "Selesthiel")) then {
         gosub unlock door
         gosub open door
-   }
+   #}
    if (%inauri.openDoor = 2) then {
         gosub unlock door
         gosub open door
@@ -153,9 +154,30 @@ inauri.engineer:
         return
     } else {
         if ($Engineering.LearningRate = 0) then {
-            if ($eng.needLumber = 1) then {
+            if ($eng.repairNeeded = 1) then {
+                put #echo >Log Yellow [inauri] Need to repair crafting tools.
                 goto moveToEngineer
+                put .repairtool
+                waitforre ^REPAIRTOOL DONE$
+                put .deposit
+                waitforre ^DEPOSIT DONE$
+                goto moveToHouse
+                put .house
+                waitforre ^HOUSE DONE$
+             }
+
+            if ($eng.needLumber = 1) then {
+                put #echo >Log Yellow [inauri] Need lumber for engineering.
+                goto moveToEngineer
+                put .workorder
+                waitforre ^WORKORDER DONE$
+                put .deposit
+                waitforre ^DEPOSIT DONE$
+                goto moveToHouse
+                put .house
+                waitforre ^HOUSE DONE$
             }
+            put #echo >Log Yellow [inauri] Beginning engineering.
             put #var lastEngineerGametime $gametime
             put .eng 5 $char.craft.item
             waitforre ^ENG DONE
@@ -192,14 +214,17 @@ inauri.look:
 
 inauri.magic:
     if ($lib.magicInert = 1) then {
+        put #echo >Log Purple [inauri] Skipping magic due to being magically inert.
         return
     }
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
             put .look
+            put #echo >Log Purple [inauri] Beginning magic.
             put .magic noLoop
             waitforre ^MAGIC DONE
+            put #echo >Log Purple [inauri] Magic complete.
             put #script abort all except inauri
         }
     }
@@ -208,16 +233,20 @@ inauri.magic:
 
 inauri.research:
     if ($lib.magicInert = 1) then {
+        put #echo >Log Purple [inauri] Skipping research due to being magically inert.
         return
     }
     if ($Sorcery.LearningRate < 5) then {
         put justice
-        if (%justice <> 0) then {
+        if (%inauri.justice = 1) then {
+            put #echo >Log Purple [inauri] Skipping research due to justice.
             return
         }
         put .look
+        put #echo >Log Purple [inauri] Beginning research.
         put .research sorcery
         waitforre ^RESEARCH DONE
+        put #echo >Log Purple [inauri] Research complete.
         put #script abort all except inauri
     }
     return
@@ -246,34 +275,44 @@ moveToEngineer:
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE
-        gosub moveToEngineer
+        goto moveToEngineer
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove east gate
-        gosub automove engineer
-        put .workorder
-        waitforre ^WORKORDER DONE
-        put #var eng.needLumber 0
-        put .deposit
-        waitforre ^DEPOSIT DONE
-        gosub moveToHouse
-        put .house
-        waitforre ^HOUSE DONE
+        goto moveToEngineer
     }
-    goto inauri.loop
+    if ($zoneid = 67) then {
+        if ($roomid = 711) then goto inauri.loop
+        gosub automove engineer
+        goto moveToEngineer
+    }
+    goto moveToEngineer
 
 
 moveToHouse:
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        gosub automove 258
+        goto moveToHouse
+    }
+    # Shard - East Gate
+    if ($zoneid = 66 ) then {
+        if ($roomid = 252) then return
+        gosub automove 252
+        goto moveToHouse
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+        goto moveToHouse
+    }
     # Fang Cove
     if ($zoneid = 150) then {
         gosub automove portal
         gosub move go portal
         gosub moveToHouse
     }
-    # Shard - East Gate, City
-    if ($zoneid = 66 || $zoneid = 67) then {
-        gosub automove portal
-        gosub automove 252
-    }
-    return
+
+    goto moveToHouse

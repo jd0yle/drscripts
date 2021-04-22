@@ -3,7 +3,8 @@ include libmaster.cmd
 ###    IDLE ACTION TRIGGERS
 ###############################
 if ("$charactername" = "Inauri") then {
-    action var look.heal 1 ; put #var target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+    action put #var inauri.heal 1 ; put #var inauri.target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+    action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
     action var look.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
     action var look.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
@@ -19,7 +20,6 @@ action var look.teach 1; var look.topic $2 ; var look.target $1 when ^(Khurnaart
 ###############################
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if ("$charactername" = "Inauri") then {
-    var look.heal 0
     var look.poison 0
     var look.poisonSelf 0
 }
@@ -35,12 +35,12 @@ var look.topic 0
 look.loop:
     if (%look.teach = 1) then gosub look.teach
     if ($standing = 0) then gosub stand
-    if ($charactername = "Inauri") then {
-        if (%look.heal = 1) then {
+    if ("$charactername" = "Inauri") then {
+        if ($inauri.heal = 1) then {
             gosub redirect all to left leg
-            gosub touch %look.target
-            gosub take %look.target ever quick
-            var %look.heal 0
+            gosub touch $inauri.target
+            gosub take $inauri.target ever quick
+            put #var inauri.heal 0
         }
         if (%look.poison = 1) then {
             gosub touch %look.target
@@ -65,10 +65,10 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-   if !(contains("$roomplayers", "Selesthiel")) then {
+   #if !(contains("$roomplayers", "Selesthiel")) then {
         gosub unlock door
         gosub open door
-   }
+   #}
    if (%inauri.openDoor = 2) then {
         gosub unlock door
         gosub open door

@@ -1,5 +1,7 @@
 include libmaster.cmd
-
+action var repair.waitTimeMin $1 ;evalmath repair.waitTimeSec %repair.waitTimeMin * 60 when ^.*be ready for another (\d+) roisaen\.$
+action var repair.waitTimeMin 0 ; var repair.waitTimeSec 0 when ^.* be ready by now\.$
+action var repair.waitTimeMin 2 ; var repair.waitTimeSec 60 when ^.* be ready any moment now\.$
 
 ################
 # Variables Init
@@ -7,20 +9,23 @@ include libmaster.cmd
 var craftTools carving knife|shaper|rasp|drawknife|stamp
 var craftToolsLength 4
 var craftToolsIndex 0
-var npc clerk
-var repairTargetRoom engineering books
+var repair.npc clerk
+var repair.TargetRoom engineering books
+var repair.waitTimeMin 0
+var repair.waitTimeSec 0
 
-goto repairRoomCheck
 
-
+goto repairNeedMoney
 ################
 # Money
 ################
 repairNeedMoney:
     put .deposit
     waitforre ^DEPOSIT DONE
-    put withdraw 2 plat
-    gosub automove %repairTargetRoom
+    put withdraw 3 plat
+    if ($zoneid = 67) then {
+        gosub automove engineering book
+    }
     goto repairRoomCheck
 
 
@@ -32,18 +37,24 @@ repairRoomCheck:
     put look
     waitforre ^Obvious
     if "%LOCATION" = "[Catrox's Forge, Entryway]" then {
-        var npc Catrox
+        var repair.npc Catrox
     }
     if "%LOCATION" = "[Shard Engineering Society, Bookstore]" then {
-        var npc clerk
-        echo %npc
+        var repair.npc clerk
     }
 
 
 repairCheckTicket:
     gosub get my ticket
+    if ($righthandnoun <> "ticket") then {
+        goto repairGetTool
+    }
+
+
+    repairCheckTicketLoop:
+    gosub get my ticket
     if ($righthandnoun = "ticket") then {
-        gosub give %npc
+        gosub give %repair.npc
         if ("$righthandnoun" = "ticket") then {
             gosub stow ticket
             goto repairGetTool
@@ -52,25 +63,26 @@ repairCheckTicket:
             gosub put my stamp in my workbag
         } else gosub tie my $righthandnoun to my toolbelt
         pause
-        goto repairCheckTicket
+        goto repairCheckTicketLoop
     } else {
-        goto repairGetTool
+        goto repairExit
     }
+
 
 ################
 # Repair
 ################
 repairGetTool:
     if (%craftTools(%craftToolsIndex) = null || %craftToolsIndex >= $craftToolsLength) then {
-        goto repairExit
+        goto repair.checkTime
     }
     if ("%craftTools(%craftToolsIndex)" = "stamp") then {
         gosub get my stamp
     } else gosub untie %craftTools(%craftToolsIndex) from my toolbelt
 
     if ($righthandnoun <> null) then {
-        gosub give %npc
-        gosub give %npc
+        gosub give %repair.npc
+        gosub give %repair.npc
         gosub stow my ticket
         goto repairNextTool
     } else {
@@ -87,10 +99,21 @@ repairToolSkip:
 
 repairNextTool:
     math craftToolsIndex add 1
-    if (%craftToolsIndex > %craftToolsLength) then goto repairExit
+    if (%craftToolsIndex > %craftToolsLength) then goto repair.checkTime
     goto repairGetTool
 
 
+repair.checkTime:
+    put look my ticket
+    put .look
+    pause %repair.waitTimeSec
+    put #script abort look
+    goto repairCheckTicket
+
+
 repairExit:
-    echo Repair Tools done.
+    put #var eng.repairNeeded 0
+    pause .2
+    put #parse REPAIRTOOL DONE
+    put #echo >Log Yellow [repairtool] Tools repaired.
     exit

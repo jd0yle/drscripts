@@ -7,6 +7,7 @@ action put var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears i
 action put var khurnaarti.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action var khurnaarti.houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
 action var khurnaarti.houseOpen 1 when ^A sandalwood door suddenly opens\!$
+action put #var lib.student 0 when ^Inauri stops teaching\.$
 
 ###############################
 ###    VARIABLES
@@ -96,6 +97,7 @@ khurnaarti.burgle:
     }
     if ($char.burgle.cooldown = 0) then {
         put #echo >Log #cc99ff [khurnaarti] Going to burgle
+        put #var lib.student 0
         gosub moveToBurgle
         put .burgle
         waitforre ^BURGLE DONE
@@ -121,7 +123,7 @@ khurnaarti.class:
 
 khurnaarti.classNewClass:
     gosub whisper inauri teach cross
-    pause 2
+    pause 5
     goto khurnaarti.Class
 
 
@@ -139,9 +141,9 @@ khurnaarti.classSetClass:
 
 
 khurnaarti.combatCheck:
-    echo Checking Combat..
-    if ($Crossbow.LearningRate < 10) then {
+    if ($Brawling.LearningRate < 10) then {
         put #echo >Log Green [khurnaarti] Going to combat.
+        put #var lib.student 0
         gosub moveToHunt
         put .fight
         put .afk
@@ -158,7 +160,7 @@ khurnaarti.combatLoop:
         gosub stow
         gosub stow left
         gosub moveToHouse
-        goto khurnaarti.loop
+        put .khurnaarti
    }
    goto khurnaarti.combatLoop
 
@@ -197,6 +199,7 @@ khurnaarti.faSkin:
 khurnaarti.forage:
     if ($Outdoorsmanship.LearningRate < 10) then {
         put #echo >Log Orange [khurnaarti] Going to forage.
+        put #var lib.student 0
         gosub moveToForage
         put .forage
         waitforre ^FORAGE DONE
