@@ -4,7 +4,7 @@ action var repair.emptySack 1 ; var repair.sackItems $1 when ^In the large sack 
 action var repair.waitTimeMin $1 ;evalmath repair.waitTimeSec %repair.waitTimeMin * 60 when ^.*be ready for another (\d+) roisaen\.$
 action var repair.waitTimeMin 0 ; var repair.waitTimeSec 0 when ^.* be ready by now\.$
 action var repair.waitTimeMin 2 ; var repair.waitTimeSec 60 when ^.* be ready any moment now\.$
-
+action var repair wornArmor 1 when ^You aren't wearing anything like that\.$
 
 ###############################
 ###      VARIABLES
@@ -23,6 +23,7 @@ var repair.ticketName 0
 var repair.trash 0
 var repair.waitTimeMin 0
 var repair.waitTimeSec 0
+var repair.wornArmor 0
 
 
 ###############################
@@ -136,7 +137,7 @@ repair.pickUpSpotSetLocation:
                 if (%repair.trash = 0) then gosub drop my sack
                 else gosub put my sack in %repair.trash
             } else {
-                put #echo >Log Red [repair] There is something left in the sack.  Stowing it.  Please update repair variables for any uncaught items.
+                put #echo >Log Red [repair] There is something left in the sack.  Stowing it.
                 gosub stow
             }
         } else goto repair.pickUpSpot
@@ -151,6 +152,8 @@ repair.checkMoney:
 
 
 repair.repairAll:
+    put inven armor
+    if (%repair.wornArmor = 1) then return
     if (contains("$roomobjs", "apprentice repairman")) then {
         var %repair.ticketName repairman
     }
@@ -165,17 +168,20 @@ repair.repairWeaponMetal:
 repair.repairToolMetal:
 repair.repairWeaponLeather:
 repair.repairToolLeather:
+
+
 repair.sack:
-    # Look in the sack
-    # Get items
-    # Wear or stow items
-    # return
+    put .empty large sack
+    waitforre ^EMPTY DONE$
+    return
 
 
 repair.exit:
     pause .2
     put #parse REPAIR DONE
     exit
+
+
 ###############################
 ###      MOVE TO
 ###############################

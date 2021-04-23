@@ -157,6 +157,7 @@ inauri.engineer:
             if ($eng.repairNeeded = 1) then {
                 put #echo >Log Yellow [inauri] Need to repair crafting tools.
                 goto moveToEngineer
+                gosub automove engineer book
                 put .repairtool
                 waitforre ^REPAIRTOOL DONE$
                 put .deposit
@@ -168,7 +169,7 @@ inauri.engineer:
 
             if ($eng.needLumber = 1) then {
                 put #echo >Log Yellow [inauri] Need lumber for engineering.
-                goto moveToEngineer
+                gosub moveToEngineer
                 put .workorder
                 waitforre ^WORKORDER DONE$
                 put .deposit
@@ -282,8 +283,9 @@ moveToEngineer:
         gosub automove east gate
         goto moveToEngineer
     }
+    #Shard - City
     if ($zoneid = 67) then {
-        if ($roomid = 711) then goto inauri.loop
+        if ($roomid = 718) then return
         gosub automove engineer
         goto moveToEngineer
     }

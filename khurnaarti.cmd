@@ -20,6 +20,7 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
+var khurnaarti.class Sorcery
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
 var khurnaarti.openDoor 0
@@ -122,7 +123,7 @@ khurnaarti.class:
 
 
 khurnaarti.classNewClass:
-    gosub whisper inauri teach cross
+    gosub whisper inauri teach %khurnaarti.class
     pause 5
     goto khurnaarti.Class
 
@@ -160,7 +161,7 @@ khurnaarti.combatLoop:
         gosub stow
         gosub stow left
         gosub moveToHouse
-        put .khurnaarti
+        goto khurnaarti.loop
    }
    goto khurnaarti.combatLoop
 
@@ -318,7 +319,7 @@ moveToHouse:
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
-        gosub automove 252
+        if ($roomid <> 252) then gosub automove 252
     }
 
     var lastHouseGametime $gametime
@@ -341,6 +342,7 @@ moveToHouse:
         var khurnaarti.houseOpen 0
     }
     if (%khurnaarti.houseRetry = 1) then {
+        var khurnaarti.houseRetry 0
         goto khurnaarti.loop
     }
     return
