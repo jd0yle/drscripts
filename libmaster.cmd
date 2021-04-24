@@ -1311,6 +1311,8 @@ loot:
     loot1:
     matchre return ^I could not
     matchre return ^You search
+    matchre return already been searched
+    matchre return ^You should
     put loot %todo
     goto retry
 

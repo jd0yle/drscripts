@@ -180,7 +180,7 @@ loop:
     gosub huntApp
 
     if (%useAlmanac = 1) then gosub almanac.onTimer
-    if (%useSanowret = 1 && $Arcana.LearningRate < 33 && $concentration = 100) then gosub gaze my sanowret crystal
+    if (%useSanowret = 1 && $Arcana.LearningRate < 31 && $concentration = 100) then gosub gaze my sanowret crystal
 
     # Use numMobs so that we can subtract non-combat "pets" (ex: dirt construct, shadow servant, etc.)
     var numMobs $monstercount
@@ -607,7 +607,7 @@ checkDeadMob:
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
 
-        if (1 = 0 && "$charactername" = "Qizhmur") then {
+        if ("$charactername" = "Qizhmur") then {
             if ("%mobName" = "basilisk") then {
                 gosub skin basilisk for part
                 gosub put my fang in my satchel
@@ -616,7 +616,7 @@ checkDeadMob:
                 gosub put my hide in my bundle
                 gosub drop hide
             }
-            gosub loot %lootType
+            gosub loot %mobName %lootType
             return
         }
 

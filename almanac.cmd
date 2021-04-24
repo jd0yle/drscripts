@@ -20,7 +20,7 @@ main:
             gosub get my $char.trainer.almanacItem
             gosub awake
         }
-        if ("$lefthandnoun" != "$char.magic.train.almanacItem") then gosub swap
+        if ("$lefthandnoun" != "$char.trainer.almanacItem") then gosub swap
         gosub study my $char.trainer.almanacItem
         gosub put my $char.trainer.almanacItem in my $char.trainer.almanacContainer
         if (%isAsleep = 1) then {
@@ -28,7 +28,7 @@ main:
             gosub sleep
             var isAsleep 0
         }
-        if ("$lefthand" != "Empty" || "$righthand" != "Empty") then gosub swap
+        if ("$lefthand" != "Empty") then gosub swap
         put #var lastAlmanacGametime $gametime
     }
     pause 2

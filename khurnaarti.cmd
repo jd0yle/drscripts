@@ -30,6 +30,7 @@ put #script abort all except khurnaarti
 ###    MAIN
 ###############################
 khurnaarti.loop:
+    echo Entering khurnaarti.loop
     if ($standing = 0) then gosub stand
     pause 1
     if (%khurnaarti.openDoor = 1) then gosub khurnaarti.door
@@ -67,11 +68,13 @@ khurnaarti.loop:
 ###    SKILL METHODS
 ###############################
 khurnaarti.appraisal:
+    echo Entering khurnaarti.appraisal
     if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
     return
 
 
 khurnaarti.arcana:
+    echo Entering khurnaarti.arcana
     if ($Arcana.LearningRate > 15) then {
         return
     }
@@ -82,11 +85,13 @@ khurnaarti.arcana:
 
 
 khurnaarti.astrology:
+    echo Entering khurnaarti.astrology
     if ($Astrology.LearningRate < 33) then gosub observe.onTimer
     return
 
 
 khurnaarti.burgle:
+    echo Entering khurnaarti.burgle
     if ($Stealth.LearningRate > 10) then {
         return
     }
@@ -106,6 +111,7 @@ khurnaarti.burgle:
 
 
 khurnaarti.class:
+    echo Entering khurnaarti.class
     if ($lib.student = 1) then {
         return
     } else {
@@ -120,12 +126,14 @@ khurnaarti.class:
 
 
 khurnaarti.classNewClass:
+    echo Entering khurnaarti.classNewClass
     gosub whisper inauri teach cross
     pause 2
     goto khurnaarti.Class
 
 
 khurnaarti.classSetClass:
+    echo Entering khurnaarti.classSetClass
     var classTopic $1
     echo %classTopic
     if ("$instructor" = "Inauri") then {
@@ -139,6 +147,7 @@ khurnaarti.classSetClass:
 
 
 khurnaarti.combatCheck:
+    echo Entering khurnaarti.combatCheck
     echo Checking Combat..
     if ($Crossbow.LearningRate < 10) then {
         put #echo >Log Green [khurnaarti] Going to combat.
@@ -151,6 +160,7 @@ khurnaarti.combatCheck:
 
 
 khurnaarti.combatLoop:
+    echo Entering khurnaarti.combatLoop
     pause 1800
     if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10) then {
         put #script abort all except khurnaarti
@@ -164,6 +174,7 @@ khurnaarti.combatLoop:
 
 
 khurnaarti.door:
+    echo Entering khurnaarti.door
     if (%khurnaarti.openDoor = 1) then {
         if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
             gosub unlock door
@@ -179,6 +190,7 @@ khurnaarti.door:
 
 
 khurnaarti.faSkin:
+    echo Entering khurnaarti.faSkin
      evalmath nextTrainerAt $lastTrainerGametime + 3600
     if (%nextTrainerAt > $gametime) then {
         return
@@ -195,6 +207,7 @@ khurnaarti.faSkin:
 
 
 khurnaarti.forage:
+    echo Entering khurnaarti.forage
     if ($Outdoorsmanship.LearningRate < 10) then {
         put #echo >Log Orange [khurnaarti] Going to forage.
         gosub moveToForage
@@ -208,6 +221,7 @@ khurnaarti.forage:
 
 
 khurnaarti.lock:
+    echo Entering khurnaarti.lock
     # Limit how often we're looking for locksmithing practice boxes.
     if ($practicebox.haveBox = 1) then
         evalmath nextPracticeBoxAt $lastPracticeBoxGametime + 3600
@@ -223,6 +237,7 @@ khurnaarti.lock:
 
 
 khurnaarti.look:
+    echo Entering khurnaarti.look
     evalmath nextLookAt $lastLookGametime + 240
     if (%nextLookAt < $gametime) then {
         gosub look
@@ -232,6 +247,7 @@ khurnaarti.look:
 
 
 khurnaarti.magic:
+    echo Entering khurnaarti.magic
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
@@ -244,11 +260,13 @@ khurnaarti.magic:
 
 
 khurnaarti.perc:
+    echo Entering khurnaarti.perc
     if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     return
 
 
 khurnaarti.play:
+    echo Entering khurnaarti.play
     if ($Performance.LearningRate > 15) then {
         return
     }
