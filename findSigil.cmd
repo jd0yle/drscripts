@@ -165,6 +165,7 @@ storeLoop1:
 
 doneList:
 doneStore:
+    gosub stow sigil
     put #parse FINDSIGIL DONE
 
 exit:

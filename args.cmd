@@ -3,9 +3,9 @@
 #
 # Creates these variables:
 # %argList: A pipe-delimited list of the names of the parameters
-# args.<argname>: The value of the <argName> argument
+# %args.<argname>: The value of the <argName> argument
 #
-# EX: --from=foo bar --to=something else
+# EX: .someScript --from=foo bar --to=something else
 # argList = from|to
 # args.from = foo bar
 # args.to = something else
