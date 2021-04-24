@@ -137,8 +137,8 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-        gosub runScript repair
-        gosub waitForRepair
+        #gosub runScript repair
+        #gosub waitForRepair
 
         gosub automove 106
         pause 1
