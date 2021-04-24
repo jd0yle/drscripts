@@ -13,6 +13,7 @@ action put #var lib.student 0 when ^Inauri stops teaching\.$
 ###    VARIABLES
 ###############################
 if (!($khurnaarti.student >0)) then put #var khurnaarti.student 0
+if (!($char.burgle.cooldown >0)) then put #var char.burgle.cooldown 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
@@ -124,8 +125,8 @@ khurnaarti.class:
 
 khurnaarti.classNewClass:
     gosub whisper inauri teach %khurnaarti.class
-    pause 5
-    goto khurnaarti.Class
+    pause 8
+    goto khurnaarti.class
 
 
 khurnaarti.classSetClass:
@@ -161,7 +162,10 @@ khurnaarti.combatLoop:
         gosub stow
         gosub stow left
         gosub moveToHouse
-        goto khurnaarti.loop
+        put #script abort all except khurnaarti
+        put .train
+        put #script abort all except train
+        exit
    }
    goto khurnaarti.combatLoop
 

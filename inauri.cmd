@@ -24,6 +24,7 @@ if (!($activeResearch >0)) then put #var activeResearch 0
 if (!($expSleep >0)) then put #var expSleep 0
 if (!($inauri.heal >0)) then put #var inauri.heal 0
 if (!($inauri.healTarget >0)) then put #var inauri.healTarget 0
+if (!($inauri.subScript >0)) then put #var inauri.subScript 0
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
@@ -53,31 +54,10 @@ inauri.loop:
     }
     if (%inauri.teach = 1) then gosub inauri.teach
     if ($standing = 0) then gosub stand
-    if ($inauri.heal = 1) then {
-        gosub redirect all to left leg
-        gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget ever quick
-        put #var inauri.heal 0
-    }
+    if ($inauri.heal = 1) then gosub inauri.healWound
     if (%inauri.openDoor = 1) then gosub inauri.door
-    if (%inauri.poison = 1) then {
-        gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget poison quick
-        var inauri.poison 0
-    }
-    if (%inauri.poisonHeal = 1) then {
-        gosub runScript cast fp
-    }
-    if (%inauri.disease = 1) then {
-        gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget disease quick
-        var inauri.disease 0
-        var inauri.diseaseSelf 1
-    }
-    if (%inauri.diseaseSelf = 1) then {
-        gosub runScript cast cd
-        var inauri.diseaseSelf 0
-    }
+    if (%inauri.poison = 1 || %inauri.poisonSelf = 1) then gosub inauri.healPoison
+    if (%inauri.disease = 1 || %inauri.diseaseSelf = 1) then gosub inauri.healDisease
     if ($mana > 30) then {
         if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     }
@@ -156,13 +136,13 @@ inauri.engineer:
         if ($Engineering.LearningRate = 0) then {
             if ($eng.repairNeeded = 1) then {
                 put #echo >Log Yellow [inauri] Need to repair crafting tools.
-                goto moveToEngineer
-                gosub automove engineer book
+                gosub moveToEngineer
+                gosub automove engineering book
                 put .repairtool
                 waitforre ^REPAIRTOOL DONE$
                 put .deposit
                 waitforre ^DEPOSIT DONE$
-                goto moveToHouse
+                gosub moveToHouse
                 put .house
                 waitforre ^HOUSE DONE$
              }
@@ -174,14 +154,16 @@ inauri.engineer:
                 waitforre ^WORKORDER DONE$
                 put .deposit
                 waitforre ^DEPOSIT DONE$
-                goto moveToHouse
+                gosub moveToHouse
                 put .house
                 waitforre ^HOUSE DONE$
             }
+            put #var inauri.subScript eng
             put #echo >Log Yellow [inauri] Beginning engineering.
             put #var lastEngineerGametime $gametime
             put .eng 5 $char.craft.item
             waitforre ^ENG DONE
+            put #var inauri.subScript 0
             put #script abort all except inauri
         }
     }
@@ -204,6 +186,41 @@ inauri.faSkin:
     return
 
 
+inauri.healDisease:
+    if (%inauri.disease) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget disease quick
+        var inauri.disease 0
+        var inauri.diseaseSelf 1
+    }
+    if (%inauri.diseaseSelf = 1) then {
+        gosub runScript cast cd
+        var inauri.diseaseSelf 0
+    }
+    return
+
+
+inauri.healWound:
+    gosub redirect all to left leg
+    gosub touch $inauri.healTarget
+    gosub take $inauri.healTarget ever quick
+    put #var inauri.heal 0
+    return
+
+
+inauri.healPoison:
+    if (%inauri.poison) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget poison quick
+        var inauri.poison 0
+    }
+    if (%inauri.poisonSelf = 1) then {
+        put runScript cast fp
+        var inauri.poisonSelf 0
+    }
+    return
+
+
 inauri.look:
     evalmath nextLookAt $lastLookGametime + 240
     if (%nextLookAt < $gametime) then {
@@ -221,10 +238,12 @@ inauri.magic:
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
+            put #var inauri.subScript magic
             put .look
             put #echo >Log Purple [inauri] Beginning magic.
             put .magic noLoop
             waitforre ^MAGIC DONE
+            put #var inauri.subScript 0
             put #echo >Log Purple [inauri] Magic complete.
             put #script abort all except inauri
         }
@@ -285,7 +304,7 @@ moveToEngineer:
     }
     #Shard - City
     if ($zoneid = 67) then {
-        if ($roomid = 718) then return
+        if ("$roomname" = "Shard Engineering Society, Tool Store") then return
         gosub automove engineer
         goto moveToEngineer
     }

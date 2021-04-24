@@ -36,22 +36,24 @@ look.loop:
     if (%look.teach = 1) then gosub look.teach
     if ($standing = 0) then gosub stand
     if ("$charactername" = "Inauri") then {
-        if ($inauri.heal = 1) then {
-            gosub redirect all to left leg
-            gosub touch $inauri.target
-            gosub take $inauri.target ever quick
-            put #var inauri.heal 0
-        }
-        if (%look.poison = 1) then {
-            gosub touch %look.target
-            gosub take %look.target poison quick
-            var look.poison 0
-        }
-        if (%look.poisonSelf = 1) then {
-            gosub runScript cast fp
-        }
-        if ($mana > 30) then {
-            if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+        if ($inauri.heal = 1) then gosub look.healWound
+        if (%look.poison = 1 || %look.poisonSelf = 1) then gosub look.healPoison
+        if (%look.disease = 1 || %look.diseaseSelf = 1) then gosub look.healDisease
+        if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+        if ($inauri.subScript <> 0) then {
+            if (!contains("$scriptlist", "$inauri.subScript")) then {
+                put #echo >Log [look] $inauri.subScript crashed, restarting it..
+
+                if ("$inauri.subScript" = "eng") then {
+                    if ("$righthand" <> "Empty" && "$nextTool" <> 0) then {
+                        put .eng 1 necklace
+                    } else put .eng 2 necklace
+                }
+
+                if ("$inauri.subScript" = "magic" then {
+                    put .magic noLoop
+                }
+            }
         }
     }
     if (%look.openDoor = 1) then gosub look.door
@@ -75,6 +77,41 @@ look.door:
    }
    var look.openDoor 0
    return
+
+
+look.healDisease:
+    if (%look.disease) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget disease quick
+        var look.disease 0
+        var look.diseaseSelf 1
+    }
+    if (%look.diseaseSelf = 1) then {
+        gosub runScript cast cd
+        var look.diseaseSelf 0
+    }
+    return
+
+
+look.healWound:
+    gosub redirect all to left leg
+    gosub touch $inauri.healTarget
+    gosub take $inauri.healTarget ever quick
+    put #var inauri.heal 0
+    return
+
+
+look.healPoison:
+    if (%look.poison) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget poison quick
+        var look.poison 0
+    }
+    if (%look.poisonSelf = 1) then {
+        put runScript cast fp
+        var look.poisonSelf 0
+    }
+    return
 
 
 look.look:

@@ -1039,7 +1039,7 @@ give:
     var location give1
     var todo $0
     give1:
-    matchre return ^A clerk looks over the
+    matchre return ^A clerk
     matchre return ignores your offer
     matchre return Osmandikar|Lakyan
     matchre return ^Randal looks over
@@ -2199,7 +2199,7 @@ study:
     var todo $0
     study1:
     if ($char.research.interrupt.study = 1) then {
-        matchre study ^Are you sure you want to do that
+        matchre study1 ^Are you sure you want to do that
     }
     matchre return ^Are you sure you want to do that
     matchre return ^But you aren't holding

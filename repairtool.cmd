@@ -20,11 +20,14 @@ goto repairNeedMoney
 # Money
 ################
 repairNeedMoney:
-    put .deposit
-    waitforre ^DEPOSIT DONE
-    put withdraw 3 plat
+    put wealth
+    if ($Dokoras < 30000) then {
+        put .deposit
+        waitforre ^DEPOSIT DONE
+        put withdraw 3 plat
+    }
     if ($zoneid = 67) then {
-        gosub automove engineering book
+        if ($roomid <> 718) then gosub automove engineering book
     }
     goto repairRoomCheck
 
@@ -33,20 +36,13 @@ repairNeedMoney:
 # Checks
 ################
 repairRoomCheck:
-    action put #setvariable LOCATION $0 when ^(\[.*\])
-    put look
-    waitforre ^Obvious
-    if "%LOCATION" = "[Catrox's Forge, Entryway]" then {
-        var repair.npc Catrox
-    }
-    if "%LOCATION" = "[Shard Engineering Society, Bookstore]" then {
-        var repair.npc clerk
-    }
+    if ("$roomname" = "Catrox's Forge, Entryway") then var repair.npc Catrox
+    if ("$roomname" = "Shard Engineering Society, Bookstore" then var repair.npc clerk
 
 
 repairCheckTicket:
     gosub get my ticket
-    if ($righthandnoun <> "ticket") then {
+    if ("$righthandnoun" <> "ticket") then {
         goto repairGetTool
     }
 
@@ -57,7 +53,7 @@ repairCheckTicket:
         gosub give %repair.npc
         if ("$righthandnoun" = "ticket") then {
             gosub stow ticket
-            goto repairGetTool
+            goto repair.checkTime
         }
         if ("$righthandnoun" = "stamp") then {
             gosub put my stamp in my workbag
@@ -106,7 +102,12 @@ repairNextTool:
 repair.checkTime:
     put look my ticket
     put .look
+    if (%repair.waitTimeMin <> 0) then {
+        evalmath %repair.waitTimeSec %repair.waitTimeSec + 60
+        evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
+    }
     pause %repair.waitTimeSec
+    put #echo >Log Yellow [repairtool] Waiting %repair.waitTimeMin minutes (%repair.waitTimeSec seconds) for tools.
     put #script abort look
     goto repairCheckTicket
 
