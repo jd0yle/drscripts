@@ -209,7 +209,7 @@ repair.repairSingle:
 
 
 repair.sack:
-    put .empty large sack
+    put .empty --from=large sack
     waitforre ^EMPTY DONE$
     return
 

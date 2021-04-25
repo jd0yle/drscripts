@@ -1045,6 +1045,7 @@ get:
     var todo $0
     get1:
     matchre return ^But that is already in your inventory\.
+    matchre return ^Please rephrase that command\.$
     matchre return ^That is far too dangerous
     matchre return ^What were you referring to\?
     matchre return ^You are a bit too busy
@@ -2539,6 +2540,7 @@ wear:
     var todo $0
     wear1:
     matchre return can't fit over
+    matchre return ^Please rephrase that command\.$
     matchre return ^Wear what\?
     matchre return ^The contours of the
     matchre return ^You are already wearing that\.
