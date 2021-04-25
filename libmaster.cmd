@@ -1045,8 +1045,11 @@ give:
     matchre return ^Randal looks over
     matchre return ^The apprentice repairman
     matchre return ^The Servant accepts
+    matchre return ^There's nothing
     matchre return ^What is it
     matchre return ^You hand
+    matchre return ^You may only
+    matchre return ^You offer
     put give %todo
     goto retry
 

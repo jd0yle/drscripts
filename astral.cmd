@@ -77,7 +77,7 @@ echo %destShardName %pillar
 # Check for 100th ability
 if (!contains("$roomname", "Astral Plane")) then {
 	gosub info
-	if (%circle < 200) then {
+	if (%circle < 100) then {
 	    var use100thAbility 0
 		if (matchre("$roomobjs", "the silvery-white shard (\S+)\b")) then {
 		    var shardName $1
@@ -126,6 +126,7 @@ top:
     } else {
         gosub harness 15
         gosub harness 15
+        gosub waitForPrep
         gosub cast %shardName
     }
 

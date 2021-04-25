@@ -76,6 +76,13 @@ if ($roomid >= %checkRoomId && $roomid <= %maxRoomId && "$roomplayers" = "") the
     goto done
 }
 
+if ("%mob" = "wyvern" || "%mob" = "wyvern2") then {
+    if ( ($roomid >= 567 && $roomid <= 572) || ($roomid >= 480 && $roomid <= 487)) then {
+        pause 1
+        goto done
+    }
+}
+
 
 findRoom:
     if ($roomid = 0) then {

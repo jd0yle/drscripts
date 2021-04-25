@@ -469,8 +469,8 @@ checkArmorSkills:
     if ($%armor.skills(%armor.index).LearningRate >= %armor.targetLearningRate) then {
         # By default, don't switch armor faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 60 seconds before swapping
-        var timeBetweenArmorSwaps 30
-        if (%armor.targetLearningRate > 10) then var timeBetweenArmorSwaps 60
+        var timeBetweenArmorSwaps 120
+        if (%armor.targetLearningRate > 10) then var timeBetweenArmorSwaps 120
         evalmath changeArmorAt %armor.lastChangeAt + %timeBetweenArmorSwaps
         if (%t > %changeArmorAt) then {
             math armor.index add 1
@@ -607,7 +607,7 @@ checkDeadMob:
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
 
-        if ("$charactername" = "Qizhmur") then {
+        if (1 = 0 && "$charactername" = "Qizhmur") then {
             if ("%mobName" = "basilisk") then {
                 gosub skin basilisk for part
                 gosub put my fang in my satchel
