@@ -402,7 +402,7 @@ ask:
     ask1:
     matchre return ^A pure white alfar avenger peers at you
     matchre return hands it to you\.$
-    matchre return ^Granzer shrugs
+    matchre return Osmandikar|Lakyan|Granzer|Randal
     matchre return ^The Shadow Servant stares at you in confusion.
     matchre return ^To whom are you speaking\?
     matchre return ^With a sad look
