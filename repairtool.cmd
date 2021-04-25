@@ -37,7 +37,7 @@ repairNeedMoney:
 ################
 repairRoomCheck:
     if ("$roomname" = "Catrox's Forge, Entryway") then var repair.npc Catrox
-    if ("$roomname" = "Shard Engineering Society, Bookstore" then var repair.npc clerk
+    if ("$roomname" = "Shard Engineering Society, Bookstore") then var repair.npc clerk
 
 
 repairCheckTicket:
@@ -113,6 +113,10 @@ repair.checkTime:
 
 
 repairExit:
+    if ($Dokoras <> 0) then {
+        put .deposit
+        waitforre ^DEPOSIT DONE$
+    }
     put #var eng.repairNeeded 0
     pause .2
     put #parse REPAIRTOOL DONE

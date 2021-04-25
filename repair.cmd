@@ -1,7 +1,7 @@
 include libmaster.cmd
 action var repair.emptySack 0 when ^There is nothing in there\.$
 action var repair.emptySack 1 ; var repair.sackItems $1 when ^In the large sack you see (.*)\.$
-action var repair.waitTimeMin $1 ;evalmath repair.waitTimeSec %repair.waitTimeMin * 60 when ^.*be ready for another (\d+) roisaen\.$
+action var repair.waitTimeMin $1 ;evalmath repair.waitTimeSec %repair.waitTimeMin * 60 + 60 when ^.*be ready for another (\d+) roisaen\.$
 action var repair.waitTimeMin 0 ; var repair.waitTimeSec 0 when ^.* be ready by now\.$
 action var repair.waitTimeMin 2 ; var repair.waitTimeSec 60 when ^.* be ready any moment now\.$
 action var repair wornArmor 1 when ^You aren't wearing anything like that\.$
@@ -9,15 +9,14 @@ action var repair wornArmor 1 when ^You aren't wearing anything like that\.$
 ###############################
 ###      VARIABLES
 ###############################
-var armorLeather $char.repair.armor.leather
-var armorMetal $char.repair.armor.metal
-var toolMetal $char.repair.tool.metal
-var toolLeather $char.repair.tool.leather
-var weaponLeather $char.repair.weapon.leather
-var weaponMetal $char.repair.weapon.metal
+var leatherList $char.repair.leather
+var metalList $char.repair.metal
 
-var repair.index
-var repair.needMoney false
+var repair.metalList %armorMetal|%toolMetal
+var repair.index 0
+var repair.length 0
+var repair.npc 0
+var repair.npcs Catrox|Randal|Lakyan|Osmandikar|Granzer|repairman|clerk
 var repair.sackItems 0
 var repair.ticketName 0
 var repair.trash 0
@@ -25,7 +24,7 @@ var repair.waitTimeMin 0
 var repair.waitTimeSec 0
 var repair.wornArmor 0
 
-
+# Note:  No support for Ylono Leather Repair in Shard because of no NPC and broken automapper.
 ###############################
 ###      NECROMANCER
 ###############################
@@ -44,7 +43,7 @@ if ("$guild" = "Necromancer") then {
 ###############################
 ###      SUPPORTED ZONES
 ###############################
-if ($zoneid <> 1 || $zoneid <> 150 || $zoneid <> 66 || $zoneid <> 67) then {
+if ($zoneid <> 1 && $zoneid <> 150 && $zoneid <> 66 && $zoneid <> 67) then {
     put #echo >Log Orange [repair] Not in a supported zone.  Must be in Crossing, Fang Cove, or Shard.
     goto repair.exit
 }
@@ -52,64 +51,64 @@ if ($zoneid <> 1 || $zoneid <> 150 || $zoneid <> 66 || $zoneid <> 67) then {
 
 gosub stow right
 gosub stow left
-goto repair.checkInventory
+goto repair.checkForTicket
 ###############################
 ###      MAIN
 ###############################
 repair.checkForTicket:
     gosub get my ticket
     if ("$righthandnoun" <> "ticket") then goto repair.main
-    else goto repair.pickUpSpot
+    else {
+        goto repair.fetchItems
+    }
 
 
 repair.main:
-    if ($repair.forceFangCove) then {
+    if (%repair.forceFangCove = true) then {
         if ($zoneid <> 150) then {
             gosub moveToFangCove
         }
         gosub moveToFangCove
     }
-    gosub repair.getMoney
+    gosub repair.checkMoney
     # Begin Metal Repair unless skipping for Fang Cove.
     if !(%repair.skipMetalRepair) then {
         gosub moveToRepairMetal
         gosub repair.repairAll
-        gosub repair.repairWeaponMetal
-        gosub repair.repairToolMetal
+        gosub repair.repairSingle %metalList
     }
     # Begin Leather Repair.
     gosub moveToRepairLeather
     gosub repair.repairAll
-    gosub repair.repairWeaponLeather
-    gosub repair.toolLeather
+    gosub repair.repairSingle %leatherList
 
     # Deposit left over money.
-    gosub moveToTeller
+    gosub moveToBank
     put .deposit
     waitforre ^DEPOSIT DONE$
 
     # Determine wait time.
     gosub look my ticket
     if (%repair.waitTimeSec <> 0) then {
+        evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
         put #echo >Log Orange [repair] Waiting %repair.waitTimeMin min to pick up.
         put .look
         pause %repair.waitTimeSec
         put #script abort look
     }
 
-    goto repair.pickUpSpot
+    goto repair.fetchItems
 
 
-repair.pickUpSpot:
-    matchre repair.pickUpSpotSetLocation Catrox|Randal|Lakyan|Osmandikar|Ylono|Granzer|Society
-    matchre repair.exit ^I could not find what you were referring to\.$
-    put look ticket
-    matchwait 5
-
-
-repair.pickUpSpotSetLocation:
-    var repair.ticketName $1
-    if ("%repair.ticketName" = "Catrox" || "%ticketName" = "Granzer") then {
+repair.fetchItems:
+    gosub get my ticket
+    if ("$righthandnoun" <> "ticket") then goto repair.exit
+    if (matchre("$righthand", "(%repair.npcs)")) then {
+        var repair.ticketName $1
+    } else {
+        var repair.ticketName clerk
+    }
+    if ("%repair.ticketName" = "Catrox" || "%repair.ticketName" = "Granzer") then {
         gosub moveToRepairMetal
     }
     if ("%repair.ticketName" = "Osmandikar" && repair.skipMetalRepair) then {
@@ -118,13 +117,15 @@ repair.pickUpSpotSetLocation:
     if ("%repair.ticketName" = "Osmandikar") then {
         gosub moveToRepairMetal
     }
-    gosub moveToRepairLeather
+    if ("%repair.ticketName" = "clerk") then {
+        gosub moveToCraftHall
+    }
 
 
-    repair.pickUpLoop:
-        gosub get my %ticketName ticket
+    repair.fetchItemsLoop:
+        gosub get my %repair.ticketName ticket
         if ("$righthandnoun" = "ticket") then {
-            gosub give %ticketName
+            gosub give %repair.ticketName
             if ("$righthand" <> "large sack") then {
                 gosub wear $righthandnoun
                 gosub stow $righthandnoun
@@ -140,34 +141,71 @@ repair.pickUpSpotSetLocation:
                 put #echo >Log Red [repair] There is something left in the sack.  Stowing it.
                 gosub stow
             }
-        } else goto repair.pickUpSpot
-        goto repair.pickUpLoop
+        } else {
+            goto repair.fetchItems
+        }
+        goto repair.fetchItemsLoop
 
 
 repair.checkMoney:
+    evalmath repair.currencyTotal $char.repair.money * 10000
+    if ($zoneid = 1) then {
+        evalmath repair.currencyKronars $Kronars + 0
+        if (%repair.currencyKronars >= %repair.currencyTotal) then return
+    }
+    if ($zoneid = 66 || $zoneid = 67 || $zoneid = 150) then {
+        evalmath repair.currencyDokoras $Dokoras + 0
+        if (%repair.currencyDokoras >= %repair.currencyTotal) then return
+    }
+    gosub moveToBank
     put .deposit
     waitforre ^DEPOSIT DONE$
-    put withdraw 50 plat
+    put withdraw $char.repair.money plat
     return
 
 
 repair.repairAll:
-    put inven armor
-    if (%repair.wornArmor = 1) then return
-    if (contains("$roomobjs", "apprentice repairman")) then {
-        var %repair.ticketName repairman
+    gosub repair.getNpc
+    if (%repair.npc = 0) then {
+        put #echo >Log [repair] Cannot find NPC for repairs.
+        goto repair.exit
     }
-    gosub ask %repair.ticketName about repair all
-
-    if ("$righthandnoun" <> "ticket") then goto repair.repairAll
+    gosub ask %repair.npc about repair all
+    gosub ask %repair.npc about repair all
     gosub stow my ticket
     return
 
 
-repair.repairWeaponMetal:
-repair.repairToolMetal:
-repair.repairWeaponLeather:
-repair.repairToolLeather:
+repair.getNpc:
+    # Check the npc for the location.
+    if (matchre("$monsterlist", "(%repair.npcs)")) then {
+        var repair.npc $1
+    }
+    return
+
+
+repair.repairSingle:
+    var repair.group $0
+    if (%repair.group = 0) then return
+    eval repair.length count("%repair.group", "|")
+    var repair.index 0
+    gosub repair.getNpc
+    if (%repair.npc = 0) then {
+        put #echo >Log [repair] Cannot find NPC for repairs.
+        goto repair.exit
+    }
+
+
+    repair.repairSingleLoop:
+        gosub get my %repair.group(%repair.index)
+        if ("$righthand" = "%repair.group(%repair.index)") then {
+            gosub give %repair.npc
+            gosub give %repair.npc
+            gosub stow
+        }
+        math repair.index add 1
+        if (%repair.index > %repair.length) then return
+        goto repair.repairSingleLoop
 
 
 repair.sack:
@@ -204,6 +242,7 @@ moveToFangCove:
 
 
 moveToRepairLeather:
+    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub moveToFangCove
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE$
@@ -217,9 +256,9 @@ moveToRepairLeather:
         goto moveToRepairLeather
     }
     # Shard - East Gate
-    if ($zoneid = 66) {
-        if ($roomid = 71) then return
-        gosub automove repair leather
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub move go meeting portal
         goto moveToRepairLeather
     }
     # Shard - City
@@ -229,7 +268,7 @@ moveToRepairLeather:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if ($roomid = 7) then return
+        if ($roomid = 55) then return
         gosub automove repair leather
         goto moveToRepairLeather
     }
@@ -237,6 +276,7 @@ moveToRepairLeather:
 
 
 moveToRepairMetal:
+    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub moveToFangCove
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE$
@@ -244,13 +284,14 @@ moveToRepairMetal:
     }
     # Crossing - City
     if ($zoneid = 1) then {
+        #TODO FIX ROOM
         if ($roomid = 159) then return
         gosub automove repair metal
         goto moveToRepairMetal
     }
     # Shard - East Gate
-    if ($zoneid = 66) {
-        if ($roomid = 100) then return
+    if ($zoneid = 66) then {
+        if ($roomid = 212) then return
         gosub automove repair metal
         goto moveToRepairMetal
     }
@@ -261,8 +302,39 @@ moveToRepairMetal:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if ($roomid = 8) then return
+        if (%repair.skipMetalRepair = true) then {
+            gosub automove repair leather
+            return
+        }
+        if ($roomid = 54) then return
         gosub automove repair metal
         goto moveToRepairMetal
     }
     goto moveToRepairMetal
+
+
+moveToBank:
+    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub moveToFangCove
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 231) then return
+        gosub automove bank
+        goto moveToBank
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove east gate
+        goto moveToBank
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        if ($roomid = 145) then return
+        gosub automove bank
+        goto moveToBank
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = 76) then return
+        gosub automove bank
+        goto moveToBank
+    }

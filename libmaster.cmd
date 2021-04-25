@@ -368,6 +368,17 @@ appraise:
     goto retry
 
 
+apply:
+    var location apply1
+    var todo $0
+    apply1:
+    matchre return ^Now the flights are ready to be trimmed with a carving knife\.$
+    matchre return ^You apply some glue to your bolts and affix each bolthead in place\.$
+    matchre return ^You dab the surface of your bolts with glue and attach the boltheads to them\.$
+    put apply %todo
+    goto retry
+
+
 arr:
 arrange:
     var todo $0
@@ -391,9 +402,11 @@ ask:
     ask1:
     matchre return ^A pure white alfar avenger peers at you
     matchre return hands it to you\.$
+    matchre return ^Granzer shrugs
     matchre return ^The Shadow Servant stares at you in confusion.
     matchre return ^To whom are you speaking\?
     matchre return ^With a sad look
+    matchre return ^You hand
     matchre ask.retreat ^You cannot do that while focusing on combat!
     put ask %todo
     goto retry
@@ -402,6 +415,15 @@ ask:
 ask.retreat:
     gosub retreat
     goto %location
+
+
+assemble:
+    var location assemble1
+    var todo $0
+    assemble1:
+    matchre return ^You place your .+ with your .+ bolts and carefully mark where it will attach when you continue crafting\.$
+    put assemble %todo
+    goto retry
 
 
 assess:
@@ -554,6 +576,16 @@ card:
     put card %todo
     goto retry
 
+
+carve:
+    var location carve1:
+    var todo $0
+    carve1:
+    matchre return ^Using slow strokes
+    matchre return ^You carve
+    matchre return ^You whittle
+    put carve %todo
+    goto retry
 
 
 cast:
@@ -1041,8 +1073,7 @@ give:
     give1:
     matchre return ^A clerk
     matchre return ignores your offer
-    matchre return Osmandikar|Lakyan
-    matchre return ^Randal looks over
+    matchre return Osmandikar|Lakyan|Granzer|Randal
     matchre return ^The apprentice repairman
     matchre return ^The Servant accepts
     matchre return ^What is it
@@ -1950,6 +1981,17 @@ sell:
     goto retry
 
 
+shape:
+    var location shape1
+    var todo $0
+    shape1:
+    matchre return ^The bolts are ready for an application of glue to affix each bolthead\.$
+    matchre return ^You flip some unfinished .+ bolts over and begin to shape it with your shaper\.$
+    matchre return ^Using abrupt motions you shape a series of grooves into your bolt shafts\.$
+    put shape %todo
+    goto retry
+
+
 sheath:
     var location sheath1
     var todo $0
@@ -2112,7 +2154,7 @@ store:
     var todo $0
     store1:
     matchre return ^To use the STORE verb
-    matchre return ^You will now store
+    matchre return ^You will now
     put store %todo
     goto retry
 

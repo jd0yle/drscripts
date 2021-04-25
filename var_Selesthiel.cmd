@@ -200,15 +200,9 @@ put #tvar char.observe.predict 0
 ###############################
 ###      REPAIR
 ###############################
-put #var char.repair.armor.leather
-put #var char.repair.armor.metal
-
-put #tvar char.repair.tools.leather 0
-put #tvar char.repair.tools.metal 0
-put #tvar char.repair.tools.tied 0
-
-put #var char.repair.weapons.leather
-put #var char.repair.weapons.metal
+put #tvar char.repair.money 50
+put #var char.repair.leather moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield
+put #var char.repair.metal $char.fight.weapons.items|stick|greaves
 
 
 ###############################

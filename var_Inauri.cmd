@@ -105,15 +105,9 @@ put #tvar char.magic.train.harness.Warding 0
 ###############################
 ###      REPAIR
 ###############################
-put #var char.repair.armor.leather moonsilk shirt|moonsilk pants
-put #var char.repair.armor.metal chain balaclava|chain gloves
-
-put #tvar char.repair.tools.leather 0
-put #tvar char.repair.tools.metal wood shaper|tapered rasp|carving knife|metal drawknife
-put #tvar char.repair.tools.tied 1
-
-put #var char.repair.weapons.leather demonscale shield
-put #var char.repair.weapons.metal jagged scythe|assassin's blade|ka'hurt hhr'ata|frying pan
+put #tvar char.repair.money 10
+put #tvar char.repair.leather moonsilk shirt|moonsilk pants|demonscale shield
+put #tvar char.repair.metal jagged scythe|assassin's blade|ka'hurst hhr'ata|frying pan|chain balaclava|chain gloves|wood shaper|tapered rasp|carving knife|metal drawknife
 
 
 ###############################

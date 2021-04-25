@@ -295,12 +295,12 @@ knife:
   pause
 knife2:
   matchre engStow ^You need a free hand
-  matchre carve ^You untie
+  matchre eng.carve ^You untie
   matchre engExit ^What were you
   put untie my carving knife on my toolbelt
   matchwait 5
 
-carve:
+eng.carve:
   matchre findNextTool ^Roundtime
   matchre engMark ^Applying the final touches
   put carve my %2 with my knife
@@ -326,12 +326,12 @@ shaper:
   pause
 shaper2:
   matchre engStow ^You need a free hand
-  matchre shape ^You untie
+  matchre eng.shape ^You untie
   matchre engExit ^What were you
   put untie my shaper on my toolbelt
   matchwait 5
 
-shape:
+eng.shape:
   matchre findNextTool ^Roundtime
   matchre shortCord ^You need another finished short leather cord
   matchre strips ^You need another finished leather strips

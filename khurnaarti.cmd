@@ -33,6 +33,7 @@ put #script abort all except khurnaarti
 ###    MAIN
 ###############################
 khurnaarti.loop:
+    gosub clear
     if ($standing = 0) then gosub stand
     pause 1
     if (%khurnaarti.openDoor = 1) then gosub khurnaarti.door
@@ -274,98 +275,106 @@ moveToBurgle:
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE
-        gosub moveToBurgle
+        goto moveToBurgle
     }
     # Fang Cove
     if ($zoneid = 150) then {
         gosub automove portal
-        gosub move go portal
-        gosub moveToBurgle
+        gosub move go exit portal
+        goto moveToBurgle
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
-        gosub automove steelclaw
+        if ($roomid = 91) then return
         gosub automove 91
     }
-    return
+    goto moveToBurgle
 
 
 moveToFangCove:
     # Shard - East Gate
     if ($zoneid = 66) then {
+        if ($roomid = 52) then goto khurnaarti.loop
         gosub automove portal
-        gosub move go portal
+        gosub move go meeting portal
         gosub automove 52
-        goto khurnaarti.loop
+        goto moveToFangCove
     }
-    return
+    goto moveToFangCove
 
 
 moveToForage:
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE
-        gosub moveToForage
+        goto moveToForage
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
+        if ($roomid = 555) then return
         gosub automove 555
     }
-    return
+    # Fang Cove
+    if ($zoneid = 150) then return
+    goto movetoForage
 
 
 moveToHouse:
+    if ("$roomname" = "Private Home Interior") then return
     # Fang Cove
     if ($zoneid = 150) then {
         gosub automove portal
         gosub move go portal
-        gosub moveToHouse
+        goto moveToHouse
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
         if ($roomid <> 252) then gosub automove 252
     }
-
     var lastHouseGametime $gametime
+
+
     moveToHouse1:
     gosub peer door
     pause 10
     if (%khurnaarti.houseOpen = 0) then {
         pause 5
-        evalmath maxHouseTime %lastHouseGametime + 300
+        evalmath maxHouseTime %lastHouseGametime + 30
         if (%maxHouseTime > $gametime) then {
-            gosub moveToHouse
-            return
+            goto moveToHouse1
+        } else {
+            goto moveToFangCove
         }
-        goto moveToFangCove
-        return
     }
     if (%khurnaarti.houseOpen = 1) then {
         put .house
         waitforre ^HOUSE DONE$
         var khurnaarti.houseOpen 0
+        goto moveToHouse
     }
     if (%khurnaarti.houseRetry = 1) then {
         var khurnaarti.houseRetry 0
         goto khurnaarti.loop
     }
-    return
+    goto moveToHouse
 
 
 moveToHunt:
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE
-        gosub moveToHunt
+        goto moveToHunt
     }
     # Fang Cove
     if ($zoneid = 150) then {
+        if ($roomid = 28) then return
         gosub automove 28
+        goto moveToHunt
     }
     #Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove portal
-        gosub move go portal
-        gosub moveToHunt
+        gosub move go meeting portal
+        goto moveToHunt
     }
-    return
+    goto moveToHunt

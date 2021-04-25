@@ -216,15 +216,9 @@ put #tvar char.magic.train.cyclic.prep.Utility 15
 ###############################
 ###      REPAIR
 ###############################
-put #var char.repair.armor.leather
-put #var char.repair.armor.metal
-
-put #tvar char.repair.tools.leather 0
-put #tvar char.repair.tools.metal 0
-put #tvar char.repair.tools.tied 0
-
-put #var char.repair.weapons.leather
-put #var char.repair.weapons.metal
+put #tvar char.repair.money 50
+put #var char.repair.weapons.leather demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves
+put #var char.repair.weapons.metal gladiator's shield
 
 
 ###############################
