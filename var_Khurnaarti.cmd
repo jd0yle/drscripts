@@ -11,7 +11,7 @@ put #tvar char.appraise.item my sail pouch
 put #tvar char.cambrinth armband
 put #tvar char.focusContainer rucksack
 put #tvar char.ritualFocus ouroboros ring
-put #tvar char.wornCambrinth 0
+put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
 
 
