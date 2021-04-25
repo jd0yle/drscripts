@@ -94,9 +94,9 @@ var pawn NO
 # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
 var donotpawnthis manual|keepsake box|memory orb
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
-var trashall YES
+var trashall NO
 # if you want to drop SOME things, put them here
-var trashthings NULL
+var trashthings blanket|kaleidescope|earring|ring
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }
