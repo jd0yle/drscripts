@@ -126,6 +126,7 @@ top:
     } else {
         gosub harness 15
         gosub harness 15
+        gosub focus %shardName
         gosub waitForPrep
         gosub cast %shardName
     }
