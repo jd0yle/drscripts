@@ -200,6 +200,7 @@ put #tvar char.observe.predict 0
 ###############################
 ###      REPAIR
 ###############################
+put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #var char.repair.leather moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield
 put #var char.repair.metal $char.fight.weapons.items|stick|greaves

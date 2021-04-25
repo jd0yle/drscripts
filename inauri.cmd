@@ -136,6 +136,7 @@ inauri.engineer:
         if ($Engineering.LearningRate = 0) then {
             if ($eng.repairNeeded = 1) then {
                 put #echo >Log Yellow [inauri] Need to repair crafting tools.
+                gosub stop teach
                 gosub moveToEngineer
                 gosub automove engineering book
                 put .repairtool
@@ -149,6 +150,7 @@ inauri.engineer:
 
             if ($eng.needLumber = 1) then {
                 put #echo >Log Yellow [inauri] Need lumber for engineering.
+                gosub stop teach
                 gosub moveToEngineer
                 put .workorder
                 waitforre ^WORKORDER DONE$

@@ -1737,6 +1737,7 @@ put:
     var location put1
     var todo $0
     put1:
+    matchre closeTelescope telescope is too long
     matchre return ^You add
     matchre return ^You rearrange
     matchre return ^You drop
@@ -1755,7 +1756,6 @@ put:
     matchre return too long to fit
     matchre return ^Perhaps you should be holding that first.$
     matchre return ^You carefully fit
-    matchre closeTelescope telescope is too long
     put put %todo
     goto retry
 

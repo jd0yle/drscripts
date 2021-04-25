@@ -105,6 +105,7 @@ put #tvar char.magic.train.harness.Warding 0
 ###############################
 ###      REPAIR
 ###############################
+put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
 put #tvar char.repair.leather moonsilk shirt|moonsilk pants|demonscale shield
 put #tvar char.repair.metal jagged scythe|assassin's blade|ka'hurst hhr'ata|frying pan|chain balaclava|chain gloves|wood shaper|tapered rasp|carving knife|metal drawknife

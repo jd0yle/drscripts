@@ -106,8 +106,11 @@ khurnaarti.burgle:
         waitforre ^BURGLE DONE
         gosub release rf
         gosub movetoHouse
+        put #script abort all except khurnaarti
+        put .train
+        put #script abort all except train
+        exit
     }
-    return
 
 
 khurnaarti.class:

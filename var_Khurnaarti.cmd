@@ -214,6 +214,7 @@ put #tvar char.performance.mood quiet
 ###############################
 ###      REPAIR
 ###############################
+put #tvar char.repair.forceFangCove false
 put #tvar char.repair.money 10
 put #tvar char.repair.leather demonscale armguard|hauberk
 put #tvar char.repair.metal rockwood tanbo|forester's crossbow|naphtha|lead-banded wand|chain balaclava|chain gloves|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps

@@ -28,7 +28,7 @@ var repair.wornArmor 0
 ###############################
 ###      NECROMANCER
 ###############################
-var repair.forceFangCove false
+var repair.forceFangCove $char.repair.forceFangCove
 var repair.skipMetalRepair false
 
 if ("$guild" = "Necromancer") then {
@@ -48,55 +48,57 @@ if ($zoneid <> 1 && $zoneid <> 150 && $zoneid <> 66 && $zoneid <> 67) then {
     goto repair.exit
 }
 
-
 gosub stow right
 gosub stow left
 goto repair.checkForTicket
+
+
 ###############################
 ###      MAIN
 ###############################
 repair.checkForTicket:
     gosub get my ticket
-    if ("$righthandnoun" <> "ticket") then goto repair.main
-    else {
-        goto repair.fetchItems
+    if ("$righthandnoun" = "ticket") then {
+        gosub look my ticket
+        if (%repair.waitTimeMin > 2) then {
+            # Wait time is too long, skip and check for other repairs.
+            gosub stow ticket
+            goto repair.main
+        } else {
+            # Wait the two minutes and pick up everything.
+            gosub repair.checkTicketTime
+            gosub repair.fetchItems
+        }
+    } else {
+        # No tickets, begin repair.
+        goto repair.main
     }
 
 
 repair.main:
     if (%repair.forceFangCove = true) then {
         if ($zoneid <> 150) then {
-            gosub moveToFangCove
+            gosub repair.moveToFangCove
         }
-        gosub moveToFangCove
+        gosub repair.moveToFangCove
     }
     gosub repair.checkMoney
     # Begin Metal Repair unless skipping for Fang Cove.
     if !(%repair.skipMetalRepair) then {
-        gosub moveToRepairMetal
+        gosub repair.moveToRepairMetal
         gosub repair.repairAll
         gosub repair.repairSingle %metalList
     }
     # Begin Leather Repair.
-    gosub moveToRepairLeather
+    gosub repair.moveToRepairLeather
     gosub repair.repairAll
     gosub repair.repairSingle %leatherList
 
     # Deposit left over money.
-    gosub moveToBank
+    gosub repair.moveToBank
     put .deposit
     waitforre ^DEPOSIT DONE$
-
-    # Determine wait time.
-    gosub look my ticket
-    if (%repair.waitTimeSec <> 0) then {
-        evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
-        put #echo >Log Orange [repair] Waiting %repair.waitTimeMin min to pick up.
-        put .look
-        pause %repair.waitTimeSec
-        put #script abort look
-    }
-
+    gosub repair.checkTicketTime
     goto repair.fetchItems
 
 
@@ -109,16 +111,16 @@ repair.fetchItems:
         var repair.ticketName clerk
     }
     if ("%repair.ticketName" = "Catrox" || "%repair.ticketName" = "Granzer") then {
-        gosub moveToRepairMetal
+        gosub repair.moveToRepairMetal
     }
     if ("%repair.ticketName" = "Osmandikar" && repair.skipMetalRepair) then {
-        gosub moveToRepairLeather
+        gosub repair.moveToRepairLeather
     }
     if ("%repair.ticketName" = "Osmandikar") then {
-        gosub moveToRepairMetal
+        gosub repair.moveToRepairMetal
     }
     if ("%repair.ticketName" = "clerk") then {
-        gosub moveToCraftHall
+        gosub repair.moveToCraftHall
     }
 
 
@@ -147,6 +149,9 @@ repair.fetchItems:
         goto repair.fetchItemsLoop
 
 
+###############################
+###      UTILITY
+###############################
 repair.checkMoney:
     evalmath repair.currencyTotal $char.repair.money * 10000
     if ($zoneid = 1) then {
@@ -157,10 +162,30 @@ repair.checkMoney:
         evalmath repair.currencyDokoras $Dokoras + 0
         if (%repair.currencyDokoras >= %repair.currencyTotal) then return
     }
-    gosub moveToBank
+    gosub repair.moveToBank
     put .deposit
     waitforre ^DEPOSIT DONE$
     put withdraw $char.repair.money plat
+    return
+
+
+repair.checkTicketTime:
+    gosub look my ticket
+    if (%repair.waitTimeSec <> 0) then {
+        evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
+        put #echo >Log Orange [repair] Waiting %repair.waitTimeMin min to pick up.
+        put .look
+        pause %repair.waitTimeSec
+        put #script abort look
+    }
+    return
+
+
+repair.getNpc:
+    # Check the npc for the location.
+    if (matchre("$monsterlist", "(%repair.npcs)")) then {
+        var repair.npc $1
+    }
     return
 
 
@@ -173,14 +198,6 @@ repair.repairAll:
     gosub ask %repair.npc about repair all
     gosub ask %repair.npc about repair all
     gosub stow my ticket
-    return
-
-
-repair.getNpc:
-    # Check the npc for the location.
-    if (matchre("$monsterlist", "(%repair.npcs)")) then {
-        var repair.npc $1
-    }
     return
 
 
@@ -223,11 +240,38 @@ repair.exit:
 ###############################
 ###      MOVE TO
 ###############################
-moveToFangCove:
+repair.moveToBank:
+    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub repair.moveToFangCove
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 231) then return
+        gosub automove bank
+        goto repair.moveToBank
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove east gate
+        goto repair.moveToBank
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        if ($roomid = 145) then return
+        gosub automove bank
+        goto repair.moveToBank
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = 76) then return
+        gosub automove bank
+        goto repair.moveToBank
+    }
+
+
+repair.moveToFangCove:
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE$
-        goto moveToFangCove
+        goto repair.moveToFangCove
     }
     # Crossing, Shard - City, East Gate
     if ($zoneid = 1 || $zoneid = 66 || $zoneid = 67) then {
@@ -235,70 +279,70 @@ moveToFangCove:
         if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         gosub move go meeting portal
-        goto moveToFangCove
+        goto repair.moveToFangCove
     }
     if ($zoneid = 150) then return
-    goto moveToFangCove
+    goto repair.moveToFangCove
 
 
-moveToRepairLeather:
-    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub moveToFangCove
+repair.moveToRepairLeather:
+    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub repair.moveToFangCove
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE$
-        goto moveToRepairLeather
+        goto repair.moveToRepairLeather
     }
     # Crossing - City
     if ($zoneid = 1) then {
         gosub automove west gate
         if ($roomid = TODO) then return
         gosub automove repair leather
-        goto moveToRepairLeather
+        goto repair.moveToRepairLeather
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove portal
         gosub move go meeting portal
-        goto moveToRepairLeather
+        goto repair.moveToRepairLeather
     }
     # Shard - City
     if ($zoneid = 67) then {
         gosub automove portal
-        goto moveToRepairLeather
+        goto repair.moveToRepairLeather
     }
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 55) then return
         gosub automove repair leather
-        goto moveToRepairLeather
+        goto repair.moveToRepairLeather
     }
-    goto moveToRepairLeather
+    goto repair.moveToRepairLeather
 
 
-moveToRepairMetal:
-    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub moveToFangCove
+repair.moveToRepairMetal:
+    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub repair.moveToFangCove
     if ("$roomname" = "Private Home Interior") then {
         put .house
         waitforre ^HOUSE DONE$
-        gosub moveToRepairMetal
+        gosub repair.moveToRepairMetal
     }
     # Crossing - City
     if ($zoneid = 1) then {
         #TODO FIX ROOM
         if ($roomid = 159) then return
         gosub automove repair metal
-        goto moveToRepairMetal
+        goto repair.moveToRepairMetal
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
         if ($roomid = 212) then return
         gosub automove repair metal
-        goto moveToRepairMetal
+        goto repair.moveToRepairMetal
     }
     # Shard - City
     if ($zoneid = 67) then {
         gosub automove portal
-        goto moveToRepairMetal
+        goto repair.moveToRepairMetal
     }
     # Fang Cove
     if ($zoneid = 150) then {
@@ -308,33 +352,6 @@ moveToRepairMetal:
         }
         if ($roomid = 54) then return
         gosub automove repair metal
-        goto moveToRepairMetal
+        goto repair.moveToRepairMetal
     }
-    goto moveToRepairMetal
-
-
-moveToBank:
-    if (%repair.forceFangCove = true && $zoneid <> 150) then gosub moveToFangCove
-    # Crossing - City
-    if ($zoneid = 1) then {
-        if ($roomid = 231) then return
-        gosub automove bank
-        goto moveToBank
-    }
-    # Shard - East Gate
-    if ($zoneid = 66) then {
-        gosub automove east gate
-        goto moveToBank
-    }
-    # Shard - City
-    if ($zoneid = 67) then {
-        if ($roomid = 145) then return
-        gosub automove bank
-        goto moveToBank
-    }
-    # Fang Cove
-    if ($zoneid = 150) then {
-        if ($roomid = 76) then return
-        gosub automove bank
-        goto moveToBank
-    }
+    goto repair.moveToRepairMetal
