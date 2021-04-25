@@ -11,10 +11,6 @@ action goto logout when eval $dead = 1
 timer start
 
 var useBurgle 1
-var nextBurgleCheck -1
-
-action var burgleCooldown $1 when ^You should wait at least (\d+) roisaen
-action var burgleCooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
 
 var isFullyPrepped 0
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
@@ -73,24 +69,13 @@ if_1 then {
     }
 }
 
+gosub burgle.setNextBurgleAt
+
 main:
-    if (%useBurgle = 1 && %nextBurgleCheck < %t) then gosub checkBurgleCd
+    if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
 
-    if (%useBurgle = 1 &&  %burgleCooldown = 0) then {
+    if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
-
-        if ($SpellTimer.EyesoftheBlind.active != 1 || $SpellTimer.EyesoftheBlind.duration < 5) then {
-            gosub prep eotb
-            pause 2
-            gosub cast
-        }
-
-        if ($SpellTimer.RiteofContrition.active != 1) then {
-            gosub release usol
-            gosub prep roc
-            gosub waitForPrep
-            gosub cast
-        }
 
         gosub moveToBurgle
         gosub release spell
@@ -206,8 +191,28 @@ sorceryCont:
 
 
 
+castSpellsForMove:
+    if ("$preparedspell" != "None") then gosub release spell
+    if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
+    if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
+    if ($SpellTimer.RiteofContrition.active != 1) then {
+        gosub prep roc 15
+        gosub waitForPrep
+        gosub release cyclic
+        gosub cast
+    }
+
+    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then {
+        gosub prep eotb
+        pause 3
+        gosub cast
+    }
+    return
+
+
 moveToAdanf:
     gosub setZone
+    gosub castSpellsForMove
 
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
@@ -262,20 +267,7 @@ moveToAdanf:
 moveToBurgle:
     gosub setZone
 
-
-
-    if ("$preparedspell" != "None") then gosub release spell
-    if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
-    if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
-    if ($SpellTimer.PhilosophersPreservation.active = 1 || $SpellTimer.CalcifiedHide.active = 1 || $SpellTimer.ButchersEye.active = 1 || $SpellTimer.IvoryMask.active = 1) then {
-        if ($SpellTimer.RiteofContrition.active != 1) then {
-            gosub release usol
-            gosub prep roc
-            gosub waitForPrep
-            gosub release usol
-            gosub cast
-        }
-    }
+    gosub castSpellsForMove
 
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
@@ -357,6 +349,8 @@ moveToBurgle:
 
 moveToHouse:
     gosub setZone
+
+    gosub castSpellsForMove
 
     if ("$roomname" = "Private Home Interior") then return
 
@@ -463,6 +457,15 @@ enterHouseCont:
 moveToMagic:
     gosub setZone
 
+    # FC
+    if ("%zone" = "150") then {
+        if ("$roomid" = "106") then return
+        gosub automove 106
+        goto moveToMagic
+    }
+
+    gosub castSpellsForMove
+
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
         goto moveToMagic
@@ -533,12 +536,7 @@ moveToMagic:
         goto moveToMagic
     }
 
-    # FC
-    if ("%zone" = "150") then {
-        if ("$roomid" = "106") then return
-        gosub automove 106
-        goto moveToMagic
-    }
+
 
     goto moveToMagic
 
@@ -626,8 +624,7 @@ moveToYellowGremlin:
 moveToWarklin:
     gosub setZone
 
-    #gosub runScript travel beiss
-    #goto moveToWarklin
+    gosub castSpellsForMove
 
     # Abandoned Mine
     if ("%zone" = "10") then {
@@ -695,23 +692,22 @@ setZone:
 
 waitForMagic:
     pause 2
-    if (%useBurgle = 1 && %nextBurgleCheck < %t) then {
+    put #script abort all except qizhmur
+    put .reconnect
+    pause 1
+    put #script abort all except qizhmur
+    put .reconnect
+    gosub burgle.setNextBurgleAt
+    put .magic
+    pause 1
+
+waitForMagicLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
         put #script abort all except qizhmur
-put .reconnect
+        put .reconnect
         pause 1
         put #script abort all except qizhmur
-put .reconnect
-        gosub checkBurgleCd
-        put .qizhmur
-        pause 1
-    }
-    #if (%burgleCooldown = 0 || $Thanatology.LearningRate < -1 || $Evasion.LearningRate < 5 || $Parry_Ability.LearningRate < 5 || $Shield_Usage.LearningRate < 5 || $Targeted_Magic.LearningRate < 5 || $Heavy_Thrown.LearningRate < 5 || $Crossbow.LearningRate < 5 ) then {
-    if (%burgleCooldown = 0 || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
-        put #script abort all except qizhmur
-put .reconnect
-        pause 1
-        put #script abort all except qizhmur
-put .reconnect
+        put .reconnect
         gosub stow right
         gosub stow left
         gosub release eotb
@@ -720,28 +716,28 @@ put .reconnect
         gosub stow frying pan
         return
     }
-    goto waitForMagic
+    pause 2
+    goto waitForMagicLoop
 
 
 waitForMainCombat:
     pause 2
-    if (%useBurgle = 1 && %nextBurgleCheck < %t) then {
+    put #script abort all except qizhmur
+    put .reconnect
+    pause 1
+    put #script abort all except qizhmur
+    put .reconnect
+    gosub burgle.setNextBurgleAt
+    put .fight
+    pause 1
+
+waitForMainCombatLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
         put #script abort all except qizhmur
-put .reconnect
+        put .reconnect
         pause 1
         put #script abort all except qizhmur
-put .reconnect
-        gosub checkBurgleCd
-        put .fight
-        pause 1
-    }
-    if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
-    #if (%burgleCooldown = 0 || ($Augmentation.LearningRate < 5 || $Warding.LearningRate < 5 || $Utility.LearningRate < 5 || $Attunement.LearningRate < 5)) then {
-        put #script abort all except qizhmur
-put .reconnect
-        pause 1
-        put #script abort all except qizhmur
-put .reconnect
+        put .reconnect
         if ("$righthandnoun" = "lockbow") then gosub unload my lockbow
         gosub stow right
         gosub stow left
@@ -750,7 +746,8 @@ put .reconnect
         gosub stow frying pan
         return
     }
-    goto waitForMainCombat
+    pause 2
+    goto waitForMainCombatLoop
 
 
 
@@ -777,31 +774,7 @@ retrieveBoltsLoop:
     var expectedNumBolts %numBolts
     return
     
-    
-checkBurgleCd:
-    var burgleCooldown 0
 
-    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
-    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
-    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
-
-    if (%burgleCooldown = 0) then {
-        gosub burgle recall
-        pause
-    }
-
-    evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
-    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
-    return
-
-
-waitForBurgleCd:
-    if (%nextBurgleCheck < %t) then {
-        gosub checkBurgleCd
-    }
-    if (%burgleCooldown = 0) then return
-    pause 2
-    goto waitForBurgleCd
 
 
 waitForRepair:

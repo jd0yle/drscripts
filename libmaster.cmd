@@ -49,9 +49,12 @@ var todo
 ###############################
 ###    BURGLE
 ###############################
-action put #tvar char.burgle.cooldown $1 when ^You should wait at least (\d+) roisaen
-action put #tvar char.burgle.cooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
-action put #tvar char.burgle.cooldown 0 when ^The heat has died down from your last caper\.
+#action put #tvar char.burgle.cooldown $1 when ^You should wait at least (\d+) roisaen
+#action put #tvar char.burgle.cooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
+#action put #tvar char.burgle.cooldown 0 when ^The heat has died down from your last caper\.
+#put #trigger {^You should wait at least (\d+) roisaen for the heat to die down\.$} {#var char.timers.nextBurgleAt #evalMath {($1 * 60) + $gametime + 120}} {timers}
+#put #trigger {^The heat has died down from your last caper\.$} {#var char.timers.nextBurgleAt $gametime} {timers}
+#put #trigger {^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$} {#var char.timers.nextBurgleAt $gametime} {timers}
 
 
 ###############################
@@ -2554,19 +2557,19 @@ almanac.onTimer:
 	return
 
 
-burgle.onTimer:
-    if ($Stealth.LearningRate > 0) then put #tvar char.burgle.cooldown $Stealth.LearningRate
-    if ($Athletics.LearningRate < $char.burgle.cooldown) then put #tvar char.burgle.cooldown $Athletics.LearningRate
-    if ($Locksmithing.LearningRate < $char.burgle.cooldown) then put #tvar char.burgle.cooldown $Locksmithing.LearningRate
+burgle.setNextBurgleAt:
+    if (!($lib.timers.nextBurgleAt > -1)) then gosub burgle recall
 
-    if ($char.burgle.cooldown = 0) then {
-        gosub burgle recall
-        pause
+    if ($lib.timers.nextBurgleAt < $gametime) then {
+        if ($Stealth.LearningRate > 0 && $Thievery.LearningRate > 0 && $Athletics.LearningRate > 0 && $Locksmithing.LearningRate > 0) then {
+            var lowestLearningRateNumber $Stealth.LearningRate
+            if (%lowestLearningRateNumber > $Thievery.LearningRate) then var lowestLearningRateNumber $Thievery.LearningRate
+            if (%lowestLearningRateNumber > $Athletics.LearningRate) then var lowestLearningRateNumber $Athletics.LearningRate
+            if (%lowestLearningRateNumber > $Locksmithing.LearningRate) then var lowestLearningRateNumber $Locksmithing.LearningRate
+            evalmath tmpNextBurgleGametime %lowestLearningRateNumber * 200 + 60 + $gametime
+            put #var lib.timers.nextBurgleAt %tmpNextBurgleGametime
+        }
     }
-
-    evalmath nextBurgleCheck ($char.burgle.cooldown * 60) + 60 + %t
-    # TODO:  Fix this from being spammy.
-    #put #echo >Log #adadad Next burgle check in $char.burgle.cooldown minutes
     return
 
 

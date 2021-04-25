@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 
-var expectedNumBolts fifty-six
+var expectedNumBolts fifty-four
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -22,12 +22,8 @@ if_1 then {
 
 action send pat inauri when ^A soft crackle briefly comes from Inauri's direction.
 
-var burgleCooldown 0
-var nextBurgleCheck 0
 var injured 0
 
-action var burgleCooldown $1 when ^You should wait at least (\d+) roisaen
-action var burgleCooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
 action var numBolts $1 when ^You count some basilisk bolts in the \S+ and see there are (\S+) left\.$
 action var numArrows $1 when ^You count some basilisk arrows in the \S+ and see there are (\S+) left\.$
 action send stand when ^You'll have to move off the sandpit first.
@@ -45,9 +41,9 @@ if ("%startAt" = "fight") then goto startFight
 main:
     gosub abortScripts
     gosub resetState
-    gosub checkBurgleCd
+    gosub burgle.setNextBurgleAt
 
-    if (%burgleCooldown = 0) then {
+    if ($lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
 
         gosub moveToBurgle
@@ -200,21 +196,6 @@ abortScripts:
     return
 
 
-checkBurgleCd:
-    var burgleCooldown 0
-
-    if ($Stealth.LearningRate > 0) then var burgleCooldown $Stealth.LearningRate
-    if ($Athletics.LearningRate < %burgleCooldown) then var burgleCooldown $Athletics.LearningRate
-    if ($Locksmithing.LearningRate < %burgleCooldown) then var burgleCooldown $Locksmithing.LearningRate
-
-    if (%burgleCooldown = 0) then {
-        gosub burgle recall
-        pause
-    }
-
-    evalmath nextBurgleCheck (%burgleCooldown * 60) + 60 + %t
-    put #echo >Log #adadad Next burgle check in %burgleCooldown minutes
-    return
 
 
 
@@ -273,6 +254,7 @@ checkHealthNotInjured:
 
 buffPlayer:
     put #script abort all except selesthiel
+    put .reconnect
     gosub release spell
     gosub runScript cast %buffSpell %playerName
     put .selesthiel
@@ -496,73 +478,63 @@ retrieveBoltsLoop:
     return
 
 
-waitForBurgleCd:
-    if (%nextBurgleCheck < %t) then {
+waitForMagic:
+    pause 2
+    if ($lib.timers.nextBurgleAt > $gametime) then {
         put #script abort all except selesthiel
         put .reconnect
         gosub stow right
         gosub stow left
-        gosub checkBurgleCd
-    }
-    if (%burgleCooldown = 0) then return
-    pause 2
-    goto waitForBurgleCd
-
-
-
-waitForMagic:
-    pause 2
-    if (%nextBurgleCheck < %t) then {
-        put #script abort all except selesthiel
-        gosub stow right
-        gosub stow left
-        gosub checkBurgleCd
+        gosub burgle.setNextBurgleAt
         put .magic
         pause 1
     }
 
-    if (%burgleCooldown = 0 || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
+waitForMagicLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
         put #script abort all except selesthiel
+        put .reconnect
         gosub resetState
         return
     }
-
-    goto waitForMagic
+    pause 2
+    if (!contains("$scriptlist", "magic.cmd")) then put .magic
+    goto waitForMagicLoop
 
 
 
 waitForMainCombat:
     pause 2
-    if ($bleeding = 1) then goto moveToHeal
-    if (%nextBurgleCheck < %t) then {
+    put #script abort all except selesthiel
+    put .reconnect
+    pause 1
+    put #script abort all except selesthiel
+    put .reconnect
+    gosub stow right
+    gosub stow left
+    gosub burgle.setNextBurgleAt
+    put .fight
+    pause 1
+
+waitForMainCombatLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
         put #script abort all except selesthiel
         put .reconnect
         pause 1
         put #script abort all except selesthiel
         put .reconnect
-        gosub stow right
-        gosub stow left
-        gosub checkBurgleCd
-        put .fight
-        pause 1
-    }
-    if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
-    #if (%burgleCooldown = 0 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
-    #if (%burgleCooldown = 0 || ($Warding.LearningRate < 1 || $Utility.LearningRate < 1 || $Augmentation.LearningRate < 1 || $Arcana.LearningRate < 1)) then {
-        put #script abort all except selesthiel
-        put .reconnect
-        pause 1
-        put #script abort all except selesthiel
         if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
         gosub stow right
         gosub stow left
         gosub retrieveBolts
         gosub stow hhr'ata
         gosub stow bola
+        if ($bleeding = 1) then goto moveToHeal
         return
     }
     if (!contains("$scriptlist", "fight.cmd")) then put .fight
-    goto waitForMainCombat
+    pause 2
+    goto waitForMainCombatLoop
 
 
 logout:

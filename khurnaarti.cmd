@@ -96,10 +96,10 @@ khurnaarti.burgle:
         return
     }
     put burgle recall
-    if ($char.burgle.cooldown <> 0) then {
+    if ($char.timers.nextBurgleAt < $gametime) then {
         gosub burgle.onTimer
     }
-    if ($char.burgle.cooldown = 0) then {
+    if ($char.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff [khurnaarti] Going to burgle
         gosub moveToBurgle
         put .burgle

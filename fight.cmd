@@ -767,7 +767,7 @@ manageCyclics:
         var shouldCastUsol 1
         if ($SpellTimer.UniversalSolvent.active = 1) then var shouldCastUsol 0
         if ($mana < 80) then var shouldCastUsol 0
-        if ($Targeted_Magic.LearningRate > 2) then var shouldCastUsol 0
+        if ($Targeted_Magic.LearningRate > -1) then var shouldCastUsol 0
         if ($monstercount < 2) then var shouldCastUsol 0
 
         if (%shouldCastUsol = 1) then {
@@ -780,7 +780,7 @@ manageCyclics:
             var shouldReleaseUsol 0
             if ($mana < 60) then var shouldReleaseUsol 1
             if ("$roomplayers" != "") then var shouldReleaseUsol 1
-            if ($Targeted_Magic.LearningRate > 4) then var shouldReleaseUsol 1
+            if ($Targeted_Magic.LearningRate > 0) then var shouldReleaseUsol 1
 
             if (%shouldReleaseUsol = 1) then gosub release usol
         }

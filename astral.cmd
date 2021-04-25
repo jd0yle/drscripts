@@ -148,7 +148,7 @@ loop:
     }
 
     if (%moveToAxis = 1) then {
-        gosub perc
+        #gosub perc
         gosub perc
         gosub move %directionToAxis
     }
