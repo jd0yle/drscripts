@@ -1,4 +1,3 @@
-include libmaster.cmd
 ####################################################################################################
 # .astral
 # Selesthiel - justin@jmdoyle.com
@@ -7,6 +6,7 @@ include libmaster.cmd
 #
 # NOTE: This assumes you have the 100th circle ability!
 ####################################################################################################
+include libmaster.cmd
 
 if_1 then {
     var destination %1
@@ -20,55 +20,77 @@ var moveToAxis 1
 var isAtPillars 0
 var moveToEnd 0
 
+var use100thAbility 1
+
 action var directionToAxis $1 when ^You believe the center of the microcosm is to the (\S+)\.
 action var directionToEnd $1 when ^You believe the end of the conduit lies (\S+)\.
+
+action var circle $1 when Circle: (\d+)
 
 
 if (matchre("%destination", "rolagi|crossing|cross")) then {
     var pillar Nightmares
     var destShardName Rolagi
 } else if (matchre("%destination", "besoge|kresh|merkresh|mriss") then {
-   var pillar Secrets
-   var destShardName Besoge
+    var pillar Secrets
+    var destShardName Besoge
 } else if (matchre("%destination", "shard|marendin") then {
-   var pillar Secrets
-   var destShardName Marendin
+    var pillar Secrets
+    var destShardName Marendin
 } else if (matchre("%destination", "tabelrem|muspari") then {
-   var pillar Nightmares
-   var destShardName Tabelrem
+    var pillar Nightmares
+    var destShardName Tabelrem
 } else if (matchre("%destination", "taniendar|haven|riverhaven") then {
-   var pillar Introspection
-   var destShardName Taniendar
+    var pillar Introspection
+    var destShardName Taniendar
 } else if (matchre("%destination", "auilusi|aesry") then {
-   var pillar Tradition
-   var destShardName Auilusi
+    var pillar Tradition
+    var destShardName Auilusi
 } else if (matchre("%destination", "asharshpar'i|leth") then {
-   var pillar Heavens
-   var destShardName Asharshpar'i
+    var pillar Heavens
+    var destShardName Asharshpar'i
 } else if (matchre("%destination", "ratha|Erekinzil|taisgath") then {
-   var pillar Fortune
-   var destShardName Erekinzil
+    var pillar Fortune
+    var destShardName Erekinzil
 } else if (matchre("%destination", "hib|Dornatorna|Dor'na'torna") then {
-   var pillar Tradition
-   var destShardName Dor'na'torna
+    var pillar Tradition
+    var destShardName Dor'na'torna
 } else if (matchre("%destination", "mintais|throne|tc") then {
-   var pillar Fortune
-   var destShardName Mintais
+    var pillar Fortune
+    var destShardName Mintais
 } else if (matchre("%destination", "vellano|fangcove|fc") then {
-   var pillar Unity
-   var destShardName Vellano
+    var pillar Unity
+    var destShardName Vellano
 } else if (matchre("%destination", "dinegavren|theren") then {
- var pillar Introspection
- var destShardName Dinegavren
+    var pillar Introspection
+    var destShardName Dinegavren
 } else if (matchre("%destination", "emalerje|volcano|lesserfist|fist") then {
- var pillar Shrew
- var destShardName Emalerje
+    var pillar Shrew
+    var destShardName Emalerje
 } else if (matchre("%destination", "tamigen|ravenspoint|raven|rp") then {
- var pillar Heavens
- var destShardName Tamigen
+    var pillar Heavens
+    var destShardName Tamigen
 }
 
 echo %destShardName %pillar
+
+# Check for 100th ability
+if (!contains("$roomname", "Astral Plane")) then {
+	gosub info
+	if (%circle < 200) then {
+	    var use100thAbility 0
+		if (matchre("$roomobjs", "the silvery-white shard (\S+)\b")) then {
+		    var shardName $1
+		    echo shardName %shardName
+		} else {
+		    echo
+		    echo UNDER 100th CIRCLE, NO GRAZHIR SHARD IN ROOM
+		    echo
+		    exit
+		}
+    }
+}
+
 
 gosub awake
 
@@ -92,15 +114,21 @@ top:
         waitforre ^CAST DONE
     }
     gosub prep mg
-    gosub harness 30
-    gosub harness 30
-    gosub harness 30
-    gosub harness 30
-    if ($charactername = "Selesthiel" && contains("$roomplayers", "Inauri")) then {
-        pause
-        put lick inauri
+    if (%use100thAbility = 1) then {
+	    gosub harness 50
+	    gosub harness 50
+	    gosub harness 50
+	    if ($charactername = "Selesthiel" && contains("$roomplayers", "Inauri")) then {
+	        pause
+	        put lick inauri
+	    }
+	    gosub cast grazhir
+    } else {
+        gosub harness 15
+        gosub harness 15
+        gosub cast %shardName
     }
-    gosub cast grazhir
+
 
 loop:
     if (contains("$roomobjs", "%destShardName")) then {
@@ -112,7 +140,7 @@ loop:
     }
 
     if (%moveToEnd = 1) then {
-        gosub perc
+        #gosub perc
         gosub perc
         gosub move %directionToEnd
     }

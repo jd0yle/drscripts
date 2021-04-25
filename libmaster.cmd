@@ -1325,6 +1325,7 @@ look:
     matchre return ^\[
     matchre return ^(He|She) is
     matchre return ^I could not find what you were referring to\.
+    matchre return ^In the
     matchre return ^There is nothing
     matchre return ^On the
     matchre return ^You also see
@@ -1341,6 +1342,8 @@ loot:
     loot1:
     matchre return ^I could not
     matchre return ^You search
+    matchre return already been searched
+    matchre return ^You should
     put loot %todo
     goto retry
 
@@ -1743,6 +1746,8 @@ put:
     matchre return ^With a flick
     matchre return ^Roundtime
     matchre return ^That's too heavy to go in there\!$
+    matchre return ^There isn't any more room
+    matchre return too long to fit
     matchre return ^Perhaps you should be holding that first.$
     matchre return ^You carefully fit
     matchre closeTelescope telescope is too long
@@ -2861,6 +2866,7 @@ checkMoons:
 
 retry:
     matchre return ^Roundtime
+    matchre return ^Please rephrase that command\.$
     matchre location ^\.\.\.wait
     matchre location ^Sorry, system is slow
     matchre location.tooFast ^Sorry, you may
@@ -2979,7 +2985,7 @@ waitForPrep:
     var isFullyPrepped 0
     waitForPrep1:
     pause .5
-    if (%isFullyPrepped = 1 || $preparedspell = None) then return
+    if (%isFullyPrepped = 1 || "$preparedspell" = "None") then return
     goto waitForPrep1
 
 

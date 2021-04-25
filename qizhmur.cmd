@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts twenty-two
+var expectedNumBolts twenty-one
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -137,8 +137,8 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-        gosub runScript repair
-        gosub waitForRepair
+        #gosub runScript repair
+        #gosub waitForRepair
 
         gosub automove 106
         pause 1
@@ -148,7 +148,7 @@ main:
 
 
     startMagic:
-    if ($Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
+    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Augmentation.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
         #gosub moveToHouse
 
@@ -626,6 +626,9 @@ moveToYellowGremlin:
 moveToWarklin:
     gosub setZone
 
+    #gosub runScript travel beiss
+    #goto moveToWarklin
+
     # Abandoned Mine
     if ("%zone" = "10") then {
         gosub automove 46
@@ -733,6 +736,7 @@ put .reconnect
         pause 1
     }
     if (%burgleCooldown = 0 || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
+    #if (%burgleCooldown = 0 || ($Augmentation.LearningRate < 5 || $Warding.LearningRate < 5 || $Utility.LearningRate < 5 || $Attunement.LearningRate < 5)) then {
         put #script abort all except qizhmur
 put .reconnect
         pause 1

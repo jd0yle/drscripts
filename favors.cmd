@@ -24,6 +24,8 @@ favorLoop:
 
 
 getFavorOrb:
+    gosub get my huldah orb
+    if ("$righthandnoun" = "orb") then return
     #gosub get my prayer chain
     gosub get my weasel bead
     #gosub stow chain

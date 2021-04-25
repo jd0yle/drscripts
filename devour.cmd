@@ -37,8 +37,8 @@ heal:
     gosub release spell
     var isFullyPrepped 0
     gosub prep devour
-    gosub charge my calf 30
-    gosub invoke my calf 30
+    gosub charge my calf 10
+    gosub invoke my calf 10
     if (!(matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))") || "%creature" = "material") then {
         if ("$righthandnoun" != "material" && "$lefthandnoun" != "material") then {
             gosub stow right
