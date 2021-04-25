@@ -997,6 +997,7 @@ focus:
     matchre return ^I could not find
     matchre return ^Roundtime
     matchre return ^You are in no condition to do that\.
+    matchre return ^You focus your magical senses
     matchre return ^You move into the chaotic tides
     matchre return ^You reach out into the seemingly infinite strands of Lunar mana
     matchre return ^Your link to the .+ is intact\.
