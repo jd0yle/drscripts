@@ -143,7 +143,7 @@ put #tvar char.inv.default rucksack
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType box
+put #tvar char.locks.boxType keepsake box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
