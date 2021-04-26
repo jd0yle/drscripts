@@ -11,6 +11,10 @@ action var inauri.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
 action var inauri.poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
 action var inauri.poisonSelf 1 when The presence of a faint greenish tinge about yourself\.$|^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
 action var inauri.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
+action var inauri.privacyFamiliarOn 0 when ^Familiars may now enter your home\.$|^You have unbarred your home for familiars but they will still be unable to locate you while your home's locate block is on\.$
+action var inauri.privacyFamiliarOn 1 when ^Familiars will be barred from your home\.$
+action var inauri.privacyLocateOn 0 when ^Others may now find you\.$
+action var inauri.privacyLocateOn 1 when ^Others will be unable to locate you\.$
 action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
@@ -31,6 +35,7 @@ if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
+if (!($lastPrivacyGametime >0)) then put #var lastPrivacyGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 var inauri.disease 0
@@ -82,6 +87,8 @@ inauri.loop:
         pause 1
     }
     gosub inauri.look
+    pause 1
+    gosub inauri.privacy
     goto inauri.loop
 
 
@@ -249,6 +256,21 @@ inauri.magic:
             put #echo >Log Purple [inauri] Magic complete.
             put #script abort all except inauri
         }
+    }
+    return
+
+
+inauri.privacy:
+    if ("$roomname" <> "Private Home Interior") then return
+    evalmath nextPrivacyAt $lastPrivacyGametime + 3600
+    if (%nextPrivacyAt > $gametime) then {
+        if (%inauri.privacyFamiliarOn = 0) then {
+            gosub home privacy familiar
+        }
+        if (%inauri.privacyLocateOn = 0) then {
+            gosub home privacy locate
+        }
+        put #var lastPrivacyGametime $gametime
     }
     return
 

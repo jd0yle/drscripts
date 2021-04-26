@@ -114,12 +114,12 @@ put #tvar char.fight.useStealth 0
 put #tvar char.fight.useMaf 1
 
 #***** MOON MAGE *****
-put #tvar char.fight.useCol 0
+put #tvar char.fight.useCol 1
 put #tvar char.fight.useObserve 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 1
-put #tvar char.fight.useShw 0
+put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
 
 
@@ -166,22 +166,22 @@ put #tvar char.magic.train.almanacContainer 0
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.useShadowling 1
-put #tvar char.magic.train.useSymbiosis 1
+put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 1
+put #tvar char.magic.train.charge.Augmentation 13
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 1
+put #tvar char.magic.train.charge.Utility 13
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding col
 put #tvar char.magic.train.prep.Warding 15
-put #tvar char.magic.train.charge.Warding 1
+put #tvar char.magic.train.charge.Warding 13
 put #tvar char.magic.train.harness.Warding 0
 
 

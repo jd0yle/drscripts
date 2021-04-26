@@ -159,7 +159,7 @@ khurnaarti.combatCheck:
 
 
 khurnaarti.combatLoop:
-    pause 1800
+    pause 15
     if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10) then {
         put #script abort all except khurnaarti
         put #echo >Log Green [khurnaarti] Combat complete.
@@ -307,10 +307,15 @@ moveToBurgle:
 moveToFangCove:
     # Shard - East Gate
     if ($zoneid = 66) then {
-        if ($roomid = 52) then goto khurnaarti.loop
+        if ($roomid = 51) then {
+            put #script abort all except khurnaarti
+            put .train
+            put #script abort all except train
+            exit
+        }
         gosub automove portal
         gosub move go meeting portal
-        gosub automove 52
+        gosub automove 51
         goto moveToFangCove
     }
     goto moveToFangCove
@@ -333,7 +338,13 @@ moveToForage:
 
 
 moveToHouse:
-    if ("$roomname" = "Private Home Interior") then return
+    if ("$roomname" = "Private Home Interior") then {
+        gosub clear
+        put #script abort all except khurnaarti
+        put .train
+        put #script abort all except train
+        exit
+    }
     # Fang Cove
     if ($zoneid = 150) then {
         gosub automove portal
@@ -398,8 +409,8 @@ moveToHunt:
     }
     #Shard - East Gate
     if ($zoneid = 66) then {
-        gosub automove 2
-        gosub move go path
+        if ($roomid = 163) then return
+        gosub automove 163
         goto moveToHunt
     }
     goto moveToHunt
