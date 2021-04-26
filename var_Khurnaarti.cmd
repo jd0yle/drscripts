@@ -87,10 +87,10 @@ put #tvar char.fight.tmSpell do
 put #tvar char.fight.tmPrep 4
 
 #***** WEAPONS *****
-#put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
-put #tvar char.fight.weapons.items Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+#put #tvar char.fight.weapons.items Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
 #***** ARMOR *****
@@ -166,22 +166,22 @@ put #tvar char.magic.train.almanacContainer 0
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.useShadowling 1
-put #tvar char.magic.train.useSymbiosis 0
+put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 10
+put #tvar char.magic.train.charge.Augmentation 3
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 10
+put #tvar char.magic.train.charge.Utility 3
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding col
 put #tvar char.magic.train.prep.Warding 15
-put #tvar char.magic.train.charge.Warding 10
+put #tvar char.magic.train.charge.Warding 3
 put #tvar char.magic.train.harness.Warding 0
 
 
@@ -194,7 +194,7 @@ put #tvar char.predict.tool.container rucksack
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie
+put #tvar char.observe.defense Katamba|Magpie|Giant
 put #tvar char.observe.lore Xibar|Raven|Phoenix
 put #tvar char.observe.magic Yavash|Wolf
 put #tvar char.observe.offense Cat|Viper|Spider
@@ -207,7 +207,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song lament
+put #tvar char.performance.song wedding
 put #tvar char.performance.mood quiet
 
 

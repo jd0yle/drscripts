@@ -1287,6 +1287,7 @@ listen:
     matchre return ^You cannot teach a skill and be a student at the same time\!
     matchre return ^You can't really learn anything when your instructor can't see you.
     matchre return ^You don't have the appropriate training to learn that skill.
+    matchre return ^You pause a moment to listen
     matchre return ^Your teacher appears to have left\.
     put listen %todo
     goto retry
@@ -1931,6 +1932,7 @@ rub:
     matchre rub1 ^You rub Mythos gently, trying to massage any sore muscles\.
     matchre return ^As you rub the orb, it glows slightly more intensely and you feel a strange tugging, as if something has been moved from you to the orb\.
     matchre return The strange tugging sensation is gone, leading you to believe that your sacrifice is properly prepared\.
+    matchre return ^You reach out and rub
     matchre return ^You rub the orb and feel a strange tugging, but nothing really seems to happen\.
     matchre return ^You run your fingers over the bones\.
     matchre return ^Rub what\?
@@ -2059,6 +2061,15 @@ sleep:
   matchre return ^You draw deeper into rest
   put sleep
   goto retry
+
+
+smell:
+    var location smell1
+    var todo $0
+    smell1:
+    matchre return ^You sniff the air
+    put smell %todo
+    goto retry
 
 
 stance:
@@ -2765,6 +2776,7 @@ move:
     matchre return ^Obvious
     matchre return ^You look around in vain for the
     matchre return ^You see no dock.
+    matchre return ^You stumble through the darkness
     matchre return seems to be closed\.$
     matchre stand.then.move ^You can't do that while kneeling.
     matchre stand.then.move ^You can't do that while lying down\.

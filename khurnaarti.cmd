@@ -286,6 +286,16 @@ moveToBurgle:
         gosub move go exit portal
         goto moveToBurgle
     }
+    # Shard - South of City
+    if ($zoneid = 68) then {
+        gosub automove 3
+        gosub move go path
+        goto moveToBurgle
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+    }
     # Shard - East Gate
     if ($zoneid = 66) then {
         if ($roomid = 91) then return
@@ -330,6 +340,12 @@ moveToHouse:
         gosub move go portal
         goto moveToHouse
     }
+    # Shard - South of City
+    if ($zoneid = 68) then {
+        gosub automove 3
+        gosub move go path
+        goto moveToHunt
+    }
     # Shard - East Gate
     if ($zoneid = 66) then {
         if ($roomid <> 252) then gosub automove 252
@@ -370,14 +386,20 @@ moveToHunt:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if ($roomid = 28) then return
-        gosub automove 28
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToHunt
+    }
+    # Shard - South of City
+    if ($zoneid = 68) then {
+        if ($roomid = 36) then return
+        gosub automove 36
         goto moveToHunt
     }
     #Shard - East Gate
     if ($zoneid = 66) then {
-        gosub automove portal
-        gosub move go meeting portal
+        gosub automove 2
+        gosub move go path
         goto moveToHunt
     }
     goto moveToHunt

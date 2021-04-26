@@ -60,9 +60,9 @@ engSetNextTool:
 
 
 engCheckLumber:
-    matchre engLumberCount ^You rummage through.*?and see (.*)lumber\.$
-    matchre engNeedLumber ^You rummage through.*?and see (.*)\.$
-    gosub rummage my $char.craft.container
+    matchre engLumberCount ^In the.*\b(lumber)\b.*$
+    matchre engNeedLumber ^In the.*?you see (.*)\.$
+    gosub look in my $char.craft.container
     matchwait 5
 
 
