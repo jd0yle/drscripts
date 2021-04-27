@@ -371,6 +371,17 @@ appraise:
     goto retry
 
 
+apply:
+    var location apply1
+    var todo $0
+    apply1:
+    matchre return ^Now the flights are ready to be trimmed with a carving knife\.$
+    matchre return ^You apply some glue to your bolts and affix each bolthead in place\.$
+    matchre return ^You dab the surface of your bolts with glue and attach the boltheads to them\.$
+    put apply %todo
+    goto retry
+
+
 arr:
 arrange:
     var todo $0
@@ -394,9 +405,11 @@ ask:
     ask1:
     matchre return ^A pure white alfar avenger peers at you
     matchre return hands it to you\.$
+    matchre return Osmandikar|Lakyan|Granzer|Randal|repairman
     matchre return ^The Shadow Servant stares at you in confusion.
     matchre return ^To whom are you speaking\?
     matchre return ^With a sad look
+    matchre return ^You hand
     matchre ask.retreat ^You cannot do that while focusing on combat!
     put ask %todo
     goto retry
@@ -405,6 +418,15 @@ ask:
 ask.retreat:
     gosub retreat
     goto %location
+
+
+assemble:
+    var location assemble1
+    var todo $0
+    assemble1:
+    matchre return ^You place your .+ with your .+ bolts and carefully mark where it will attach when you continue crafting\.$
+    put assemble %todo
+    goto retry
 
 
 assess:
@@ -557,6 +579,16 @@ card:
     put card %todo
     goto retry
 
+
+carve:
+    var location carve1:
+    var todo $0
+    carve1:
+    matchre return ^Using slow strokes
+    matchre return ^You carve
+    matchre return ^You whittle
+    put carve %todo
+    goto retry
 
 
 cast:
@@ -968,6 +1000,7 @@ focus:
     matchre return ^I could not find
     matchre return ^Roundtime
     matchre return ^You are in no condition to do that\.
+    matchre return ^You focus your magical senses
     matchre return ^You move into the chaotic tides
     matchre return ^You reach out into the seemingly infinite strands of Lunar mana
     matchre return ^Your link to the .+ is intact\.
@@ -1016,6 +1049,7 @@ get:
     var todo $0
     get1:
     matchre return ^But that is already in your inventory\.
+    matchre return ^Please rephrase that command\.$
     matchre return ^That is far too dangerous
     matchre return ^What were you referring to\?
     matchre return ^You are a bit too busy
@@ -1042,10 +1076,9 @@ give:
     var location give1
     var todo $0
     give1:
-    matchre return ^A clerk looks over the
+    matchre return ^A clerk
     matchre return ignores your offer
-    matchre return Osmandikar|Lakyan
-    matchre return ^Randal looks over
+    matchre return Osmandikar|Lakyan|Granzer|Randal
     matchre return ^The apprentice repairman
     matchre return ^The Servant accepts
     matchre return ^There's nothing
@@ -1257,6 +1290,7 @@ listen:
     matchre return ^You cannot teach a skill and be a student at the same time\!
     matchre return ^You can't really learn anything when your instructor can't see you.
     matchre return ^You don't have the appropriate training to learn that skill.
+    matchre return ^You pause a moment to listen
     matchre return ^Your teacher appears to have left\.
     put listen %todo
     goto retry
@@ -1301,6 +1335,7 @@ look:
     matchre return ^(He|She) is
     matchre return ^I could not find what you were referring to\.
     matchre return ^In the
+    matchre return ^Looking
     matchre return ^There is nothing
     matchre return ^On the
     matchre return ^You also see
@@ -1341,6 +1376,7 @@ mark:
     matchre return ^It's dead
     matchre return ^Mark what\?
     matchre return ^Roundtime
+    matchre return ^The stamp is too badly damaged to be used for that\.$
     matchre return ^There is not enough
     matchre return ^You carefully size up
     matchre return ^You begin to
@@ -1706,6 +1742,7 @@ put:
     var location put1
     var todo $0
     put1:
+    matchre closeTelescope telescope is too long
     matchre return ^You add
     matchre return ^You rearrange
     matchre return ^You drop
@@ -1724,7 +1761,6 @@ put:
     matchre return too long to fit
     matchre return ^Perhaps you should be holding that first.$
     matchre return ^You carefully fit
-    matchre closeTelescope telescope is too long
     put put %todo
     goto retry
 
@@ -1900,6 +1936,7 @@ rub:
     matchre rub1 ^You rub Mythos gently, trying to massage any sore muscles\.
     matchre return ^As you rub the orb, it glows slightly more intensely and you feel a strange tugging, as if something has been moved from you to the orb\.
     matchre return The strange tugging sensation is gone, leading you to believe that your sacrifice is properly prepared\.
+    matchre return ^You reach out and rub
     matchre return ^You rub the orb and feel a strange tugging, but nothing really seems to happen\.
     matchre return ^You run your fingers over the bones\.
     matchre return ^Rub what\?
@@ -1960,6 +1997,17 @@ sell:
     goto retry
 
 
+shape:
+    var location shape1
+    var todo $0
+    shape1:
+    matchre return ^The bolts are ready for an application of glue to affix each bolthead\.$
+    matchre return ^You flip some unfinished .+ bolts over and begin to shape it with your shaper\.$
+    matchre return ^Using abrupt motions you shape a series of grooves into your bolt shafts\.$
+    put shape %todo
+    goto retry
+
+
 sheath:
     var location sheath1
     var todo $0
@@ -2017,6 +2065,15 @@ sleep:
   matchre return ^You draw deeper into rest
   put sleep
   goto retry
+
+
+smell:
+    var location smell1
+    var todo $0
+    smell1:
+    matchre return ^You sniff the air
+    put smell %todo
+    goto retry
 
 
 stance:
@@ -2122,7 +2179,7 @@ store:
     var todo $0
     store1:
     matchre return ^To use the STORE verb
-    matchre return ^You will now store
+    matchre return ^You will now
     put store %todo
     goto retry
 
@@ -2209,7 +2266,7 @@ study:
     var todo $0
     study1:
     if ($char.research.interrupt.study = 1) then {
-        matchre study ^Are you sure you want to do that
+        matchre study1 ^Are you sure you want to do that
     }
     matchre return ^Are you sure you want to do that
     matchre return ^But you aren't holding
@@ -2502,6 +2559,7 @@ wear:
     var todo $0
     wear1:
     matchre return can't fit over
+    matchre return ^Please rephrase that command\.$
     matchre return ^Wear what\?
     matchre return ^The contours of the
     matchre return ^You are already wearing that\.
@@ -2722,6 +2780,7 @@ move:
     matchre return ^Obvious
     matchre return ^You look around in vain for the
     matchre return ^You see no dock.
+    matchre return ^You stumble through the darkness
     matchre return seems to be closed\.$
     matchre stand.then.move ^You can't do that while kneeling.
     matchre stand.then.move ^You can't do that while lying down\.

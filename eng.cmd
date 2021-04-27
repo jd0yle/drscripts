@@ -11,6 +11,7 @@ action put #var nextTool knife when ^The wood is ready to have more fine detail 
 action put #var nextTool engMark when ^Applying the final touches
 action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
 action goto shortCord when ^You need another finished short leather cord
+action goto eng.repairTools when ^The stamp is too badly damaged to be used for that\.$
 
 ########### CONFIG ###########
 var chapter 0
@@ -294,12 +295,12 @@ knife:
   pause
 knife2:
   matchre engStow ^You need a free hand
-  matchre carve ^You untie
+  matchre eng.carve ^You untie
   matchre engExit ^What were you
   put untie my carving knife on my toolbelt
   matchwait 5
 
-carve:
+eng.carve:
   matchre findNextTool ^Roundtime
   matchre engMark ^Applying the final touches
   put carve my %2 with my knife
@@ -325,12 +326,12 @@ shaper:
   pause
 shaper2:
   matchre engStow ^You need a free hand
-  matchre shape ^You untie
+  matchre eng.shape ^You untie
   matchre engExit ^What were you
   put untie my shaper on my toolbelt
   matchwait 5
 
-shape:
+eng.shape:
   matchre findNextTool ^Roundtime
   matchre shortCord ^You need another finished short leather cord
   matchre strips ^You need another finished leather strips
@@ -398,6 +399,13 @@ engMark:
     gosub get my stamp
     gosub mark $righthandnoun with stamp
     gosub stow my stamp
+    goto engDone
+
+
+eng.repairTools:
+    gosub stow stamp
+    put #var eng.repairNeeded 1
+    put #echo >log Pink [eng] Stamp is broken.  Repair your tools.
     goto engDone
 
 ########################

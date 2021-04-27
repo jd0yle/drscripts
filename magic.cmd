@@ -40,6 +40,8 @@ loop:
         gosub almanac.onTimer
     }
 
+    if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
+
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
 
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict

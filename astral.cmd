@@ -79,10 +79,16 @@ if (!contains("$roomname", "Astral Plane")) then {
 	gosub info
 	if (%circle < 100) then {
 	    var use100thAbility 0
+	    var shardName 0
 		if (matchre("$roomobjs", "the silvery-white shard (\S+)\b")) then {
 		    var shardName $1
 		    echo shardName %shardName
-		} else {
+		}
+		if ($zoneid = 42 && $roomid = 291) then {
+		    var shardName Dinegavren
+		    echo shardName %shardName
+		}
+		if (%shardName = 0) then {
 		    echo
 		    echo UNDER 100th CIRCLE, NO GRAZHIR SHARD IN ROOM
 		    echo
@@ -124,10 +130,9 @@ top:
 	    }
 	    gosub cast grazhir
     } else {
-        gosub harness 15
-        gosub harness 15
         gosub focus %shardName
-        gosub waitForPrep
+        gosub harness 15
+        gosub harness 15
         gosub cast %shardName
     }
 
