@@ -35,7 +35,7 @@ if ("$guild" = "Necromancer") then {
     var repair.forceFangCove true
     if ($Time.isDay = 0) then {
         var repair.skipMetalRepair true
-        put #echo >Log Orange [repair] Metal repair skipped due to night.
+        put #echo >Log Blue [repair] Metal repair skipped due to night.
     }
 }
 
@@ -44,7 +44,7 @@ if ("$guild" = "Necromancer") then {
 ###      SUPPORTED ZONES
 ###############################
 if ($zoneid <> 1 && $zoneid <> 150 && $zoneid <> 66 && $zoneid <> 67) then {
-    put #echo >Log Orange [repair] Not in a supported zone.  Must be in Crossing, Fang Cove, or Shard.
+    put #echo >Log Blue [repair] Not in a supported zone.  Must be in Crossing, Fang Cove, or Shard.
     goto repair.exit
 }
 
@@ -77,6 +77,10 @@ repair.checkForTicket:
 
 repair.main:
     if (%repair.forceFangCove = true) then {
+        if ($Time.isDay = 0) then {
+            var repair.skipMetalRepair true
+            put #echo >Log Blue [repair] Metal repair skipped due to night.
+        }
         if ($zoneid <> 150) then {
             gosub repair.moveToFangCove
         }
@@ -104,19 +108,30 @@ repair.main:
 
 repair.fetchItems:
     gosub get my ticket
-    if ("$righthandnoun" <> "ticket") then goto repair.exit
+    if ("$righthandnoun" <> "ticket") then {
+        put #echo Blue >Log Blue [repair] Repairs complete.
+        goto repair.exit
+    }
     if (matchre("$righthand", "(%repair.npcs)")) then {
         var repair.ticketName $1
     } else {
         var repair.ticketName clerk
     }
     if ("%repair.ticketName" = "Catrox" || "%repair.ticketName" = "Granzer") then {
+        if ("%repair.ticketName" = "Catrox") then {
+            gosub repair.moveToCrossing
+        }
+        if ("%repair.ticketName" = "Granzer") then {
+            gosub repair.moveToShard
+        }
         gosub repair.moveToRepairMetal
     }
     if ("%repair.ticketName" = "Osmandikar" && repair.skipMetalRepair) then {
+        gosub repair.moveToFangCove
         gosub repair.moveToRepairLeather
     }
     if ("%repair.ticketName" = "Osmandikar") then {
+        gosub repair.moveToFangCove
         gosub repair.moveToRepairMetal
     }
     if ("%repair.ticketName" = "clerk") then {
@@ -132,18 +147,11 @@ repair.fetchItems:
                 gosub wear $righthandnoun
                 gosub stow $righthandnoun
             }
-            if ("$righthandnoun" = "sack") then gosub repair.sack
-            gosub look in my large sack
-            if (%repair.emptySack = 0) then {
-                if (contains("$roomobjs", "bucket")) then var repair.trash bucket
-                if (contains("$roomobjs", "bin")) then var repair.trash bin
-                if (%repair.trash = 0) then gosub drop my sack
-                else gosub put my sack in %repair.trash
-            } else {
-                put #echo >Log Red [repair] There is something left in the sack.  Stowing it.
-                gosub stow
+            if ("$righthandnoun" = "sack") then {
+                gosub repair.sack
             }
         } else {
+            echo [repair] Completed all %repair.ticketName tickets.. Checking for others.
             goto repair.fetchItems
         }
         goto repair.fetchItemsLoop
@@ -173,7 +181,7 @@ repair.checkTicketTime:
     gosub look my ticket
     if (%repair.waitTimeSec <> 0) then {
         evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
-        put #echo >Log Orange [repair] Waiting %repair.waitTimeMin min to pick up.
+        put #echo >Log Blue [repair] Waiting %repair.waitTimeMin min to pick up.
         put .look
         pause %repair.waitTimeSec
         put #script abort look
@@ -192,7 +200,7 @@ repair.getNpc:
 repair.repairAll:
     gosub repair.getNpc
     if (%repair.npc = 0) then {
-        put #echo >Log [repair] Cannot find NPC for repairs.
+        put #echo >Log Blue [repair] Cannot find NPC for repairs.
         goto repair.exit
     }
     gosub ask %repair.npc about repair all
@@ -208,7 +216,7 @@ repair.repairSingle:
     var repair.index 0
     gosub repair.getNpc
     if (%repair.npc = 0) then {
-        put #echo >Log [repair] Cannot find NPC for repairs.
+        put #echo >Log Blue [repair] Cannot find NPC for repairs.
         goto repair.exit
     }
 
@@ -228,6 +236,25 @@ repair.repairSingle:
 repair.sack:
     put .empty --from=large sack
     waitforre ^EMPTY DONE$
+    gosub look in my large sack
+    if (%repair.emptySack = 0) then {
+        if (contains("$roomobjs", "bucket")) then {
+            var repair.trash bucket
+        }
+
+        if (contains("$roomobjs", "bin")) then {
+            var repair.trash bin
+        }
+
+        if (%repair.trash = 0) then {
+            gosub drop my sack
+        } else {
+            gosub put my sack in %repair.trash
+        }
+    } else {
+        put #echo >Log Red [repair] There is something left in the sack.  Stowing it.
+        gosub stow
+    }
     return
 
 
@@ -265,6 +292,52 @@ repair.moveToBank:
         gosub automove bank
         goto repair.moveToBank
     }
+
+
+repair.moveToCraftHall:
+    # Crossing
+    if ($zoneid = 1) then {
+        if ($roomid = TODO) then return
+        gosub move to engineering
+        goto repair.moveToCraftHall
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub move to east gate
+        goto repair.moveToCraftHall
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        if ("$roomname" = "Shard Engineering Society, Bookstore") then return
+        gosub move to Engineering book
+        goto repair.moveToCraftHall
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = TODO) then return
+        gosub move to engineering
+        goto repair.moveToCraftHall
+    }
+    goto repair.moveToCraftHall
+
+
+repair.moveToCrossing:
+    # Crossing
+    if ($zoneid = 1) then {
+        return
+    }
+    # Shard - City
+    if ($zoneid = 67 || $zoneid = 66) then {
+        put #echo >Log Blue [repair] We're in the wrong zone.  Found a ticket for Crossing.
+        goto repair.exit
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go exit portal
+        goto repair.moveToCrossing
+    }
+    goto repair.moveToCrossing
 
 
 repair.moveToFangCove:
@@ -355,3 +428,27 @@ repair.moveToRepairMetal:
         goto repair.moveToRepairMetal
     }
     goto repair.moveToRepairMetal
+
+
+repair.moveToShard:
+    # Crossing
+    if ($zoneid = 1) then {
+        put #echo >Log Blue [repair] We're in the wrong zone.  Ticket for Shard found.
+        goto repair.exit
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+        goto repair.moveToShard
+    }
+    #Shard - East Gate
+    if ($zoneid = 66) then {
+        return
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go exit portal
+        goto repair.moveToShard
+    }
+    goto repair.moveToShard
