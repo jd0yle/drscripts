@@ -40,9 +40,12 @@ loop:
         gosub almanac.onTimer
     }
 
+    if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
+
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
 
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
+
 
     if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling = 1) then {
         if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
@@ -132,6 +135,7 @@ loop:
             evalmath tmp ($char.magic.train.charge.%skill - 1)
             put #tvar char.magic.train.charge.%skill %tmp
         }
+        if ("$char.magic.train.spell.%skill" = "shear") then gosub release shear
     }
 
     gosub waitForMana 80

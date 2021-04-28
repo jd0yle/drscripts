@@ -133,7 +133,7 @@ main:
 
 
     startMagic:
-    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 30 || $Utility.LearningRate < 30 || $Warding.LearningRate < 30 || $Augmentation.LearningRate < 30 || $Sorcery.LearningRate < 2) then {
+    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 10 || $Utility.LearningRate < 10 || $Warding.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #cc99ff Going to magic
         #gosub moveToHouse
 
@@ -157,6 +157,14 @@ main:
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
             gosub release cyclic
             var startResearch 0
+            gosub prep devour 30
+            gosub charge my calf 30
+            gosub invoke calf 30
+            gosub get my material
+            gosub waitForPrep
+            gosub cast
+            gosub stow right
+            gosub stow left
             put .research sorcery
             waitforre ^RESEARCH DONE$
             if ($standing != 1) then gosub stand
@@ -212,6 +220,14 @@ castSpellsForMove:
 
 moveToAdanf:
     gosub setZone
+
+    # Ice Caves
+    if ("%zone" = "68a") then {
+        put .findSpot adanf
+        waitforre ^FINDSPOT DONE$
+        return
+    }
+
     gosub castSpellsForMove
 
     if ("$roomname" = "Private Home Interior") then {
@@ -225,12 +241,7 @@ moveToAdanf:
         goto moveToAdanf
     }
 
-    # Ice Caves
-    if ("%zone" = "68a") then {
-        put .findSpot adanf
-        waitforre ^FINDSPOT DONE$
-        return
-    }
+
 
     # Shard East Gate Area
     if ("%zone" = "66") then {
@@ -266,6 +277,20 @@ moveToAdanf:
 
 moveToBurgle:
     gosub setZone
+
+    # Shard West Gate Area
+    if ("%zone" = "69") then {
+        if ("$roomid" = "204") then return
+        gosub automove 204
+        goto moveToBurgle
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        if ("$roomid" = "450") then return
+        gosub automove 450
+        goto moveToBurgle
+    }
 
     gosub castSpellsForMove
 
@@ -304,12 +329,7 @@ moveToBurgle:
         goto moveToBurgle
     }
 
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        if ("$roomid" = "450") then return
-        gosub automove 450
-        goto moveToBurgle
-    }
+
 
     # Crossing
     if ("%zone" = "1") then {
@@ -317,12 +337,7 @@ moveToBurgle:
         goto moveToBurgle
     }
 
-    # Shard West Gate Area
-    if ("%zone" = "69") then {
-        if ("$roomid" = "204") then return
-        gosub automove 204
-        goto moveToBurgle
-    }
+
 
     # Shard East Gate Area
     if ("%zone" = "66") then {
@@ -350,9 +365,9 @@ moveToBurgle:
 moveToHouse:
     gosub setZone
 
-    gosub castSpellsForMove
-
     if ("$roomname" = "Private Home Interior") then return
+
+    gosub castSpellsForMove
 
     # Ice Caves
     if ("%zone" = "68a") then {
@@ -624,8 +639,6 @@ moveToYellowGremlin:
 moveToWarklin:
     gosub setZone
 
-    gosub castSpellsForMove
-
     # Abandoned Mine
     if ("%zone" = "10") then {
         gosub automove 46
@@ -633,6 +646,8 @@ moveToWarklin:
         waitforre ^FINDSPOT DONE$
         return
     }
+
+    gosub castSpellsForMove
 
     # NTR
     if ("%zone" = "7") then {
@@ -655,6 +670,7 @@ moveToWarklin:
     # Crossing
     if ("%zone" = "1") then {
         gosub automove n gate
+        pause 2
         goto moveToWarklin
     }
 

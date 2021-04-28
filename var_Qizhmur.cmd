@@ -86,7 +86,7 @@ put #tvar char.fight.ammo.Slings rock
 
 #***** ARRANGE *****
 put #tvar char.fight.arrangeForPart 0
-put #tvar char.fight.arrangeFull 0
+put #tvar char.fight.arrangeFull 1
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
@@ -158,7 +158,7 @@ put #tvar char.fight.useSls 0
 # (Will still use harvest when low on material, consume for devour, etc.)
 put #tvar char.fight.necroRitual dissection
 
-put #tvar char.fight.avoidDivineOutrage 1
+put #tvar char.fight.avoidDivineOutrage 0
 
 put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0
@@ -194,18 +194,18 @@ put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 10
-put #tvar char.magic.train.harness.Augmentation 10
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 9
+put #tvar char.magic.train.harness.Augmentation 12
 
 put #tvar char.magic.train.spell.Utility eotb
 put #tvar char.magic.train.prep.Utility 1
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 10
-put #tvar char.magic.train.harness.Utility 8
+put #tvar char.magic.train.harness.Utility 12
 
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 10
-put #tvar char.magic.train.harness.Warding 10
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 9
+put #tvar char.magic.train.harness.Warding 12
 
 put #tvar char.magic.train.cyclic.Utility 1
 put #tvar char.magic.train.cyclic.spell.Utility roc
