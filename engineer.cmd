@@ -50,7 +50,7 @@ put store default $char.craft.container
 ###############################
 eng.finishItem:
     if ("$righthand" <> "Empty" && "$righthandnoun" = "%eng.craft.item") then {
-        matchre eng.errorExit ^Roundtime
+        matchre eng.exitError ^Roundtime
         matchre eng.setNextTool (shaper|rasp|knife|cord|strap)
         put analyze %eng.craft.item
         matchwait 5
@@ -374,13 +374,15 @@ eng.exit:
     exit
 
 
+eng.exitError:
+    put #echo >Log Yellow [eng] Unable to determine next tool for $righthand.
+    goto eng.exit
+
 
 eng.needLumberExit:
     if ("$righthand" <> "Empty") then gosub stow
     if ("$lefthand" <> "Empty") then gosub stow left
     put #var eng.needLumber 1
-    put #echo >log yellow [eng] Need more lumber.  Beginning .inauri
+    put #echo >log yellow [eng] Need more lumber.
     put store default in %defaultContainer
-    put .inauri
-    put #script abort all except inauri
-    exit
+    goto eng.exit
