@@ -124,7 +124,7 @@ khurnaarti.class:
         return
     } else {
         if (contains("$roomplayers", "Inauri")) then {
-            matchre khurnaarti.classSetClass Crossbow|Enchanting|Sorcery|Targeted Magic
+            matchre khurnaarti.classSetClass Enchanting|Sorcery|Targeted Magic
             matchre khurnaarti.classNewClass ^No one seems to be teaching\.$
             put assess teach
             matchwait 5
@@ -141,8 +141,7 @@ khurnaarti.classNewClass:
 
 khurnaarti.classSetClass:
     var classTopic $1
-    echo %classTopic
-    if ("$instructor" = "Inauri") then {
+    if ("$lib.instructor" = "Inauri") then {
         gosub listen $lib.instructor observe
         put #var lib.student 1
     } else {
@@ -270,13 +269,10 @@ khurnaarti.look:
 
 
 khurnaarti.magic:
-    evalmath nextMagic $lastMagicGametime + 3600
-    if (%nextMagic < $gametime) then {
-        if ($Augmentation.LearningRate < 5) then {
-          put #var lastMagicGametime $gametime
-          put .magic noLoop
-          waitforre ^MAGIC DONE
-        }
+    if ($Augmentation.LearningRate < 5) then {
+       put #var lastMagicGametime $gametime
+       put .magic noLoop
+       waitforre ^MAGIC DONE
     }
     return
 

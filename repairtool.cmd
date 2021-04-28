@@ -100,7 +100,7 @@ repairNextTool:
 
 
 repair.checkTime:
-    put look my ticket
+    gosub look my ticket
     put .look
     if (%repair.waitTimeMin <> 0) then {
         evalmath %repair.waitTimeSec %repair.waitTimeSec + 60
