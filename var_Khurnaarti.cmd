@@ -143,7 +143,7 @@ put #tvar char.inv.default rucksack
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType keepsake box
+put #tvar char.locks.boxType jewelry box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
@@ -151,9 +151,9 @@ put #tvar char.locks.boxContainer rucksack
 ###############################
 ###      LOOT
 ###############################
-put #tvar char.inv.emptyGemPouchContainer rucksack
+put #tvar char.inv.emptyGemPouchContainer purse
 put #tvar char.inv.fullGemPouchContainer rucksack
-put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.tempContainer purse
 put #tvar char.inv.defaultContainer rucksack
 
 

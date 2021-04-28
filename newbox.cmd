@@ -1,12 +1,15 @@
+include libmaster.cmd
 action var badDisarm 1 when ^However, a \w+ \w+ \w+ is not fully disarmed, making any chance of picking it unlikely\.
 action var guild $1 when Guild\: (Barbarian|Bard|Commoner|Cleric|Empath|Moon Mage|Necromancer|Paladin|Ranger|Trader|Warrior Mage)
 action var race $1 when Race\: (Dwarf|Elothean|Gnome|Gor'Tog|Kaldar|Prydaen|Rakash)
 action var strength $1 when Strength \:  (\d+)              Reflex
+action goto dismantle when ^It's not even locked, why bother\?$
 
 ###############################
 ###    VARIABLES
 ###############################
-var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
+var boxItem 0
+var boxType brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|box
 var badDisarm 0
 var pouch pouch
@@ -28,7 +31,7 @@ if ("%1" = "auto") then {
     var boxindex 0
 }
 if ("%1" = "hand") then {
-    var boxitem $righthandnoun
+    var boxItem $righthandnoun
     var repeating 0
 }
 
@@ -38,8 +41,9 @@ if ("%1" = "hand") then {
 ###############################
 box.main:
     if (%repeating = 1) then {
-        var boxitem %boxes(%boxindex)
-        gosub box.getItem %boxItem
+        echo %boxes(%boxindex)
+        var boxItem %boxes(%boxindex)
+        gosub get my %boxItem
     }
 
     if ("$righthand" = "Empty") then {
@@ -78,7 +82,7 @@ box.main:
 
 box.disarmIdentify:
     pause
-box.disarmIdentify:
+    box.disarmIdentify1:
     matchre box.disarmIdentifyPause \.\.\.wait|type ahead|stunned|while entangled in a web\.
     matchre box.disarmQuick ^An aged grandmother could defeat this trap in her sleep\.$
     matchre box.disarmQuick ^This trap is a laughable matter, you could do it blindfolded\!$
