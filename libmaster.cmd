@@ -1772,6 +1772,7 @@ read:
     matchre return contains a
     matchre return ^I could not find what you were referring to\.
     matchre return ^On this page
+    matchre return Page
     matchre return ^Roundtime
     matchre return ^The writing is too small\.  You'll have to hold the scroll to read it\.
     matchre return ^You open your logbook
