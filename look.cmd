@@ -3,14 +3,16 @@ include libmaster.cmd
 ###    IDLE ACTION TRIGGERS
 ###############################
 if ("$charactername" = "Inauri") then {
-    action put #var inauri.heal 1 ; put #var inauri.target $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+    action put #var inauri.heal 1 ; put #var inauri.healTarget $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
     action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
     action var look.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
     action var look.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
-    action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your
+    action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
     action var look.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
+
+    action goto look.vitalityHeal when eval $health < 30
 }
 action var look.teach 1; var look.topic $2 ; var look.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 
@@ -108,7 +110,7 @@ look.healPoison:
         var look.poison 0
     }
     if (%look.poisonSelf = 1) then {
-        put runScript cast fp
+        gosub runScript cast fp
         var look.poisonSelf 0
     }
     return
@@ -137,3 +139,20 @@ look.teach:
     gosub teach %look.topic to %look.target
     var look.teach 0
     return
+
+
+look.vitalityHeal:
+    put #script pause all except look
+
+
+    look.vitalityHealLoop:
+        pause .2
+        gosub prep vh
+        pause 2
+        gosub cast
+        if ($health < 60) then {
+            goto look.vitalityHealLoop
+        } else {
+            put #script resume all
+        }
+        return
