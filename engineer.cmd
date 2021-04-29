@@ -1,6 +1,5 @@
 include libmaster.cmd
 include var_engineer.cmd
-debug 5
 ##############################
 ### Engineering
 ### USAGE: .eng <number> <item> [design]
@@ -14,7 +13,6 @@ action var eng.craft.nextTool rasp when ^A bulbous knot will make continued shap
 action var eng.craft.nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
 action var eng.craft.nextTool engDone when ^Applying the final touches
 action var eng.lumber $1 when ^You count out (\d+) pieces of lumber remaining\.$
-action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) (articulated|pair of)? wood $char.craft.item(.*)$
 action goto eng.cord when ^You need another finished short leather cord
 action goto eng.strip when ^You need another finished leather strips
 action goto eng.analyze when ^Applying the final touches
@@ -25,20 +23,19 @@ action goto stunPause when ^You are stunned|^After a brief flare of pain, your s
 ###############################
 ###    VARIABLES
 ###############################
+put #tvar eng.craft.item %2
+put #tvar eng.craft.item.design 0
+if_3 then {
+    put #tvar eng.craft.item.design %3
+}
+
 var eng.chapter 0
 var eng.chapterLength 0
-var eng.craft.item %2
-var eng.craft.item.design 0
 var eng.craft.nextTool 0
 var eng.craft.numberCrafted 0
 var eng.craft.numberNeeded %1
 var eng.cut 0
 var eng.page 0
-
-
-if_3 then {
-    var eng.craft.item.design %3
-}
 
 put #script abort all except engineer
 put .look
@@ -50,10 +47,10 @@ goto eng.finishItem
 ###    SETUP
 ###############################
 eng.finishItem:
-    if ("$righthand" <> "Empty" && "$righthandnoun" = "%eng.craft.item") then {
+    if ("$righthand" <> "Empty" && "$righthandnoun" = "$eng.craft.item") then {
         matchre eng.exitError ^Roundtime
         matchre eng.setNextTool (shaper|rasp|knife|cord|strap)
-        put analyze %eng.craft.item
+        put analyze $eng.craft.item
         matchwait 5
     }
     goto eng.checkLumber
@@ -79,7 +76,7 @@ eng.checkLumber:
 eng.lumberCount:
     gosub count my lumber
     if (%eng.cut = 0) then {
-        var eng.cut $eng.book.cut.%eng.craft.item
+        var eng.cut $eng.book.cut.$eng.craft.item
     }
     if (%eng.lumber < %eng.cut) then {
         goto eng.needLumberExit
@@ -93,7 +90,7 @@ eng.prepareLumber:
         gosub mark my lumber at %eng.cut
         gosub get my scissors
         if ("$lefthandnoun" <> "scissors") then {
-            put #echo >Log Yellow [eng] Scissors are missing, exiting.
+            put #echo >Log Orange [eng] Scissors are missing, exiting.
             gosub stow
             goto eng.exit
         }
@@ -108,21 +105,23 @@ eng.prepareLumber:
 eng.prepareItem:
     gosub get my shaping book
     if ("$lefthandnoun" <> "book") then {
-        put #echo >Log Yellow [eng] Missing our shaping book, exiting.
+        put #echo >Log Orange [eng] Missing our shaping book, exiting.
         gosub stow
         goto eng.exit
     }
     gosub eng.findChapter
-    gosub turn my book to %eng.chapter
+    gosub turn my book to chapter %eng.chapter
+    # Action for finding book page because genie is dumb.
+    action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) (articulated|detailed|pair of)? wood $eng.craft.item(.*)$
     gosub read my book
     if (%eng.page = 0) then {
         put #echo >Log Yellow [eng] Could not locate page for $eng.craft.item, exiting.
         goto eng.exit
     }
-    gosub turn my book to %eng.page
+    gosub turn my book to page %eng.page
     gosub study my book
     gosub stow my book
-    if (%eng.craft.item.design <> 0) then {
+    if ($eng.craft.item.design <> 0) then {
         goto eng.prepareDesign
     }
     goto eng.main
@@ -132,40 +131,40 @@ eng.prepareItem:
 eng.findChapter:
     var eng.chapter 0
     var eng.chapterGroup 0
-    if (contains("($eng.book.basics)", "%eng.craft.item")) then {
+    if (contains("($eng.book.basics)", "$eng.craft.item")) then {
         var eng.chapter 1
         var eng.chapterGroup basics
     }
-    if (contains("($eng.book.enhancements)", "%eng.craft.item")) then {
-        if (%eng.chapter <> 0) then {
+    if (contains("($eng.book.enhancements)", "$eng.craft.item")) then {
+        if (%eng.chapter = 0) then {
             var eng.chapter 6
             var eng.chapterGroup enhancements
         }
     }
-    if (contains("($eng.book.accessories)", "%eng.craft.item")) then {
-        if (%eng.chapter <> 0) then {
+    if (contains("($eng.book.accessories)", "$eng.craft.item")) then {
+        if (%eng.chapter = 0) then {
             var eng.chapter 7
             var eng.chapterGroup accessories
         }
     }
-    if (contains("($eng.book.images)", "%eng.craft.item")) then {
-        if (%eng.chapter <> 0) then {
+    if (contains("($eng.book.images)", "$eng.craft.item")) then {
+        if (%eng.chapter = 0) then {
             var eng.chapter 8
             var eng.chapterGroup images
         }
     }
-    if (contains("($eng.book.weaponry)", "%eng.craft.item")) then {
-        if (%eng.chapter <> 0) then {
+    if (contains("($eng.book.weaponry)", "$eng.craft.item")) then {
+        if (%eng.chapter = 0) then {
             var eng.chapter 9
             var eng.chapterGroup weaponry
         }
     }
     if (%eng.chapter = 0) then {
-        put #echo >Log Yellow [eng] Failed to find design for %eng.craft.item, exiting.
+        put #echo >Log Yellow [eng] Failed to find design for $eng.craft.item, exiting.
         goto eng.exit
     }
     if (%eng.cut = 0) then {
-        var eng.cut $eng.book.cut.%eng.craft.item
+        var eng.cut $eng.book.cut.$eng.craft.item
     }
     return
 
@@ -175,30 +174,36 @@ eng.prepareDesign:
     var eng.page 0
     gosub get my codex
     if ("$lefthandnoun" <> "codex") then {
-        put #echo >Log Yellow [eng] Design codex is missing, exiting.
+        put #echo >Log Orange [eng] Design codex is missing, exiting.
         gosub stow
         goto eng.exit
     }
-    if (contains("($eng.codex.races)", "%eng.craft.item.design")) then {
+    if (contains("($eng.codex.races)", "$eng.craft.item.design")) then {
         var eng.chapter 1
     }
-    if (contains("($eng.codex.immortals)", "%eng.craft.item.design")) then {
-        if (%eng.chapter <> 0) then {
+    if (contains("($eng.codex.immortals)", "$eng.craft.item.design")) then {
+        if (%eng.chapter = 0) then {
             var eng.chapter 2
         }
     }
-    if (contains("($eng.codex.animals)", "%eng.craft.item.design")) then {
-        if (%eng.chapter <> 0) then {
+    if (contains("($eng.codex.animals)", "$eng.craft.item.design")) then {
+        if (%eng.chapter = 0) then {
             var eng.chapter 3
         }
     }
     if (%eng.chapter = 0) then {
-        put #echo >Log [eng] Failed to find design %eng.craft.item.design.
+        put #echo >Log [eng] Failed to find design $eng.craft.item.design.
+        goto eng.exit
+    }    
+    gosub turn my codex to chapter %eng.chapter
+    # Action for finding codex page because genie is dumb.
+    action var eng.page $1 when ^.*?Page (\d+)\: $eng.craft.item.design(.*)$
+    gosub read my codex
+    if (%eng.page = 0) then {
+        put #echo >Log Yellow [eng] Could not locate page for $eng.craft.item.design, exiting.
         goto eng.exit
     }
-    var eng.page $eng.codex.page.%eng.craft.item.design
-    gosub turn my codex to %eng.chapter
-    gosub turn my book to %eng.page
+    gosub turn my codex to page %eng.page
     gosub study my codex
     gosub stow my codex
     goto eng.main
@@ -210,7 +215,7 @@ eng.prepareDesign:
 eng.main:
     gosub get my drawknife
     if ("$lefthandnoun" <> "drawknife") then {
-        put #echo >Log Yellow [eng] Drawknife missing!
+        put #echo >Log Orange [eng] Drawknife missing!
         gosub stow
         goto eng.exit
     }
@@ -229,16 +234,20 @@ eng.main:
         if ("$lefthand" <> "Empty") then {
             gosub stow left
         }
-        gosub get my %eng.craft.nextTool
-        if ("$lefthandnoun" <> "%eng.craft.nextTool") then {
-            put #echo >Log Yellow [eng] Tool missing!  (%eng.craft.nextTool)
+        if ("%eng.craft.nextTool" = "knife") then {
+            gosub get my carving knife
+        } else {
+            gosub get my %eng.craft.nextTool
+        }
+        if ("$lefthandnoun" = "Empty") then {
+            put #echo >Log Orange [eng] Tool missing!  (%eng.craft.nextTool)
             gosub stow
             goto eng.exit
         }
         var eng.lastTool %eng.craft.nextTool
         var eng.craft.nextTool 0
         gosub eng.%eng.lastTool
-        goto eng.MainLoop
+        goto eng.mainLoop
 
 
 ###############################
@@ -248,7 +257,7 @@ eng.analyze:
     gosub stow left
     gosub eng.stamp
     gosub analyze $righthandnoun
-    evalmath eng.craft.numberCrafted add 1
+    evalmath eng.craft.numberCrafted (%eng.craft.numberCrafted + 1)
     if (%eng.craft.numberNeeded < %eng.craft.numberCrafted) then {
         put #echo >log Yellow [eng] Progress %eng.craft.numberCrafted/%eng.craft.numberNeeded
         goto eng.checkLumber
@@ -257,72 +266,76 @@ eng.analyze:
 
 
 eng.cord:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthand" <> "cord") then {
         gosub stow left
     }
     gosub get my cord
     if ("$lefthandnoun" <> "cord") then {
-        put #echo >Log Yellow [eng] Need cord to finish %eng.craft.item, exiting.
+        put #echo >Log Yellow [eng] Need cord to finish $eng.craft.item, exiting.
         gosub stow
         goto eng.exit
     }
-    gosub assemble my %eng.craft.item with cord
+    gosub assemble my $eng.craft.item with cord
     return
 
 
 eng.knife:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthand" <> "knife") then {
         gosub stow left
     }
     gosub get my carving knife
     if ("$lefthandnoun" <> "knife") then {
-        put #echo >Log Yellow [eng] Carving knife missing!
+        put #echo >Log Orange [eng] Carving knife missing!
         gosub stow
         goto eng.exit
     }
-    gosub carve my %eng.craft.item with my carving knife
+    gosub carve my $eng.craft.item with my carving knife
     gosub stow left
     return
 
 
 eng.rasp:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthandnoun" <> "rasp") then {
         gosub stow left
     }
     gosub get my rasp
     if ("$lefthandnoun" <> "rasp") then {
-        put #echo >Log Yellow [eng] Rasp missing!
+        put #echo >Log Orange [eng] Rasp missing!
         gosub stow
         goto eng.exit
     }
-    gosub scrape my %eng.craft.item with my rasp
+    gosub scrape my $eng.craft.item with my rasp
     gosub stow left
     return
 
 
 eng.repairTools:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthand" <> "Empty" || "$righthand" <> "Empty") then {
+        gosub stow
         gosub stow left
     }
+    put #var eng.repairNeeded 1
+    put #echo >log Pink [eng] Stamp is broken.  Repair your tools.
+    goto eng.exit
 
 
 eng.shaper:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthandnoun" <> "shaper") then {
         gosub stow left
     }
     gosub get my wood shaper
     if ("$lefthandnoun" <> "shaper") then {
-        put #echo >Log Yellow [eng] Wood shaper missing!
+        put #echo >Log Orange [eng] Wood shaper missing!
         gosub stow
         goto eng.exit
     }
-    gosub shape my %eng.craft.item with my shaper
+    gosub shape my $eng.craft.item with my shaper
     gosub stow left
     return
 
 
 eng.stamp:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthand" <> "stamp") then {
         gosub stow left
     }
     if ($eng.repairNeeded = 1) then {
@@ -330,25 +343,25 @@ eng.stamp:
     }
     gosub get my stamp
     if ("$lefthand" = "Empty") then {
-        put #echo >Log Yellow [eng] Stamp is missing!
+        put #echo >Log Orange [eng] Stamp is missing!
         return
     }
-    gosub mark my %eng.craft.item with my stamp
+    gosub mark my $eng.craft.item with my stamp
     gosub stow stamp
     return
 
 
 eng.strap:
-    if ("$lefthand" <> "Empty") then {
+    if ("$lefthand" <> "strap") then {
         gosub stow left
     }
     gosub get my strap
     if ("$lefthandnoun" <> "strap") then {
-        put #echo >Log Yellow [eng] Need strap to finish %eng.craft.item, exiting.
+        put #echo >Log Yellow [eng] Need strap to finish $eng.craft.item, exiting.
         gosub stow
         goto eng.exit
     }
-    gosub assemble my %eng.craft.item with strap
+    gosub assemble my $eng.craft.item with strap
     return
 
 
@@ -359,7 +372,7 @@ eng.stunPause:
     }
     if (%eng.craft.nextTool <> 0) then {
         gosub get my %eng.craft.nextTool
-        gosub get my %eng.craft.item
+        gosub get my $eng.craft.item
     }
     goto eng.finishItem
 

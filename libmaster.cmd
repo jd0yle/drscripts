@@ -586,6 +586,7 @@ carve:
     carve1:
     matchre return ^Using slow strokes
     matchre return ^You carve
+    matchre return ^You use your knife to carve detail into .* surface
     matchre return ^You whittle
     put carve %todo
     goto retry
@@ -1955,6 +1956,16 @@ rummage:
     goto retry
 
 
+scrape:
+    var location scrape1
+    var todo $0
+    scrape1:
+    matchre return ^You delicately shape fine detail into .* with your rasp\.
+    matchre return ^You set the lumber
+    put scrape %todo
+    goto retry
+
+
 scribe:
     var location scribe1
     var todo $0
@@ -2002,9 +2013,11 @@ shape:
     var location shape1
     var todo $0
     shape1:
+    matchre return ^Quickly you rub your shaper across the surface of .*\.
     matchre return ^The bolts are ready for an application of glue to affix each bolthead\.$
-    matchre return ^You flip some unfinished .+ bolts over and begin to shape it with your shaper\.$
+    matchre return ^You flip (a|an|some) unfinished .* over and begin to shape it with your shaper\.
     matchre return ^Using abrupt motions you shape a series of grooves into your bolt shafts\.$
+    matchre return ^With short strokes you shape .* with your shaper\.
     put shape %todo
     goto retry
 
@@ -2474,7 +2487,7 @@ turn:
     matchre return ^But you're not
     matchre return ^I could not
     matchre return ^Roundtime
-    matchre return ^The book is already
+    matchre return ^The (book|codex) is already
     matchre return ^Turn what\?
     matchre return ^You attempt
     matchre return ^You carefully

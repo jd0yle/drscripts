@@ -19,7 +19,7 @@ action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khu
 action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-
+action goto inauri.vitalityHeal when eval $health < 30
 
 ###############################
 ###    CHAR VARIABLES
@@ -310,6 +310,23 @@ inauri.teach:
     gosub teach %inauri.topic to %inauri.target
     var inauri.teach 0
     return
+
+
+inauri.vitalityHeal:
+    put #script pause all except inauri
+
+
+    inauri.vitalityHealLoop:
+        pause .2
+        gosub prep vh
+        pause 2
+        gosub cast
+        if ($health < 60) then {
+            goto inauri.vitalityHealLoop
+        } else {
+            put #script resume all
+        }
+        return
 
 
 ###############################
