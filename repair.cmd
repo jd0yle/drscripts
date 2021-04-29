@@ -237,6 +237,11 @@ repair.repairSingle:
         if ("$righthand" = "%repair.group(%repair.index)") then {
             gosub give %repair.npc
             gosub give %repair.npc
+            if (%repair.wornItem = 1) then {
+                gosub wear my %repair.group(%repair.index)
+            }
+        }
+        if ("$righthand" <> "Empty") then {
             gosub stow
         }
         math repair.index add 1
