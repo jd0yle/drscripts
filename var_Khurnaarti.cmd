@@ -11,7 +11,7 @@ put #tvar char.appraise.item my sail pouch
 put #tvar char.cambrinth armband
 put #tvar char.focusContainer rucksack
 put #tvar char.ritualFocus ouroboros ring
-put #tvar char.wornCambrinth 0
+put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
 
 
@@ -24,6 +24,7 @@ put #tvar char.cast.default.charge 5
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
+put #tvar char.cast.bc.prep 150
 put #tvar char.cast.dc.prep 50
 
 
@@ -88,6 +89,8 @@ put #tvar char.fight.tmPrep 4
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+#put #tvar char.fight.weapons.items Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
 #***** ARMOR *****
@@ -105,13 +108,13 @@ put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
-put #tvar char.fight.useStealth 1
+put #tvar char.fight.useStealth 0
 
 #***** GENERAL *****
 put #tvar char.fight.useMaf 1
 
 #***** MOON MAGE *****
-put #tvar char.fight.useCol 0
+put #tvar char.fight.useCol 1
 put #tvar char.fight.useObserve 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
@@ -140,7 +143,7 @@ put #tvar char.inv.default rucksack
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType box
+put #tvar char.locks.boxType jewelry box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
@@ -148,9 +151,9 @@ put #tvar char.locks.boxContainer rucksack
 ###############################
 ###      LOOT
 ###############################
-put #tvar char.inv.emptyGemPouchContainer rucksack
+put #tvar char.inv.emptyGemPouchContainer purse
 put #tvar char.inv.fullGemPouchContainer rucksack
-put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.tempContainer purse
 put #tvar char.inv.defaultContainer rucksack
 
 
@@ -168,17 +171,17 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 10
+put #tvar char.magic.train.charge.Augmentation 13
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 10
+put #tvar char.magic.train.charge.Utility 13
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding col
 put #tvar char.magic.train.prep.Warding 15
-put #tvar char.magic.train.charge.Warding 10
+put #tvar char.magic.train.charge.Warding 13
 put #tvar char.magic.train.harness.Warding 0
 
 
@@ -191,7 +194,7 @@ put #tvar char.predict.tool.container rucksack
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie
+put #tvar char.observe.defense Katamba|Magpie|Giant
 put #tvar char.observe.lore Xibar|Raven|Phoenix
 put #tvar char.observe.magic Yavash|Wolf
 put #tvar char.observe.offense Cat|Viper|Spider
@@ -204,8 +207,17 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song lament
+put #tvar char.performance.song wedding
 put #tvar char.performance.mood quiet
+
+
+###############################
+###      REPAIR
+###############################
+put #tvar char.repair.forceFangCove true
+put #tvar char.repair.money 10
+put #tvar char.repair.leather demonscale armguard|hauberk
+put #tvar char.repair.metal rockwood tanbo|forester's crossbow|naphtha|lead-banded wand|chain balaclava|chain gloves|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps
 
 
 ###############################

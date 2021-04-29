@@ -40,11 +40,12 @@ loop:
         gosub almanac.onTimer
     }
 
-    if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
+    if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
+
 
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
-
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
+    if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
 
 
     if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling = 1) then {

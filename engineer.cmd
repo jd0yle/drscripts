@@ -1,36 +1,40 @@
 include libmaster.cmd
-include var_engineer.cmd
-########################
-# Engineering
-# USAGE: .eng <number> <item> [design]
-#    EX: .eng 3 bead weasel
-########################
+include var_eng.cmd
+##############################
+### Engineering
+### USAGE: .eng <number> <item> [design]
+###    EX: .eng 3 bead weasel
+###############################
+###############################
+###    IDLE ACTION VARIABLES
+###############################
 action var eng.craft.nextTool shaper when ^Shaping with a wood shaper is needed to further smooth the material's surface\.
 action var eng.craft.nextTool rasp when ^A bulbous knot will make continued shaping difficult unless rubbed out with a rasp\.
 action var eng.craft.nextTool knife when ^The wood is ready to have more fine detail carved with a carving knife\.
 action var eng.craft.nextTool engDone when ^Applying the final touches
-action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
 action var eng.lumber $1 when ^You count out (\d+) pieces of lumber remaining\.$
+action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) (articulated|pair of)? wood $char.craft.item(.*)$
+action goto eng.cord when ^You need another finished short leather cord
+action goto eng.strip when ^You need another finished leather strips
+action goto eng.analyze when ^Applying the final touches
+action goto eng.repairTools when ^The stamp is too badly damaged to be used for that\.$
+action goto stunPause when ^You are stunned|^After a brief flare of pain, your senses go numb and you lose all muscular control
 
-########################
-#  Variables
-########################
-# $eng.book.basics/enhancements/accessories/images/weaponry
-# $eng.codex.races/immortals/animals
-var engChapter eng.book.chapter.%2
-var engChapterLength 0
-var engCut eng.book.cut.%2
-var engPage 0
-if (%engChapter = 1) then var engChapterLength 8
-if (%engChapter = 6) then var engChapterLength 7
-if (%engChapter = 7) then var engChapterLength 30
-if (%engChapter = 8) then var engChapterLength 13
-if (%engChapter = 9) then var engChapterLength 8
 
-var eng.craft.numberCrafted 0
-var eng.craft.numberNeeded %1
+###############################
+###    VARIABLES
+###############################
+var eng.chapter 0
+var eng.chapterLength 0
 var eng.craft.item %2
 var eng.craft.item.design 0
+var eng.craft.nextTool 0
+var eng.craft.numberCrafted 0
+var eng.craft.numberNeeded %1
+var eng.cut 0
+var eng.page 0
+
+
 if_3 then {
     var eng.craft.item.design %3
 }
@@ -41,371 +45,344 @@ put .look
 put store default $char.craft.container
 
 
-########################
-#  Setup
-########################
-engFinishItem:
-    if ("$righthand" <> "Empty" && "$righthandnoun" = "$eng.craft.item") then {
-        matchre engErrorExit ^Roundtime
-        matchre engSetNextTool (shaper|rasp|knife)
-        put analyze $eng.craft.item
+###############################
+###    SETUP
+###############################
+eng.finishItem:
+    if ("$righthand" <> "Empty" && "$righthandnoun" = "%eng.craft.item") then {
+        matchre eng.exitError ^Roundtime
+        matchre eng.setNextTool (shaper|rasp|knife|cord|strap)
+        put analyze %eng.craft.item
         matchwait 5
     }
     goto engCheckLumber
 
 
-engSetNextTool:
+eng.setNextTool:
     var eng.craft.nextTool $1
-    #TODO: gosub engLoop
+    if (%eng.craft.nextTool = 0) then {
+        put #echo >Log Yellow [eng] Unable to determine next tool for $righthand, exiting.
+        gosub stow
+        goto eng.exit
+    }
+    gosub eng.mainLoop
 
 
-engCheckLumber:
-    matchre engLumberCount ^You rummage through.*?and see (.*)lumber\.$
-    matchre engNeedLumber ^You rummage through.*?and see (.*)\.$
-    gosub rummage my $char.craft.container
+eng.checkLumber:
+    matchre eng.lumberCount ^In the.*\b(lumber)\b.*$
+    matchre eng.needLumberExit ^In the.*?you see (.*)\.$
+    gosub look in my $char.craft.container
     matchwait 5
 
 
-engLumberCount:
+eng.lumberCount:
     put count my lumber
     if (%eng.lumber < %engCut) then {
-        goto engNeedLumber
+        goto eng.needLumberExit
     }
-    goto engPrepareLumber
+    goto eng.prepareLumber
 
 
-engPrepareLumber:
+eng.prepareLumber:
     gosub get my lumber
     if (%eng.lumber <> %engCut) then {
         gosub mark my lumber at %engCut
         gosub get my scissors
+        if ("$lefthandnoun" <> "scissors") then {
+            put #echo >Log Yellow [eng] Scissors are missing, exiting.
+            gosub stow
+            goto eng.exit
+        }
         gosub cut my lumber with my scissor
         gosub stow
         gosub stow left
         gosub get my lumber
     }
-    goto engPrepareItem
+    goto eng.prepareItem
 
 
-engPrepareItem:
+eng.prepareItem:
     gosub get my shaping book
-    gosub turn my book to %engChapter
-    if (%engPage <> 0) then {
-        gosub turn my book to %engPage
-        goto engStudyItem
+    if ("$lefthandnoun" <> "book") then {
+        put #echo >Log Yellow [eng] Missing our shaping book, exiting.
+        gosub stow
+        goto eng.exit
     }
-    goto engFindItemPage
-
-
-#TODO:  Rewrite this to be smarter and less lazy.
-engFindItemPage:
-    var engChapterIndex 0
-
-    engFindItemPageLoop:
-        math engChapterIndex add 1
-        if (%engChapterIndex < %engChapterLength) then {
-            matchre engFindItemPageLoop $eng.craft.item
-            matchre engChapterIndex ^(You turn your book to page|You are already on page)
-            put turn my book to page %engChapterIndex
-            matchwait 5
-        }
-
-
-engPageFound:
-    var engPage %engChapterIndex
-    goto engStudyDesign
-
-
-engStudyItem:
-    gosub study my shaping book
-    gosub stow my shaping book
-    if ($eng.craft.item.design <> 0) then {
-        goto engPrepareDesign
+    gosub eng.findChapter
+    gosub turn my book to %eng.chapter
+    gosub read my book
+    if (%eng.page = 0) then {
+        put #echo >Log Yellow [eng] Could not locate page for $eng.craft.item, exiting.
+        goto eng.exit
     }
-    goto engMain
-
-
-engPrepareDesign:
-
-
-engMain:
-
-------
-
-
-########################
-# Codex Variables
-########################
-setDesignRace:
-    var race.list human|elf|dwarf|elothean|gor'tog|halfling|s'kra mur|rakash|prydaen|gnome|kaldar
-    eval race.len count("%race.list", "|")
-    var race.index 0
-
-    designRaceLoop:
-        if ("%3" = "%race.list(%race.index)") then {
-            put #setvariable codexChapter 1
-            math race.index add 1
-            put #setvariable codexPage %race.index
-            goto setStore
-        }
-        math race.index add 1
-        if (%race.index > %race.len) then {
-            goto setDesignImmortal
-        }
-        goto designRaceLoop
-
-
-setDesignImmortal:
-    var immortal.list welkin|cow|owl|nightingale|wolverine|magpie|kingsnake|albatross|donkey|dove|phoenix|mongoose|jackal|raven|unicorn|wolf|panther|boar|ox|cobra|dolphin|ram|cat|wren|lion|scorpion|raccoon|adder|shrew|shrike|centaur|weasel|viper|shark|coyote|spider|heron|goshawk|vulture
-    eval immortal.len count ("%immortal.list", "|")
-    var immortal.index 1
-
-    designImmortalLoop:
-        if ("%3" = "%immortal.list(%immortal.index)") then {
-            put #setvariable codexChapter 2
-            math immortal.index add 1
-            put #setvariable codexPage %immortal.index
-            goto setStore
-        }
-        math immortal.index add 1
-        if (%immortal.index > %immortal.len) then {
-            goto setDesignAnimal
-        }
-        goto designImmortalLoop
-
-
-setDesignAnimal:
-    var animal.list ship's rat|boobrie|bear|wind hound|bobcat|cougar|hog|beetle|silverfish|grass eel|blood wolf|beisswurm
-    eval animal.len count ("%animal.list", "|")
-    var animal.index 1
-
-    designAnimalLoop:
-        if ("%3" = "%animal.list(%animal.index)") then {
-            put #setvariable codexChapter 3
-            math animal.index add 1
-            put #setvariable codexPage %animal.index
-            goto setStore
-        }
-        math animal.index add 1
-        if (%animal.index > %animal.len) then {
-            put #echo >log red Could not find that design.  Exiting.
-            exit
-        }
-        goto designAnimalLoop
-
-
-########################
-# Main
-########################
-checkForPartial:
-    if ($nextTool <> 0) then {
-	    var %2 $righthandnoun
-        goto $nextTool
-	    }
+    gosub turn my book to %eng.page
+    gosub study my book
+    gosub stow my book
+    if (%eng.craft.item.design <> 0) then {
+        goto eng.prepareDesign
     }
+    goto eng.main
 
 
-
-engCombine:
-    matchre engMarkLumber ^You combine the stacks
-    matchre engExit ^(You need|Combine)
-    put combine
-    matchwait 5
-
-
-
-
-engStowBook:
-    gosub stow book
-    gosub stow codex
-    goto drawknife
-
-
-drawknife:
-    matchre engScrapeLumber ^You untie
-    matchre engExit ^What were you
-    put untie my drawknife on my toolbelt
-    matchwait 5
-
-
-codex:
-    gosub tieTool
-    codex2:
-    matchre turnCodexChapter ^You get
-    matchre engExit ^What were
-    put get my codex
-    matchwait 5
-
-
-turnCodexChapter:
-    matchre turnCodexPage ^(You turn|The codex)
-    put turn my codex to chapter $codexChapter
-    matchwait 5
-
-
-turnCodexPage:
-    matchre studyCodex ^(You turn|The codex)
-    put turn my codex to page $codexPage
-    matchwait 5
-
-
-studyCodex:
-    matchre engStowBook ^You study the codex until you
-    matchre engExitxit ^What were you
-    put study my codex
-    matchwait 5
-
-
-engScrapeLumber:
-    put #var nextTool 0
-    engScrapeLumber1:
-    matchre codex ^You must study a design
-    matchre findNextTool ^Roundtime
-    put scrape my lumber with my drawknife
-    matchwait 5
-
-
-findNextTool:
-    if ($nextTool <> 0 ) then {
-        goto $nextTool
+# Use the defined craft item name to find the chapter and cut number.
+eng.findChapter:
+    var %eng.chapter 0
+    var %eng.chapterGroup 0
+    if (contains("($eng.book.basics)", "%eng.craft.item")) then {
+        var %eng.chapter 1
+        var %eng.chapterGroup basics
     }
-    goto errorExit
-
-
-knife:
-    gosub tieTool
-    pause
-    knife2:
-    matchre engStow ^You need a free hand
-    matchre carve ^You untie
-    matchre engExit ^What were you
-    put untie my carving knife on my toolbelt
-    matchwait 5
-
-
-carve:
-    matchre findNextTool ^Roundtime
-    matchre engDone ^Applying the final touches
-    put carve my %2 with my knife
-    matchwait 5
-
-rasp:
-    gosub tieTool
-    pause
-    rasp2:
-    matchre rasp2 ^You need a free hand
-    matchre scrape ^You untie
-    matchre engExit ^What were you
-    put untie my rasp on my toolbelt
-    matchwait 5
-
-
-scrape:
-    matchre findNextTool ^Roundtime
-    put scrape my %2 with my rasp
-    matchwait 5
-
-
-shaper:
-    gosub tieTool
-    pause
-    shaper2:
-    matchre engStow ^You need a free hand
-    matchre shape ^You untie
-    matchre engExit ^What were you
-    put untie my shaper on my toolbelt
-    matchwait 5
-
-
-shape:
-    matchre findNextTool ^Roundtime
-    matchre shortCord ^You need another finished short leather cord
-    matchre strips ^You need another finished leather strips
-    put shape my %2 with my shaper
-    matchwait 5
-
-
-shortCord:
-    matchre engStow ^You need a free hand
-    matchre engAssemble ^You get
-    matchre engExit ^What were you
-    put get my short cord
-    matchwait 5
-
-
-strips:
-    matchre engStow ^You need a free hand
-    matchre engAssemble ^You get
-    matchre engExit ^What were you
-    put get my strips
-    matchwait 5
-
-
-engAssemble:
-    matchre shaper ^You place your
-    matchre engExit ^What were you
-    put assemble my %2 with my $lefthandnoun
-    matchwait 5
-
-
-tieTool:
-    pause
-    if ("$lefthandnoun" = "shaper") then {
-        put tie my $lefthandnoun to my toolbelt
+    if (contains("($eng.book.enhancements)", "%eng.craft.item.design")) then {
+        if (%eng.chapter <> 0) then {
+            var %eng.chapter 6
+            var %eng.chapterGroup enhancements
+        }
     }
-    else {
-        put tie my $lefthand to my toolbelt
+    if (contains("($eng.book.accessories)", "%eng.craft.item.design")) then {
+        if (%eng.chapter <> 0) then {
+            var %eng.chapter 7
+            var %eng.chapterGroup accessories
+        }
     }
-    pause
+    if (contains("($eng.book.images)", "%eng.craft.item.design")) then {
+        if (%eng.chapter <> 0) then {
+            var %eng.chapter 8
+            var %eng.chapterGroup images
+        }
+    }
+    if (contains("($eng.book.weaponry)", "%eng.craft.item.design")) then {
+        if (%eng.chapter <> 0) then {
+            var %eng.chapter 9
+            var %eng.chapterGroup weaponry
+        }
+    }
+    if (%eng.chapter = 0) then {
+        put #echo >Log Yellow [eng] Failed to find design for %eng.craft.item, exiting.
+        goto eng.exit
+    }
+    var %eng.cut $eng.book.cut.%eng.craft.item
     return
 
 
-engStunPause:
+eng.prepareDesign:
+    var %eng.chapter 0
+    var %eng.page 0
+    gosub get my codex
+    if ("$lefthandnoun" <> "codex") then {
+        put #echo >Log Yellow [eng] Design codex is missing, exiting.
+        gosub stow
+        goto eng.exit
+    }
+    if (contains("($eng.codex.races)", "%eng.craft.item.design")) then {
+        var %eng.chapter 1
+    }
+    if (contains("($eng.codex.immortals)", "%eng.craft.item.design")) then {
+        if (%eng.chapter <> 0) then {
+            var %eng.chapter 2
+        }
+    }
+    if (contains("($eng.codex.animals)", "%eng.craft.item.design")) then {
+        if (%eng.chapter <> 0) then {
+            var %eng.chapter 3
+        }
+    }
+    if (%eng.chapter = 0) then {
+        put #echo >Log [eng] Failed to find design %eng.craft.item.design.
+        goto eng.exit
+    }
+    var %eng.page $eng.codex.page.%eng.craft.item.design
+    gosub turn my codex to %eng.chapter
+    gosub turn my book to %eng.page
+    gosub study my codex
+    gosub stow my codex
+    goto eng.main
+
+
+###############################
+###    MAIN
+###############################
+eng.main:
+    gosub get my drawknife
+    if ("$lefthandnoun" <> "drawknife") then {
+        put #echo >Log Yellow [eng] Drawknife missing!
+        gosub stow
+        goto eng.exit
+    }
+    gosub scrape my lumber with my drawknife
+    gosub stow my drawknife
+
+
+    eng.mainLoop:
+        var eng.lastTool 0
+        if (%eng.craft.nextTool = 0) then {
+            put #echo >Log Yellow [eng] Unable to determine what the next tool is.  Please fix script.
+            gosub stow
+            gosub stow left
+            goto eng.exit
+        }
+        if ("$lefthand" <> "Empty") then {
+            gosub stow left
+        }
+        gosub get my %eng.craft.nextTool
+        if ("$lefthandnoun" <> "%eng.craft.nextTool") then {
+            put #echo >Log Yellow [eng] Tool missing!  (%eng.craft.nextTool)
+            gosub stow
+            goto eng.exit
+        }
+        var eng.lastTool %eng.craft.nextTool
+        var eng.craft.nextTool 0
+        gosub eng.%eng.lastTool
+        goto eng.MainLoop
+
+
+###############################
+###    UTILITY
+###############################
+eng.analyze:
+    gosub stow left
+    gosub eng.stamp
+    gosub analyze $righthandnoun
+    evalmath eng.craft.numberCrafted add 1
+    if (%eng.craft.numberNeeded < %eng.craft.numberCrafted) then {
+        put #echo >log Yellow [eng] Progress %eng.craft.numberCrafted/%eng.craft.numberNeeded
+        goto eng.checkLumber
+    }
+    goto eng.exit
+
+
+eng.cord:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    gosub get my cord
+    if ("$lefthandnoun" <> "cord") then {
+        put #echo >Log Yellow [eng] Need cord to finish %eng.craft.item, exiting.
+        gosub stow
+        goto eng.exit
+    }
+    gosub assemble my %eng.craft.item with cord
+    return
+
+
+eng.knife:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    gosub get my carving knife
+    if ("$lefthandnoun" <> "knife") then {
+        put #echo >Log Yellow [eng] Carving knife missing!
+        gosub stow
+        goto eng.exit
+    }
+    gosub carve my %eng.craft.item with my carving knife
+    gosub stow left
+    return
+
+
+eng.rasp:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    gosub get my rasp
+    if ("$lefthandnoun" <> "rasp") then {
+        put #echo >Log Yellow [eng] Rasp missing!
+        gosub stow
+        goto eng.exit
+    }
+    gosub scrape my %eng.craft.item with my rasp
+    gosub stow left
+    return
+
+
+eng.repairTools:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+
+
+eng.shaper:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    gosub get my wood shaper
+    if ("$lefthandnoun" <> "shaper") then {
+        put #echo >Log Yellow [eng] Wood shaper missing!
+        gosub stow
+        goto eng.exit
+    }
+    gosub shape my %eng.craft.item with my shaper
+    gosub stow left
+    return
+
+
+eng.stamp:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    if ($eng.repairNeeded = 1) then {
+        return
+    }
+    gosub get my stamp
+    if ("$lefthand" = "Empty") then {
+        put #echo >Log Yellow [eng] Stamp is missing!
+        return
+    }
+    gosub mark my %eng.craft.item with my stamp
+    gosub stow stamp
+    return
+
+
+eng.strap:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    gosub get my strap
+    if ("$lefthandnoun" <> "strap") then {
+        put #echo >Log Yellow [eng] Need strap to finish %eng.craft.item, exiting.
+        gosub stow
+        goto eng.exit
+    }
+    gosub assemble my %eng.craft.item with strap
+    return
+
+
+eng.stunPause:
     if ($stunned <> 0) then {
         pause 2
         goto engStunPause
     }
-    if ($nextTool <> 0) then {
-        gosub get my nextTool
-        gosub get my %1
+    if (%eng.craft.nextTool <> 0) then {
+        gosub get my %eng.craft.nextTool
+        gosub get my %eng.craft.item
     }
-    goto checkForPartial
+    goto eng.finishItem
 
 
-########################
-# Exit
-########################
-engDone:
-    put #var nextTool 0
-    gosub tieTool
-    put analyze my %2
-    waitfor Roundtime:
-    pause
-    put stow
-    evalmath crafted (%crafted + 1)
-    if (%crafted < $craftNeed) then {
-        put #echo >log yellow [eng] Progress %crafted/$craftNeed
-	    goto setStore
+###############################
+###    EXIT
+###############################
+eng.exit:
+    if ("$righthand" <> "Empty" || "$lefthand" <> "Empty") then {
+        gosub stow
+        gosub stow left
     }
-
-
-engExit:
-    put #echo >log yellow [eng] Engineering done.  Beginning .inamagic
+    put #echo >log yellow [eng] Engineering done.
     put store default in %defaultContainer
-    put .inamagic
+
+    pause .2
+    put #parse ENG DONE
     exit
 
 
-engErrorExit:
-    put #echo >log red Next Tool was not found.  Exiting.
-    exit
+eng.exitError:
+    put #echo >Log Yellow [eng] Unable to determine next tool for $righthand.
+    goto eng.exit
 
 
-engNeedLumber:
+eng.needLumberExit:
     if ("$righthand" <> "Empty") then gosub stow
     if ("$lefthand" <> "Empty") then gosub stow left
-    put #echo >log yellow [eng] Need more lumber.  Beginning .inauri
+    put #var eng.needLumber 1
+    put #echo >log yellow [eng] Need more lumber.
     put store default in %defaultContainer
-    put .inauri
-    put #script abort all except inauri
-    exit
+    goto eng.exit

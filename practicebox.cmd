@@ -4,7 +4,7 @@ include libmaster.cmd
 ###############
 action var newBox 1 when ^The lock looks weak
 action put close $char.locks.boxType when ^Maybe you should close the (.*) first\.$
-
+action goto practiceBoxExit when ^Pick the recipe box with what\?$
 
 pbCount:
     matchre pbDoCount ^In the.*?you see (.*)\.$
@@ -38,6 +38,7 @@ pbCountDone:
     if (%pbTotalHave > 0) then {
         goto practiceBoxLoop
     }
+
 
 ###############
 # Main
