@@ -10,6 +10,8 @@ action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face ap
 
 action send stop teach when ^Inauri stops listening to you.
 
+action send release rf;send go portal when ^But no one can see you
+
 
 
 if_1 then {

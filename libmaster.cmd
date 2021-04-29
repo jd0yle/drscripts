@@ -2710,6 +2710,7 @@ move:
     matchre move.portal ^What were you referring to?
     matchre move.error ^You can't go there\.
     matchre move.error ^You can't swim in that direction\.
+    matchre move.releaseInvis ^But no one can see you
     matchre pause.then.move ^All this climbing back and forth is getting a bit tiresome
     matchre pause.then.move ^You are too tired
     matchre pause.then.move ^You work against the current
@@ -2747,9 +2748,17 @@ move.error:
 
 
 move.portal:
+    if ($SpellTimer.RefractiveField.active = 1 || $SpellTimer.RefractiveField.duration > 0) then gosub release rf
+    if ($SpellTimer.EyesoftheBlind.active = 1 || $SpellTimer.EyesoftheBlind.duration > 0) then gosub release eotb
     gosub move go portal
     return
 
+
+move.releaseInvis:
+    if ($SpellTimer.RefractiveField.active = 1 || $SpellTimer.RefractiveField.duration > 0) then gosub release rf
+    if ($SpellTimer.EyesoftheBlind.active = 1 || $SpellTimer.EyesoftheBlind.duration > 0) then gosub release eotb
+    goto move1
+    
 
 pause.then.move:
     pause .2
