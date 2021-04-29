@@ -140,7 +140,7 @@ inauri.engineer:
             put #echo >Log Yellow [inauri] Need to repair crafting tools.
             gosub stop teach
             gosub moveToEngineer
-            gosub automove engineering book
+            gosub moveToEngineerRepair
             put .repairtool
             waitforre ^REPAIRTOOL DONE$
             put .deposit
@@ -336,13 +336,36 @@ moveToEngineer:
         gosub automove east gate
         goto moveToEngineer
     }
-    #Shard - City
+    # Shard - City
     if ($zoneid = 67) then {
-        if ("$roomname" = "Shard Engineering Society, Tool Store") then return
+        if ($roomid =  718) then return
+        #if ("$roomname" = "Shard Engineering Society, Tool Store") then return
         gosub automove engineer
         goto moveToEngineer
     }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = 207) then return
+        gosub automove engineer book
+        goto moveToEngineer
+    }
     goto moveToEngineer
+
+
+moveToEngineerRepair:
+    # Shard - City
+    if ($zoneid = 67) then {
+        if ($roomid = 717) then return
+        gosub automove engineering book
+        goto moveToEngineerRepair
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = 205) then return
+        gosub automove engineering clerk
+        goto moveToEngineerRepair
+    }
+    goto moveToEngineerRepair
 
 
 moveToHouse:
