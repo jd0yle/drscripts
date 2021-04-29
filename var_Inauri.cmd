@@ -47,20 +47,6 @@ put #tvar char.craft.workorder.item necklace
 
 
 ###############################
-###      COMBAT
-###############################
-put #tvar char.combat.spell.Debilitation lethargy
-put #tvar char.combat.prep.Debilitation 5
-put #tvar char.combat.charge.Debilitation 0
-put #tvar char.combat.harness.Debilitation 0
-
-put #tvar char.combat.spell.Targeted_Magic paralysis
-put #tvar char.combat.prep.Targeted_Magic 7
-put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 0
-
-
-###############################
 ###      FRIENDS
 ###############################
 var friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh)

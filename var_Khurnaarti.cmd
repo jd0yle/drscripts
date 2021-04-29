@@ -29,20 +29,6 @@ put #tvar char.cast.dc.prep 50
 
 
 ###############################
-###      COMBAT
-###############################
-put #tvar char.combat.spell.Debilitation calm
-put #tvar char.combat.prep.Debilitation 5
-put #tvar char.combat.charge.Debilitation 0
-put #tvar char.combat.harness.Debilitation 0
-
-put #tvar char.combat.spell.Targeted_Magic do
-put #tvar char.combat.prep.Targeted_Magic 4
-put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 0
-
-
-###############################
 ###      FIGHT
 ###############################
 #***** AMMO *****
@@ -129,15 +115,6 @@ put #tvar char.fight.useSls 1
 var friends (Inauri|Qizhmur|Selesthiel)
 var enemies null
 var super.enemies null
-
-
-###############################
-###      INVENTORY
-###############################
-put #tvar char.inv.emptyGemPouchContainer rucksack
-put #tvar char.inv.fullGemPouchContainer rucksack
-put #tvar char.inv.tempContainer rucksack
-put #tvar char.inv.default rucksack
 
 
 ###############################

@@ -130,34 +130,34 @@ eng.prepareItem:
 
 # Use the defined craft item name to find the chapter and cut number.
 eng.findChapter:
-    var %eng.chapter 0
-    var %eng.chapterGroup 0
+    var eng.chapter 0
+    var eng.chapterGroup 0
     if (contains("($eng.book.basics)", "%eng.craft.item")) then {
-        var %eng.chapter 1
-        var %eng.chapterGroup basics
+        var eng.chapter 1
+        var eng.chapterGroup basics
     }
-    if (contains("($eng.book.enhancements)", "%eng.craft.item.design")) then {
+    if (contains("($eng.book.enhancements)", "%eng.craft.item")) then {
         if (%eng.chapter <> 0) then {
-            var %eng.chapter 6
-            var %eng.chapterGroup enhancements
+            var eng.chapter 6
+            var eng.chapterGroup enhancements
         }
     }
-    if (contains("($eng.book.accessories)", "%eng.craft.item.design")) then {
+    if (contains("($eng.book.accessories)", "%eng.craft.item")) then {
         if (%eng.chapter <> 0) then {
-            var %eng.chapter 7
-            var %eng.chapterGroup accessories
+            var eng.chapter 7
+            var eng.chapterGroup accessories
         }
     }
-    if (contains("($eng.book.images)", "%eng.craft.item.design")) then {
+    if (contains("($eng.book.images)", "%eng.craft.item")) then {
         if (%eng.chapter <> 0) then {
-            var %eng.chapter 8
-            var %eng.chapterGroup images
+            var eng.chapter 8
+            var eng.chapterGroup images
         }
     }
-    if (contains("($eng.book.weaponry)", "%eng.craft.item.design")) then {
+    if (contains("($eng.book.weaponry)", "%eng.craft.item")) then {
         if (%eng.chapter <> 0) then {
-            var %eng.chapter 9
-            var %eng.chapterGroup weaponry
+            var eng.chapter 9
+            var eng.chapterGroup weaponry
         }
     }
     if (%eng.chapter = 0) then {
@@ -171,8 +171,8 @@ eng.findChapter:
 
 
 eng.prepareDesign:
-    var %eng.chapter 0
-    var %eng.page 0
+    var eng.chapter 0
+    var eng.page 0
     gosub get my codex
     if ("$lefthandnoun" <> "codex") then {
         put #echo >Log Yellow [eng] Design codex is missing, exiting.
@@ -180,23 +180,23 @@ eng.prepareDesign:
         goto eng.exit
     }
     if (contains("($eng.codex.races)", "%eng.craft.item.design")) then {
-        var %eng.chapter 1
+        var eng.chapter 1
     }
     if (contains("($eng.codex.immortals)", "%eng.craft.item.design")) then {
         if (%eng.chapter <> 0) then {
-            var %eng.chapter 2
+            var eng.chapter 2
         }
     }
     if (contains("($eng.codex.animals)", "%eng.craft.item.design")) then {
         if (%eng.chapter <> 0) then {
-            var %eng.chapter 3
+            var eng.chapter 3
         }
     }
     if (%eng.chapter = 0) then {
         put #echo >Log [eng] Failed to find design %eng.craft.item.design.
         goto eng.exit
     }
-    var %eng.page $eng.codex.page.%eng.craft.item.design
+    var eng.page $eng.codex.page.%eng.craft.item.design
     gosub turn my codex to %eng.chapter
     gosub turn my book to %eng.page
     gosub study my codex
@@ -373,7 +373,7 @@ eng.exit:
         gosub stow left
     }
     put #echo >log yellow [eng] Engineering done.
-    gosub store default in %defaultContainer
+    gosub store default $char.craft.default.container
 
     pause .2
     put #parse ENG DONE
@@ -390,5 +390,5 @@ eng.needLumberExit:
     if ("$lefthand" <> "Empty") then gosub stow left
     put #var eng.needLumber 1
     put #echo >log yellow [eng] Need more lumber.
-    gosub store default in %defaultContainer
+    gosub store default $char.craft.default.container
     goto eng.exit
