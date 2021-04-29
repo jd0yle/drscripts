@@ -173,9 +173,12 @@ put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 35
 
-put #tvar char.magic.train.spell.Warding maf
+#put #tvar char.magic.train.spell.Warding maf
+#put #tvar char.magic.train.prep.Warding 10
+#if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
+put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 43
 
 
 

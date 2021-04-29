@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 
-var expectedNumBolts fifty-four
+var expectedNumBolts fifty-one
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -9,6 +9,8 @@ action goto logout when eval $dead = 1
 action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the Demrris window.
 
 action send stop teach when ^Inauri stops listening to you.
+
+action send release rf;send go portal when ^But no one can see you
 
 
 
@@ -117,7 +119,7 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 20 || $Sorcery.LearningRate < 2) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Arcana.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed

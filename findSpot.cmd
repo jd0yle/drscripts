@@ -71,12 +71,12 @@ if ("%mob" = "adanf") then {
 }
 
 
-if ($roomid >= %checkRoomId && $roomid <= %maxRoomId && "$roomplayers" = "") then {
+if ($roomid >= %checkRoomId && $roomid <= %maxRoomId && "$roomplayers" = "" && !contains("$roomobjs", "dirt construct")) then {
     pause 1
     goto done
 }
 
-if ("%mob" = "wyvern" || "%mob" = "wyvern2") then {
+if ("%mob" = "wyvern" || "%mob" = "wyvern2" && "$roomplayers" = "") then {
     if ( ($roomid >= 567 && $roomid <= 572) || ($roomid >= 480 && $roomid <= 487)) then {
         pause 1
         goto done
@@ -97,7 +97,7 @@ findRoom:
 
 
 checkThisRoom:
-    if (("$roomplayers" != "" || $monstercount >= 2) && !matchre("$roomplayers", "Maori")) then {
+    if (("$roomplayers" != "" || $monstercount >= 2 || contains("$roomobjs", "dirt construct")) && !matchre("$roomplayers", "Maori")) then {
         math checkRoomId add 1
         if (%checkRoomId > %maxRoomId) then {
             if ("%mob" = "wyvern") then {
