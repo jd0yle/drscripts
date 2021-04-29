@@ -213,7 +213,10 @@ eng.prepareDesign:
 ###    MAIN
 ###############################
 eng.main:
-    gosub get my drawknife
+    if ("$lefthandnoun" <> "drawknife") then {
+        gosub stow
+        gosub get my drawknife
+    }
     if ("$lefthandnoun" <> "drawknife") then {
         put #echo >Log Orange [eng] Drawknife missing!
         gosub stow
@@ -258,7 +261,7 @@ eng.analyze:
     gosub eng.stamp
     gosub analyze $righthandnoun
     evalmath eng.craft.numberCrafted (%eng.craft.numberCrafted + 1)
-    if (%eng.craft.numberNeeded < %eng.craft.numberCrafted) then {
+    if (%eng.craft.numberNeeded > %eng.craft.numberCrafted) then {
         put #echo >log Yellow [eng] Progress %eng.craft.numberCrafted/%eng.craft.numberNeeded
         goto eng.checkLumber
     }
@@ -268,8 +271,8 @@ eng.analyze:
 eng.cord:
     if ("$lefthand" <> "cord") then {
         gosub stow left
+        gosub get my cord
     }
-    gosub get my cord
     if ("$lefthandnoun" <> "cord") then {
         put #echo >Log Yellow [eng] Need cord to finish $eng.craft.item, exiting.
         gosub stow
@@ -282,8 +285,8 @@ eng.cord:
 eng.knife:
     if ("$lefthand" <> "knife") then {
         gosub stow left
+        gosub get my carving knife
     }
-    gosub get my carving knife
     if ("$lefthandnoun" <> "knife") then {
         put #echo >Log Orange [eng] Carving knife missing!
         gosub stow
@@ -297,8 +300,8 @@ eng.knife:
 eng.rasp:
     if ("$lefthandnoun" <> "rasp") then {
         gosub stow left
+        gosub get my rasp
     }
-    gosub get my rasp
     if ("$lefthandnoun" <> "rasp") then {
         put #echo >Log Orange [eng] Rasp missing!
         gosub stow
@@ -322,8 +325,8 @@ eng.repairTools:
 eng.shaper:
     if ("$lefthandnoun" <> "shaper") then {
         gosub stow left
+        gosub get my wood shaper
     }
-    gosub get my wood shaper
     if ("$lefthandnoun" <> "shaper") then {
         put #echo >Log Orange [eng] Wood shaper missing!
         gosub stow
@@ -335,13 +338,13 @@ eng.shaper:
 
 
 eng.stamp:
-    if ("$lefthand" <> "stamp") then {
-        gosub stow left
-    }
     if ($eng.repairNeeded = 1) then {
         return
     }
-    gosub get my stamp
+    if ("$lefthand" <> "stamp") then {
+        gosub stow left
+        gosub get my stamp
+    }
     if ("$lefthand" = "Empty") then {
         put #echo >Log Orange [eng] Stamp is missing!
         return
@@ -354,8 +357,8 @@ eng.stamp:
 eng.strap:
     if ("$lefthand" <> "strap") then {
         gosub stow left
+        gosub get my strap
     }
-    gosub get my strap
     if ("$lefthandnoun" <> "strap") then {
         put #echo >Log Yellow [eng] Need strap to finish $eng.craft.item, exiting.
         gosub stow

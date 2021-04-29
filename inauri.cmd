@@ -31,7 +31,6 @@ if (!($inauri.healTarget >0)) then put #var inauri.healTarget 0
 if (!($inauri.subScript >0)) then put #var inauri.subScript 0
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
-if (!($lastEngineerGametime >0)) then put #var lastEngineerGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
@@ -136,45 +135,39 @@ inauri.door:
 
 
 inauri.engineer:
-    evalmath nextTrainer $lastEngineerGametime + 3600
-    if (%nextTrainer > $gametime) then {
-        return
-    } else {
-        if ($Engineering.LearningRate = 0) then {
-            if ($eng.repairNeeded = 1) then {
-                put #echo >Log Yellow [inauri] Need to repair crafting tools.
-                gosub stop teach
-                gosub moveToEngineer
-                gosub automove engineering book
-                put .repairtool
-                waitforre ^REPAIRTOOL DONE$
-                put .deposit
-                waitforre ^DEPOSIT DONE$
-                gosub moveToHouse
-                put .house
-                waitforre ^HOUSE DONE$
-             }
-
-            if ($eng.needLumber = 1) then {
-                put #echo >Log Yellow [inauri] Need lumber for engineering.
-                gosub stop teach
-                gosub moveToEngineer
-                put .workorder
-                waitforre ^WORKORDER DONE$
-                put .deposit
-                waitforre ^DEPOSIT DONE$
-                gosub moveToHouse
-                put .house
-                waitforre ^HOUSE DONE$
-            }
-            put #var inauri.subScript eng
-            put #echo >Log Yellow [inauri] Beginning engineering.
-            put #var lastEngineerGametime $gametime
-            put .eng 5 $char.craft.item
-            waitforre ^ENG DONE
-            put #var inauri.subScript 0
-            put #script abort all except inauri
+    if ($Engineering.LearningRate = 0) then {
+        if ($eng.repairNeeded = 1) then {
+            put #echo >Log Yellow [inauri] Need to repair crafting tools.
+            gosub stop teach
+            gosub moveToEngineer
+            gosub automove engineering book
+            put .repairtool
+            waitforre ^REPAIRTOOL DONE$
+            put .deposit
+            waitforre ^DEPOSIT DONE$
+            gosub moveToHouse
+            put .house
+            waitforre ^HOUSE DONE$
         }
+
+        if ($eng.needLumber = 1) then {
+            put #echo >Log Yellow [inauri] Need lumber for engineering.
+            gosub stop teach
+            gosub moveToEngineer
+            put .workorder
+            waitforre ^WORKORDER DONE$
+            put .deposit
+            waitforre ^DEPOSIT DONE$
+            gosub moveToHouse
+            put .house
+            waitforre ^HOUSE DONE$
+        }
+        put #var inauri.subScript engineer
+        put #echo >Log Yellow [inauri] Beginning engineering.
+        put .engineer 5 $char.craft.item
+        waitforre ^ENGINEER DONE
+        put #var inauri.subScript 0
+        put #script abort all except inauri
     }
     return
 
