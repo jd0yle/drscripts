@@ -1,5 +1,6 @@
 include libmaster.cmd
-include var_eng.cmd
+include var_engineer.cmd
+debug 5
 ##############################
 ### Engineering
 ### USAGE: .eng <number> <item> [design]
@@ -39,10 +40,10 @@ if_3 then {
     var eng.craft.item.design %3
 }
 
-put #script abort all except eng
+put #script abort all except engineer
 put .look
-
-put store default $char.craft.container
+gosub store default $char.craft.container
+goto eng.finishItem
 
 
 ###############################
@@ -55,7 +56,7 @@ eng.finishItem:
         put analyze %eng.craft.item
         matchwait 5
     }
-    goto engCheckLumber
+    goto eng.checkLumber
 
 
 eng.setNextTool:
@@ -76,8 +77,11 @@ eng.checkLumber:
 
 
 eng.lumberCount:
-    put count my lumber
-    if (%eng.lumber < %engCut) then {
+    gosub count my lumber
+    if (%eng.cut = 0) then {
+        var eng.cut $eng.book.cut.%eng.craft.item
+    }
+    if (%eng.lumber < %eng.cut) then {
         goto eng.needLumberExit
     }
     goto eng.prepareLumber
@@ -85,8 +89,8 @@ eng.lumberCount:
 
 eng.prepareLumber:
     gosub get my lumber
-    if (%eng.lumber <> %engCut) then {
-        gosub mark my lumber at %engCut
+    if (%eng.lumber <> %eng.cut) then {
+        gosub mark my lumber at %eng.cut
         gosub get my scissors
         if ("$lefthandnoun" <> "scissors") then {
             put #echo >Log Yellow [eng] Scissors are missing, exiting.
@@ -160,7 +164,9 @@ eng.findChapter:
         put #echo >Log Yellow [eng] Failed to find design for %eng.craft.item, exiting.
         goto eng.exit
     }
-    var %eng.cut $eng.book.cut.%eng.craft.item
+    if (%eng.cut = 0) then {
+        var eng.cut $eng.book.cut.%eng.craft.item
+    }
     return
 
 
@@ -367,7 +373,7 @@ eng.exit:
         gosub stow left
     }
     put #echo >log yellow [eng] Engineering done.
-    put store default in %defaultContainer
+    gosub store default in %defaultContainer
 
     pause .2
     put #parse ENG DONE
@@ -384,5 +390,5 @@ eng.needLumberExit:
     if ("$lefthand" <> "Empty") then gosub stow left
     put #var eng.needLumber 1
     put #echo >log yellow [eng] Need more lumber.
-    put store default in %defaultContainer
+    gosub store default in %defaultContainer
     goto eng.exit

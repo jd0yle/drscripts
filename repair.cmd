@@ -126,7 +126,7 @@ repair.fetchItems:
         }
         gosub repair.moveToRepairMetal
     }
-    if ("%repair.ticketName" = "repairmain") then {
+    if ("%repair.ticketName" = "repairmain" || "%repair.ticketName" = "Lakyan") then {
         gosub repair.moveToFangCove
         gosub repair.moveToRepairLeather
     }

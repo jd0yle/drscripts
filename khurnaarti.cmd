@@ -335,7 +335,7 @@ moveToFangCove:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if ($roomid = 51) then {
+        if ($roomid = 50) then {
             put #script abort all except khurnaarti
             put .train
             put #script abort all except train
