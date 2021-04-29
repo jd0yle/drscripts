@@ -12,7 +12,7 @@ action var repair wornArmor 1 when ^You aren't wearing anything like that\.$
 var leatherList $char.repair.leather
 var metalList $char.repair.metal
 
-var repair.metalList %armorMetal|%toolMetal
+var repair.emptySack 0
 var repair.index 0
 var repair.length 0
 var repair.npc 0
@@ -126,6 +126,10 @@ repair.fetchItems:
         }
         gosub repair.moveToRepairMetal
     }
+    if ("%repair.ticketName" = "repairmain") then {
+        gosub repair.moveToFangCove
+        gosub repair.moveToRepairLeather
+    }
     if ("%repair.ticketName" = "Osmandikar" && repair.skipMetalRepair) then {
         gosub repair.moveToFangCove
         gosub repair.moveToRepairLeather
@@ -235,7 +239,7 @@ repair.repairSingle:
 
 repair.sack:
     put .empty --from=large sack
-    waitforre ^EMPTY DONE$
+    waitforre ^EMPTY DONE
     gosub look in my large sack
     if (%repair.emptySack = 0) then {
         if (contains("$roomobjs", "bucket")) then {
@@ -252,7 +256,7 @@ repair.sack:
             gosub put my sack in %repair.trash
         }
     } else {
-        put #echo >Log Red [repair] There is something left in the sack.  Stowing it.
+        put #echo >Log Red [repair] There is something left in the sack. (%repair.sackItems)  Stowing it.
         gosub stow
     }
     return

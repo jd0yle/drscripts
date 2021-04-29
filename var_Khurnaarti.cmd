@@ -120,7 +120,7 @@ put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 1
 put #tvar char.fight.useShw 0
-put #tvar char.fight.useSls 0
+put #tvar char.fight.useSls 1
 
 
 ###############################
@@ -143,7 +143,7 @@ put #tvar char.inv.default rucksack
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType jewelry box
+put #tvar char.locks.boxType keepsake box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
@@ -207,7 +207,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song wedding
+put #tvar char.performance.song hymn
 put #tvar char.performance.mood quiet
 
 

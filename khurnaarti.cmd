@@ -329,15 +329,19 @@ moveToBurgle:
 moveToFangCove:
     # Shard - East Gate
     if ($zoneid = 66) then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto moveToFangCove
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
         if ($roomid = 51) then {
             put #script abort all except khurnaarti
             put .train
             put #script abort all except train
             exit
         }
-        gosub automove portal
-        gosub move go meeting portal
-        gosub automove 51
+        gosub automove 50
         goto moveToFangCove
     }
     goto moveToFangCove
