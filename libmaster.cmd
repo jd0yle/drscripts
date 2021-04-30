@@ -1851,8 +1851,7 @@ remove:
     matchre return ^You aren't wearing that\.
     matchre return ^You count out
     matchre return ^You loosen the straps securing
-    matchre return ^You pull off
-    matchre return ^You pull your
+    matchre return ^You pull
     matchre return ^You remove
     matchre return ^You slide
     matchre return ^You sling
@@ -2580,6 +2579,7 @@ wear:
     matchre return ^You can't wear any more items like that\.
     matchre return ^You drape
     matchre return ^You hang
+    matchre return ^You place
     matchre return ^You put
     matchre return ^You slide
     matchre return ^You sling
