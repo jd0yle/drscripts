@@ -9,8 +9,9 @@ action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable t
 action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
 action var khurnaarti.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action put #var lib.student 0 when ^Inauri stops teaching\.$
-
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
+
+
 ###############################
 ###    VARIABLES
 ###############################
@@ -18,7 +19,6 @@ if (!($khurnaarti.student >0)) then put #var khurnaarti.student 0
 if (!($char.burgle.cooldown >0)) then put #var char.burgle.cooldown 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
-if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
@@ -50,7 +50,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.faSkin
     pause 1
-    gosub khurnaarti.perc
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     pause 1
     if ($Astrology.LearningRate < 30) then gosub khurnaarti.astrology
     pause 1
@@ -264,15 +264,9 @@ khurnaarti.look:
 
 khurnaarti.magic:
     if ($Augmentation.LearningRate < 5) then {
-       put #var lastMagicGametime $gametime
        put .magic noLoop
        waitforre ^MAGIC DONE
     }
-    return
-
-
-khurnaarti.perc:
-    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
     return
 
 

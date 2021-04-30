@@ -92,7 +92,7 @@ pb.main:
     }
     gosub lock my $char.locks.boxType
     gosub pick my $char.locks.boxType
-    if ($Locksmithing.LearningRate < 30) then goto pb.loop
+    if ($Locksmithing.LearningRate < 30) then goto pb.main
     goto pb.exit
 
 

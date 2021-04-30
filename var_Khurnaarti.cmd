@@ -6,6 +6,12 @@ put #tvar char.appraise.item my sail pouch
 
 
 ###############################
+###      ARMOR
+###############################
+put #tvar char.armor chain balaclava|chain gloves|quilted hauberk|small targe|demonscale armguard|knee spikes|elbow spikes|steelsilk knuckles|steelsilk footwraps
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband

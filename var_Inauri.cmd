@@ -6,6 +6,12 @@ put #tvar char.appraise.item my gem pouch
 
 
 ###############################
+###      ARMOR
+###############################
+put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|knee spikes|elbow spikes|knuckles|footwraps|armguard
+
+
+###############################
 ###      BURGLE
 ###############################
 put #tvar char.burgle.cooldown null
