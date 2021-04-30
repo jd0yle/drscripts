@@ -46,10 +46,10 @@ look.loop:
             if (!contains("$scriptlist", "$inauri.subScript")) then {
                 put #echo >Log [look] $inauri.subScript crashed, restarting it..
 
-                if ("$inauri.subScript" = "eng") then {
+                if ("$inauri.subScript" = "engineer") then {
                     if ("$righthand" <> "Empty" && "$nextTool" <> 0) then {
-                        put .eng 1 necklace
-                    } else put .eng 2 necklace
+                        put .engineer 1 necklace
+                    } else put .engineer 2 necklace
                 }
 
                 if ("$inauri.subScript" = "magic" then {

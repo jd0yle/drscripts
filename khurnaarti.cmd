@@ -97,15 +97,9 @@ khurnaarti.astrology:
 
 
 khurnaarti.burgle:
-    if ($Stealth.LearningRate > 10) then {
-        return
-    }
-    put burgle recall
-    if ($char.timers.nextBurgleAt < $gametime) then {
-        gosub burgle.onTimer
-    }
-    if ($char.timers.nextBurgleAt < $gametime) then {
-        put #echo >Log #cc99ff [khurnaarti] Going to burgle
+    gosub burgle.setNextBurgleAt
+    if ($lib.timers.nextBurgleAt < $gametime) then {
+        put #echo >Log Red [khurnaarti] Going to burgle
         put #var lib.student 0
         gosub moveToBurgle
         put .burgle
@@ -285,6 +279,12 @@ khurnaarti.perc:
 khurnaarti.play:
     if ($Performance.LearningRate > 15) then {
         return
+    }
+    if ("$lefthand" <> "Empty" || "$righthand" <> "Empty") then {
+        gosub stow
+        gosub stow left
+        gosub wear $righthandnoun
+        gosub wear $lefthandnoun
     }
     gosub get my $char.performance.instrument
     gosub play $char.performance.song $char.performance.mood

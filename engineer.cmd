@@ -214,12 +214,13 @@ eng.prepareDesign:
 ###############################
 eng.main:
     if ("$lefthandnoun" <> "drawknife") then {
-        gosub stow
+        gosub stow left
         gosub get my drawknife
+        exit
     }
     if ("$lefthandnoun" <> "drawknife") then {
         put #echo >Log Orange [eng] Drawknife missing!
-        gosub stow
+        gosub stow left
         goto eng.exit
     }
     gosub scrape my lumber with my drawknife
@@ -244,7 +245,7 @@ eng.main:
         }
         if ("$lefthandnoun" = "Empty") then {
             put #echo >Log Orange [eng] Tool missing!  (%eng.craft.nextTool)
-            gosub stow
+            gosub stow left
             goto eng.exit
         }
         var eng.lastTool %eng.craft.nextTool
@@ -402,8 +403,10 @@ eng.exitError:
 
 
 eng.needLumberExit:
-    if ("$righthand" <> "Empty") then gosub stow
-    if ("$lefthand" <> "Empty") then gosub stow left
+    if ("$righthand" <> "Empty" || "$lefthand" <> "Empty") then {
+        gosub stow
+        gosub stow left
+    }
     put #var eng.needLumber 1
     put #echo >log yellow [eng] Need more lumber.
     gosub store default $char.craft.default.container
