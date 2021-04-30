@@ -2527,8 +2527,17 @@ unlock:
     matchre return ^You don't have a key
     matchre return ^You rattle
     matchre return ^You unlock
+    matchre unlock.invisible ^That would reveal your hiding place.
     put unlock %todo
     goto retry
+
+unlock.invisible:
+    var unlockTodo %todo
+    if ($SpellTimer.RefractiveField.active = 1 || $SpellTimer.RefractiveField.duration > 0) then gosub release rf
+    if ($SpellTimer.EyesoftheBlind.active = 1 || $SpellTimer.EyesoftheBlind.duration > 0) then gosub release eotb
+    var todo %unlockTodo
+    unvar unlockTodo
+    goto unlock1
 
 
 untie:

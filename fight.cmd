@@ -793,7 +793,7 @@ manageCyclics:
         var shouldCastSls 1
         if ($SpellTimer.StarlightSphere.active = 1) then var shouldCastSls 0
         if ($mana < 80) then var shouldCastSls 0
-        if ($Targeted_Magic.LearningRate >= -1) then var shouldCastSls 0
+        if ($Targeted_Magic.LearningRate >= 27) then var shouldCastSls 0
         if ($monstercount < 2) then var shouldCastSls 0
 
         if (%shouldCastSls = 1) then {
@@ -806,7 +806,7 @@ manageCyclics:
             var shouldReleaseSls 0
             if ($mana < 60) then var shouldReleaseSls 1
             if ("$roomplayers" != "") then var shouldReleaseSls 1
-            if ($Targeted_Magic.LearningRate > 2) then var shouldReleaseSls 1
+            if ($Targeted_Magic.LearningRate > 32) then var shouldReleaseSls 1
 
             if (%shouldReleaseSls = 1) then gosub release sls
         }
