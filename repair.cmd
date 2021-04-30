@@ -4,7 +4,8 @@ action var repair.emptySack 1 ; var repair.sackItems $1 when ^In the large sack 
 action var repair.waitTimeMin $1 ;evalmath repair.waitTimeSec %repair.waitTimeMin * 60 + 60 when ^.*be ready for another (\d+) roisaen\.$
 action var repair.waitTimeMin 0 ; var repair.waitTimeSec 0 when ^.* be ready by now\.$
 action var repair.waitTimeMin 2 ; var repair.waitTimeSec 60 when ^.* be ready any moment now\.$
-action var repair wornArmor 1 when ^You aren't wearing anything like that\.$
+action var repair.wornArmor 1 when ^You aren't wearing anything like that\.$
+action var repair.wornItem 1 when ^But that is already in your inventory\.$
 
 ###############################
 ###      VARIABLES
@@ -23,19 +24,21 @@ var repair.trash 0
 var repair.waitTimeMin 0
 var repair.waitTimeSec 0
 var repair.wornArmor 0
+var repair.wornItem 0
 
 # Note:  No support for Ylono Leather Repair in Shard because of no NPC and broken automapper.
 ###############################
 ###      NECROMANCER
 ###############################
 var repair.forceFangCove $char.repair.forceFangCove
-var repair.skipMetalRepair false
+var repair.forceRepairman false
 
 if ("$guild" = "Necromancer") then {
     var repair.forceFangCove true
     if ($Time.isDay = 0) then {
-        var repair.skipMetalRepair true
-        put #echo >Log Blue [repair] Metal repair skipped due to night.
+        if ("$Time.timeOfDay" <> "sunrise") then {
+            var repair.forceRepairman true
+        }
     }
 }
 
@@ -78,8 +81,9 @@ repair.checkForTicket:
 repair.main:
     if (%repair.forceFangCove = true) then {
         if ($Time.isDay = 0) then {
-            var repair.skipMetalRepair true
-            put #echo >Log Blue [repair] Metal repair skipped due to night.
+            if ("$Time.timeOfDay" <> "sunrise") then {
+                var repair.forceRepairman true
+            }
         }
         if ($zoneid <> 150) then {
             gosub repair.moveToFangCove
@@ -87,12 +91,11 @@ repair.main:
         gosub repair.moveToFangCove
     }
     gosub repair.checkMoney
-    # Begin Metal Repair unless skipping for Fang Cove.
-    if !(%repair.skipMetalRepair) then {
-        gosub repair.moveToRepairMetal
-        gosub repair.repairAll
-        gosub repair.repairSingle %metalList
-    }
+    # Begin Metal Repair.
+    gosub repair.moveToRepairMetal
+    gosub repair.repairAll
+    gosub repair.repairSingle %metalList
+
     # Begin Leather Repair.
     gosub repair.moveToRepairLeather
     gosub repair.repairAll
@@ -130,7 +133,7 @@ repair.fetchItems:
         gosub repair.moveToFangCove
         gosub repair.moveToRepairLeather
     }
-    if ("%repair.ticketName" = "Osmandikar" && repair.skipMetalRepair) then {
+    if ("%repair.ticketName" = "Osmandikar" && repair.forceRepairman = true) then {
         gosub repair.moveToFangCove
         gosub repair.moveToRepairLeather
     }
@@ -226,10 +229,19 @@ repair.repairSingle:
 
 
     repair.repairSingleLoop:
+        var repair.wornItem 0
         gosub get my %repair.group(%repair.index)
+        if (%repair.wornItem = 1) then {
+            gosub remove my %repair.group(%repair.index)
+        }
         if ("$righthand" = "%repair.group(%repair.index)") then {
             gosub give %repair.npc
             gosub give %repair.npc
+            if (%repair.wornItem = 1) then {
+                gosub wear my %repair.group(%repair.index)
+            }
+        }
+        if ("$righthand" <> "Empty") then {
             gosub stow
         }
         math repair.index add 1
@@ -423,9 +435,10 @@ repair.moveToRepairMetal:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if (%repair.skipMetalRepair = true) then {
+        if (%repair.forceRepairman = true) then {
+            if ($roomid = 55) then return
             gosub automove repair leather
-            return
+            goto repair.moveToRepairMetal
         }
         if ($roomid = 54) then return
         gosub automove repair metal
