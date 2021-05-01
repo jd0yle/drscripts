@@ -160,7 +160,7 @@ put #tvar char.magic.train.prep.Utility 15
 put #tvar char.magic.train.charge.Utility 13
 put #tvar char.magic.train.harness.Utility 0
 
-put #tvar char.magic.train.spell.Warding col
+put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 15
 put #tvar char.magic.train.charge.Warding 13
 put #tvar char.magic.train.harness.Warding 0

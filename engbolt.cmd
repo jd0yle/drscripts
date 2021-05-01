@@ -2,9 +2,9 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-action goto engbolt.boltheads when ^The bolts are ready for an application of glue to affix each bolthead\.$
-action goto engbolt.flights when ^The bolts are ready for an application of glue to attach the flights\.$
-action goto engbolt.knife when ^Now the flights are ready to be trimmed with a carving knife\.$|^A handful of rough edges require carving with a knife to remove\.$
+action goto engbolt.boltheads when ^The bolts are ready for an application of glue to affix each bolthead\.$|^The bolts must have glue applied to them for affixing the boltheads\.$
+action goto engbolt.flights when ^The bolts are ready for an application of glue to attach the flights\.$|^The bolts must have glue applied to them for affixing the flights\.$
+action goto engbolt.knife when ^Now the flights are ready to be trimmed with a carving knife\.$|^A handful of rough edges require carving with a knife to remove\.$|^The arrows must be carved with a knife to trim and shape the flights\.$|^Several adjustments must be made to the bolt by carving it with a knife\.$
 action goto engbolt.shaper when ^The bolts is ready for shaping with a wood shaper\.$
 action var engbolt.pageContent $1 when ^You turn your book to page \d+, instructions for crafting (.+) bolts\.$
 
@@ -25,6 +25,12 @@ gosub store default %engbolt.craftbag
 ###############################
 ###    MAIN
 ###############################
+engbolt.checkForPartial:
+    if ("$righthand" <> "Empty") then {
+        gosub analyze my $righthandnoun
+    }
+
+
 engbolt.book:
     gosub get my tinker book
     gosub turn my book to chap 7
@@ -44,9 +50,10 @@ engbolt.boltheads:
         gosub stow my shaper
     }
     gosub get my boltheads
-    if ("$righthand" = "Empty") then {
+    if ("$lefthand" = "Empty") then {
+        gosub stow bolts
         gosub open my %engbolt.boltheadMaterialBag
-        gosub get %engbolt.boltHeadMaterial from my %engbolt.boltheadMaterialBag
+        gosub get %engbolt.boltheadMaterial from my %engbolt.boltheadMaterialBag
 
         if ("$righthand" = "Empty") then {
             put #echo >Log [engbolt] No boltheads and no %engbolt.boltheadMaterial, exiting.
@@ -57,9 +64,10 @@ engbolt.boltheads:
             put #echo >Log [engbolt] Rasp missing, exiting.
             goto engbolt.exit
         }
-        gosub shape %eng.boltheadMaterial into bolthead
+        gosub shape %engbolt.boltheadMaterial into bolthead
         gosub stow my rasp
-        gosub get my shafts
+        gosub swap
+        gosub get my bolts
     }
 
         gosub assemble my bolts with my boltheads

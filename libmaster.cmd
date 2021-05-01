@@ -239,7 +239,7 @@ action put #var lib.class 1 when ^\S+ begins to listen to you teach the .* skill
 action put #var lib.class 1 when ^You are teaching a class on .*$
 action put #var lib.class 1 when ^You continue to instruct your students? on (.*)\.$
 action put #var lib.student 1 when ^You begin to listen to \w+ teach.*$
-action put #var lib.student 1 when You are (in|observing) this class\!$
+action put #var lib.student 1 when ^.*You are (in|observing) this class\!$
 action put #var lib.student 0 ; put #var lib.instructor $1 when ^(\S+) is teaching a class on .* which is still open to new students\.$
 action put #var lib.student 0 when ^Being unconscious, you make a lousy student, so \w+ stops teaching you\.$
 action put #var lib.student 0 when ^But you aren't listening to anyone\.$

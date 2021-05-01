@@ -125,7 +125,7 @@ loop:
         if ("$char.magic.train.spell.%skill" = "col") then {
             gosub checkMoons
             if ($moon = null) then {
-                put #echo #FF0000 [magic] NO MOON AVAILABLE for Cage of Light!
+                put #echo >log #FF0000 [magic] NO MOON AVAILABLE for Cage of Light!
                 goto done
             }
             gosub cast $moon
