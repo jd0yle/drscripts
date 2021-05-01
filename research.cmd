@@ -45,10 +45,7 @@ var stallCheckGametime $gametime
 loop:
     if ("%researchProject" = "null") then {
         if ($Sorcery.LearningRate > 30) then goto done
-        if ($SpellTimer.GaugeFlow.duration < 10) then {
-            put .cast gaf
-            waitforre ^CAST DONE$
-        }
+        if ($SpellTimer.GaugeFlow.duration < 10) then gosub runScript cast gaf
 
         if ("$guild" = "Moon Mage" && %doIdle = 1) then gosub runScript astro
 
@@ -60,6 +57,7 @@ loop:
         if (%diff > 300) then {
             pause
             put research %project 300
+            var stallCheckGametime $gametime
         }
     }
 

@@ -1,7 +1,7 @@
 include libmaster.cmd
 
 
-var expectedNumBolts forty-five
+var expectedNumBolts fifty-four
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -56,25 +56,21 @@ main:
         }
 
         gosub prep rf
-
-        put .armor remove
-        waitforre ^ARMOR DONE$
-
+        gosub runScript armor remove
         gosub cast
 
-        put .burgle
-        waitforre ^BURGLE DONE$
-
-        #gosub release rf
-
-        put .armor wear
-        waitforre ^ARMOR DONE$
+        gosub runScript burgle
+        gosub runScript armor wear
 
         gosub automove n gate
-
-        gosub prep rf
-
         gosub automove portal
+        gosub move go gate
+        gosub automove pawn
+
+        gosub runScript pawn
+        gosub prep rf
+        gosub automove portal
+
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         gosub move go meeting portal
 
@@ -371,9 +367,12 @@ moveToWyverns:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        put .findSpot wyvern
-        waitforre ^FINDSPOT DONE$
+        gosub runScript findSpot juvenilewyvern
         return
+
+        #put .findSpot wyvern
+        #waitforre ^FINDSPOT DONE$
+        #return
     }
 
     # Shard East Gate Area

@@ -156,13 +156,11 @@ main:
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
             gosub release cyclic
+
+            gosub sorceryDevour
+            gosub automove 106
+
             var startResearch 0
-            gosub prep devour 30
-            gosub charge my calf 30
-            gosub invoke calf 30
-            gosub get my material
-            gosub waitForPrep
-            gosub cast
             gosub stow right
             gosub stow left
             put .research sorcery
@@ -196,6 +194,13 @@ sorceryCont:
     put #script abort all except qizhmur
     put .reconnect
     goto magicCont
+
+
+sorceryDevour:
+    if ($SpellTimer.Devour.active = 1) then return
+    gosub runScript findSpot fcrat
+    gosub runScript devourfcrat
+    goto sorceryDevour
 
 
 

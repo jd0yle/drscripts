@@ -514,7 +514,7 @@ checkWeaponSkills:
                 if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
             }
         } else {
-            if ("$charactername" = "Selesthiel") then var weapons.targetLearningRate 0
+            #if ("$charactername" = "Selesthiel") then var weapons.targetLearningRate 0
         }
     }
 
