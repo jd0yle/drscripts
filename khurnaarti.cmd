@@ -139,7 +139,7 @@ khurnaarti.classSetClass:
         gosub listen $lib.instructor observe
         put #var lib.student 1
     } else {
-        gosub listen $lib.instructor
+        gosub listen $lib.instructor observe
         put #var lib.student 1
     }
     goto khurnaarti.Class
