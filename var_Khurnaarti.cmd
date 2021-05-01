@@ -110,7 +110,7 @@ put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 1
 put #tvar char.fight.useShw 0
-put #tvar char.fight.useSls 1
+put #tvar char.fight.useSls 0
 
 
 ###############################

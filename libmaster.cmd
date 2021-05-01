@@ -49,9 +49,9 @@ var todo
 ###############################
 ###    BURGLE
 ###############################
-#put #trigger {^You should wait at least (\d+) roisaen for the heat to die down\.$} {#var char.timers.nextBurgleAt #evalMath {($1 * 60) + $gametime + 120}} {timers}
-#put #trigger {^The heat has died down from your last caper\.$} {#var char.timers.nextBurgleAt $gametime} {timers}
-#put #trigger {^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$} {#var char.timers.nextBurgleAt $gametime} {timers}
+#put #trigger {^You should wait at least (\d+) roisaen for the heat to die down\.$} {#var lib.timers.nextBurgleAt #evalMath {($1 * 60) + $gametime + 120}} {timers}
+#put #trigger {^The heat has died down from your last caper\.$} {#var lib.timers.nextBurgleAt $gametime} {timers}
+#put #trigger {^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$} {#var lib.timers.nextBurgleAt $gametime} {timers}
 
 
 ###############################

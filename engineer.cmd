@@ -105,6 +105,7 @@ eng.prepareLumber:
 eng.prepareItem:
     gosub get my shaping book
     if ("$lefthandnoun" <> "book") then {
+        echo lefthandnoun: $lefthandnoun
         put #echo >Log Orange [eng] Missing our shaping book, exiting.
         gosub stow
         goto eng.exit
@@ -216,7 +217,6 @@ eng.main:
     if ("$lefthandnoun" <> "drawknife") then {
         gosub stow left
         gosub get my drawknife
-        exit
     }
     if ("$lefthandnoun" <> "drawknife") then {
         put #echo >Log Orange [eng] Drawknife missing!
@@ -261,6 +261,7 @@ eng.analyze:
     gosub stow left
     gosub eng.stamp
     gosub analyze $righthandnoun
+    gosub stow
     evalmath eng.craft.numberCrafted (%eng.craft.numberCrafted + 1)
     if (%eng.craft.numberNeeded > %eng.craft.numberCrafted) then {
         put #echo >log Yellow [eng] Progress %eng.craft.numberCrafted/%eng.craft.numberNeeded
