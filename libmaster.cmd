@@ -30,7 +30,7 @@ waitforre ^CHARVARS DONE$
 
 
 ###############################
-###      INIT
+###    INIT
 ###############################
 action clear
 gosub clear
@@ -49,22 +49,19 @@ var todo
 ###############################
 ###    BURGLE
 ###############################
-#action put #tvar char.burgle.cooldown $1 when ^You should wait at least (\d+) roisaen
-#action put #tvar char.burgle.cooldown 0 when ^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$
-#action put #tvar char.burgle.cooldown 0 when ^The heat has died down from your last caper\.
-#put #trigger {^You should wait at least (\d+) roisaen for the heat to die down\.$} {#var char.timers.nextBurgleAt #evalMath {($1 * 60) + $gametime + 120}} {timers}
-#put #trigger {^The heat has died down from your last caper\.$} {#var char.timers.nextBurgleAt $gametime} {timers}
-#put #trigger {^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$} {#var char.timers.nextBurgleAt $gametime} {timers}
+#put #trigger {^You should wait at least (\d+) roisaen for the heat to die down\.$} {#var lib.timers.nextBurgleAt #evalMath {($1 * 60) + $gametime + 120}} {timers}
+#put #trigger {^The heat has died down from your last caper\.$} {#var lib.timers.nextBurgleAt $gametime} {timers}
+#put #trigger {^A tingling on the back of your neck draws attention to itself by disappearing, making you believe the heat is off from your last break in\.$} {#var lib.timers.nextBurgleAt $gametime} {timers}
 
 
 ###############################
-### CROSSBOWS
+###    CROSSBOWS
 ###############################
 var crossbowItems crossbow|stonebow|latchbow|pelletbow|lockbow
 
 
 ###############################
-### CYCLICS
+###    CYCLICS
 ###############################
 put #class cyclicBarbarian off
 put #class cyclicBard off
@@ -98,7 +95,7 @@ if ("$guild" = "Moon Mage") then {
 
 
 ###############################
-### HE/2HE SWAPPING
+###    HE/2HE SWAPPING
 ###############################
 action var weapon_hand The when ^With a quiet snarl, you move your hands to grip your sword as a two-handed edged weapon\.$
 action var weapon_hand The when ^You deftly change your grip on your sword so it can be used as a two-handed edged weapon\.$
@@ -121,7 +118,7 @@ var weapon_hand NONERIGHTNOW
 
 
 ###############################
-### DEAD
+###    DEAD
 ###############################
 #action goto exit.full when ^You are a ghost\!
 #action goto exit.full when ^You are a ghost\!  You must wait until someone resurrects you, or you decay\.
@@ -133,7 +130,7 @@ var weapon_hand NONERIGHTNOW
 
 
 ###############################
-### HIDDEN
+###    HIDDEN
 ###############################
 action var Hidden 0 when ^You blend in with your surroundings|^You slip into a hiding|^You melt into the background|^Darkness falls over you like a cloak, and you involuntarily blend into the shadows\.|^Eh\?  But you're already hidden
 action var Hidden 1 when ^You leap out of hiding|^You come out of hiding\.|^You burst from hiding and begin to dance about\!|^You slip out of hiding\.|notices your attempt to hide|discovers you, ruining your hiding place|reveals you, ruining your hiding attempt
@@ -141,7 +138,7 @@ var Hidden 1
 
 
 ###############################
-### FORAGEBLE
+###    FORAGEBLE
 ###############################
 #action send dump junk when ^The room is too cluttered to find anything here\!
 action var foragable 1 when ^The room is too cluttered to find anything her
@@ -151,7 +148,7 @@ var foragable 0
 
 
 ###############################
-## MAGIC
+##    MAGIC
 ###############################
 if ("$charactername" = "Inauri") then {
     action goto refreshRegen when eval $health < 50
@@ -161,7 +158,7 @@ action put #var lib.magicInert 0 when ^Awareness enfolds you like the embrace of
 
 
 ###############################
-### ROOM OCCUPIED
+###    ROOM OCCUPIED
 ###############################
 #action var People.Room occupied when ^A howl echoes about you as a wolf calls to his kind\!$
 #action var People.Room occupied when ^With a waver like a mirage, \w+ fades into view\.$
@@ -189,14 +186,14 @@ action put #var lib.magicInert 0 when ^Awareness enfolds you like the embrace of
 
 
 ###############################
-### SKINNING
+###    SKINNING
 ###############################
 #var pelts.keep (celpeze eye)
 #var pelts.empty (rat pelt|goblin skin|goblin hide|hog hoof|eel skin|razorsharp claw|leucro pelt|white pelt|curved tusk|caracal pelt|plated claw)
 
 
 ###############################
-### SLEEP / AWAKE
+###    SLEEP / AWAKE
 ###############################
 #action put sleep when ^Overall state of mind: (very murky|thick|very thick|frozen|very frozen|dense|very dense)
 #action put sleep when ^Overall state of mind: murky
@@ -227,7 +224,8 @@ action send stand when ^You should stand up first\.
 action send stand when ^You'd have better luck standing up
 action send stand when ^You'll have to move off the sandpit first\.
 
-action send climb track when ^You will have to climb that.
+action send climb track when ^You will have to climb that\.
+
 
 ###############################
 ###    TEACHING
@@ -252,7 +250,7 @@ action put #var lib.student 0 ; put #var lib.class 0 when ^You're unconscious\!$
 
 
 ###############################
-### WAIT FOR PREP
+###    WAIT FOR PREP
 ###############################
 action var isFullyPrepped 1 when ^Your concentration lapses for a moment, and your spell is lost.$
 action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
@@ -1853,8 +1851,7 @@ remove:
     matchre return ^You aren't wearing that\.
     matchre return ^You count out
     matchre return ^You loosen the straps securing
-    matchre return ^You pull off
-    matchre return ^You pull your
+    matchre return ^You pull
     matchre return ^You remove
     matchre return ^You slide
     matchre return ^You sling
@@ -2591,6 +2588,7 @@ wear:
     matchre return ^You can't wear any more items like that\.
     matchre return ^You drape
     matchre return ^You hang
+    matchre return ^You place
     matchre return ^You put
     matchre return ^You slide
     matchre return ^You sling

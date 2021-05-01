@@ -6,6 +6,12 @@ put #tvar char.appraise.item my sail pouch
 
 
 ###############################
+###      ARMOR
+###############################
+put #tvar char.armor chain balaclava|chain gloves|quilted hauberk|small targe|demonscale armguard|knee spikes|elbow spikes|steelsilk knuckles|steelsilk footwraps
+
+
+###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband
@@ -75,8 +81,6 @@ put #tvar char.fight.tmPrep 4
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
-#put #tvar char.fight.weapons.items Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
-#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
 #***** ARMOR *****
@@ -106,7 +110,7 @@ put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 1
 put #tvar char.fight.useShw 0
-put #tvar char.fight.useSls 1
+put #tvar char.fight.useSls 0
 
 
 ###############################
@@ -120,7 +124,7 @@ var super.enemies null
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType keepsake box
+put #tvar char.locks.boxType jewelry box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer rucksack
 
@@ -173,8 +177,8 @@ put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie|Giant
 put #tvar char.observe.lore Xibar|Raven|Phoenix
-put #tvar char.observe.magic Yavash|Wolf
-put #tvar char.observe.offense Cat|Viper|Spider
+put #tvar char.observe.magic Yavash|Wolf|Toad
+put #tvar char.observe.offense Cat|Viper|Spider|Estrilda
 put #tvar char.observe.survival Heart|Ram
 
 put #tvar char.observe.predict 1
