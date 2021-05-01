@@ -472,14 +472,14 @@ checkArmorSkills:
         var timeBetweenArmorSwaps 120
         if (%armor.targetLearningRate > 10) then var timeBetweenArmorSwaps 120
         evalmath changeArmorAt %armor.lastChangeAt + %timeBetweenArmorSwaps
-        if (%t > %changeArmorAt) then {
+        if ($gametime < %changeArmorAt) then {
             math armor.index add 1
             if (%armor.index > %armor.length) then {
                 var armor.index 0
                 evalmath armor.targetLearningRate (5 + $%armor.skills(%armor.index).LearningRate)
                 if (%armor.targetLearningRate > 34) then var armor.targetLearningRate 34
             }
-            var armor.lastChangeAt %t
+            var armor.lastChangeAt $gametime
         }
     }
     if ("%currentArmor" != "%armor.items(%armor.index)") then {
@@ -650,10 +650,7 @@ checkDeadMob:
 ###      checkHide
 ###############################
 checkHide:
-    if (%useStealth = 1 && $Stealth.LearningRate < 33) then {
-        gosub hide
-        evalmath nextHideAt 30 + %t
-    }
+    if (%useStealth = 1 && $Stealth.LearningRate < 33) then gosub hide
     return
 
 
