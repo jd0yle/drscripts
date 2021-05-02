@@ -23,9 +23,10 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
-var khurnaarti.class Sorcery
+var khurnaarti.class targeted
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
+var khurnaarti.houseType 0
 var khurnaarti.needHeal 0
 var khurnaarti.openDoor 0
 
@@ -66,7 +67,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.forage
     pause 1
-    gosub khurnaarti.combatCheck
+    #gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -305,10 +306,26 @@ moveToBurgle:
         waitforre ^HOUSE DONE
         goto moveToBurgle
     }
-    # Fang Cove
-    if ($zoneid = 150) then {
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        gosub automove 258
+        goto moveToBurgle
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToBurgle
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        if ($roomid = 91) then return
+        gosub automove 91
+        goto moveToBurgle
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
         gosub automove portal
-        gosub move go exit portal
         goto moveToBurgle
     }
     # Shard - South of City
@@ -317,19 +334,27 @@ moveToBurgle:
         gosub move go path
         goto moveToBurgle
     }
-    # Shard - City
-    if ($zoneid = 67) then {
+    # Fang Cove
+    if ($zoneid = 150) then {
         gosub automove portal
-    }
-    # Shard - East Gate
-    if ($zoneid = 66) then {
-        if ($roomid = 91) then return
-        gosub automove 91
+        gosub move go exit portal
+        goto moveToBurgle
     }
     goto moveToBurgle
 
 
 moveToFangCove:
+    # Crossing - City
+    if ($zoneid = 1) then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto moveToFangCove
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToFangCove
+    }
     # Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove portal
@@ -356,6 +381,17 @@ moveToForage:
         waitforre ^HOUSE DONE
         goto moveToForage
     }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        gosub automove 258
+        goto moveToForage
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToForage
+    }
     # Shard - East Gate
     if ($zoneid = 66) then {
         if ($roomid = 555) then return
@@ -363,7 +399,7 @@ moveToForage:
     }
     # Fang Cove
     if ($zoneid = 150) then return
-    goto movetoForage
+    goto moveToForage
 
 
 moveToHouse:
@@ -371,8 +407,37 @@ moveToHouse:
         gosub clear
         put #script abort all except khurnaarti
         put .train
-        put #script abort all except train
         exit
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then {
+            var lastHouseGametime $gametime
+            var khurnaarti.houseType cedar house
+            goto moveToHouse1
+        }
+        gosub automove 258
+        goto moveToHouse
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToHouse
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        if ($roomid = 252) then {
+            var lastHouseGametime $gametime
+            var khurnaarti.houseType door
+            goto moveToHouse1
+        }
+        gosub automove 252
+    }
+    # Shard - South of City
+    if ($zoneid = 68) then {
+        gosub automove 3
+        gosub move go path
+        goto moveToHouse
     }
     # Fang Cove
     if ($zoneid = 150) then {
@@ -380,24 +445,12 @@ moveToHouse:
         gosub move go portal
         goto moveToHouse
     }
-    # Shard - South of City
-    if ($zoneid = 68) then {
-        gosub automove 3
-        gosub move go path
-        goto moveToHunt
-    }
-    # Shard - East Gate
-    if ($zoneid = 66) then {
-        if ($roomid <> 252) then gosub automove 252
-    }
-    var lastHouseGametime $gametime
 
 
     moveToHouse1:
-    gosub peer door
+    gosub peer %khurnaarti.houseType
     pause 10
     if (%khurnaarti.houseOpen = 0) then {
-        pause 5
         evalmath maxHouseTime %lastHouseGametime + 30
         if (%maxHouseTime > $gametime) then {
             goto moveToHouse1
@@ -424,9 +477,21 @@ moveToHunt:
         waitforre ^HOUSE DONE
         goto moveToHunt
     }
-    # Fang Cove
-    if ($zoneid = 150) then {
-        gosub automove 91
+    # Crossing - City
+    if ($zoneid = 1) then {
+        gosub automove N gate
+        goto moveToHunt
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        if ($roomid = 126) then return
+        gosub automove 126
+        goto moveToHunt
+    }
+    #Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub move go meeting portal
         goto moveToHunt
     }
     # Shard - South of City
@@ -435,10 +500,10 @@ moveToHunt:
         gosub automove 36
         goto moveToHunt
     }
-    #Shard - East Gate
-    if ($zoneid = 66) then {
-        gosub automove portal
-        gosub move go meeting portal
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = 93) then return
+        gosub automove 93
         goto moveToHunt
     }
     goto moveToHunt

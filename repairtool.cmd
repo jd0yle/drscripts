@@ -21,6 +21,7 @@ goto repairNeedMoney
 ################
 repairNeedMoney:
     put wealth
+    evalmath repair.currencyDokoras $Dokoras + 0
     if ($Dokoras < 30000) then {
         put .deposit
         waitforre ^DEPOSIT DONE
@@ -57,7 +58,7 @@ repairCheckTicket:
         }
         if ("$righthandnoun" = "stamp") then {
             gosub put my stamp in my workbag
-        } else gosub tie my $righthandnoun to my toolbelt
+        } else gosub put my $righthandnoun in my $char.craft.container
         pause
         goto repairCheckTicketLoop
     } else {
@@ -74,7 +75,7 @@ repairGetTool:
     }
     if ("%craftTools(%craftToolsIndex)" = "stamp") then {
         gosub get my stamp
-    } else gosub untie %craftTools(%craftToolsIndex) from my toolbelt
+    } else gosub get my %craftTools(%craftToolsIndex)
 
     if ($righthandnoun <> null) then {
         gosub give %repair.npc
@@ -89,7 +90,7 @@ repairGetTool:
 
 repairToolSkip:
     matchre repairNextTool ^You tie
-    gosub tie my $righthandnoun to my toolbelt
+    gosub put my $righthandnoun in my $char.craft.container
     matchwait 5
 
 

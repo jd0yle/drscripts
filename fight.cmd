@@ -45,6 +45,7 @@ var opts $char.fight.opts
 
 var tmSpell $char.fight.tmSpell
 var tmPrep $char.fight.tmPrep
+var tmPause $char.fight.tmPause
 
 var weapons.items $char.fight.weapons.items
 var weapons.skills $char.fight.weapons.skills
@@ -356,7 +357,7 @@ attackTm:
     if ($mana > 80) then {
 	    gosub target %tmSpell %tmPrep
 	    gosub checkHide
-	    pause 5
+	    pause %tmPause
 	    gosub cast
     } else {
         pause 2

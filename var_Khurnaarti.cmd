@@ -76,7 +76,10 @@ put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 4
+put #tvar char.fight.tmPrep 7
+
+# How long to pause before casting.
+put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
@@ -109,7 +112,7 @@ put #tvar char.fight.useObserve 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 1
-put #tvar char.fight.useShw 0
+put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
 
 
