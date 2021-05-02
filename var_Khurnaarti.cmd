@@ -152,17 +152,17 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 13
+put #tvar char.magic.train.charge.Augmentation 14
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 13
+put #tvar char.magic.train.charge.Utility 14
 put #tvar char.magic.train.harness.Utility 0
 
-put #tvar char.magic.train.spell.Warding maf
-put #tvar char.magic.train.prep.Warding 15
-put #tvar char.magic.train.charge.Warding 13
+put #tvar char.magic.train.spell.Warding shear
+put #tvar char.magic.train.prep.Warding 1
+put #tvar char.magic.train.charge.Warding 1
 put #tvar char.magic.train.harness.Warding 0
 
 

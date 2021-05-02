@@ -109,6 +109,7 @@ khurnaarti.burgle:
         put #script abort all except khurnaarti
         put .train
         put #script abort all except train
+        put #echo >Log Red [khurnaarti] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
         exit
     }
 
@@ -161,7 +162,7 @@ khurnaarti.combatLoop:
     pause 15
     if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10) then {
         put #script abort all except khurnaarti
-        put #echo >Log Green [khurnaarti] Combat complete.
+        put #echo >Log Green [khurnaarti] Combat complete. Brawl:($Brawling.LearningRate/34)
         gosub stow
         gosub stow left
         gosub moveToHouse
@@ -194,12 +195,14 @@ khurnaarti.faSkin:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
+        put #echo >Log Cyan [khurnaarti] Beginning trainer.
         gosub get my $char.trainer.firstaid
     	gosub skin my $char.trainer.firstaid
-    	pause 2
     	gosub repair my $char.trainer.firstaid
-    	pause 2
+    	gosub skin my $char.trainer.firstaid
+        gosub repair my $char.trainer.firstaid
     	gosub stow my $char.trainer.firstaid
+    	put #echo >Log Cyan [khurnaarti] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
     }
     return
 
@@ -212,7 +215,7 @@ khurnaarti.forage:
         put .forage
         waitforre ^FORAGE DONE
         put #script abort all except khurnaarti
-        put #echo >Log Orange [khurnaarti] Forage complete.
+        put #echo >Log Orange [khurnaarti] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
         gosub moveToHouse
     }
     return
@@ -230,7 +233,7 @@ khurnaarti.healthCheck:
             gosub whisper inauri heal
             var khurnaarti.needHeal 0
         } else {
-            put #echo >Log [khurnaarti] Need healing, Inauri unavailable.
+            put #echo >Log Pink [khurnaarti] Need healing, Inauri unavailable.
             put #script abort all
             put exit
         }
@@ -247,8 +250,10 @@ khurnaarti.lock:
         }
     }
     if ($Locksmithing.LearningRate < 10) then {
+        put #echo >Log Teal [khurnaarti] Beginning locksmithing.
         put .practicebox
         waitforre ^LOCKS DONE
+        put #echo >Log Teal [khurnaarti] Locksmithing done Lock:($Locksmithing.LearningRate/34).
     }
     return
 
@@ -264,8 +269,10 @@ khurnaarti.look:
 
 khurnaarti.magic:
     if ($Augmentation.LearningRate < 5) then {
+        put #echo >Log Purple [khurnaarti] Beginning magic.
        put .magic noLoop
        waitforre ^MAGIC DONE
+       put #echo >Log Purple [khurnaarti] Magic complete Ward:($Warding.LearningRate/34).
     }
     return
 
@@ -274,6 +281,7 @@ khurnaarti.play:
     if ($Performance.LearningRate > 15) then {
         return
     }
+    put #echo >Log Maroon [khurnaarti] Beginning performance.
     if ("$lefthand" <> "Empty" || "$righthand" <> "Empty") then {
         gosub stow
         gosub stow left
@@ -284,6 +292,7 @@ khurnaarti.play:
     gosub play $char.performance.song $char.performance.mood
     waitforre ^You finish playing
     gosub stow my $char.performance.instrument
+    put #echo >Log Maroon [khurnaarti] Performance complete. Perf:($Performance.LearningRate/34)
     return
 
 
@@ -417,8 +426,7 @@ moveToHunt:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        gosub automove portal
-        gosub move go exit portal
+        gosub automove 91
         goto moveToHunt
     }
     # Shard - South of City
@@ -429,8 +437,8 @@ moveToHunt:
     }
     #Shard - East Gate
     if ($zoneid = 66) then {
-        if ($roomid = 163) then return
-        gosub automove 163
+        gosub automove portal
+        gosub move go meeting portal
         goto moveToHunt
     }
     goto moveToHunt

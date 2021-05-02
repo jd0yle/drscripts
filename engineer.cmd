@@ -386,6 +386,7 @@ eng.stunPause:
 ###    EXIT
 ###############################
 eng.exit:
+    put #var inauri.subScript 0
     if ("$righthand" <> "Empty" || "$lefthand" <> "Empty") then {
         gosub stow
         gosub stow left

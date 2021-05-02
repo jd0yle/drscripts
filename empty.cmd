@@ -99,7 +99,7 @@ loop:
         if (%wordIndex <= %numWords) then goto wordLoop
 
     math index add 1
-    if (%index > %numItems) then exit
+    if (%index > %numItems) then goto done
     goto loop
 
 done:
