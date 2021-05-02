@@ -2,12 +2,12 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts eighty-six
+var expectedNumBolts eighty-three
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
-action (health) goto getHealedTrigger when eval $health < 80
+action (health) goto getHealedTrigger when eval $health < 90
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
 
@@ -56,9 +56,9 @@ main:
 
         gosub moveToBurgle
 
-        if ($SpellTimer.InvocationoftheSpheres.active != 1 || $SpellTimer.InvocationoftheSpheres.duration < 10) then {
+        if ($SpellTimer.InvocationoftheSpheres.active != 1) then {
             gosub release rf
-            gosub runScript iots dis
+            gosub runScript iots ref
         }
 
         gosub prep rf

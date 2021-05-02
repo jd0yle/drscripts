@@ -42,6 +42,7 @@ placeOrb:
     return
 
 collectRocks:
+    if ($SpellTimer.GaugeFlow.duration < 10) then gosub runScript cast gaf
     put research fundamental 300
 
     gosub appraise.onTimer
@@ -51,8 +52,7 @@ collectRocks:
     gosub perc.onTimer
 
     if ($Astrology.LearningRate < 15) then {
-        put .predict
-        waitforre ^PREDICT DONE$
+        gosub runScript predict
     }
 
     gosub collect rock

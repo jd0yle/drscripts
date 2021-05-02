@@ -107,7 +107,7 @@ put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Th
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
 put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
-put #tvar char.fight.useArmor 1
+put #tvar char.fight.useArmor 0
 
 #***** USE *****
 # Use vars are all "Do this thing or not"
