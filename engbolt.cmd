@@ -2,9 +2,9 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-action goto engbolt.boltheads when ^The bolts are ready for an application of glue to affix each bolthead\.$
-action goto engbolt.flights when ^The bolts are ready for an application of glue to attach the flights\.$
-action goto engbolt.knife when ^Now the flights are ready to be trimmed with a carving knife\.$|^A handful of rough edges require carving with a knife to remove\.$
+action goto engbolt.boltheads when ^The bolts are ready for an application of glue to affix each bolthead\.$|^The bolts must have glue applied to them for affixing the boltheads\.$
+action goto engbolt.flights when ^The bolts are ready for an application of glue to attach the flights\.$|^The bolts must have glue applied to them for affixing the flights\.$
+action goto engbolt.knife when ^Now the flights are ready to be trimmed with a carving knife\.$|^A handful of rough edges require carving with a knife to remove\.$|^The arrows must be carved with a knife to trim and shape the flights\.$|^Several adjustments must be made to the bolt by carving it with a knife\.$
 action goto engbolt.shaper when ^The bolts is ready for shaping with a wood shaper\.$
 action var engbolt.pageContent $1 when ^You turn your book to page \d+, instructions for crafting (.+) bolts\.$
 
@@ -25,6 +25,12 @@ gosub store default %engbolt.craftbag
 ###############################
 ###    MAIN
 ###############################
+engbolt.checkForPartial:
+    if ("$righthand" <> "Empty") then {
+        gosub analyze my $righthandnoun
+    }
+
+
 engbolt.book:
     gosub get my tinker book
     gosub turn my book to chap 7
@@ -41,25 +47,27 @@ engbolt.book:
 engbolt.boltheads:
     pause .2
     if ("$lefthandnoun" = "shaper") then {
-        gosub tie my shaper to my toolbelt
+        gosub stow my shaper
     }
     gosub get my boltheads
-    if ("$righthand" = "Empty") then {
+    if ("$lefthand" = "Empty") then {
+        gosub stow bolts
         gosub open my %engbolt.boltheadMaterialBag
-        gosub get %engbolt.boltHeadMaterial from my %engbolt.boltheadMaterialBag
+        gosub get %engbolt.boltheadMaterial from my %engbolt.boltheadMaterialBag
 
         if ("$righthand" = "Empty") then {
             put #echo >Log [engbolt] No boltheads and no %engbolt.boltheadMaterial, exiting.
             goto engbolt.exit
         }
-        gosub untie my rasp on toolbelt
+        gosub get my rasp
         if ("$lefthandnoun" <> "rasp") then {
             put #echo >Log [engbolt] Rasp missing, exiting.
             goto engbolt.exit
         }
-        gosub shape %eng.boltheadMaterial into bolthead
-        gosub tie my rasp to toolbelt
-        gosub get my shafts
+        gosub shape %engbolt.boltheadMaterial into bolthead
+        gosub stow my rasp
+        gosub swap
+        gosub get my bolts
     }
 
         gosub assemble my bolts with my boltheads
@@ -75,7 +83,7 @@ engbolt.boltheads:
 
         engbolt.boltheadsLoop:
         if ("$lefthandnoun" <> "shaper") then {
-            gosub untie my shaper on toolbelt
+            gosub get my shaper
         }
         if ("$lefthand" = "Empty") then {
             put #echo >Log [engbolt] Missing shaper.
@@ -89,7 +97,7 @@ engbolt.boltheads:
 engbolt.flights:
     pause .2
     if ("$lefthandnoun" = "shaper" || "$lefthandnoun" = "knife") then {
-        gosub tie my $lefthandnoun to my toolbelt
+        gosub stow my $lefthandnoun
     }
     gosub get my flights
     if ("$lefthand" = "Empty") then {
@@ -112,14 +120,14 @@ engbolt.flights:
 engbolt.knife:
     pause .2
     if ("$lefthandnoun" = "shaper") then {
-        gosub tie my shaper to my toolbelt
+        gosub stow my shaper
     }
     if ("$lefthandnoun" <> "Empty") then {
         gosub stow left
     }
-    gosub untie my carving knife on my toolbelt
+    gosub get my carving knife
     gosub carve my bolts with my knife
-    gosub tie my knife to my toolbelt
+    gosub stow carving knife
     goto engbolt.analyze
 
 
@@ -141,7 +149,7 @@ engbolt.shafts:
         gosub stow lumber
         gosub get my lumber
         if ("$lefthandnoun" <> "shaper") then {
-            gosub untie my shaper on toolbelt
+            gosub get my shaper
         }
         if ("$lefthand" = "Empty") then {
             put #echo >Log [engbolt] Missing shaper.
@@ -153,7 +161,7 @@ engbolt.shafts:
     # Make bolts from shafts.
     pause .2
     if ("$lefthandnoun" <> "shaper") then {
-        gosub untie my shaper to my toolbelt
+        gosub get my shaper
     }
     if ("$lefthand" = "Empty") then {
         put #echo >Log [engbolt] Missing shaper.
@@ -169,9 +177,9 @@ engbolt.shafts:
     engbolt.shaftsLoop:
         pause .2
         if ("$lefthandnoun" = "shaper" || "$lefthandnoun" = "knife") then {
-            gosub tie my $lefthandnoun to my toolbelt
+            gosub stow my $lefthandnoun
         }
-        gosub untie my shaper on my toolbelt
+        gosub get my shaper
         if ("$lefthand" = "Empty") then {
             put #echo >Log [engbolt] Missing shaper.
             goto engbolt.exit
@@ -183,10 +191,10 @@ engbolt.shafts:
 engbolt.shaper:
     pause .2
     if ("$lefthandnoun" = "knife") then {
-        gosub tie my carving knife to my toolbelt
+        gosub stow my carving knife
     }
     if ("$lefthandnoun" <> "shaper") then {
-        gosub untie my shaper on toolbelt
+        gosub get my shaper
     }
     if ("$lefthand" = "Empty") then {
         put #echo >Log [engbolt] Missing shaper.

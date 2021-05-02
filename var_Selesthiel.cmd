@@ -6,6 +6,12 @@ put #tvar char.appraise.item gem pouch
 
 
 ###############################
+###      ARMOR
+###############################
+put #tvar char.armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
+
+
+###############################
 ###      BURGLE
 ###############################
 put #tvar char.burgle.cooldown null

@@ -1,79 +1,74 @@
 include libmaster.cmd
 
-var act %1
+###############################
+###      VARIABLES
+###############################
+var armor.act %1
+var armor.index 0
+var armor.length 0
+var armor.list $char.armor
+var armor.verbOne 0
+var armor.verbTwo 0
 
-############
-# Variables
-############
-if ("$charactername" = "Inauri") then {
-    var armor balaclava|gloves|shirt|pants|shield|knee spikes|elbow spikes|knuckles|footwraps|armguard
+
+###############################
+###      INIT
+###############################
+eval armor.length count("%armor.list", "|")
+var armor.index 0
+
+if ("%armor.act" = "wear") then {
+    var armor.verbOne get
+    var armor.verbTwo wear
+    goto armor.loop
 }
 
-if ("$charactername" = "Khurnaarti") then {
-    var armor balaclava|gloves|hauberk|targe|armguard|knee spikes|elbow spikes|knuckles|footwraps
-}
-
-if ("$charactername" = "Qizhmur") then {
-    var armor demonscale leathers|demonscale gloves|gladiator's shield|demonscale helm|demonscale mask|calcified femur
-}
-
-if ("$charactername" = "Selesthiel") then {
-    var armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
-}
-
-############
-# Main
-############
-eval length count("%armor", "|")
-var index 0
-
-if ("%act" = "wear") then {
-    var verbOne get
-    var verbTwo wear
-    goto armorLoop
-}
-
-if ("%act" = "remove") then {
-   var verbOne remove
-   var verbTwo stow
-   goto armorLoop
+if ("%armor.act" = "remove") then {
+   var armor.verbOne remove
+   var armor.verbTwo stow
+   goto armor.loop
 }
 
 gosub stow right
 gosub stow left
 
-if ("%act" = "repair") then goto repairArmorLoop
+if ("%armor.act" = "repair") then goto armor.repairArmorLoop
 
-if ("%act" = "get") then goto getArmorFromRepairLoop
+if ("%armor.act" = "get") then goto armor.getFromRepairLoop
 
-armorLoop:
-    gosub %verbOne my %armor(%index)
+
+###############################
+###      MAIN
+###############################
+armor.loop:
+    gosub %armor.verbOne my %armor.list(%armor.index)
     if ("$righthand" != "Empty" || "$lefthand" != "Empty") then {
-        gosub %verbTwo my %armor(%index)
+        gosub %armor.verbTwo my %armor.list(%armor.index)
     }
-    math index add 1
-    if (%index > %length) then goto armorDone
-    goto armorLoop
+    math armor.index add 1
+    if (%armor.index > %armor.length) then goto armor.done
+    goto armor.loop
 
 
-repairArmorLoop:
-    gosub remove my %armor(%index)
-    gosub give my %armor(%index) to randal
-    gosub give my %armor(%index) to randal
+armor.repairArmorLoop:
+    gosub remove my %armor.list(%armor.index)
+    gosub give my %armor.list(%armor.index) to randal
+    gosub give my %armor.list(%armor.index) to randal
     gosub stow my ticket
-    math index add 1
-    if (%index > %length) then exit
-    goto repairArmorLoop
+    math armor.index add 1
+    if (%armor.index > %armor.length) then goto armor.done
+    goto armor.repairArmorLoop
 
 
-getArmorFromRepairLoop:
+armor.getFromRepairLoop:
     gosub get my randal ticket
-    if ("$righthand" = "Empty") then exit
+    if ("$righthand" = "Empty") then goto armor.done
     gosub give my ticket to randal
     gosub wear right
-    goto getArmorFromRepairLoop
+    goto armor.getFromRepairLoop
 
-armorDone:
+
+armor.done:
     gosub stow right
     gosub stow left
     pause .2

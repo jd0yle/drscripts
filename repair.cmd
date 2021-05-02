@@ -6,6 +6,7 @@ action var repair.waitTimeMin 0 ; var repair.waitTimeSec 0 when ^.* be ready by 
 action var repair.waitTimeMin 2 ; var repair.waitTimeSec 60 when ^.* be ready any moment now\.$
 action var repair.wornArmor 1 when ^You aren't wearing anything like that\.$
 action var repair.wornItem 1 when ^But that is already in your inventory\.$
+action goto repair.checkForTicket when ^.*\b(not ready)\b.*$
 
 ###############################
 ###      VARIABLES
@@ -250,7 +251,7 @@ repair.repairSingle:
 
 
 repair.sack:
-    put .empty --from=large sack
+    gosub runScript empty --from=large sack
     waitforre ^EMPTY DONE
     gosub look in my large sack
     if (%repair.emptySack = 0) then {

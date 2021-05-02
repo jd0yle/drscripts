@@ -1,14 +1,20 @@
-action goto logout when eval $health < 50
-action goto logout when eval $dead = 1
+###############################
+###    IDLE ACTIONS
+###############################
+action goto afk.logout when eval $health < 50
+action goto afk.logout when eval $dead = 1
 action send stand when eval $standing = 0
 
 
-loop:
-pause 2
-goto loop
+###############################
+###    MAIN
+###############################
+afk.loop:
+    pause 2
+    goto afk.loop
 
 
-logout:
+afk.logout:
     put #var afk 0
     put exit
     put #script abort all except afk
