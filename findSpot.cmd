@@ -37,7 +37,7 @@ if ("%mob" = "gremlin") then {
 
 if ("%mob" = "juvenilewyvern") then {
     var minRoomId 452
-    var maxRoomId 465
+    var maxRoomId 463
     var waitroomid 435
 }
 

@@ -232,26 +232,11 @@ loop:
             var continue 0
         }
 
-# Moved this to Bow / Crossbow. If that works, delete this
-#        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Slings") then {
-#            gosub debil
-#            gosub load
-#            gosub aim
-#            pause 6
-#            gosub cast
-#            gosub fire
-#            put .loot
-#            waitforre ^LOOT DONE
-#            var continue 0
-#        }
-
         if (%continue = 1) then {
             gosub analyze
-            var lastAnalyzeTimeAt %t
-            if (evalmath(%t - %lastAnalyzeTime) > 60) then gosub analyze
-            if (%doAnalyze = 0) then {
-                gosub attackAnalyzed
-            }
+            var lastAnalyzeTimeAt $gametime
+            if (evalmath($gametime - %lastAnalyzeTime) > 60) then gosub analyze
+            if (%doAnalyze = 0) then gosub attackAnalyzed
         }
 
         var attackContinue 0

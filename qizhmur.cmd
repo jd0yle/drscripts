@@ -8,6 +8,8 @@ var expectedNumBolts eighteen
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
+action send $lastcommand when ^You can't move in that direction while unseen.
+
 timer start
 
 var useBurgle 1
@@ -197,7 +199,7 @@ sorceryCont:
 
 
 sorceryDevour:
-    if ($SpellTimer.Devour.active = 1) then return
+    if ($SpellTimer.Devour.duration > 20) then return
     gosub runScript findSpot fcrat
     gosub runScript devourfcrat
     goto sorceryDevour

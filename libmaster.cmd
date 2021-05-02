@@ -2747,6 +2747,9 @@ refreshRegen:
 automove:
     var toroom $0
     var moveAttemptsRemaining 5
+
+    if ("$roomname" = "Private Home Interior") then return
+
     automovecont:
     match return YOU HAVE ARRIVED
     matchre return SHOP IS CLOSED

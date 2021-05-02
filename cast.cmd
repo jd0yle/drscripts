@@ -113,6 +113,9 @@ if (%useCambrinth = 1) then {
         gosub push my vial
         gosub perform cut
     }
+    if ("%spell" = "nr") then {
+        gosub perform cut
+    }
 
 	if ($char.wornCambrinth != 1) then {
 	    gosub wear my $char.cambrinth

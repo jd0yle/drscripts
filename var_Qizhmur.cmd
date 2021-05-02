@@ -48,6 +48,10 @@ put #tvar char.cast.maf.prep 40
 put #tvar char.cast.maf.charge 50
 put #tvar char.cast.maf.chargeTimes 1
 
+put #tvar char.cast.nr.prep 25
+put #tvar char.cast.nr.charge 50
+put #tvar char.cast.nr.chargeTimes 1
+
 put #tvar char.cast.obf.prep 40
 put #tvar char.cast.obf.charge 50
 put #tvar char.cast.obf.chargeTimes 1
