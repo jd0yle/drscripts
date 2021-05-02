@@ -17,9 +17,9 @@ afk.loop:
 afk.logout:
     put #var afk 0
     put exit
-    put #script abort all
+    put #script abort all except afk
     pause 1
-    put #script abort all
+    put #script abort all except afk
     put exit
     exit
 

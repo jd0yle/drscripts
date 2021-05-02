@@ -8,6 +8,8 @@ var expectedNumBolts eighteen
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
+action send $lastcommand when ^You can't move in that direction while unseen.
+
 timer start
 
 var useBurgle 1
@@ -156,13 +158,11 @@ main:
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
             gosub release cyclic
+
+            gosub sorceryDevour
+            gosub automove 106
+
             var startResearch 0
-            gosub prep devour 30
-            gosub charge my calf 30
-            gosub invoke calf 30
-            gosub get my material
-            gosub waitForPrep
-            gosub cast
             gosub stow right
             gosub stow left
             put .research sorcery
@@ -196,6 +196,13 @@ sorceryCont:
     put #script abort all except qizhmur
     put .reconnect
     goto magicCont
+
+
+sorceryDevour:
+    if ($SpellTimer.Devour.duration > 20) then return
+    gosub runScript findSpot fcrat
+    gosub runScript devourfcrat
+    goto sorceryDevour
 
 
 

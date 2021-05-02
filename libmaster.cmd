@@ -466,7 +466,7 @@ attack:
     matchre return ^The .* is already debilitated\!
     matchre return ^The khuj is too heavy for you to use like that\.
     matchre return ^There is nothing else to face
-    matchre return ^What are you trying to (?:throw|lob)\?
+    matchre return ^What are you trying to
     matchre return ^Wouldn't it be better
     matchre return ^You can not slam with that
     matchre return ^You don't have a weapon to draw with\!
@@ -1285,6 +1285,7 @@ listen:
     matchre return isn't teaching you anymore\.
     matchre return ^Who do you want to listen to
     matchre return ^You are already listening to someone\.
+    matchre return ^You are already offering someone else a class
     matchre return ^You begin to listen
     matchre return ^You cannot teach a skill and be a student at the same time\!
     matchre return ^You can't really learn anything when your instructor can't see you.
@@ -2744,6 +2745,9 @@ refreshRegen:
 automove:
     var toroom $0
     var moveAttemptsRemaining 5
+
+    if ("$roomname" = "Private Home Interior") then return
+
     automovecont:
     match return YOU HAVE ARRIVED
     matchre return SHOP IS CLOSED

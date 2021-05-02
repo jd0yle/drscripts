@@ -9,76 +9,82 @@ if_1 then {
 }
 
 
-
-if ("%mob" = "bull" && $roomid > 81 && $roomid < 97 && "$roomplayers" = "") then {
-    pause
-    goto done
-}
-
 init:
 
+if ("%mob" = "adanf") then {
+    var minRoomId 13
+    var maxRoomId 16
+    var waitroomid 31
+}
+
 if ("%mob" = "bull") then {
-    var checkRoomId 82
+    var minRoomId 82
     var maxRoomId 97
     var waitroomid telescope
 }
 
-if ("%mob" = "leucro") then {
-    var checkRoomId 16
-    var maxRoomId 22
+if ("%mob" = "fcrat") then {
+    var minRoomId 162
+    var maxRoomId 164
+    var waitroomid 106
 }
 
 if ("%mob" = "gremlin") then {
-    var checkRoomId 109
+    var minRoomId 109
     var maxRoomId 117
     var waitroomid 89
 }
 
-if ("%mob" = "redgremlin") then {
-    var checkRoomId 622
-    var maxRoomId 632
-    var waitroomid 545
+if ("%mob" = "juvenilewyvern") then {
+    var minRoomId 452
+    var maxRoomId 463
+    var waitroomid 435
+}
+
+if ("%mob" = "leucro") then {
+    var minRoomId 16
+    var maxRoomId 22
 }
 
 if ("%mob" = "peccary") then {
-    var checkRoomId 257
+    var minRoomId 257
     var maxRoomId 263
     var waitroomid 163
 }
 
+if ("%mob" = "redgremlin") then {
+    var minRoomId 622
+    var maxRoomId 632
+    var waitroomid 545
+}
+
 if ("%mob" = "warklin") then {
-    var checkRoomId 117
+    var minRoomId 117
     var maxRoomId 121
     var waitroomid 38
 }
 
 if ("%mob" = "wyvern") then {
-    var checkRoomId 567
+    var minRoomId 567
     var maxRoomId 572
     var waitroomid 435
 }
 
 if ("%mob" = "wyvern2") then {
-    var checkRoomId 480
+    var minRoomId 480
     var maxRoomId 487
     var waitroomid 435
 }
 
-if ("%mob" = "adanf") then {
-    var checkRoomId 13
-    var maxRoomId 16
-    var waitroomid 31
-}
 
-
-if ($roomid >= %checkRoomId && $roomid <= %maxRoomId && "$roomplayers" = "" && !contains("$roomobjs", "dirt construct")) then {
+if ($roomid >= %minRoomId && $roomid <= %maxRoomId && "$roomplayers" = "" && !contains("$roomobjs", "dirt construct")) then {
     pause 1
     goto done
 }
 
 if ("%mob" = "wyvern" || "%mob" = "wyvern2" && "$roomplayers" = "") then {
     if ( ($roomid >= 567 && $roomid <= 572) || ($roomid >= 480 && $roomid <= 487)) then {
-        pause 1
+        pause .2
         goto done
     }
 }
@@ -89,8 +95,8 @@ findRoom:
         gosub moveRandom
         goto findRoom
     }
-    if ($roomid != %checkRoomId) then {
-        gosub automove %checkRoomId
+    if ($roomid != %minRoomId) then {
+        gosub automove %minRoomId
         gosub checkThisRoom
     }
     goto findRoom
@@ -98,8 +104,8 @@ findRoom:
 
 checkThisRoom:
     if (("$roomplayers" != "" || $monstercount >= 2 || contains("$roomobjs", "dirt construct")) && !matchre("$roomplayers", "Maori")) then {
-        math checkRoomId add 1
-        if (%checkRoomId > %maxRoomId) then {
+        math minRoomId add 1
+        if (%minRoomId > %maxRoomId) then {
             if ("%mob" = "wyvern") then {
                 put .findSpot wyvern2
                 exit

@@ -233,26 +233,11 @@ loop:
             var continue 0
         }
 
-# Moved this to Bow / Crossbow. If that works, delete this
-#        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Slings") then {
-#            gosub debil
-#            gosub load
-#            gosub aim
-#            pause 6
-#            gosub cast
-#            gosub fire
-#            put .loot
-#            waitforre ^LOOT DONE
-#            var continue 0
-#        }
-
         if (%continue = 1) then {
             gosub analyze
-            var lastAnalyzeTimeAt %t
-            if (evalmath(%t - %lastAnalyzeTime) > 60) then gosub analyze
-            if (%doAnalyze = 0) then {
-                gosub attackAnalyzed
-            }
+            var lastAnalyzeTimeAt $gametime
+            if (evalmath($gametime - %lastAnalyzeTime) > 60) then gosub analyze
+            if (%doAnalyze = 0) then gosub attackAnalyzed
         }
 
         var attackContinue 0
@@ -473,14 +458,14 @@ checkArmorSkills:
         var timeBetweenArmorSwaps 120
         if (%armor.targetLearningRate > 10) then var timeBetweenArmorSwaps 120
         evalmath changeArmorAt %armor.lastChangeAt + %timeBetweenArmorSwaps
-        if (%t > %changeArmorAt) then {
+        if ($gametime < %changeArmorAt) then {
             math armor.index add 1
             if (%armor.index > %armor.length) then {
                 var armor.index 0
                 evalmath armor.targetLearningRate (5 + $%armor.skills(%armor.index).LearningRate)
                 if (%armor.targetLearningRate > 34) then var armor.targetLearningRate 34
             }
-            var armor.lastChangeAt %t
+            var armor.lastChangeAt $gametime
         }
     }
     if ("%currentArmor" != "%armor.items(%armor.index)") then {
@@ -515,7 +500,7 @@ checkWeaponSkills:
                 if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
             }
         } else {
-            if ("$charactername" = "Selesthiel") then var weapons.targetLearningRate 0
+            #if ("$charactername" = "Selesthiel") then var weapons.targetLearningRate 0
         }
     }
 
@@ -651,10 +636,7 @@ checkDeadMob:
 ###      checkHide
 ###############################
 checkHide:
-    if (%useStealth = 1 && $Stealth.LearningRate < 33) then {
-        gosub hide
-        evalmath nextHideAt 30 + %t
-    }
+    if (%useStealth = 1 && $Stealth.LearningRate < 33) then gosub hide
     return
 
 

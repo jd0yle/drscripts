@@ -1,10 +1,15 @@
 include libmaster.cmd
 
+put .afk
 
-var expectedNumBolts forty-five
+var expectedNumBolts eighty-six
 
-action goto logout when eval $health < 50
+#action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
+
+action (health) goto getHealedTrigger when eval $health < 80
+action (health) goto getHealedTrigger when eval $bleeding = 1
+action (health) goto getHealedTrigger when ^TESTHEAL
 
 action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the Demrris window.
 
@@ -44,6 +49,7 @@ main:
     gosub abortScripts
     gosub resetState
     gosub burgle.setNextBurgleAt
+    pause 2
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
@@ -56,25 +62,21 @@ main:
         }
 
         gosub prep rf
-
-        put .armor remove
-        waitforre ^ARMOR DONE$
-
+        gosub runScript armor remove
         gosub cast
 
-        put .burgle
-        waitforre ^BURGLE DONE$
-
-        #gosub release rf
-
-        put .armor wear
-        waitforre ^ARMOR DONE$
+        gosub runScript burgle
+        gosub runScript armor wear
 
         gosub automove n gate
-
-        gosub prep rf
-
         gosub automove portal
+        gosub move go gate
+        gosub automove pawn
+
+        gosub runScript pawn
+        gosub prep rf
+        gosub automove portal
+
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         gosub move go meeting portal
 
@@ -180,62 +182,92 @@ main:
 sorceryCont:
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     goto magicCont
 
 
 abortScripts:
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     pause .2
     gosub stow right
     gosub stow left
     return
 
 
+getHealedTrigger:
+    action (health) off
+    put #echo >Log #FF5501 [selesthiel.cmd] GETTING HEALED
+    put #echo >Log #FF5501 [$roomname]
+    put #echo >Log #FF5501 (health=$health bleeding=$bleeding)
+    if ($health < 50) then {
+        goto logout
+    }
 
+    gosub retreat
+    gosub resetState
+
+    if ("$zoneid" = "69") then gosub automove 15
+
+    gosub getHealed
+
+    gosub moveToMagic
+
+    action (health) on
+
+    put #script abort all except selesthiel
+    put .reconnect
+    put .afk
+    pause .2
+    put .selesthiel
 
 
 getHealed:
     gosub checkHealth
     if (%injured = 1) then {
+        gosub moveToMagic
+
         if (contains("$roomplayers", "Inauri")) then {
 	        gosub whisper inauri heal
 	        pause 30
-        } else {
-            if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
-            eval nextHealTime (300 + $lastHealedGametime)
+        }
 
-            if ($bleeding = 1 && $gametime > %nextHealTime) then {
-	            put .house
-	            waitforre ^HOUSE DONE$
+        if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
+        eval nextHealTime (300 + $lastHealedGametime)
 
-	            gosub automove portal
-	            if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
-	            gosub move go meeting portal
+        if ($bleeding = 1) then {
+            gosub runScript house
+            gosub automove portal
+            if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+            gosub move go meeting portal
 
-	            gosub automove heal
-	            put join list
-	            matchre getHealedCont Yrisa crosses Selesthiel's name from the list.
-	            matchwait 120
+            gosub automove heal
+            put join list
+            matchre getHealedCont Yrisa crosses Selesthiel's name from the list.
+            matchwait 120
 
-	            getHealedCont:
-	            put #var lastHealedGametime $gametime
-	            gosub automove portal
-	            gosub move go exit portal
-	            gosub moveToMagic
-            }
+            getHealedCont:
+            put #var lastHealedGametime $gametime
+            gosub automove portal
+            gosub move go exit portal
+            gosub moveToMagic
+            if ($bleeding = 1) then goto getHealed
         }
     }
     return
 
 
 checkHealth:
+    var injured 1
     matchre checkHealthInjured ^You have.*(skin|head|neck|chest|abdomen|back|tail|hand|arm|leg|eye|twitching|paralysis)
     matchre checkHealthNotInjured ^You have no significant injuries.
     put health
@@ -257,6 +289,7 @@ checkHealthNotInjured:
 buffPlayer:
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     gosub release spell
     gosub runScript cast %buffSpell %playerName
     put .selesthiel
@@ -264,15 +297,17 @@ buffPlayer:
 
 
 moveToBurgle:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToBurgle
+    }
+
     if ($SpellTimer.RefractiveField.duration < 2) then {
         gosub prep rf
         pause 3
         gosub cast
     }
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToBurgle
-    }
+
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
@@ -359,21 +394,26 @@ moveToMagic:
 
 
 moveToWyverns:
-    if ($SpellTimer.RefractiveField.duration < 2) then {
-        gosub prep rf
-        pause 3
-        gosub cast
-    }
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
         goto moveToWyverns
     }
 
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
+
+
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        put .findSpot wyvern
-        waitforre ^FINDSPOT DONE$
+        gosub runScript findSpot juvenilewyvern
         return
+
+        #put .findSpot wyvern
+        #waitforre ^FINDSPOT DONE$
+        #return
     }
 
     # Shard East Gate Area
@@ -399,17 +439,7 @@ moveToWyverns:
 
 
 moveToHeal:
-    put #script abort all except selesthiel
-    put .reconnect
-    pause 1
-    put #script abort all except selesthiel
-    put .reconnect
-    if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
-    gosub stow right
-    gosub stow left
-    gosub retrieveBolts
-    gosub stow hhr'ata
-    gosub stow bola
+    gosub resetState
     gosub prep rf
     pause 3
     gosub cast
@@ -417,11 +447,19 @@ moveToHeal:
     gosub getHealed
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     put .selesthiel
     exit
 
 
 resetState:
+    put #script abort all except selesthiel
+    put .reconnect
+    put .afk
+    #pause .2
+    #put #script abort all except selesthiel
+    #put .reconnect
+    #put .afk
     if ("$righthandnoun" = "compendium" || "$lefthandnoun" = "compendium") then gosub put my compendium in my bag
     if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my telescope in my bag
     gosub stow right
@@ -431,9 +469,9 @@ resetState:
     #gosub release symbi
     gosub release shear
     gosub release cyclic
-    gosub retrieveBolts
     gosub stow hhr'ata
     gosub stow bola
+    gosub retrieveBolts
     return
 
 
@@ -485,6 +523,7 @@ waitForMagic:
     if ($lib.timers.nextBurgleAt > $gametime) then {
         put #script abort all except selesthiel
         put .reconnect
+        put .afk
         gosub stow right
         gosub stow left
         gosub burgle.setNextBurgleAt
@@ -496,6 +535,7 @@ waitForMagicLoop:
     if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
         put #script abort all except selesthiel
         put .reconnect
+        put .afk
         gosub resetState
         return
     }
@@ -509,9 +549,11 @@ waitForMainCombat:
     pause 2
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     gosub stow right
     gosub stow left
     gosub burgle.setNextBurgleAt
@@ -520,17 +562,7 @@ waitForMainCombat:
 
 waitForMainCombatLoop:
     if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
-        put #script abort all except selesthiel
-        put .reconnect
-        pause 1
-        put #script abort all except selesthiel
-        put .reconnect
-        if ("$righthandnoun" = "lockbow" || "$righthandnoun" = "crossbow") then gosub unload my $righthandnoun
-        gosub stow right
-        gosub stow left
-        gosub retrieveBolts
-        gosub stow hhr'ata
-        gosub stow bola
+        gosub resetState
         if ($bleeding = 1) then goto moveToHeal
         return
     }
@@ -543,8 +575,10 @@ logout:
     put exit
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except selesthiel
     put .reconnect
+    put .afk
     put exit
     exit
