@@ -100,6 +100,9 @@ put #tvar char.fight.tmSpell pd
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 put #tvar char.fight.tmPrep 30
 
+# How long to pause before casting.
+put #tvar char.fight.tmPause 5
+
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow

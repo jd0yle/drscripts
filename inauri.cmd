@@ -77,7 +77,7 @@ inauri.loop:
     pause 1
     gosub inauri.arcana
     pause 1
-    gosub inauri.engineer
+    #gosub inauri.engineer
     pause 1
     if ($mana > 30) then {
         gosub inauri.magic

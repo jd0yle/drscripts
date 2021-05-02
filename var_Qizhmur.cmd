@@ -126,6 +126,9 @@ put #tvar char.fight.tmSpell acs
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 put #tvar char.fight.tmPrep 10
 
+# How long to pause before casting.
+put #tvar char.fight.tmPause 5
+
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|frying pan|spiritwood lockbow|white nightstick
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves
