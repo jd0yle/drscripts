@@ -256,7 +256,6 @@ repair.repairSingle:
 
 repair.sack:
     gosub runScript empty --from=large sack
-    waitforre ^EMPTY DONE
     gosub look in my large sack
     if (%repair.emptySack = 0) then {
         if (contains("$roomobjs", "bucket")) then {
