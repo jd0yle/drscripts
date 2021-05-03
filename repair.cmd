@@ -22,10 +22,13 @@ var repair.npcs Catrox|Randal|Lakyan|Osmandikar|Granzer|repairman|clerk
 var repair.sackItems 0
 var repair.ticketName 0
 var repair.trash 0
+var repair.waitRoomId null
 var repair.waitTimeMin 0
 var repair.waitTimeSec 0
 var repair.wornArmor 0
 var repair.wornItem 0
+
+if ($char.repair.waitRoomId > 0) then var repair.waitRoomId $char.repair.waitRoomId
 
 # Note:  No support for Ylono Leather Repair in Shard because of no NPC and broken automapper.
 ###############################
@@ -188,6 +191,7 @@ repair.checkMoney:
 repair.checkTicketTime:
     gosub look my ticket
     if (%repair.waitTimeSec <> 0) then {
+        if ("%repair.waitRoomId" != "null" && "$roomid" != "%repair.waitRoomId") then gosub automove %repair.waitRoomId
         evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
         put #echo >Log Blue [repair] Waiting %repair.waitTimeMin min to pick up.
         put .look

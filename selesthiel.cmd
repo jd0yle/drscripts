@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts eighty-three
+var expectedNumBolts seventy-one
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -42,6 +42,8 @@ action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmu
 
 
 timer start
+
+if ($health < 90) then goto getHealedTrigger
 
 if ("%startAt" = "fight") then goto startFight
 
@@ -205,6 +207,9 @@ abortScripts:
 
 
 getHealedTrigger:
+    put #script abort all except selesthiel
+    put .afk
+    put .reconnect
     action (health) off
     put #echo >Log #FF5501 [selesthiel.cmd] GETTING HEALED
     put #echo >Log #FF5501 [$roomname]
