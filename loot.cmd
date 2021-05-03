@@ -1,19 +1,7 @@
 include libmaster.cmd
+include args.cmd
 
-var options %0
-
-if ("$charactername" = "Selesthiel") then {
-    var specialStorage tort sack
-    var container backpack
-    var gemPouchContainer backpack
-} else {
-    var specialStorage skull
-    var container skull
-    var gemPouchContainer satchel
-}
-
-
-
+if (%args.boxes = 1) then var lootBoxes 1
 
 var scrolls scroll|ostracon|\broll|leaf|vellum|tablet|(?<!of )parchment|bark|papyrus
 var treasuremaps \bmap\b
@@ -32,9 +20,11 @@ var coin coin
 var gems %gems1|%gems2|%gems3|%gems4
 
 #var box (?:%boxtype) (?:%boxes)
-#var boxes (?:brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox)
+var boxes (?:brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox)
 
 var lootables %ammo|%coin|%scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%miscKeep
+
+if (%lootBoxes = 1) then var lootables %lootables|%boxes
 
 var toLoot null
 action (invFeet) var toLoot %toLoot|$1 when (%lootables)

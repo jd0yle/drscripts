@@ -169,7 +169,11 @@ loop:
     gosub releaseUnwantedSpells
 
     gosub checkDeadMob
-    gosub runScript loot
+    if ($char.loot.boxes = 1) then {
+        gosub runScript loot --boxes=1
+    } else {
+        gosub runScript loot
+    }
 
     gosub checkWeaponSkills
     gosub checkStances

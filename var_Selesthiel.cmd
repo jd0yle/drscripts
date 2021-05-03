@@ -163,6 +163,7 @@ put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
 put #tvar char.inv.fullGemPouchContainer portal
 put #tvar char.inv.tempContainer shadows
 put #tvar char.inv.defaultContainer steelsilk backpack
+put #tvar char.loot.boxes 0
 
 
 ###############################

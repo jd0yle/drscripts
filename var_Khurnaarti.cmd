@@ -139,6 +139,7 @@ put #tvar char.inv.emptyGemPouchContainer purse
 put #tvar char.inv.fullGemPouchContainer rucksack
 put #tvar char.inv.tempContainer purse
 put #tvar char.inv.defaultContainer rucksack
+put #tvar char.loot.boxes 1
 
 
 ###############################
