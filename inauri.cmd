@@ -18,8 +18,9 @@ action var inauri.privacyLocateOn 1 when ^Others will be unable to locate you\.$
 action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
+action var inauri.vitality 1 when ^Selesthiel is suffering from a .+ loss of vitality.*$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-action goto inauri.vitalityHeal when eval $health < 30
+action goto inauri.vitalityHealSelf when eval $health < 30
 
 ###############################
 ###    CHAR VARIABLES
@@ -46,12 +47,15 @@ var inauri.poisonSelf 0
 var inauri.target 0
 var inauri.teach 0
 var inauri.topic 0
-
+var inauri.vitality 0
 
 ###############################
 ###    MAIN
 ###############################
 inauri.loop:
+    if (contains("$scriptlist", "look")) then {
+        put #script abort look
+    }
     if (!contains("$scriptlist", "reconnect.cmd")) then {
         put #echo >Log [inauri] Starting reconnect
         put .reconnect
@@ -62,6 +66,7 @@ inauri.loop:
     if (%inauri.openDoor = 1) then gosub inauri.door
     if (%inauri.poison = 1 || %inauri.poisonSelf = 1) then gosub inauri.healPoison
     if (%inauri.disease = 1 || %inauri.diseaseSelf = 1) then gosub inauri.healDisease
+    if (%inauri.vitality = 1) then gosub inauri.healVitality
     if ($mana > 30) then {
         if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     }
@@ -143,6 +148,7 @@ inauri.engineer:
             gosub moveToEngineerRepair
             put .repairtool
             waitforre ^REPAIRTOOL DONE$
+            put #var eng.repairNeeded 0
             put .deposit
             waitforre ^DEPOSIT DONE$
             gosub moveToHouse
@@ -156,6 +162,7 @@ inauri.engineer:
             gosub moveToEngineer
             put .workorder
             waitforre ^WORKORDER DONE$
+            put #var eng.needLumber 0
             put .deposit
             waitforre ^DEPOSIT DONE$
             gosub moveToHouse
@@ -191,7 +198,7 @@ inauri.faSkin:
 
 
 inauri.healDisease:
-    if (%inauri.disease) then {
+    if (%inauri.disease = 1) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget disease quick
         var inauri.disease 0
@@ -213,7 +220,7 @@ inauri.healWound:
 
 
 inauri.healPoison:
-    if (%inauri.poison) then {
+    if (%inauri.poison = 1) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget poison quick
         var inauri.poison 0
@@ -221,6 +228,15 @@ inauri.healPoison:
     if (%inauri.poisonSelf = 1) then {
         put runScript cast fp
         var inauri.poisonSelf 0
+    }
+    return
+
+
+inauri.healVitality:
+    if (%inauri.vitality = 1) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget vitality
+        var inauri.vitality 0
     }
     return
 
@@ -308,7 +324,7 @@ inauri.teach:
     return
 
 
-inauri.vitalityHeal:
+inauri.vitalityHealSelf:
     put #script pause all except inauri
 
 
