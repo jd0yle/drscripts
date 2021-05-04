@@ -77,7 +77,7 @@ inauri.loop:
     pause 1
     gosub inauri.arcana
     pause 1
-    #gosub inauri.engineer
+    gosub inauri.engineer
     pause 1
     if ($mana > 30) then {
         gosub inauri.magic
@@ -166,8 +166,8 @@ inauri.engineer:
         put #echo >Log Yellow [inauri] Beginning engineering.
         put .engineer 5 $char.craft.item
         waitforre ^ENGINEER DONE
+        put #echo >Log Yellow [inauri] Engineering complete.  ENG:($Engineering.LearningRate/34)
         put #var inauri.subScript 0
-        put #script abort all except inauri
     }
     return
 
@@ -178,12 +178,14 @@ inauri.faSkin:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
+        put #echo >Log Cyan [khurnaarti] Beginning trainer.
         gosub get my $char.trainer.firstaid
     	gosub skin my $char.trainer.firstaid
-	    pause 2
     	gosub repair my $char.trainer.firstaid
-    	pause 2
+    	gosub skin my $char.trainer.firstaid
+        gosub repair my $char.trainer.firstaid
     	gosub stow my $char.trainer.firstaid
+    	put #echo >Log Cyan [khurnaarti] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
     }
     return
 
@@ -246,8 +248,10 @@ inauri.magic:
             put .magic noLoop
             waitforre ^MAGIC DONE
             put #var inauri.subScript 0
-            put #echo >Log Purple [inauri] Magic complete.
-            put #script abort all except inauri
+            put #echo >Log Purple [inauri] Magic complete. Ward:($Warding.LearningRate/34)
+            gosub clear
+            put .train
+            put #script abort all except train
         }
     }
     return
@@ -283,8 +287,7 @@ inauri.research:
         put #echo >Log Purple [inauri] Beginning research.
         put .research sorcery
         waitforre ^RESEARCH DONE
-        put #echo >Log Purple [inauri] Research complete.
-        put #script abort all except inauri
+        put #echo >Log Purple [inauri] Research complete. Sorc:($Sorcery.LearningRate/34)
     }
     return
 
