@@ -37,7 +37,6 @@ repairNeedMoney:
 # Checks
 ################
 repairRoomCheck:
-    if ("$roomname" = "Catrox's Forge, Entryway") then var repair.npc Catrox
     if ("$roomname" = "Shard Engineering Society, Bookstore") then var repair.npc clerk
 
 
@@ -102,14 +101,13 @@ repairNextTool:
 
 repair.checkTime:
     gosub look my ticket
-    put .look
-    if (%repair.waitTimeMin <> 0) then {
-        evalmath %repair.waitTimeSec %repair.waitTimeSec + 60
+    if (%repair.waitTimeSec <> 0) then {
         evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
+        put #echo >Log Yellow [repair] Waiting %repair.waitTimeMin min to pick up.
+        put .look
+        pause %repair.waitTimeSec
+        put #script abort look
     }
-    pause %repair.waitTimeSec
-    put #echo >Log Yellow [repairtool] Waiting %repair.waitTimeMin minutes (%repair.waitTimeSec seconds) for tools.
-    put #script abort look
     goto repairCheckTicket
 
 

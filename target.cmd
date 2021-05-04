@@ -11,6 +11,7 @@ if (!($lastHuntGametime >0)) then put #var lastHuntGametime 0
 if (!($lastCyclicGametime >0)) then put #var lastCyclicGametime 0
 
 var useApp 0
+var useDebil 1
 var useHunt 1
 var usePerc 1
 var useAstrology 0
@@ -22,6 +23,7 @@ var useSkin 1
 var opts %1
 if ("%opts" = "backtrain") then {
     var useApp 1
+    var useDebil 0
     var useForage 0
     var useHunt 1
     var usePerc 1
@@ -59,7 +61,7 @@ targetSkillCheck:
         pause 5
         goto targetLoop
     }
-    if ($Debilitation.LearningRate < 30) then {
+    if ($Debilitation.LearningRate < 30 && %useDebil = 1) then {
         if (%useShadowWeb = 1) then {
             if ($SpellTimer.ShadowWeb.active = 1) then {
                 eval nextCyclicAt $lastCyclicGametime + 300
@@ -72,17 +74,13 @@ targetSkillCheck:
             gosub cast
             put #var lastCyclicGametime $gametime
         } else {
-            gosub prep $char.combat.spell.Debilitation $char.combat.prep.Debilitation
-            if ($char.combat.harness.Debilitation <> 0) then {
-                gosub harness $char.combat.prep.Debilitation
-            }
+            gosub prep $char.fight.debil.spell $char.fight.debil.prepAt
             waitforre ^You feel fully prepared
             gosub cast
         }
     }
-    gosub target $char.combat.spell.Targeted_Magic $char.combat.prep.Targeted_Magic
-    pause 6
-    #waitforre ^Your formation of a targeting pattern around
+    gosub target $char.fight.tmSpell $char.fight.tmPrep
+    pause $char.fight.tmPause
     gosub cast
     goto targetSkillCheck
 

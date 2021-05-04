@@ -57,6 +57,10 @@ look.loop:
                 }
             }
         }
+        if ($inauri.subScript = 0 && !contains("$scriptlist", "inauri") then {
+            put .train
+            put #script abort look
+        }
     }
     if (%look.openDoor = 1) then gosub look.door
     var look.openDoor 0
