@@ -3009,6 +3009,7 @@ runScript:
 
     runScript1:
 	    eval doneString toupper(%scriptName)
+		matchre runScriptDone ^%doneString DONE$
 		put .%todo
 
 	runScriptLoop:

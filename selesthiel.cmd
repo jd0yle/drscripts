@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts seventy-one
+var expectedNumBolts sixty-nine
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -43,7 +43,7 @@ action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmu
 
 timer start
 
-if ($health < 90) then goto getHealedTrigger
+if ($health < 90 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
 if ("%startAt" = "fight") then goto startFight
 
@@ -400,6 +400,9 @@ moveToMagic:
 
 moveToWyverns:
     if ("$roomname" = "Private Home Interior") then {
+        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
         gosub runScript house
         goto moveToWyverns
     }
@@ -413,7 +416,8 @@ moveToWyverns:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        gosub runScript findSpot juvenilewyvern
+        #gosub runScript findSpot juvenilewyvern
+        gosub runScript findSpot wyvern
         return
 
         #put .findSpot wyvern

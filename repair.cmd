@@ -279,6 +279,10 @@ repair.sack:
 
 
 repair.exit:
+    if ("$righthand" != "Empty") then gosub wear right
+    if ("$lefthand" != "Empty") then gosub wear left
+    gosub stow right
+    gosub stow left
     pause .2
     put #parse REPAIR DONE
     exit
