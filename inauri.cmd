@@ -18,8 +18,9 @@ action var inauri.privacyLocateOn 1 when ^Others will be unable to locate you\.$
 action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
+action var inauri.vitality 1 when ^Selesthiel is suffering from a .+ loss of vitality.*$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
-action goto inauri.vitalityHeal when eval $health < 30
+action goto inauri.vitalityHealSelf when eval $health < 30
 
 ###############################
 ###    CHAR VARIABLES
@@ -46,12 +47,15 @@ var inauri.poisonSelf 0
 var inauri.target 0
 var inauri.teach 0
 var inauri.topic 0
-
+var inauri.vitality 0
 
 ###############################
 ###    MAIN
 ###############################
 inauri.loop:
+    if (contains("$scriptlist", "look")) then {
+        put #script abort look
+    }
     if (!contains("$scriptlist", "reconnect.cmd")) then {
         put #echo >Log [inauri] Starting reconnect
         put .reconnect
@@ -62,6 +66,7 @@ inauri.loop:
     if (%inauri.openDoor = 1) then gosub inauri.door
     if (%inauri.poison = 1 || %inauri.poisonSelf = 1) then gosub inauri.healPoison
     if (%inauri.disease = 1 || %inauri.diseaseSelf = 1) then gosub inauri.healDisease
+    if (%inauri.vitality = 1) then gosub inauri.healVitality
     if ($mana > 30) then {
         if ($SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     }
@@ -77,7 +82,7 @@ inauri.loop:
     pause 1
     gosub inauri.arcana
     pause 1
-    #gosub inauri.engineer
+    gosub inauri.engineer
     pause 1
     if ($mana > 30) then {
         gosub inauri.magic
@@ -143,6 +148,7 @@ inauri.engineer:
             gosub moveToEngineerRepair
             put .repairtool
             waitforre ^REPAIRTOOL DONE$
+            put #var eng.repairNeeded 0
             put .deposit
             waitforre ^DEPOSIT DONE$
             gosub moveToHouse
@@ -156,6 +162,7 @@ inauri.engineer:
             gosub moveToEngineer
             put .workorder
             waitforre ^WORKORDER DONE$
+            put #var eng.needLumber 0
             put .deposit
             waitforre ^DEPOSIT DONE$
             gosub moveToHouse
@@ -166,8 +173,8 @@ inauri.engineer:
         put #echo >Log Yellow [inauri] Beginning engineering.
         put .engineer 5 $char.craft.item
         waitforre ^ENGINEER DONE
+        put #echo >Log Yellow [inauri] Engineering complete.  ENG:($Engineering.LearningRate/34)
         put #var inauri.subScript 0
-        put #script abort all except inauri
     }
     return
 
@@ -178,18 +185,20 @@ inauri.faSkin:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
+        put #echo >Log Cyan [khurnaarti] Beginning trainer.
         gosub get my $char.trainer.firstaid
     	gosub skin my $char.trainer.firstaid
-	    pause 2
     	gosub repair my $char.trainer.firstaid
-    	pause 2
+    	gosub skin my $char.trainer.firstaid
+        gosub repair my $char.trainer.firstaid
     	gosub stow my $char.trainer.firstaid
+    	put #echo >Log Cyan [khurnaarti] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
     }
     return
 
 
 inauri.healDisease:
-    if (%inauri.disease) then {
+    if (%inauri.disease = 1) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget disease quick
         var inauri.disease 0
@@ -211,7 +220,7 @@ inauri.healWound:
 
 
 inauri.healPoison:
-    if (%inauri.poison) then {
+    if (%inauri.poison = 1) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget poison quick
         var inauri.poison 0
@@ -219,6 +228,15 @@ inauri.healPoison:
     if (%inauri.poisonSelf = 1) then {
         put runScript cast fp
         var inauri.poisonSelf 0
+    }
+    return
+
+
+inauri.healVitality:
+    if (%inauri.vitality = 1) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget vitality
+        var inauri.vitality 0
     }
     return
 
@@ -246,8 +264,10 @@ inauri.magic:
             put .magic noLoop
             waitforre ^MAGIC DONE
             put #var inauri.subScript 0
-            put #echo >Log Purple [inauri] Magic complete.
-            put #script abort all except inauri
+            put #echo >Log Purple [inauri] Magic complete. Ward:($Warding.LearningRate/34)
+            gosub clear
+            put .train
+            put #script abort all except train
         }
     }
     return
@@ -283,8 +303,7 @@ inauri.research:
         put #echo >Log Purple [inauri] Beginning research.
         put .research sorcery
         waitforre ^RESEARCH DONE
-        put #echo >Log Purple [inauri] Research complete.
-        put #script abort all except inauri
+        put #echo >Log Purple [inauri] Research complete. Sorc:($Sorcery.LearningRate/34)
     }
     return
 
@@ -305,7 +324,7 @@ inauri.teach:
     return
 
 
-inauri.vitalityHeal:
+inauri.vitalityHealSelf:
     put #script pause all except inauri
 
 

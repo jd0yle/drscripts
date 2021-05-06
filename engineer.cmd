@@ -37,7 +37,6 @@ var eng.craft.numberNeeded %1
 var eng.cut 0
 var eng.page 0
 
-put #script abort all except engineer
 put .look
 gosub store default $char.craft.container
 goto eng.finishItem
@@ -259,7 +258,9 @@ eng.main:
 ###############################
 eng.analyze:
     gosub stow left
-    gosub eng.stamp
+    if ("$righthandnoun" = "$char.craft.workorder.item") then {
+        gosub eng.stamp
+    }
     gosub analyze $righthandnoun
     gosub stow
     evalmath eng.craft.numberCrafted (%eng.craft.numberCrafted + 1)
@@ -395,7 +396,7 @@ eng.exit:
     gosub store default $char.craft.default.container
 
     pause .2
-    put #parse ENG DONE
+    put #parse ENGINEER DONE
     exit
 
 

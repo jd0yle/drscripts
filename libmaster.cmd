@@ -2716,13 +2716,15 @@ percHealth.onTimer:
     var location percHealth.onTimer1
 
     percHealth.onTimer1:
-    var cooldown 30
-    if ($roomid = $lastPercHealthRoomid) then var cooldown 270
-    evalmath nextPercHealthGametime ($lastPercHealthGametime + %cooldown)
-    if (%nextPercHealthGametime < $gametime) then {
-        gosub perc health
-        put #tvar lastPercHealthRoomid $roomid
-        put #var lastPercHealthGametime $gametime
+    if ($roomplayers <> null) then {
+        var cooldown 30
+        if ($roomid = $lastPercHealthRoomid) then var cooldown 270
+        evalmath nextPercHealthGametime ($lastPercHealthGametime + %cooldown)
+        if (%nextPercHealthGametime < $gametime) then {
+            gosub perc health
+            put #tvar lastPercHealthRoomid $roomid
+            put #var lastPercHealthGametime $gametime
+        }
     }
 	return
 
@@ -3014,7 +3016,7 @@ runScript:
 
 	runScriptLoop:
 		matchre runScriptDone ^%doneString DONE$
-		matchwait 10
+		matchwait 15
         eval lowerScriptName tolower(%scriptName)
 		if (!contains("$scriptlist", "%lowerScriptName")) then {
 		    put #echo #FF9900 [runScript] *%lowerScriptName* NOT IN SCRIPTLIST ($scriptlist), RETURNING

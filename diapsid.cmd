@@ -19,6 +19,7 @@ var avoidCoin null
 botWait:
     gosub botAvoids
     pause 2
+    if ($standing = 0) then gosub stand
     gosub look
     pause 200
     goto botWait
@@ -109,9 +110,9 @@ givePrize:
         pause 2
         matchre errorFound ^\[You have exceeded your coin handoff limit of once every 30 minutes\.
         matchre giveCongrats ^You give
-        matchre requestCoinFix ^$winner is not interested in taking coins from you.
+        matchre requestCoinFix ^$diapsid.winner is not interested in taking coins from you.
     	put give $diapsid.winner $diapsid.prize platinum Kronar
-    	put #echo >log Awarded $diapsid.prize platinum to $winner.
+    	put #echo >log Awarded $diapsid.prize platinum to $diapsid.winner.
     	matchwait 5
     	goto botWait
     }
