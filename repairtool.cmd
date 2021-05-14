@@ -102,7 +102,7 @@ repairNextTool:
 repair.checkTime:
     gosub look my ticket
     if (%repair.waitTimeSec <> 0) then {
-        evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
+        evalmath %repair.waitTimeMin (%repair.waitTimeMin + 1)
         put #echo >Log Yellow [repair] Waiting %repair.waitTimeMin min to pick up.
         put .look
         pause %repair.waitTimeSec

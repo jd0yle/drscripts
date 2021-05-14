@@ -3,11 +3,11 @@ include libmaster.cmd
 ###    IDLE ACTION TRIGGERS
 ###############################
 action var khurnaarti.houseOpen 1 when ^A sandalwood door suddenly opens\!$
-action var khurnaarti.houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
+action var khurnaarti.houseOpen 1 when ^A sandalwood door's handle suddenly rattles\!$
+#action var khurnaarti.houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$
 action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
-action var khurnaarti.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action put #var lib.student 0 when ^Inauri stops teaching\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 
@@ -29,9 +29,6 @@ var khurnaarti.houseRetry 0
 var khurnaarti.houseType 0
 var khurnaarti.needHeal 0
 var khurnaarti.openDoor 0
-
-
-put #script abort all except khurnaarti
 
 
 ###############################
@@ -67,7 +64,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.forage
     pause 1
-    #gosub khurnaarti.combatCheck
+    gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -107,11 +104,8 @@ khurnaarti.burgle:
         waitforre ^BURGLE DONE
         gosub release rf
         gosub movetoHouse
-        put #script abort all except khurnaarti
-        put .train
-        put #script abort all except train
         put #echo >Log Red [khurnaarti] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
-        exit
+        gosub khurnaarti.restart
     }
 
 
@@ -167,10 +161,7 @@ khurnaarti.combatLoop:
         gosub stow
         gosub stow left
         gosub moveToHouse
-        put #script abort all except khurnaarti
-        put .train
-        put #script abort all except train
-        exit
+        gosub khurnaarti.restart
    }
    goto khurnaarti.combatLoop
 
@@ -178,13 +169,11 @@ khurnaarti.combatLoop:
 khurnaarti.door:
     if (%khurnaarti.openDoor = 1) then {
         if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
+            put #script pause all except khurnaarti
             gosub unlock door
             gosub open door
+            put #script resume all
         }
-    }
-    if (%khurnaarti.openDoor = 2) then {
-        gosub unlock door
-        gosub open door
     }
     var khurnaarti.openDoor 0
     return
@@ -218,6 +207,7 @@ khurnaarti.forage:
         put #script abort all except khurnaarti
         put #echo >Log Orange [khurnaarti] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
         gosub moveToHouse
+        gosub khurnaarti.restart
     }
     return
 
@@ -235,8 +225,8 @@ khurnaarti.healthCheck:
             var khurnaarti.needHeal 0
         } else {
             put #echo >Log Pink [khurnaarti] Need healing, Inauri unavailable.
-            put #script abort all
             put exit
+            put #script abort all
         }
     }
     return
@@ -270,7 +260,7 @@ khurnaarti.look:
 
 khurnaarti.magic:
     if ($Augmentation.LearningRate < 5) then {
-        put #echo >Log Purple [khurnaarti] Beginning magic.
+       put #echo >Log Purple [khurnaarti] Beginning magic.
        put .magic noLoop
        waitforre ^MAGIC DONE
        put #echo >Log Purple [khurnaarti] Magic complete Ward:($Warding.LearningRate/34).
@@ -297,6 +287,12 @@ khurnaarti.play:
     return
 
 
+khurnaarti.restart:
+    put #echo >log Orange [khurnaarti] Restarting script..
+    put #script abort all except khurnaarti
+    put .train
+    put .khurnaarti
+    exit
 ###############################
 ###    MOVE TO
 ###############################
@@ -366,8 +362,7 @@ moveToFangCove:
         if ($roomid = 50) then {
             put #script abort all except khurnaarti
             put .train
-            put #script abort all except train
-            exit
+            put .khurnaarti
         }
         gosub automove 50
         goto moveToFangCove
@@ -405,9 +400,7 @@ moveToForage:
 moveToHouse:
     if ("$roomname" = "Private Home Interior") then {
         gosub clear
-        put #script abort all except khurnaarti
-        put .train
-        exit
+        gosub khurnaarti.restart
     }
     # Crossing - City
     if ($zoneid = 1) then {
@@ -448,25 +441,15 @@ moveToHouse:
 
 
     moveToHouse1:
-    gosub peer %khurnaarti.houseType
+    gosub peer door
     pause 10
     if (%khurnaarti.houseOpen = 0) then {
-        evalmath maxHouseTime %lastHouseGametime + 30
-        if (%maxHouseTime > $gametime) then {
-            goto moveToHouse1
-        } else {
-            goto moveToFangCove
-        }
-    }
-    if (%khurnaarti.houseOpen = 1) then {
+        goto moveToFangCove
+    } else {
         put .house
         waitforre ^HOUSE DONE$
         var khurnaarti.houseOpen 0
         goto moveToHouse
-    }
-    if (%khurnaarti.houseRetry = 1) then {
-        var khurnaarti.houseRetry 0
-        goto khurnaarti.loop
     }
     goto moveToHouse
 
@@ -479,13 +462,13 @@ moveToHunt:
     }
     # Crossing - City
     if ($zoneid = 1) then {
-        gosub automove N gate
+        gosub automove portal
+        gosub move go meeting portal
         goto moveToHunt
     }
     # Crossing - North Gate
     if ($zoneid = 6) then {
-        if ($roomid = 126) then return
-        gosub automove 126
+        gosub automove crossing
         goto moveToHunt
     }
     #Shard - East Gate
