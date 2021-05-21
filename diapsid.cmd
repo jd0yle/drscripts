@@ -137,7 +137,7 @@ offerPrize:
 
 
 requestCoinFix:
-    put ooc $winner [DR Discord Giveaways] Please use AVOID COIN so that I can award your coins to you.  You can whisper prize to me again once this is fixed.
+    put ooc $diapsid.winner [DR Discord Giveaways] Please use AVOID COIN so that I can award your coins to you.  You can whisper prize to me again once this is fixed.
     goto botWait
 
 
