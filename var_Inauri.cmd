@@ -47,9 +47,9 @@ put #tvar char.cast.pop.harness 0
 ###############################
 put #tvar char.craft.container workbag
 put #tvar char.craft.default.container satchel
-put #tvar char.craft.item necklace
+put #tvar char.craft.item burin
 put #tvar char.craft.tool.container workbag
-put #tvar char.craft.workorder.item necklace
+put #tvar char.craft.workorder.item burin
 
 
 ###############################

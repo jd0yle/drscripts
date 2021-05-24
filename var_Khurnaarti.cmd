@@ -15,7 +15,7 @@ put #tvar char.armor chain balaclava|chain gloves|quilted hauberk|small targe|de
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth armband
-put #tvar char.focusContainer rucksack
+put #tvar char.focusContainer shadows
 put #tvar char.ritualFocus ouroboros ring
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
@@ -82,7 +82,7 @@ put #tvar char.fight.tmPrep 7
 put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|lead-banded wand|naphtha|forester's crossbow|rockwood tanbo
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurt hhr'ata|naphtha|forester's crossbow|rockwood tanbo
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
@@ -129,16 +129,16 @@ var super.enemies null
 ###############################
 put #tvar char.locks.boxType jewelry box
 put #tvar char.locks.lockpickType ring
-put #tvar char.locks.boxContainer rucksack
+put #tvar char.locks.boxContainer shadows
 
 
 ###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer purse
-put #tvar char.inv.fullGemPouchContainer rucksack
+put #tvar char.inv.fullGemPouchContainer shadows
 put #tvar char.inv.tempContainer purse
-put #tvar char.inv.defaultContainer rucksack
+put #tvar char.inv.defaultContainer shadows
 put #tvar char.loot.boxes 1
 
 
@@ -173,17 +173,17 @@ put #tvar char.magic.train.harness.Warding 0
 ###############################
 ###      OBSERVE & PREDICT
 ###############################
-put #tvar char.predict.tool divination bones
-put #tvar char.predict.tool.container rucksack
+put #tvar char.predict.tool chalky demonbones
+put #tvar char.predict.tool.container shadows
 
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie|Giant
+put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia
 put #tvar char.observe.lore Xibar|Raven|Phoenix
 put #tvar char.observe.magic Yavash|Wolf|Toad
 put #tvar char.observe.offense Cat|Viper|Spider|Estrilda
-put #tvar char.observe.survival Heart|Ram
+put #tvar char.observe.survival Ram|Yoakena
 
 put #tvar char.observe.predict 1
 
@@ -192,7 +192,7 @@ put #tvar char.observe.predict 1
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song hymn
+put #tvar char.performance.song rumba
 put #tvar char.performance.mood quiet
 
 
@@ -201,8 +201,8 @@ put #tvar char.performance.mood quiet
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.leather demonscale armguard|hauberk
-put #tvar char.repair.metal rockwood tanbo|forester's crossbow|naphtha|lead-banded wand|chain balaclava|chain gloves|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps
+put #tvar char.repair.leather demonscale armguard|demonscale shield|cotton mask|cotton hood|cotton gloves
+put #tvar char.repair.metal rockwood tanbo|forester's crossbow|naphtha|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|chain shirt|chain greaves
 
 
 ###############################
@@ -217,8 +217,8 @@ put #tvar char.research.useSanowret 1
 ###############################
 ###      TRAINER
 ###############################
-put #tvar char.trainer.almanacContainer satchel
-put #tvar char.trainer.almanacItem chronicle
+put #tvar char.trainer.almanacContainer shadow
+put #tvar char.trainer.almanacItem almanac
 put #tvar char.trainer.firstaid caracal
 
 
