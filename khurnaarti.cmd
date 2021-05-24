@@ -64,7 +64,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.forage
     pause 1
-    gosub khurnaarti.combatCheck
+    #gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -442,7 +442,7 @@ moveToHouse:
 
     moveToHouse1:
     gosub peer door
-    pause 10
+    pause 15
     if (%khurnaarti.houseOpen = 0) then {
         goto moveToFangCove
     } else {

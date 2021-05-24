@@ -41,7 +41,7 @@ botAcceptCoin:
         put accept tip
         goto botThank
    } else {
-        gosub decline tip
+        put decline tip
         put ooc $diapsid.donator [DR Discord Giveaways] Thank you, but I am not accepting donations at this time.  Please speak to Spicy on discord if you need this feature turned on.
         goto botWait
     }
