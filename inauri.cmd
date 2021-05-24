@@ -18,7 +18,7 @@ action var inauri.privacyLocateOn 1 when ^Others will be unable to locate you\.$
 action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
 action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
-action var inauri.vitality 1 when ^Selesthiel is suffering from a .+ loss of vitality.*$
+action var inauri.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action goto inauri.vitalityHealSelf when eval $health < 30
 
@@ -127,15 +127,11 @@ inauri.arcana:
 
 
 inauri.door:
-   #if !(contains("$roomplayers", "Selesthiel")) then {
-        gosub unlock door
-        gosub open door
-   #}
-   if (%inauri.openDoor = 2) then {
-        gosub unlock door
-        gosub open door
-   }
+   put #script pause all except inauri
+   gosub unlock door
+   gosub open door
    var inauri.openDoor 0
+   put #script resume all
    return
 
 
@@ -185,14 +181,14 @@ inauri.faSkin:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
-        put #echo >Log Cyan [khurnaarti] Beginning trainer.
+        put #echo >Log Cyan [inauri] Beginning trainer.
         gosub get my $char.trainer.firstaid
     	gosub skin my $char.trainer.firstaid
     	gosub repair my $char.trainer.firstaid
     	gosub skin my $char.trainer.firstaid
         gosub repair my $char.trainer.firstaid
     	gosub stow my $char.trainer.firstaid
-    	put #echo >Log Cyan [khurnaarti] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
+    	put #echo >Log Cyan [inauri] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
     }
     return
 
@@ -212,6 +208,10 @@ inauri.healDisease:
 
 
 inauri.healWound:
+    if ($inauri.healTarget = 0) then {
+        put #var inauri.heal 0
+        return
+    }
     gosub redirect all to left leg
     gosub touch $inauri.healTarget
     gosub take $inauri.healTarget ever quick

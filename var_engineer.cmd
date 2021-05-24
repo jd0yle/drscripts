@@ -144,6 +144,7 @@ put #tvar eng.craft.numberNeeded 0
     put #tvar eng.book.cut.bead 1
     put #tvar eng.book.cut.totem 2
     put #tvar eng.book.cut.figurine 3
+    put #tvar eng.book.cut.statuette 8
 
 # Chapter 9 - Weaponry
     put #tvar eng.book.weaponry nightstick|cane|quarterstaff|crook|bo staff|weighted staff

@@ -6,9 +6,9 @@
 #debug 10
 ### SET YOUR TRASH HERE - CAREFUL WITH MATCHES - if you don't want to match "oilcan" make sure your "oil" has \b at the end!  Do not leave empty - if keeping everything set to NULL
 var SHtrash NULL
-var lootcontainer sack in my backpack
-var contractcontainer backpack
-var weapon tago
+var lootcontainer purse
+var contractcontainer rucksack
+var weapon tanbo
 
 action var action search when tickle at the frayed edges of sanity
 action var action move darkness when stir within it may have other things in mind

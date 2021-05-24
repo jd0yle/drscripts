@@ -4,9 +4,8 @@ include libmaster.cmd
 ###############################
 if ("$charactername" = "Inauri") then {
     action put #var inauri.heal 1 ; put #var inauri.healTarget $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
-    action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
+    #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
-    action var look.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
     action var look.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
@@ -57,10 +56,10 @@ look.loop:
                 }
             }
         }
-        if ($inauri.subScript = 0 && !contains("$scriptlist", "inauri") then {
-            put .train
-            put #script abort look
-        }
+        #if ($inauri.subScript = 0 && !contains("$scriptlist", "inauri") then {
+        #    put .train
+        #    put #script abort look
+        #}
     }
     if (%look.openDoor = 1) then gosub look.door
     var look.openDoor 0
@@ -73,15 +72,11 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-   #if !(contains("$roomplayers", "Selesthiel")) then {
-        gosub unlock door
-        gosub open door
-   #}
-   if (%inauri.openDoor = 2) then {
-        gosub unlock door
-        gosub open door
-   }
+   put #script pause all except look
+   gosub unlock door
+   gosub open door
    var look.openDoor 0
+   put #script resume all
    return
 
 
@@ -100,9 +95,16 @@ look.healDisease:
 
 
 look.healWound:
+    if ($inauri.healTarget = 0) then {
+        put #var inauri.heal 0
+        return
+    }
+    put #script pause all except look
+    put #script resume train
     gosub redirect all to left leg
     gosub touch $inauri.healTarget
     gosub take $inauri.healTarget ever quick
+    put #script resume all
     put #var inauri.heal 0
     return
 

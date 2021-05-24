@@ -14,7 +14,7 @@ action var engbolt.pageContent $1 when ^You turn your book to page \d+, instruct
 ###############################
 var engbolt.boltheadMaterial fang
 var engbolt.boltheadMaterialBag backpack
-var engbolt.page 9
+var engbolt.page 10
 var engbolt.pageContent 0
 var engbolt.craftbag $char.craft.container
 var engbolt.defaultbag $char.craft.default.container

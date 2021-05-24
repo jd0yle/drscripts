@@ -41,7 +41,7 @@ botAcceptCoin:
         put accept tip
         goto botThank
    } else {
-        gosub decline tip
+        put decline tip
         put ooc $diapsid.donator [DR Discord Giveaways] Thank you, but I am not accepting donations at this time.  Please speak to Spicy on discord if you need this feature turned on.
         goto botWait
     }
@@ -137,7 +137,7 @@ offerPrize:
 
 
 requestCoinFix:
-    put ooc $winner [DR Discord Giveaways] Please use AVOID COIN so that I can award your coins to you.  You can whisper prize to me again once this is fixed.
+    put ooc $diapsid.winner [DR Discord Giveaways] Please use AVOID COIN so that I can award your coins to you.  You can whisper prize to me again once this is fixed.
     goto botWait
 
 

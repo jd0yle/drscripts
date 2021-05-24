@@ -1697,6 +1697,7 @@ prepare:
     matchre return ^Heatless orange flames blaze between your fingertips
     matchre return ^Icy blue frost crackles up your arms
     matchre return ^Images of streaking stars falling from the heavens flash across your vision
+    matchre return ^Light withdraws from around you as you speak arcane words
     matchre return ^Something in the area interferes with your spell preparations
     matchre return ^The wailing of lost souls accompanies your preparations
     matchre return ^Tiny tendrils of lightning jolt between your hands
