@@ -6,13 +6,7 @@ gosub stow left
 gosub release spell
 
 loop:
-    if ($SpellTimer.Devour.active = 1) then {
-        if ($SpellTimer.Devour.duration < 20) then {
-            gosub release devour
-        } else {
-            goto done
-        }
-    }
+    if ($SpellTimer.Devour.active = 1) then goto done
     if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
         var mobName $1
         gosub prep devour 30
@@ -27,7 +21,6 @@ loop:
         pause .5
     } else if ($monstercount > 0) then {
         gosub attack kick
-        gosub attack punch
     }
     pause .5
     goto loop

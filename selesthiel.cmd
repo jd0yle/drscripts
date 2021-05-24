@@ -2,12 +2,12 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts sixty-nine
+var expectedNumBolts eighty-eight
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
-action (health) goto getHealedTrigger when eval $health < 90
+action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
 
@@ -43,7 +43,7 @@ action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmu
 
 timer start
 
-if ($health < 90 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
+if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
 if ("%startAt" = "fight") then goto startFight
 
@@ -416,8 +416,8 @@ moveToWyverns:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        #gosub runScript findSpot juvenilewyvern
-        gosub runScript findSpot wyvern
+        gosub runScript findSpot juvenilewyvern
+        #gosub runScript findSpot wyvern
         return
 
         #put .findSpot wyvern

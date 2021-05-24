@@ -510,6 +510,16 @@ avoid:
     goto retry
 
 
+bank:
+    var location bank1
+    var todo $0
+    bank1:
+    matchre return \[
+    matchre return ^You don't
+    put bank %todo
+    goto retry
+
+
 block.stop:
     var location block.stop
     matchre return ^Okay\.
@@ -656,7 +666,7 @@ charge:
     matchre return ^Roundtime
     matchre return ^I could not find
     matchre return ^You are in no condition to do that
-    matchre return ^You strain, but lack the mental stamina to charge the muhenta this much.
+    matchre return ^You strain, but lack the mental stamina to charge
     put charge %todo
     goto retry
 
@@ -926,6 +936,17 @@ empty:
     if "$lefthand" != "Empty" then gosub drop $lefthand
     if "$righthand" != "Empty" then gosub drop $righthand
     return
+
+
+exchange:
+    var location exchage1
+    var todo $0
+    exchange1:
+    matchre return EXCHANGE
+    matchre return money-changer
+    matchre return ^But you don't
+    put exchange %todo
+    goto retry
 
 
 exhale:
@@ -2623,6 +2644,15 @@ wield:
     put wield %todo
     goto retry
 
+
+withdraw:
+    var location withdraw1
+    var todo $0
+    withdraw1:
+    matchre return clerk
+    put withdraw %todo
+    goto retry
+
 ########################################################################
 #                            Timer Verbs
 ########################################################################
@@ -3054,7 +3084,7 @@ waitForMana:
 
     waitForMana1:
     pause .5
-    if ($mana > %waitManaForAmount) then return
+    if ($mana > %waitManaForAmount || "$preparedspell" = "None") then return
     goto waitForMana1
 
 

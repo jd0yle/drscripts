@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts eighteen
+var expectedNumBolts seventy-four
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -13,6 +13,8 @@ action send $lastcommand when ^You can't move in that direction while unseen.
 timer start
 
 var useBurgle 1
+
+put #tvar powerwalk 0
 
 var isFullyPrepped 0
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
@@ -136,6 +138,7 @@ main:
 
     startMagic:
     if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 10 || $Utility.LearningRate < 10 || $Warding.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
+    #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         #gosub moveToHouse
 
@@ -157,6 +160,7 @@ main:
 		}
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
+            var startResearch 0
             gosub release cyclic
 
             gosub sorceryDevour
@@ -165,11 +169,11 @@ main:
             var startResearch 0
             gosub stow right
             gosub stow left
-            put .research sorcery
-            waitforre ^RESEARCH DONE$
+            if ($Sorcery.LearningRate < 10 ) then gosub runScript research sorcery
             if ($standing != 1) then gosub stand
             gosub release roc
-            if ($bleeding = 1) then gosub runScript devour all
+            #if ($bleeding = 1) then gosub runScript devour all
+            gosub healWithRats
         }
         put .reconnect
         put .magic
@@ -196,6 +200,37 @@ sorceryCont:
     put #script abort all except qizhmur
     put .reconnect
     goto magicCont
+
+
+checkHealth:
+    var injured 1
+    matchre checkHealthInjured ^You have.*(skin|head|neck|chest|abdomen|back|tail|hand|arm|leg|eye|twitching|paralysis)
+    matchre checkHealthNotInjured ^You have no significant injuries.
+    put health
+    matchwait 5
+    return
+
+
+checkHealthInjured:
+    var injured 1
+    return
+
+
+checkHealthNotInjured:
+    var injured 0
+    return
+
+
+healWithRats:
+    gosub checkHealth
+    if ($injured = 1 || $bleeding = 1) then {
+        gosub runScript findSpot fcrat
+        if ($SpellTimer.Devour.active = 0) then gosub runScript devourfcrat
+        pause 10
+        goto healWithRats
+    }
+    pause .01
+    return
 
 
 sorceryDevour:
@@ -294,7 +329,9 @@ moveToBurgle:
 
     # Crossing W Gate
     if ("%zone" = "4") then {
+        put #tvar powerwalk 0
         if ("$roomid" = "450") then return
+        if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
         gosub automove 450
         goto moveToBurgle
     }
@@ -360,7 +397,9 @@ moveToBurgle:
 
     # FC
     if ("%zone" = "150") then {
+        put #tvar powerwalk 1
         gosub automove portal
+        put #tvar powerwalk 0
         gosub move go exit portal
         goto moveToBurgle
     }
@@ -481,7 +520,9 @@ moveToMagic:
 
     # FC
     if ("%zone" = "150") then {
+        put #tvar powerwalk 0
         if ("$roomid" = "106") then return
+        put #tvar powerwalk 1
         gosub automove 106
         goto moveToMagic
     }
@@ -649,8 +690,7 @@ moveToWarklin:
     # Abandoned Mine
     if ("%zone" = "10") then {
         gosub automove 46
-        put .findSpot warklin
-        waitforre ^FINDSPOT DONE$
+        gosub runScript findSpot warklin
         return
     }
 
