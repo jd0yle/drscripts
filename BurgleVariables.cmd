@@ -131,7 +131,7 @@ var donotpawnthis manual|guide|keepsake box|jewelry box|memory orb
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
 # if you want to drop SOME things, put them here
-var trashthings basket|kaleidoscope|sieve|stick|diary
+var trashthings basket|kaleidoscope|sieve|stick|diary|top
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }
