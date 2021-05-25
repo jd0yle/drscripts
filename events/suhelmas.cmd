@@ -6,9 +6,9 @@
 #debug 10
 ### SET YOUR TRASH HERE - CAREFUL WITH MATCHES - if you don't want to match "oilcan" make sure your "oil" has \b at the end!  Do not leave empty - if keeping everything set to NULL
 var SHtrash NULL
-var lootcontainer purse
-var contractcontainer rucksack
-var weapon tanbo
+var lootcontainer sack in my shadow
+var contractcontainer steelsilk backpack
+var weapon scimitar
 
 action var action search when tickle at the frayed edges of sanity
 action var action move darkness when stir within it may have other things in mind
@@ -20,7 +20,9 @@ action var action dodge when past the vines you see a lit chamber beckoning
 action var action crawl when little sense moving forward until this is dealt with
 if matchre("$guild", "(Commoner|Barbarian|Thief)") then action var action break when magical barrier blocks further travel down the cold passageway
 if matchre("$guild", "(Bard|Cleric|Empath|Moon Mage|Necromancer|Paladin|Ranger|Trader|Warrior Mage)") then action var action invoke when magical barrier blocks further travel down the cold passageway
-action put #echo >log Blue Su Helmet Loot: $2 when guide shoves (a(n?) |some) (.*) into
+action put #echo >log Cyan Su Helmet Loot: $1 when guide shoves (.*?) into
+
+action put .suhelmas when ^You lash out at everything around you!
 
 Begin:
 	if !matchre("$roomobjs", "empath") then goto WRONGROOM
@@ -79,6 +81,7 @@ Looting:
 	pause .5
 	if matchre("$lefthandnoun", "(%SHtrash)") then put empty left
 	if !matchre("$lefthandnoun", "(%SHtrash)") then put put my $lefthandnoun in my %lootcontainer
+	put ticket
 	pause 3
 	goto Redeem
 
