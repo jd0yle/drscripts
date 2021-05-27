@@ -11,7 +11,7 @@ action goto givePrize when ^$diapsid.winner whispers, "(.*)prize(.*)"$/i
 ###############################
 if (!($lastCoinGametime >0)) then put #var lastCoinGametime 0
 var avoidCoin null
-
+put var diapsid.prizeGiven 0
 
 ###############################
 ###      METHODS
@@ -96,7 +96,7 @@ giveFortune:
 giveCongrats:
     put ooc $diapsid.winner [DR Discord Giveaways] Here are your $diapsid.prize platinums!  Enjoy!
     var $diapsid.prizeGiven 1
-    put #echo >log Delivered $diapsid.prize plat to $diapsid.winner.
+    put #echo >log Delivered $diapsid.prize platinum to $diapsid.winner.
     goto botWait
 
 
