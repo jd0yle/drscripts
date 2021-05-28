@@ -19,12 +19,11 @@ put #tvar diapsid.fortuneTarget 0
 ###     PRIZE DISTRIBUTION
 ###############################
 # Use to identify the amount of platinums or the adjective and noun of the prize.
-    put #tvar diapsid.prize bag
+    put #tvar diapsid.prize 0
 # Is the prize coins?  0 for no.  1 for yes.
     put #tvar diapsid.prizeMoney 0
 # Name of the winner that can be given a prize.
-    put #tvar diapsid.winner Selesthiel
-
+    put #tvar diapsid.winner 0
 
 pause .2
 put #parse CHARVARS DONE
