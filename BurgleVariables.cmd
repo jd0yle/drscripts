@@ -106,7 +106,7 @@ if ("$charactername" = "%CHARACTER3") then
 # do you use the temporal eddy for storage of items?  If yes, list the items in an array, with LOOT for burgle loot, ROPE for burgle rope entry, RING for lockpick ring and LOCKPICK for loose lockpicks.  NULL if you don't use the eddy
 var eddy NULL
 # where do you want to store your stolen items?  If storing in your eddy, you must use noun "portal"
-var pack rucksack
+var pack purse
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
 if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method RING
@@ -131,7 +131,7 @@ var donotpawnthis manual|guide|keepsake box|jewelry box|memory orb
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
 # if you want to drop SOME things, put them here
-var trashthings basket|kaleidoscope|sieve|stick|diary
+var trashthings basket|kaleidoscope|sieve|stick|diary|top
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }

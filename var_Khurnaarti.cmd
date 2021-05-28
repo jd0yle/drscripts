@@ -82,7 +82,7 @@ put #tvar char.fight.tmPrep 7
 put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurt hhr'ata|naphtha|forester's crossbow|rockwood tanbo
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurt hhr'ata|frying pan|forester's crossbow|diamondwood nightstick
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
@@ -127,7 +127,7 @@ var super.enemies null
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType jewelry box
+put #tvar char.locks.boxType keepsake box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer shadows
 
@@ -156,17 +156,17 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 14
+put #tvar char.magic.train.charge.Augmentation 18
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 14
+put #tvar char.magic.train.charge.Utility 18
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding shear
-put #tvar char.magic.train.prep.Warding 1
-put #tvar char.magic.train.charge.Warding 1
+put #tvar char.magic.train.prep.Warding 30
+put #tvar char.magic.train.charge.Warding 3
 put #tvar char.magic.train.harness.Warding 0
 
 
@@ -202,7 +202,7 @@ put #tvar char.performance.mood quiet
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
 put #tvar char.repair.leather demonscale armguard|demonscale shield|cotton mask|cotton hood|cotton gloves
-put #tvar char.repair.metal rockwood tanbo|forester's crossbow|naphtha|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|chain shirt|chain greaves
+put #tvar char.repair.metal diamondwood nightstick|forester's crossbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|chain shirt|chain greaves
 
 
 ###############################

@@ -4,7 +4,7 @@ include libmaster.cmd
 ###################
 action var inauri.disease 1 when ^(?:His|Her) wounds are (?:badly )?infected
 action var inauri.diseaseSelf 1 when The presence of disturbing black streaks about yourself\.$
-action put #var inauri.heal 1 ; put #var inauri.healTarget $1 when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
+action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto inauri.healWound when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
 action var inauri.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
 action var inauri.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
 action var inauri.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
@@ -53,6 +53,9 @@ var inauri.vitality 0
 ###    MAIN
 ###############################
 inauri.loop:
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
     if (contains("$scriptlist", "look")) then {
         put #script abort look
     }
@@ -62,7 +65,6 @@ inauri.loop:
     }
     if (%inauri.teach = 1) then gosub inauri.teach
     if ($standing = 0) then gosub stand
-    if ($inauri.heal = 1) then gosub inauri.healWound
     if (%inauri.openDoor = 1) then gosub inauri.door
     if (%inauri.poison = 1 || %inauri.poisonSelf = 1) then gosub inauri.healPoison
     if (%inauri.disease = 1 || %inauri.diseaseSelf = 1) then gosub inauri.healDisease
@@ -216,7 +218,12 @@ inauri.healWound:
     gosub touch $inauri.healTarget
     gosub take $inauri.healTarget ever quick
     put #var inauri.heal 0
-    return
+    if (%inauri.vitality = 1) then {
+        gosub touch $inauri.healTarget
+        gosub take $inauri.healTarget vitality
+        var inauri.vitality 0
+    }
+    goto inauri.loop
 
 
 inauri.healPoison:
