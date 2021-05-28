@@ -95,8 +95,8 @@ put #tvar char.fight.ammo.Bow basilisk arrow
 put #tvar char.fight.ammo.Slings rock
 
 #***** ARRANGE *****
-put #tvar char.fight.arrangeForPart 0
-put #tvar char.fight.arrangeFull 1
+put #tvar char.fight.arrangeForPart 1
+put #tvar char.fight.arrangeFull 0
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
@@ -105,7 +105,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debil.spell pv
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 3
+put #tvar char.fight.debil.prepAt 5
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -134,7 +134,7 @@ put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|diamondique hhr'ata|frying pan|spiritwood lockbow|white nightstick
+put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|ka'hurst hhr'ata|frying pan|spiritwood lockbow|white nightstick
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 
 #***** ARMOR *****
@@ -232,8 +232,8 @@ put #tvar char.magic.train.cyclic.prep.Utility 15
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 106
-put #var char.repair.leather demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves
-put #var char.repair.metal gladiator's shield
+put #var char.repair.leather demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
+put #var char.repair.metal null
 
 
 ###############################

@@ -43,7 +43,7 @@ put .reconnect
 
 gosub stow right
 gosub stow left
-gosub release rog
+#gosub release rog
 gosub release usol
 gosub release symbiosis
 gosub retrieveBolts
@@ -95,7 +95,13 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        gosub automove crossing
+        #gosub automove crossing
+        if ($SpellTimer.RiteofGrace.active != 1) then {
+            gosub prep rog 15
+            gosub waitForPrep
+            gosub cast
+        }
+        gosub automove leth
         gosub automove portal
 
         gosub release eotb
@@ -137,7 +143,7 @@ main:
 
 
     startMagic:
-    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 10 || $Utility.LearningRate < 10 || $Warding.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
+    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 20 || $Warding.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Sorcery.LearningRate < 3) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         #gosub moveToHouse
@@ -171,7 +177,7 @@ main:
             gosub stow left
             if ($Sorcery.LearningRate < 10 ) then gosub runScript research sorcery
             if ($standing != 1) then gosub stand
-            gosub release roc
+            gosub release rog
             #if ($bleeding = 1) then gosub runScript devour all
             gosub healWithRats
         }
@@ -184,7 +190,8 @@ main:
     #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToWarklin
+        #gosub moveToWarklin
+        gosub moveToBulls
         put .fight
         gosub waitForMainCombat
         goto main
@@ -243,10 +250,10 @@ sorceryDevour:
 
 castSpellsForMove:
     if ("$preparedspell" != "None") then gosub release spell
-    if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
+    #if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
-    if ($SpellTimer.RiteofContrition.active != 1) then {
-        gosub prep roc 15
+    if ($SpellTimer.RiteofGrace.active != 1) then {
+        gosub prep rog 15
         gosub waitForPrep
         gosub release cyclic
         gosub cast
@@ -404,7 +411,50 @@ moveToBurgle:
         goto moveToBurgle
     }
 
+    # Storm Bulls (Ilaya)
+    if ("%zone" = "112") then {
+        if ("$roomid" = "39") then return
+        gosub automove 39
+        goto moveToBurgle
+    }
+
+    # Leth
+    if ("%zone" = "61") then {
+        gosub automove 126
+        goto moveToBurgle
+    }
+
     goto moveToBurgle
+
+
+
+moveToBulls:
+    gosub setZone
+
+    # Storm Bulls (Ilaya)
+    if ("%zone" = "112") then {
+        gosub runScript findSpot bull
+        return
+    }
+
+    gosub castSpellsForMove
+
+    # Leth
+    if ("%zone" = "61") then {
+        gosub automove 126
+        goto moveToBulls
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go exit portal
+        goto moveToBulls
+    }
+
+    goto moveToBulls
 
 
 
@@ -599,7 +649,19 @@ moveToMagic:
         goto moveToMagic
     }
 
+    # Storm Bulls
+    if ("%zone" = "112") then {
+        gosub automove leth
+        goto moveToMagic
+    }
 
+    # Leth
+    if ("%zone" = "61") then {
+        gosub automove portal
+        gosub release eotb
+        gosub move go meeting portal
+        goto moveToMagic
+    }
 
     goto moveToMagic
 

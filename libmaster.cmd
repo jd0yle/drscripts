@@ -391,6 +391,7 @@ arrange1:
     matchre return ^That creature cannot produce a skinnable part\.
     matchre return The .+ cannot be skinned, so you can't arrange it either.
     matchre return ^Try killing the
+    matchre return currently being arranged
     matchre arrange ...wait
     matchre arrange Sorry
     put arrange %todo
@@ -1698,6 +1699,7 @@ prepare:
     matchre return ^Icy blue frost crackles up your arms
     matchre return ^Images of streaking stars falling from the heavens flash across your vision
     matchre return ^Light withdraws from around you as you speak arcane words
+    matchre return ^Shadow and light collide wildly around you
     matchre return ^Something in the area interferes with your spell preparations
     matchre return ^The wailing of lost souls accompanies your preparations
     matchre return ^Tiny tendrils of lightning jolt between your hands

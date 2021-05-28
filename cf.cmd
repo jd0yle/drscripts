@@ -19,9 +19,6 @@ action var heal.$1$2 1 when (right|left) (arm|hand|leg|eye)
 action goto done when ^Lacking the skill and insight to draw more life essence out of this husk, your spell pattern fails\.$
 action goto done when ^Lacking any ritually prepared corpses, the spell pattern fails entirely.$
 
-var isFullyPrepped 0
-action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
-
 
 goto mainLoop
 
@@ -49,17 +46,15 @@ heal:
     eval part replace("%part", "left", "left ")
     eval part replace("%part", "right", "right ")
     var isFullyPrepped 0
-    gosub prep cf
+    gosub prep cf 40
     gosub perform preserve on %creature
     gosub perform consume on %creature
+    gosub charge my calf 40
+    gosub invoke my calf 40 spell
     gosub waitForPrep
     gosub cast %part
     return
 
-waitForPrep:
-    if (%isFullyPrepped = 1) then return
-    pause
-    goto waitForPrep
 
 resetHealVars:
     var resetIndex 0
