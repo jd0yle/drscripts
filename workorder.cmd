@@ -5,7 +5,8 @@ action goto workOrderDone when ^What were you referring to\?
 action var workOrderTotalNeed $1 when I need (\d+) of (exceptional|superior) quality
 action var workOrderTotalNeed $1 when You must bundle and deliver (\d+)(.*)\.$
 action var workOrderTotalNeed 0 when This work order appears to be complete\.
-action var workOrderMaster $3 when ^You also see(.*)Engineering(.*)(Master|Mistress)(.*)\.$
+#action var workOrderMaster $3 when ^You also see(.*)Engineering(.*)(Master|Mistress)(\S+)(.*)\.$
+action var workOrderMaster Brogir when ^You also see(.*)Engineering Society Master Brogir(.*)\.$
 action var workOrderMasterHuntLocation $1 when (\d+)(.*)Engineering(.*)(Master|Mistress)(.*)$
 action var workOrderLumberHave $1 when ^You count out (\d+) pieces of lumber remaining\.$
 
@@ -80,7 +81,7 @@ workOrderBundle:
     if (%workOrderTotalNeed <> 0) then {
         if (%workOrderTotalHave >= %workOrderTotalNeed) then {
             gosub get $char.craft.workorder.item from my $char.craft.container
-            gosub bundle $char.craft.workorder.item with my logbook
+            gosub bundle my $char.craft.workorder.item with my logbook
             evalmath workOrderTotalNeed (%workOrderTotalNeed - 1)
             evalmath workOrderTotalHave (%workOrderTotalHave - 1)
         } else {

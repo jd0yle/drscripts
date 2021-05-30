@@ -372,7 +372,8 @@ moveToEngineer:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 207) then return
-        gosub automove engineer book
+        gosub automove portal
+        gosub automove engineering book
         goto moveToEngineer
     }
     goto moveToEngineer
