@@ -55,10 +55,8 @@ look.loop:
                 }
             }
         }
-        #if ($inauri.subScript = 0 && !contains("$scriptlist", "inauri") then {
-        #    put .train
-        #    put #script abort look
-        #}
+        if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
+        pause 1
     }
     if (%look.openDoor = 1) then gosub look.door
     var look.openDoor 0
@@ -71,12 +69,15 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-   put #script pause all except look
-   gosub unlock door
-   gosub open door
-   var look.openDoor 0
-   put #script resume all
-   return
+    put #script pause all except look
+    gosub unlock door
+    gosub open door
+    var look.openDoor 0
+    put #script resume all
+    if ("$inauri.subScript" = "engineer") then {
+        put .engineer 1 burin
+    }
+    return
 
 
 look.healDisease:

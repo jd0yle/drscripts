@@ -82,7 +82,7 @@ put #tvar char.fight.tmPrep 7
 put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurt hhr'ata|frying pan|forester's crossbow|diamondwood nightstick
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
@@ -151,21 +151,21 @@ put #tvar char.magic.train.almanacContainer 0
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.useShadowling 1
-put #tvar char.magic.train.useSymbiosis 0
+put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 18
+put #tvar char.magic.train.charge.Augmentation 3
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 18
+put #tvar char.magic.train.charge.Utility 3
 put #tvar char.magic.train.harness.Utility 0
 
-put #tvar char.magic.train.spell.Warding shear
-put #tvar char.magic.train.prep.Warding 30
+put #tvar char.magic.train.spell.Warding psy
+put #tvar char.magic.train.prep.Warding 5
 put #tvar char.magic.train.charge.Warding 3
 put #tvar char.magic.train.harness.Warding 0
 
@@ -179,10 +179,10 @@ put #tvar char.predict.tool.container shadows
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia
+put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda
 put #tvar char.observe.lore Xibar|Raven|Phoenix
 put #tvar char.observe.magic Yavash|Wolf|Toad
-put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia
+put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda
 put #tvar char.observe.survival Ram|Yoakena|Szeldia
 
 put #tvar char.observe.predict 1
@@ -202,7 +202,7 @@ put #tvar char.performance.mood quiet
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
 put #tvar char.repair.leather demonscale armguard|demonscale shield|cotton mask|cotton hood|cotton gloves
-put #tvar char.repair.metal diamondwood nightstick|forester's crossbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|chain shirt|chain greaves
+put #tvar char.repair.metal diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|chain shirt|chain greaves
 
 
 ###############################
