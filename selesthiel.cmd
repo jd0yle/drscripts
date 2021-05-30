@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts fifty-five
+var expectedNumBolts fifty
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -11,7 +11,7 @@ action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
 
-action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the Demrris window.
+action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the
 
 action send stop teach when ^Inauri stops listening to you.
 
@@ -375,10 +375,21 @@ moveToMagic:
         gosub cast
     }
 
+    # FC
+    if ("$zoneid" = "150") then {
+        if ($roomid = 50) then {
+            gosub runScript house
+            goto moveToMagic
+        }
+        gosub automove 50
+        goto moveToMagic
+    }
+
     # Shard East Gate Area
     if ("$zoneid" = "66") then {
-        if ("$roomid" != "252") then gosub automove 252
-        gosub runScript house
+        gosub automove portal
+        gosub release rf
+        gosub move go portal
         goto moveToMagic
     }
 
@@ -391,13 +402,6 @@ moveToMagic:
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
         gosub automove n gate
-        goto moveToMagic
-    }
-
-    # FC
-    if ("$zoneid" = "150") then {
-        gosub automove portal
-        gosub move go exit portal
         goto moveToMagic
     }
 

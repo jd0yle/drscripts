@@ -26,4 +26,5 @@ listen:
 
 exit:
   put esp channel
+  put rub my pendant
   exit

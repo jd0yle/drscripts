@@ -146,7 +146,7 @@ main:
     if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 20 || $Warding.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Sorcery.LearningRate < 3) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
-        #gosub moveToHouse
+        gosub moveToHouse
 
         if ("$roomname" != "Private Home Interior") then {
             put #echo >Log #cc99ff House won't open, going to FC
@@ -169,8 +169,9 @@ main:
             var startResearch 0
             gosub release cyclic
 
+            gosub release devour
             gosub sorceryDevour
-            gosub automove 106
+            gosub moveToHouse
 
             var startResearch 0
             gosub stow right
@@ -242,6 +243,7 @@ healWithRats:
 
 sorceryDevour:
     if ($SpellTimer.Devour.duration > 20) then return
+    if ("$roomname" = "Private Home Interior") then gosub runScript house
     gosub runScript findSpot fcrat
     gosub runScript devourfcrat
     goto sorceryDevour
@@ -465,6 +467,17 @@ moveToHouse:
 
     gosub castSpellsForMove
 
+    # FC
+    if ("%zone" = "150") then {
+        if ("$roomname" = "Private Home Interior") then return
+        if ("$roomid" = "50") then {
+            gosub enterHouse
+        } else {
+            gosub automove 50
+        }
+        goto moveToHouse
+    }
+
     # Ice Caves
     if ("%zone" = "68a") then {
         gosub automove 30
@@ -534,13 +547,7 @@ moveToHouse:
         goto moveToHouse
     }
 
-    # FC
-    if ("%zone" = "150") then {
-        gosub automove portal
-        gosub release eotb
-        gosub move go portal
-        goto moveToHouse
-    }
+
 
     goto moveToHouse
 
@@ -549,17 +556,17 @@ enterHouse:
     gosub release eotb
     matchre enterHouseCont suddenly rattles
     matchre enterHouseCont suddenly opens
-    gosub peer door
-    matchwait 10
-    gosub open door
-    gosub move go door
+    gosub peer bothy
+    matchwait 20
+    gosub open bothy
+    gosub move go bothy
     return
 
 
 
 enterHouseCont:
-    gosub open door
-    gosub move go door
+    gosub open bothy
+    gosub move go bothy
     gosub close door
     gosub lock door
     return
@@ -567,6 +574,8 @@ enterHouseCont:
 
 moveToMagic:
     gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then return
 
     # FC
     if ("%zone" = "150") then {
@@ -579,10 +588,7 @@ moveToMagic:
 
     gosub castSpellsForMove
 
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToMagic
-    }
+
 
     # Ice Caves
     if ("%zone" = "68a") then {
