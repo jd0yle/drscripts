@@ -23,7 +23,7 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
-var khurnaarti.class targeted
+var khurnaarti.class debil
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
 var khurnaarti.houseType 0
@@ -404,12 +404,7 @@ moveToHouse:
     }
     # Crossing - City
     if ($zoneid = 1) then {
-        if ($roomid = 258) then {
-            var lastHouseGametime $gametime
-            var khurnaarti.houseType cedar house
-            goto moveToHouse1
-        }
-        gosub automove 258
+        gosub automove portal
         goto moveToHouse
     }
     # Crossing - North Gate
@@ -419,12 +414,8 @@ moveToHouse:
     }
     # Shard - East Gate
     if ($zoneid = 66) then {
-        if ($roomid = 252) then {
-            var lastHouseGametime $gametime
-            var khurnaarti.houseType door
-            goto moveToHouse1
-        }
-        gosub automove 252
+        gosub automove portal
+        gosub move go meeting portal
     }
     # Shard - South of City
     if ($zoneid = 68) then {
@@ -434,14 +425,14 @@ moveToHouse:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        gosub automove portal
-        gosub move go portal
+        if ($roomid = 50) then return
+        gosub automove 50
         goto moveToHouse
     }
 
 
     moveToHouse1:
-    gosub peer door
+    gosub peer bothy
     pause 15
     if (%khurnaarti.houseOpen = 0) then {
         goto moveToFangCove

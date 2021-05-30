@@ -233,7 +233,7 @@ inauri.healPoison:
         var inauri.poison 0
     }
     if (%inauri.poisonSelf = 1) then {
-        put runScript cast fp
+        gosub runScript cast fp
         var inauri.poisonSelf 0
     }
     return
@@ -372,7 +372,8 @@ moveToEngineer:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 207) then return
-        gosub automove engineer book
+        gosub automove portal
+        gosub automove engineering book
         goto moveToEngineer
     }
     goto moveToEngineer
@@ -403,8 +404,8 @@ moveToHouse:
     }
     # Shard - East Gate
     if ($zoneid = 66 ) then {
-        if ($roomid = 252) then return
-        gosub automove 252
+        gosub automove portal
+        gosub move go meeting portal
         goto moveToHouse
     }
     # Shard - City
@@ -414,9 +415,7 @@ moveToHouse:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        gosub automove portal
-        gosub move go portal
-        gosub moveToHouse
+        if ($roomid = 50) then return
+        gosub automove 50
     }
-
     goto moveToHouse

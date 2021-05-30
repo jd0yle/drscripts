@@ -14,7 +14,7 @@ if ($roomid = 252) then {
     var obj sandalwood door
 }
 if ($roomid = 50) then {
-    var obj bothy
+    var obj fieldstone bothy
 }
 
 if ("$roomname" = "Private Home Interior") then var obj door
@@ -32,7 +32,7 @@ if ("%obj" != "door") then {
     var closeObj house
     if (contains("$roomobjs", "farmstead") then var closeObj farmstead
     if (contains("$roomobjs", "sandalwood door") then var closeObj door
-    if (contains("$roomobjs", "flamewood chair") then var closeObj bothy
+    if (contains("$roomobjs", "bothy") then var closeObj bothy
     gosub close %closeObj
     gosub lock %closeObj
 }
