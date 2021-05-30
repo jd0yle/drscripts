@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts eighty-two
+var expectedNumBolts fifty-five
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -219,7 +219,14 @@ getHealedTrigger:
     }
 
     gosub retreat
-    gosub resetState
+    #gosub resetState
+    gosub stance shield
+    gosub stow right
+    gosub stow left
+    gosub release cyclic
+    gosub stow hhr'ata
+    gosub stow bola
+    gosub runScript loot
 
     if ("$zoneid" = "69") then gosub automove 15
 

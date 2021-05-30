@@ -1,6 +1,6 @@
 include libmaster.cmd
 
-var ritualFocus inauri plush
+var ritualFocus $char.ritualFocus
 
 var doPredictions %1
 
@@ -17,15 +17,19 @@ action var offensePredState $1 when (\S+) understanding of the celestial influen
 action var defensePredState $1 when (\S+) understanding of the celestial influences over defensive combat.$
 action var survivalPredState $1 when (\S+) understanding of the celestial influences over survival.$
 
-#action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait
-
 if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
 
 gosub stow right
 gosub stow left
 
-put .astro
-waitforre ^ASTRO DONE$
+if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
+    gosub release shadowling
+    gosub runScript cast shadowling
+}
+if ($SpellTimer.BraunsConjecture.active = 0 || $SpellTimer.BraunsConjecture.duration < 5) then gosub runScript cast bc
+if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 5) then gosub runScript cast dc
+if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 5) then gosub runScript cast aus
+if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 5) then gosub runScript cast pg
 
 gosub waitForConcentration
 
@@ -33,7 +37,7 @@ put sit
 
 if ($SpellTimer.ReadtheRipples.active = 1) then goto rtrObserve
 
-gosub prep rtr 800
+gosub prep rtr $char.cast.rtr.prep
 gosub get my %ritualFocus
 put invoke my %ritualFocus
 var isFullyPrepped 0
@@ -46,7 +50,6 @@ gosub cast
 gosub stow right
 gosub get my telescope
 goto rtrObserve
-
 
 
 rtrObserve:
@@ -102,13 +105,3 @@ rtrDone:
 
 
 exit
-
-var args %1|%2|%3|%4|%5|%6|%7|%8|%9
-
-
-
-
-echo %args
-
-echo %args(0)
-echo %args(1)

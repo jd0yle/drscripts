@@ -2,6 +2,8 @@ include libmaster.cmd
 
 var parts none
 
+#You have a small red blood mite on your right leg, a small red blood mite on your right arm.
+
 action var parts %parts|$1 when blood mite on your (.*?)(?:,|\.)
 #action var parts %tendParts|$1 when blood mite on your (.*?)
 

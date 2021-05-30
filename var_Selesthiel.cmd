@@ -38,6 +38,7 @@ put #tvar char.cast.default.harness 0
 
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
+put #tvar char.cast.rtr.prep 800
 
 
 ###############################
@@ -188,7 +189,7 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 35
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 32
 
 
 
