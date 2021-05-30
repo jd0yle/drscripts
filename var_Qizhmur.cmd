@@ -8,7 +8,7 @@ put #tvar char.appraise.item my gem pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor demonscale leathers|demonscale gloves|gladiator's shield|demonscale helm|demonscale mask|calcified femur
+put #tvar char.armor demonscale leathers|demonscale gloves|demonscale shield|demonscale helm|demonscale mask|calcified femur
 
 
 ###############################
