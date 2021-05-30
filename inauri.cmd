@@ -403,8 +403,8 @@ moveToHouse:
     }
     # Shard - East Gate
     if ($zoneid = 66 ) then {
-        if ($roomid = 252) then return
-        gosub automove 252
+        gosub automove portal
+        gosub move go meeting portal
         goto moveToHouse
     }
     # Shard - City
@@ -414,9 +414,7 @@ moveToHouse:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        gosub automove portal
-        gosub move go portal
-        gosub moveToHouse
+        if ($roomid = 50) then return
+        gosub automove 50
     }
-
     goto moveToHouse
