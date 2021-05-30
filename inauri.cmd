@@ -233,7 +233,7 @@ inauri.healPoison:
         var inauri.poison 0
     }
     if (%inauri.poisonSelf = 1) then {
-        put runScript cast fp
+        gosub runScript cast fp
         var inauri.poisonSelf 0
     }
     return
