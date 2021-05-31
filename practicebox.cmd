@@ -74,8 +74,9 @@ pb.countDone:
 ###############################
 pb.main:
     if (%pb.newBox = 1) then {
-        gosub drop my $char.locks.boxType
-        gosub dump.junk
+        gosub put my $char.locks.boxType in my bucket
+        gosub tap my bucket
+        gosub tap my bucket
         goto pb.count
     }
     gosub get my $char.locks.boxType
