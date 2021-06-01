@@ -38,6 +38,8 @@ khurnaarti.loop:
     gosub clear
     if ($standing = 0) then gosub stand
     pause 1
+    gosub khurnaarti.locationCheck
+    pause 1
     gosub khurnaarti.healthCheck
     pause 1
     if (%khurnaarti.openDoor = 1) then gosub khurnaarti.door
@@ -64,7 +66,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.forage
     pause 1
-    #gosub khurnaarti.combatCheck
+    gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -114,7 +116,7 @@ khurnaarti.class:
         return
     } else {
         if (contains("$roomplayers", "Inauri")) then {
-            matchre khurnaarti.classSetClass Enchanting|Sorcery|Targeted Magic
+            matchre khurnaarti.classSetClass Enchanting|Sorcery|Targeted Magic|Debilitation
             matchre khurnaarti.classNewClass ^No one seems to be teaching\.$
             put assess teach
             matchwait 5
@@ -228,6 +230,18 @@ khurnaarti.healthCheck:
             put exit
             put #script abort all
         }
+    }
+    return
+
+
+khurnaarti.locationCheck:
+    if ("$roomname" = "Private Home Interior") then {
+        return
+    }
+    if ($zoneid = 150) then {
+        if ($roomid = 50) then return
+        gosub automove portal
+        gosub automove 50
     }
     return
 
