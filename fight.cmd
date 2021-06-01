@@ -492,20 +492,12 @@ checkArmorSkills:
 checkWeaponSkills:
     # TM CYCLICS
     if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
+        # Figure out if we're using a cyclic for TM, and if so, skip over TM
         var useTmCyclic 0
         if (%useUsol = 1) then var useTmCyclic 1
         if (%useSls = 1 && $Time.isDay = 0) then var useTmCyclic 1
 
-        if (%useTmCyclic = 1) then {
-            math weapons.index add 1
-            if (%weapons.index > %weapons.length) then {
-                var weapons.index 0
-                math weapons.targetLearningRate add 5
-                if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
-            }
-        } else {
-            #if ("$charactername" = "Selesthiel") then var weapons.targetLearningRate 0
-        }
+        if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }
 
     if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
@@ -518,6 +510,7 @@ checkWeaponSkills:
         var timeBetweenWeaponSwaps 30
         if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
         evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
+
         if ($gametime > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
     }
 
@@ -548,9 +541,9 @@ checkWeaponSkills.nextWeapon:
     math weapons.index add 1
 	if (%weapons.index > %weapons.length) then {
 	    var weapons.index 0
-	    evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
-	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 	}
+    evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
+    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 	var weapons.lastChangeAt $gametime
 	return
 
