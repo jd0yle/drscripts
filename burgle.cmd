@@ -161,8 +161,8 @@ BUFF:
 	}
 	if ("$guild"="Necromancer") then
 	{
-		if ($SpellTimer.RiteofContrition.active = 0) then put release cyclic
-		if ($SpellTimer.RiteofContrition.active = 0) then gosub CAST ROC
+		#if ($SpellTimer.RiteofContrition.active = 0) then put release cyclic
+		#if ($SpellTimer.RiteofContrition.active = 0) then gosub CAST ROC
 		if ($SpellTimer.EyesoftheBlind.active = 0) then gosub CAST EOTB
 	}
 	if ("$guild"="Moon Mage") then

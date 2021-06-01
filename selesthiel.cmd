@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts fifty
+var expectedNumBolts forty-one
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -14,6 +14,8 @@ action (health) goto getHealedTrigger when ^TESTHEAL
 action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the
 
 action send stop teach when ^Inauri stops listening to you.
+
+action send listen to $1 when ^(\S+) begins to lecture
 
 action send release rf;send go portal when ^But no one can see you
 

@@ -22,7 +22,7 @@ var magic.skills Augmentation|Warding|Utility
 
 # TODO: Expand this to not be specific to Utility and Rite of Contrition
 if ($char.magic.train.cyclic.Utility = 1) then {
-    var magic.skills Augmentation|Warding
+    #var magic.skills Augmentation|Warding
 }
 
 
@@ -31,11 +31,14 @@ if (!($magic.index > -1)) then put #tvar magic.index 0
 
 if ($SpellTimer.Regenerate.active != 1 && $SpellTimer.RiteofContrition.active != 1) then gosub release cyclic
 
+if ($SpellTimer.RiteofContrition.active = 1 || $SpellTimer.RiteofGrace.active = 1) then gosub release cyclic
 
 ###############################
 ###      MAIN
 ###############################
 loop:
+    if ($SpellTimer.RiteofGrace.active = 1) then gosub release cyclic
+
     if ($char.magic.train.useAlmanac = 1) then {
         gosub almanac.onTimer
     }
@@ -51,8 +54,7 @@ loop:
     if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling = 1) then {
         if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
             gosub release shadowling
-            put .cast shadowling
-            waitforre ^CAST DONE
+            gosub runScript cast shadowling
         }
     }
 

@@ -3,12 +3,15 @@ include libmaster.cmd
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts seventy-three
+var expectedNumBolts seventy-two
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
 action send $lastcommand when ^You can't move in that direction while unseen.
+
+action send listen to $1 observe when ^(\S+) begins to lecture
+action send listen to $2 observe when ^(\S+) begins to listen to (\S+)
 
 timer start
 
@@ -41,6 +44,8 @@ if (!($lastSetGalleyDocked > 0)) then put #var lastSetGalleyDocked 0
 
 put .reconnect
 
+put .afk
+
 gosub stow right
 gosub stow left
 #gosub release rog
@@ -51,14 +56,14 @@ gosub stow hhr'ata
 gosub stow frying pan
 
 
-matchre startRepair ^You tap a
-matchre main ^I could not find
-gosub tap my ticket
-matchwait
+#matchre startRepair ^You tap a
+#matchre main ^I could not find
+#gosub tap my ticket
+#matchwait
 
-startRepair:
-    gosub moveToMagic
-    gosub waitForRepair
+#startRepair:
+#    gosub moveToMagic
+#    gosub waitForRepair
 
 if_1 then {
     if ("%1" = "research") then {
@@ -139,6 +144,7 @@ main:
         pause 1
         put .qizhmur
         put .reconnect
+        put .afk
     }
 
 
@@ -160,8 +166,8 @@ main:
 		    gosub teach tm to Selesthiel
 		} else {
 		    if (contains("$roomplayers", "Inauri")) then {
-		        gosub teach tm to inauri
 		        gosub listen to inauri observe
+		        gosub teach tm to inauri
 		    }
 		}
 
@@ -173,18 +179,22 @@ main:
             gosub sorceryDevour
             gosub moveToHouse
 
+            gosub release cyclic
+
             var startResearch 0
             gosub stow right
             gosub stow left
             if ($Sorcery.LearningRate < 10 ) then gosub runScript research sorcery
             if ($standing != 1) then gosub stand
-            gosub release rog
+            gosub release cyclic
             #if ($bleeding = 1) then gosub runScript devour all
             gosub healWithRats
         }
         put .reconnect
+        put .afk
         put .magic
         gosub waitForMagic
+        goto main
     }
 
     startFight:
@@ -204,9 +214,11 @@ main:
 sorceryCont:
     put #script abort all except qizhmur
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except qizhmur
     put .reconnect
+    put .afk
     goto magicCont
 
 
@@ -232,6 +244,7 @@ checkHealthNotInjured:
 healWithRats:
     gosub checkHealth
     if ($injured = 1 || $bleeding = 1) then {
+        if ("$roomname" = "Private Home Interior") then gosub runScript house
         gosub runScript findSpot fcrat
         if ($SpellTimer.Devour.active = 0) then gosub runScript devourfcrat
         pause 10
@@ -251,6 +264,7 @@ sorceryDevour:
 
 
 castSpellsForMove:
+    #gosub release symbiosis
     if ("$preparedspell" != "None") then gosub release spell
     #if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
@@ -441,6 +455,11 @@ moveToBulls:
 
     gosub castSpellsForMove
 
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToBulls
+    }
+
     # Leth
     if ("%zone" = "61") then {
         gosub automove 126
@@ -475,6 +494,20 @@ moveToHouse:
         } else {
             gosub automove 50
         }
+        goto moveToHouse
+    }
+
+    # Storm Bulls
+    if ("%zone" = "112") then {
+        gosub automove leth
+        goto moveToHouse
+    }
+
+    # Leth
+    if ("%zone" = "61") then {
+        gosub automove portal
+        gosub release eotb
+        gosub move go meeting portal
         goto moveToHouse
     }
 
@@ -825,9 +858,11 @@ waitForMagic:
     pause 2
     put #script abort all except qizhmur
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except qizhmur
     put .reconnect
+    put .afk
     gosub burgle.setNextBurgleAt
     put .magic
     pause 1
@@ -836,9 +871,11 @@ waitForMagicLoop:
     if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
         put #script abort all except qizhmur
         put .reconnect
+        put .afk
         pause 1
         put #script abort all except qizhmur
         put .reconnect
+        put .afk
         gosub stow right
         gosub stow left
         gosub release eotb
@@ -855,9 +892,11 @@ waitForMainCombat:
     pause 2
     put #script abort all except qizhmur
     put .reconnect
+    put .afk
     pause 1
     put #script abort all except qizhmur
     put .reconnect
+    put .afk
     gosub burgle.setNextBurgleAt
     put .fight
     pause 1
@@ -866,9 +905,11 @@ waitForMainCombatLoop:
     if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)) then {
         put #script abort all except qizhmur
         put .reconnect
+        put .afk
         pause 1
         put #script abort all except qizhmur
         put .reconnect
+        put .afk
         if ("$righthandnoun" = "lockbow") then gosub unload my lockbow
         gosub stow right
         gosub stow left
