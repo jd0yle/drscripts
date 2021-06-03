@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty-one
+var expectedNumBolts thirty-four
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -18,7 +18,7 @@ action send stop teach when ^Inauri stops listening to you.
 action send listen to $1 when ^(\S+) begins to lecture
 
 action send release rf;send go portal when ^But no one can see you
-
+action send release rf;send rummage my shadows when ^You feel about some dark encompassing shadows of twilight dreamweave\.$
 
 
 if_1 then {

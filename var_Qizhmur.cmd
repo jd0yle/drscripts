@@ -205,26 +205,42 @@ put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 1
 
+# AUGMENTATION
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 11
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 13
 put #tvar char.magic.train.harness.Augmentation 12
 
+# UTILITY
 put #tvar char.magic.train.spell.Utility gaf
 put #tvar char.magic.train.prep.Utility 1
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 10
 put #tvar char.magic.train.harness.Utility 12
-
-put #tvar char.magic.train.spell.Warding maf
-put #tvar char.magic.train.prep.Warding 1
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 11
-put #tvar char.magic.train.harness.Warding 12
 
 put #tvar char.magic.train.cyclic.Utility 1
 put #tvar char.magic.train.cyclic.spell.Utility roc
 put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
 put #tvar char.magic.train.cyclic.prep.Utility 15
 
+# WARDING
+var var.magic.Warding 13
+put #tvar char.magic.train.spell.Warding maf
+put #tvar char.magic.train.prep.Warding 1
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding
+put #tvar char.magic.train.harness.Warding 12
+
+# Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
+if (!($char.magic.train.lastBackfireGametime.Warding > -1)) then put #tvar char.magic.train.lastBackfireGametime.Warding 1
+if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600) then {
+    if (%var.magic.Warding > $char.magic.train.charge.Warding) then {
+        evalmath tmp ($char.magic.train.charge.Warding + 1)
+        put #tvar char.magic.train.charge.Warding %tmp
+        put #tvar char.magic.train.lastBackfireGametime.Warding $gametime
+        put #echo >Log [magic] Adjusting Warding charge amount +1 ($char.magic.train.charge.Warding)
+        unvar tmp
+    }
+}
+unvar var.magic.Warding
 
 ###############################
 ###      REPAIR

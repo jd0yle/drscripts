@@ -3076,8 +3076,8 @@ waitForConcentration:
 waitForPrep:
     var isFullyPrepped 0
     waitForPrep1:
-    gosub waitForMana
-    pause .5
+    gosub waitForMana 30
+    pause .1
     if (%isFullyPrepped = 1 || "$preparedspell" = "None") then return
     goto waitForPrep1
 

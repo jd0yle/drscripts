@@ -187,10 +187,25 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 #put #tvar char.magic.train.spell.Warding maf
 #put #tvar char.magic.train.prep.Warding 10
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
+
+# Temporary holding var so that we can "reset" long enough after a backfire
+var var.magic.Warding 32
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
-if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 32
+if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding
 
+# Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
+if (!($char.magic.train.lastBackfireGametime.Warding > -1)) then put #tvar char.magic.train.lastBackfireGametime.Warding 1
+if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600) then {
+    if (%var.magic.Warding > $char.magic.train.charge.Warding) then {
+        evalmath tmp ($char.magic.train.charge.Warding + 1)
+        put #tvar char.magic.train.charge.Warding %tmp
+        put #tvar char.magic.train.lastBackfireGametime.Warding $gametime
+        put #echo >Log [magic] Adjusting Warding charge amount +1 ($char.magic.train.charge.Warding)
+        unvar tmp
+    }
+}
+unvar var.magic.Warding
 
 
 ###############################

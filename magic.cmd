@@ -137,6 +137,7 @@ loop:
         if (%lastSpellBackfired = 1) then {
             evalmath tmp ($char.magic.train.charge.%skill - 1)
             put #tvar char.magic.train.charge.%skill %tmp
+            put #tvar char.magic.train.lastBackfireGametime.%skill $gametime
         }
         if ("$char.magic.train.spell.%skill" = "shear") then gosub release shear
     }
