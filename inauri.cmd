@@ -21,6 +21,8 @@ action var inauri.justice 1 when ^After assessing the area, you think local law 
 action var inauri.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action goto inauri.vitalityHealSelf when eval $health < 30
+action goto inauri.unity when ^Selesthiel crumples to the ground and is still\.$
+
 
 ###############################
 ###    CHAR VARIABLES
@@ -329,6 +331,21 @@ inauri.teach:
     gosub teach %inauri.topic to %inauri.target
     var inauri.teach 0
     return
+
+
+inauri.unity:
+    put #script pause all except inauri
+    put unity Selesthiel
+    var inauri.targetAwake 0
+
+    inauri.unityLoop:
+        gosub prep awaken
+        pause 3
+        gosub cast Selesthiel
+        action var inauri.targetAwake 1 when ^(Selesthiel slowly opens his eyes\.|Selesthiel's mind is already awake as can be the spell pattern fails\.)$
+        if (%inauri.targetAwake = 0) then goto inauri.unityLoop
+        put #script resume all
+        goto inauri.loop
 
 
 inauri.vitalityHealSelf:
