@@ -27,8 +27,13 @@ repairNeedMoney:
         waitforre ^DEPOSIT DONE
         put withdraw 3 plat
     }
+    # Shard - City
     if ($zoneid = 67) then {
         if ($roomid <> 718) then gosub automove engineering book
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid <> 205) then gosub automove engineering clerk
     }
     goto repairRoomCheck
 
@@ -37,7 +42,7 @@ repairNeedMoney:
 # Checks
 ################
 repairRoomCheck:
-    if ("$roomname" = "Shard Engineering Society, Bookstore") then var repair.npc clerk
+    goto repairCheckTicket
 
 
 repairCheckTicket:

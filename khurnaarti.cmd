@@ -2,9 +2,8 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-action var khurnaarti.houseOpen 1 when ^A sandalwood door suddenly opens\!$
-action var khurnaarti.houseOpen 1 when ^A sandalwood door's handle suddenly rattles\!$
-#action var khurnaarti.houseRetry 1 ; goto moveToHouse when ^A sandalwood door suddenly closes\!$|^A sandalwood door seems to be closed\.$
+action var khurnaarti.houseOpen 1 when ^(.*)suddenly opens\!$
+action var khurnaarti.houseOpen 1 when ^(.*)suddenly rattles\!$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$
 action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
@@ -66,7 +65,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.forage
     pause 1
-    gosub khurnaarti.combatCheck
+    #gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -105,7 +104,7 @@ khurnaarti.burgle:
         put .burgle
         waitforre ^BURGLE DONE
         gosub release rf
-        gosub movetoHouse
+        gosub moveToHouse
         put #echo >Log Red [khurnaarti] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
         gosub khurnaarti.restart
     }
@@ -439,7 +438,7 @@ moveToHouse:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if ($roomid = 50) then return
+        if ($roomid = 50) then goto moveToHouse1
         gosub automove 50
         goto moveToHouse
     }
@@ -447,7 +446,7 @@ moveToHouse:
 
     moveToHouse1:
     gosub peer bothy
-    pause 15
+    pause 20
     if (%khurnaarti.houseOpen = 0) then {
         goto moveToFangCove
     } else {
