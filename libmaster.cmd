@@ -2396,6 +2396,7 @@ tap:
     var location tap1
     var todo $0
     tap1:
+    matchre return ^You drum
     matchre return ^You tap
     matchre stand1 ^Roundtime
     put tap %todo

@@ -6,6 +6,7 @@ if ("$charactername" = "Inauri") then {
     action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto look.healWound when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
     #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
+    action var look.disease 1 when ^(Her|His) wounds are infected\.$
     action var look.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.

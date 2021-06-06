@@ -77,7 +77,6 @@ pb.main:
         gosub put my $char.locks.boxType in my bucket
         gosub tap my bucket
         gosub tap my bucket
-        goto pb.count
     }
     gosub get my $char.locks.boxType
     if ("$righthand" <> "$char.locks.boxType") then {

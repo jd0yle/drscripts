@@ -26,7 +26,7 @@ put #tvar char.wornFocus 1
 ###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.charge 5
+put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 10
 
@@ -108,11 +108,11 @@ put #tvar char.fight.useMaf 1
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 1
-put #tvar char.fight.useObserve 1
+put #tvar char.fight.useObserve 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
-put #tvar char.fight.useShadows 1
-put #tvar char.fight.useShw 0
+put #tvar char.fight.useShadows 0
+put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
 
 
@@ -127,7 +127,7 @@ var super.enemies null
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxType keepsake box
+put #tvar char.locks.boxType jewelry box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer shadows
 
