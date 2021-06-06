@@ -517,6 +517,7 @@ bank:
     bank1:
     matchre return \[
     matchre return ^You don't
+    matchre return ^But you don't have any
     put bank %todo
     goto retry
 
@@ -1859,6 +1860,7 @@ roll:
     var todo $0
     roll1:
     matchre return ^Roundtime
+    matchre return ^You're having too much trouble focusing
     matchre return ^You realize you have not yet properly aligned
     matchre return ^You're too
     put roll %todo

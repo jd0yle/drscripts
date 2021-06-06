@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts thirty-four
+var expectedNumBolts thirty-nine
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -260,24 +260,27 @@ getHealed:
 
         if ($bleeding = 1) then {
             gosub runScript house
-            gosub automove portal
-            if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
-            gosub move go meeting portal
+            #gosub automove portal
+            #if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+            #gosub move go meeting portal
 
             gosub automove heal
             put join list
             matchre getHealedCont Yrisa crosses Selesthiel's name from the list.
             matchwait 120
 
-            getHealedCont:
-            put #var lastHealedGametime $gametime
-            gosub automove portal
-            gosub move go exit portal
-            gosub moveToMagic
-            if ($bleeding = 1) then goto getHealed
+            gosub getHealedCont
+
         }
     }
     return
+
+getHealedCont:
+	put #var lastHealedGametime $gametime
+	gosub automove portal
+	gosub move go exit portal
+	gosub moveToMagic
+	if ($bleeding = 1) then goto getHealed
 
 
 checkHealth:

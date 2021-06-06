@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts seventy-two
+var expectedNumBolts forty-two
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -178,6 +178,11 @@ main:
             gosub release devour
             gosub sorceryDevour
             gosub moveToHouse
+
+	        if ("$roomname" != "Private Home Interior") then {
+	            put #echo >Log #cc99ff House won't open, going to FC
+	            gosub moveToMagic
+	        }
 
             gosub release cyclic
 
@@ -494,7 +499,8 @@ moveToHouse:
         } else {
             gosub automove 50
         }
-        goto moveToHouse
+        return
+        #goto moveToHouse
     }
 
     # Storm Bulls
