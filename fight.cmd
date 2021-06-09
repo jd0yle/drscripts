@@ -423,6 +423,16 @@ buffs:
         return
     }
 
+    # RANGER
+    if ($char.fight.useInst = 1 && ($SpellTimer.Instinct.active != 1 || $SpellTimer.Instinct.duration < 2)) then {
+        gosub runScript cast inst
+        return
+    }
+    if ($char.fight.useStw = 1 && $SpellTimer.SeetheWind.active = 0) then {
+        gosub runScript cast stw
+        return
+    }
+
     return
 
 
@@ -531,7 +541,7 @@ checkWeaponSkills:
 
     put #statusbar 6 Weapon: %weapons.skills(%weapons.index) $%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate
 
-    if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow") then gosub stance shield
+    if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings") then gosub stance shield
 
     return
 
@@ -556,7 +566,7 @@ checkWeaponSkills.nextWeapon:
 ###      checkStances
 ###############################
 checkStances:
-    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
         var stances.index 0
     } else {
         if ($%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate) then {

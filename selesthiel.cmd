@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts thirty-nine
+var expectedNumBolts thirty-one
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -11,7 +11,7 @@ action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
 
-action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's) face appears in the
+action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's|Izqhhrzu's) face appears in the
 
 action send stop teach when ^Inauri stops listening to you.
 
@@ -125,7 +125,7 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10 || $Augmentation.LearningRate < 10 || $Arcana.LearningRate < 10 || $Sorcery.LearningRate < 2) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 25 || $Utility.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 3) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
@@ -151,25 +151,22 @@ main:
 
     # Main Combat
     startFight:
-    #if ($bleeding = 1) then goto startMagic
-    #if ($Evasion.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Parry_Ability.LearningRate < 20 || $Targeted_Magic.LearningRate < -1 || $Light_Thrown.LearningRate < 20 || $Brawling.LearningRate < 20 || $Small_Edged.LearningRate < 20) then {
 	    put #echo >Log #cc99ff Moving to combat
 	    gosub moveToWyverns
+	    put #tvar char.fight.backtrain 0
 	    put .fight
 	    gosub waitForMainCombat
-	    goto main
-    #}
+	    #goto main
 
 
     # Backtrain
-    if (false) then {
-        #if ($Heavy_Thrown.LearningRate < 10) then {
+    backtrain:
         put #echo >Log #0099ff Moving to backtrain
-        gosub moveToGremlins
+        gosub moveToShardBulls
+        put #tvar char.fight.backtrain 1
         put .fight backtrain
         gosub waitForBacktrain
-        goto main
-    }
+        put #tvar char.fight.backtrain 0        goto main
 
 
     #if ($Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Brawling.LearningRate < 30 || $Light_Thrown.LearningRate < 30 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30) then {
@@ -414,6 +411,51 @@ moveToMagic:
 
 
 
+moveToShardBulls:
+    if ("$roomname" = "Private Home Interior") then {
+        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        gosub runScript house
+        goto moveToShardBulls
+    }
+
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
+
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        gosub runScript findSpot shardbull
+        return
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToShardBulls
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToShardBulls
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToShardBulls
+    }
+
+    goto moveToShardBulls
+
+
+
 moveToWyverns:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
@@ -543,6 +585,36 @@ retrieveBoltsLoop:
     return
 
 
+
+waitForBacktrain:
+    pause 2
+    put #script abort all except selesthiel
+    put .reconnect
+    put .afk
+    pause 1
+    put #script abort all except selesthiel
+    put .reconnect
+    put .afk
+    gosub stow right
+    gosub stow left
+    gosub burgle.setNextBurgleAt
+    put #tvar char.fight.backtrain 1
+    put .fight
+    pause 1
+
+waitForBacktrainLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || ($Heavy_Thrown.LearningRate > 29 && $Staves.LearningRate > 29 )) then {
+        put #tvar char.fight.backtrain 0
+        gosub resetState
+        if ($bleeding = 1) then goto moveToHeal
+        return
+    }
+    put #tvar char.fight.backtrain 1
+    if (!contains("$scriptlist", "fight.cmd")) then put .fight
+    pause 2
+    goto waitForBacktrainLoop
+
+
 waitForMagic:
     pause 2
     if ($lib.timers.nextBurgleAt > $gametime) then {
@@ -582,6 +654,7 @@ waitForMainCombat:
     gosub stow right
     gosub stow left
     gosub burgle.setNextBurgleAt
+    put #tvar char.fight.backtrain 0
     put .fight
     pause 1
 
@@ -591,6 +664,7 @@ waitForMainCombatLoop:
         if ($bleeding = 1) then goto moveToHeal
         return
     }
+    put #tvar char.fight.backtrain 0
     if (!contains("$scriptlist", "fight.cmd")) then put .fight
     pause 2
     goto waitForMainCombatLoop

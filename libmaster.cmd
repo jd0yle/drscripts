@@ -1843,6 +1843,7 @@ release:
     matchre return ^You aren't preparing
     matchre return ^You cease your shadow weaving\.
     matchre return ^You don't have a Shadow Servant
+    matchre return ^You feel the feverish heat in your flesh gradually subside\.$
     matchre return ^You gesture, attempting to unravel the pattern binding the shadowling to this plane\.
     matchre return ^You gesture, completing the pattern to unravel the mystical bonds binding the shadowling to this plane\.
     matchre return ^You have no

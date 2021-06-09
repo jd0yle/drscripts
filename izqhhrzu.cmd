@@ -1,19 +1,20 @@
 include libmaster.cmd
 
-#put .var_Qizhmur
+#put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts forty-two
+var expectedNumBolts seven
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
-action send listen to $1 observe when ^(\S+) begins to lecture
-action send listen to $2 observe when ^(\S+) begins to listen to (\S+)
+action send listen to $1 when ^(\S+) begins to lecture
+action send listen to $2 when ^(\S+) begins to listen to (\S+)
 
-action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's|Izqhhrzu's) face appears in the
+action var numBolts $1 when ^You count some.*bolts in the.*and see there are (\S+) left\.$
+
 
 timer start
 
@@ -21,41 +22,15 @@ var useBurgle 1
 
 put #tvar powerwalk 0
 
-var isFullyPrepped 0
-action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
-action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
-action var isFullyPrepped 0 when ^You trace an angular sigil in the air
-
-action var numBolts $1 when ^You count some basilisk bolts in the sheath and see there are (\S+) left\.$
-
-action put #var galleyDocked 1 when ^The galley \S+ reaches the dock
-action put #var galleyDocked 1 when glides into the dock
-action put #var galleyDocked 1 when ^The Captain stops you and requests a transportation fee
-action put #var galleyDocked 0 when Cast off
-action put #var galleyDocked 0 when ^You look around in vain for the galley.
-action put #var galleyDocked 0 when ^The galley has just left the harbor.
-action put #var galleyDocked 0 when ^The galley (\S+) pulls away from the dock.
-action put #var galleyDocked 0 when ^You see no dock.
-
-var lastBoardedGalley 0
-action var lastBoardedGalley $gametime when ^The Captain stops you and requests a transportation fee
-
-action put #var lastSetGalleyDocked $gametime; echo new lastSetGalleyDocked is $lastSetGalleyDocked when eval $galleyDocked
-
-if (!($lastSetGalleyDocked > 0)) then put #var lastSetGalleyDocked 0
-
 put .reconnect
-
 put .afk
 
 gosub stow right
 gosub stow left
-#gosub release rog
-gosub release usol
 gosub release symbiosis
 gosub retrieveBolts
 gosub stow hhr'ata
-gosub stow frying pan
+gosub stow bola
 
 
 #matchre startRepair ^You tap a
@@ -102,16 +77,8 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        #gosub automove crossing
-        if ($SpellTimer.RiteofGrace.active != 1) then {
-            gosub prep rog 15
-            gosub waitForPrep
-            gosub cast
-        }
-        gosub automove leth
-        gosub automove portal
-
-        gosub release eotb
+        gosub automove crossing
+        gosub automove portal        
         gosub move go meeting portal
 
         gosub automove bundle
@@ -139,19 +106,25 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-        #gosub runScript repair
-        #gosub waitForRepair
-
-        gosub automove 106
+        gosub automove 50
         pause 1
-        put .qizhmur
+        put .izqhhrzu
         put .reconnect
         put .afk
     }
 
 
+    startFight:
+    if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Twohanded_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+        gosub waitForRepair
+        put #echo >Log #cc99ff Going to main combat
+        gosub moveToEels
+        put .fight
+        gosub waitForMainCombat
+    }
+
     startMagic:
-    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Sorcery.LearningRate < 3) then {
+    #if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         gosub moveToHouse
@@ -164,16 +137,13 @@ main:
 		if (contains("$roomplayers", "Selesthiel") && contains("$roomplayers", "Inauri")) then {
 		    gosub listen to Selesthiel
 		    gosub listen to Inauri observe
-		    gosub teach tm to Inauri
-		    gosub teach tm to Selesthiel
 		} else {
 		    if (contains("$roomplayers", "Inauri")) then {
-		        gosub listen to inauri observe
-		        gosub teach tm to inauri
+		        gosub whisper inauri teach sorcery
 		    }
 		}
 
-        if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
+        if (1 = 0 && ($Sorcery.LearningRate < 2 || %startResearch = 1)) then {
             var startResearch 0
             gosub release cyclic
 
@@ -201,29 +171,19 @@ main:
         put .afk
         put .magic
         gosub waitForMagic
-        goto main
-    }
-
-    startFight:
-    #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
-        gosub waitForRepair
-        put #echo >Log #cc99ff Going to main combat
-        #gosub moveToWarklin
-        gosub moveToBulls
-        put .fight
-        gosub waitForMainCombat
-        goto main
     #}
+
+
     goto main
 
 
 
 sorceryCont:
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     pause 1
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     goto magicCont
@@ -291,72 +251,8 @@ castSpellsForMove:
     return
 
 
-moveToAdanf:
-    gosub setZone
-
-    # Ice Caves
-    if ("%zone" = "68a") then {
-        put .findSpot adanf
-        waitforre ^FINDSPOT DONE$
-        return
-    }
-
-    gosub castSpellsForMove
-
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToAdanf
-    }
-
-    # Shard South Gate Area
-    if ("%zone" = "68") then {
-        gosub automove 214
-        goto moveToAdanf
-    }
-
-
-
-    # Shard East Gate Area
-    if ("%zone" = "66") then {
-        gosub automove s gate
-        goto moveToAdanf
-    }
-
-    # Shard
-    if ("%zone" = "67") then {
-        gosub automove 132
-        goto moveToAdanf
-    }
-
-    # Shard West Gate Area
-    if ("%zone" = "69") then {
-        echo
-        echo ** MOVE FROM WEST GATE TO ROOM 1 (east gate) **
-        echo
-        gosub automove n gate
-        goto moveToAdanf
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        gosub automove portal
-        gosub release eotb
-        gosub move go portal
-        goto moveToAdanf
-    }
-
-    goto moveToAdanf
-
-
 moveToBurgle:
     gosub setZone
-
-    # Shard West Gate Area
-    if ("%zone" = "69") then {
-        if ("$roomid" = "204") then return
-        gosub automove 204
-        goto moveToBurgle
-    }
 
     # Crossing W Gate
     if ("%zone" = "4") then {
@@ -364,31 +260,12 @@ moveToBurgle:
         if ("$roomid" = "450") then return
         if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
         gosub automove 450
+        put #tvar powerwalk 0
         goto moveToBurgle
     }
-
-    gosub castSpellsForMove
 
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
-        goto moveToBurgle
-    }
-
-    # Ice Caves
-    if ("%zone" = "68a") then {
-        gosub automove 30
-        goto moveToBurgle
-    }
-
-    # Shard S Gate
-    if ("%zone" = "68") then {
-        gosub automove e gate
-        goto moveToBurgle
-    }
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub automove ntr
         goto moveToBurgle
     }
 
@@ -404,47 +281,19 @@ moveToBurgle:
         goto moveToBurgle
     }
 
-
-
     # Crossing
     if ("%zone" = "1") then {
         gosub automove w gate
         goto moveToBurgle
     }
 
-
-
-    # Shard East Gate Area
-    if ("%zone" = "66") then {
-        gosub automove 217
-        goto moveToBurgle
-    }
-
-    # Shard
-    if ("%zone" = "67") then {
-        gosub automove 132
-        goto moveToBurgle
-    }
-
     # FC
     if ("%zone" = "150") then {
-        put #tvar powerwalk 1
+        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
+        if ($Attunement.LearningRate < 20) then put #tvar powerwalk 1
         gosub automove portal
         put #tvar powerwalk 0
         gosub move go exit portal
-        goto moveToBurgle
-    }
-
-    # Storm Bulls (Ilaya)
-    if ("%zone" = "112") then {
-        if ("$roomid" = "39") then return
-        gosub automove 39
-        goto moveToBurgle
-    }
-
-    # Leth
-    if ("%zone" = "61") then {
-        gosub automove 126
         goto moveToBurgle
     }
 
@@ -452,38 +301,95 @@ moveToBurgle:
 
 
 
-moveToBulls:
+moveToRats:
     gosub setZone
-
-    # Storm Bulls (Ilaya)
-    if ("%zone" = "112") then {
-        gosub runScript findSpot bull
-        return
-    }
-
-    gosub castSpellsForMove
 
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
-        goto moveToBulls
-    }
-
-    # Leth
-    if ("%zone" = "61") then {
-        gosub automove 126
-        goto moveToBulls
+        goto moveToRats
     }
 
     # FC
     if ("%zone" = "150") then {
+        if ("$roomid" = "162" || "$roomid" = "163" || "$roomid" = "164") then return
+        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub runScript findSpot fcrat
+        put #tvar powerwalk 0
+        goto moveToRats
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto moveToRats
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToRats
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto moveToRats
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToRats
+    }
+
+    goto moveToRats
+    
+    
+moveToEels:
+    gosub setZone
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub runScript findSpot eel
+        return
+    }
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToEels
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
         if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
         gosub automove portal
         put #tvar powerwalk 0
-        gosub move go exit portal
-        goto moveToBulls
+        gosub move go portal
+        goto moveToEels
     }
 
-    goto moveToBulls
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto moveToEels
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToEels
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove w gate
+        goto moveToEels
+    }
+
+    goto moveToEels    
 
 
 
@@ -498,14 +404,13 @@ moveToHouse:
         if ("$roomid" = "50") then {
             gosub enterHouse
         } else {
+            if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
             gosub automove 50
             goto moveToHouse
         }
         return
         #goto moveToHouse
     }
-
-    gosub castSpellsForMove
 
     # Storm Bulls
     if ("%zone" = "112") then {
@@ -516,8 +421,7 @@ moveToHouse:
     # Leth
     if ("%zone" = "61") then {
         gosub automove portal
-        gosub release eotb
-        gosub move go meeting portal
+                gosub move go meeting portal
         goto moveToHouse
     }
 
@@ -559,10 +463,8 @@ moveToHouse:
 
     # Crossing
     if ("%zone" = "1") then {
-        gosub automove portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        gosub move go meeting portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        gosub automove portal      
+        gosub move go meeting portal     
         goto moveToHouse
     }
 
@@ -596,7 +498,6 @@ moveToHouse:
 
 
 enterHouse:
-    gosub release eotb
     matchre enterHouseCont suddenly rattles
     matchre enterHouseCont suddenly opens
     gosub peer bothy
@@ -623,15 +524,12 @@ moveToMagic:
     # FC
     if ("%zone" = "150") then {
         put #tvar powerwalk 0
-        if ("$roomid" = "106") then return
+        if ("$roomid" = "50") then return
+        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
         put #tvar powerwalk 1
-        gosub automove 106
+        gosub automove 50
         goto moveToMagic
     }
-
-    gosub castSpellsForMove
-
-
 
     # Ice Caves
     if ("%zone" = "68a") then {
@@ -671,17 +569,14 @@ moveToMagic:
 
     # Crossing
     if ("%zone" = "1") then {
-        gosub automove portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        gosub move go meeting portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        gosub automove portal       
+        gosub move go meeting portal      
         goto moveToMagic
     }
 
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
-        gosub release eotb
         gosub move go meeting portal
         goto moveToMagic
     }
@@ -707,140 +602,12 @@ moveToMagic:
     # Leth
     if ("%zone" = "61") then {
         gosub automove portal
-        gosub release eotb
         gosub move go meeting portal
         goto moveToMagic
     }
 
     goto moveToMagic
 
-
-moveToRedGremlin:
-    gosub setZone
-
-    # Shard East Gate Area
-    if ("%zone" = "66") then {
-
-        echo
-        echo ** MOVE FROM EAST GATE TO ROOM 626 (gremlins) **
-        echo
-
-        if ("$roomid" != "626") then gosub automove 626
-        put .findSpot redgremlin
-        waitforre ^FINDSPOT DONE$
-        return
-    }
-
-    # Shard
-    if ("%zone" = "67") then {
-        gosub automove 132
-        goto moveToRedGremlin
-    }
-
-    # Shard West Gate Area
-    if ("%zone" = "69") then {
-        echo
-        echo ** MOVE FROM WEST GATE TO ROOM 1 (east gate) **
-        echo
-        gosub automove n gate
-        goto moveToRedGremlin
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        gosub automove portal
-        gosub move go exit portal
-        goto moveToRedGremlin
-    }
-
-    goto moveToRedGremlin
-
-
-
-moveToYellowGremlin:
-    gosub setZone
-
-    # Shard East Gate Area
-    if ("%zone" = "66") then {
-        gosub automove portal
-        gosub release eotb
-        gosub move go meeting portal
-        goto moveToYellowGremlin
-    }
-
-    # Shard
-    if ("%zone" = "67") then {
-        gosub automove 132
-        goto moveToYellowGremlin
-    }
-
-    # Shard West Gate Area
-    if ("%zone" = "69") then {
-        echo
-        echo ** MOVE FROM WEST GATE TO ROOM 1 (east gate) **
-        echo
-        gosub automove n gate
-        goto moveToYellowGremlin
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        if ("$roomid" != "111") then gosub automove 111
-        put .findSpot gremlin
-        waitforre ^FINDSPOT DONE$
-        return
-    }
-
-    goto moveToYellowGremlin
-
-
-
-moveToWarklin:
-    gosub setZone
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub automove 46
-        gosub runScript findSpot warklin
-        return
-    }
-
-    gosub castSpellsForMove
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove 396
-        goto moveToWarklin
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove ntr
-        goto moveToWarklin
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        gosub automove n gate
-        goto moveToWarklin
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove n gate
-        pause 2
-        goto moveToWarklin
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        gosub automove portal
-        gosub move go exit portal
-        goto moveToWarklin
-    }
-
-    echo No move target found, zoneid = $zoneid  zone = %zone
-    goto moveToWarklin
 
 
 setZone:
@@ -866,11 +633,11 @@ setZone:
 
 waitForMagic:
     pause 2
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     pause 1
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     gosub burgle.setNextBurgleAt
@@ -879,19 +646,18 @@ waitForMagic:
 
 waitForMagicLoop:
     if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
-        put #script abort all except qizhmur
+        put #script abort all except izqhhrzu
         put .reconnect
         put .afk
         pause 1
-        put #script abort all except qizhmur
+        put #script abort all except izqhhrzu
         put .reconnect
         put .afk
         gosub stow right
         gosub stow left
-        gosub release eotb
         gosub retrieveBolts
         gosub stow hhr'ata
-        gosub stow frying pan
+        gosub stow bola
         return
     }
     pause 2
@@ -900,11 +666,11 @@ waitForMagicLoop:
 
 waitForMainCombat:
     pause 2
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     pause 1
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     gosub burgle.setNextBurgleAt
@@ -912,12 +678,12 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 32 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 32 && $Heavy_Thrown.LearningRate > 32 && $Targeted_Magic.LearningRate > 32)) then {
-        put #script abort all except qizhmur
+    if ($lib.timers.nextBurgleAt < $gametime || ($Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Twohanded_Edged.LearningRate > 30 && $Bow.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Staves.LearningRate > 30 && $Slings.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)) then {
+        put #script abort all except izqhhrzu
         put .reconnect
         put .afk
         pause 1
-        put #script abort all except qizhmur
+        put #script abort all except izqhhrzu
         put .reconnect
         put .afk
         if ("$righthandnoun" = "lockbow") then gosub unload my lockbow
@@ -925,7 +691,7 @@ waitForMainCombatLoop:
         gosub stow left
         gosub retrieveBolts
         gosub stow hhr'ata
-        gosub stow frying pan
+        gosub stow bola
         return
     }
     pause 2
@@ -936,16 +702,16 @@ waitForMainCombatLoop:
 retrieveBolts:
     var retrieveAttempts 0
 retrieveBoltsLoop:
-    gosub count my basilisk bolts
+    gosub count my bolts
     if ("%numBolts" = "%expectedNumBolts") then {
         gosub stow right
         return
     } else {
         echo WRONG NUMBER OF BOLTS, found %numBolts expected %expectedNumBolts
     }
-    if ("$righthandnoun" != "scimitar") then {
+    if ("$righthandnoun" != "sword") then {
         gosub stow right
-        gosub get my haralun scimitar
+        gosub get my sword
     }
     gosub attack kick
     gosub loot treasure
@@ -955,7 +721,7 @@ retrieveBoltsLoop:
     if (%retrieveAttempts < 10 && $monstercount > 0) then goto retrieveBoltsLoop
     var expectedNumBolts %numBolts
     return
-    
+
 
 
 
@@ -983,7 +749,7 @@ repairDone:
     gosub moveToMagic
     gosub runScript repair
     gosub automove 106
-    put .qizhmur
+    put .izqhhrzu
 
 moveAny:
     if ($north) then {
@@ -1024,10 +790,10 @@ moveAny:
 
 logout:
     put exit
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
 put .reconnect
     pause 1
-    put #script abort all except qizhmur
+    put #script abort all except izqhhrzu
 put .reconnect
     put exit
     exit

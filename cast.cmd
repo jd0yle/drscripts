@@ -174,6 +174,9 @@ done:
     if ("%spell" = "qe" && ("$lefthandnoun" = "dirt" || "$righthandnoun" = "dirt")) then gosub put my dirt in my vial
 
     if ("%stowedItemNoun" != "null") then gosub get my %stowedItemNoun
+
+    if ("$righthandnoun" = "apple" || "$lefthandnoun" = "apple") then gosub stow apple
+
     pause .2
     put #parse CAST DONE
     exit

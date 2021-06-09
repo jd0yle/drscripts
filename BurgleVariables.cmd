@@ -27,6 +27,7 @@ var CHARACTER1 Qizhmur
 var CHARACTER2 Selesthiel
 var CHARACTER3 Khurnaarti
 var CHARACTER4 Inauri
+var CHARACTER5 Izqhhrzu
 
 ## SET ALL YOUR CUSTOM VARIABLES PER EACH CHARACTER IN THE BLOCKS BELOW THIS!
 ##### CHARACTER 1 VARIABLES
@@ -38,7 +39,7 @@ var eddy NULL
 var pack portal
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
-if ($Athletics.LearningRate < $Locksmithing.LearningRate) then var method LOCKPICK
+if ($Athletics.LearningRate > 2 && $Athletics.LearningRate > $Locksmithing.LearningRate) then var method LOCKPICK
 else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
@@ -74,7 +75,7 @@ var eddy NULL
 var pack shadows
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
-if ($Athletics.LearningRate < $Locksmithing.LearningRate) then var method LOCKPICK
+if ($Athletics.LearningRate > 2 && $Athletics.LearningRate > $Locksmithing.LearningRate) then var method LOCKPICK
 else var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
@@ -165,6 +166,43 @@ var pawn NO
 var donotpawnthis manual|guide|scimitar|opener|keepsake box|arrow
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
+# if you want to drop SOME things, put them here
+var trashthings NULL
+# Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
+var skip NULL
+}
+## SET ALL YOUR CUSTOM VARIABLES PER EACH CHARACTER IN THE BLOCKS BELOW THIS!
+##### CHARACTER 1 VARIABLES
+if ("$charactername" = "%CHARACTER5") then
+{
+# do you use the temporal eddy for storage of items?  If yes, list the items in an array, with LOOT for burgle loot, ROPE for burgle rope entry, RING for lockpick ring and LOCKPICK for loose lockpicks.  NULL if you don't use the eddy
+var eddy NULL
+# where do you want to store your stolen items?  If storing in your eddy, you must use noun "portal"
+var pack portal
+# method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
+# TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
+if ($Athletics.LearningRate > 3 && $Athletics.LearningRate > $Locksmithing.LearningRate) then var method LOCKPICK
+else var method ROPE
+# ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
+var ringtype lockpick ring
+# Use your adjective-noun for your rope
+# DANCING ROPES DO NOT WORK
+var ropetype heavy rope
+# Toggle for worn rope - Note - MUST wear lockpick ring
+var worn NO
+# Travel location should be the city and the roomid.  Pick a room where you *know* there will not be a guard, or leave NULL NOTE: LEAVE NULL IF USING WITHIN UBERCOMBAT
+var travel knife 450
+var travel NULL
+# maximum times to try to search surfaces
+var maxgrabs 5
+# do you want to hide before you search? Will ALWAYS be hidden for first search. ON will attempt to hide before any additional search. WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
+var hideme NO
+# pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
+var pawn NO
+# put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
+var donotpawnthis memory orb
+# if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
+var trashall YES
 # if you want to drop SOME things, put them here
 var trashthings NULL
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library

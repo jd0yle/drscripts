@@ -149,6 +149,19 @@ put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 0
 
 
+if ($char.fight.backtrain = 1) then {
+    put #tvar char.fight.useSls 0
+	put #tvar char.fight.weapons.items ka'hurst hhr'ata|diamondwood nightstick|leather sling
+	put #tvar char.fight.weapons.skills Heavy_Thrown|Staves|Slings
+
+	put #tvar char.fight.arrangeForPart 1
+    put #tvar char.fight.debil.use 1
+    put #tvar char.fight.useHunt 0
+    put #tvar char.fight.useShadows 0
+    put #tvar char.fight.useStealth 0
+}
+
+
 ###############################
 ###      FRIENDS
 ###############################
@@ -176,20 +189,61 @@ put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
-put #tvar char.magic.train.spell.Augmentation cv
-put #tvar char.magic.train.prep.Augmentation 10
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 60
+#put #tvar char.magic.train.spell.Augmentation cv
+#put #tvar char.magic.train.prep.Augmentation 10
+#if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 60
 
-put #tvar char.magic.train.spell.Utility sm
-put #tvar char.magic.train.prep.Utility 20
-if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 40
+#put #tvar char.magic.train.spell.Utility sm
+#put #tvar char.magic.train.prep.Utility 20
+#if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 40
 
 #put #tvar char.magic.train.spell.Warding maf
 #put #tvar char.magic.train.prep.Warding 10
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
 
+
+
+var var.magic.Augmentation 60
+put #tvar char.magic.train.spell.Augmentation cv
+put #tvar char.magic.train.prep.Augmentation 10
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
+
+# Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
+if (!($char.magic.train.lastBackfireGametime.Augmentation > -1)) then put #tvar char.magic.train.lastBackfireGametime.Augmentation 1
+if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 3600) then {
+    if (%var.magic.Augmentation > $char.magic.train.charge.Augmentation) then {
+        evalmath tmp ($char.magic.train.charge.Augmentation + 1)
+        put #tvar char.magic.train.charge.Augmentation %tmp
+        put #tvar char.magic.train.lastBackfireGametime.Augmentation $gametime
+        put #echo >Log [magic] Adjusting Augmentation charge amount +1 ($char.magic.train.charge.Augmentation)
+        unvar tmp
+    }
+}
+unvar var.magic.Augmentation
+
+
+
+var var.magic.Utility 40
+put #tvar char.magic.train.spell.Utility sm
+put #tvar char.magic.train.prep.Utility 20
+if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
+
+# Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
+if (!($char.magic.train.lastBackfireGametime.Utility > -1)) then put #tvar char.magic.train.lastBackfireGametime.Utility 1
+if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600) then {
+    if (%var.magic.Utility > $char.magic.train.charge.Utility) then {
+        evalmath tmp ($char.magic.train.charge.Utility + 1)
+        put #tvar char.magic.train.charge.Utility %tmp
+        put #tvar char.magic.train.lastBackfireGametime.Utility $gametime
+        put #echo >Log [magic] Adjusting Utility charge amount +1 ($char.magic.train.charge.Utility)
+        unvar tmp
+    }
+}
+unvar var.magic.Utility
+
+
 # Temporary holding var so that we can "reset" long enough after a backfire
-var var.magic.Warding 32
+var var.magic.Warding 34
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding
