@@ -61,7 +61,7 @@ if (matchre("%destination", "rolagi|crossing|cross")) then {
 } else if (matchre("%destination", "vellano|fangcove|fc") then {
     var pillar Unity
     var destShardName Vellano
-} else if (matchre("%destination", "dinegavren|theren") then {
+} else if (matchre("%destination", "dinegavren|theren|therengia") then {
     var pillar Introspection
     var destShardName Dinegavren
 } else if (matchre("%destination", "emalerje|volcano|lesserfist|fist") then {
@@ -84,7 +84,7 @@ if (!contains("$roomname", "Astral Plane")) then {
 		    var shardName $1
 		    echo shardName %shardName
 		}
-		if ($zoneid = 42 && $roomid = 291) then {
+		if (%shardName = 0 && "$zoneid" = "42" && "$roomid" = "291") then {
 		    var shardName Dinegavren
 		    echo shardName %shardName
 		}
