@@ -6,7 +6,7 @@ action var khurnaarti.houseOpen 1 when ^(.*)suddenly opens\!$
 action var khurnaarti.houseOpen 1 when ^(.*)suddenly rattles\!$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$
-action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel)'s face appears in the
+action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel|Izqhhrzu)'s face appears in the
 action put #var lib.student 0 when ^Inauri stops teaching\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 
@@ -65,7 +65,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.forage
     pause 1
-    #gosub khurnaarti.combatCheck
+    gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -306,6 +306,8 @@ khurnaarti.restart:
     put .train
     put .khurnaarti
     exit
+
+
 ###############################
 ###    MOVE TO
 ###############################
