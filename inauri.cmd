@@ -4,10 +4,8 @@ include libmaster.cmd
 ###################
 action var inauri.disease 1 when ^(?:His|Her) wounds are (?:badly )?infected
 action var inauri.diseaseSelf 1 when The presence of disturbing black streaks about yourself\.$
-action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto inauri.healWound when ^(Khurnaarti|Selesthiel|Vohraus|Inahk|Estius) whispers, "heal
-action var inauri.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti)'s face appears in the
-action var inauri.openDoor 2 when ^(Vohraus|Inahk|Estius)'s face appears in the
-action var inauri.poison 1 when ^(Khurnaarti|Selesthiel) whispers, "poison
+action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto inauri.healWound when ^(Khurnaarti|Selesthiel|Izqhhrzu) whispers, "heal
+action var inauri.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Izqhhrzu)'s face appears in the
 action var inauri.poison 1 when ^(She|He) has a (dangerously|mildly|critically) poisoned
 action var inauri.poisonSelf 1 when The presence of a faint greenish tinge about yourself\.$|^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
 action var inauri.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
@@ -15,7 +13,7 @@ action var inauri.privacyFamiliarOn 0 when ^Familiars may now enter your home\.$
 action var inauri.privacyFamiliarOn 1 when ^Familiars will be barred from your home\.$
 action var inauri.privacyLocateOn 0 when ^Others may now find you\.$
 action var inauri.privacyLocateOn 1 when ^Others will be unable to locate you\.$
-action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur) whispers, "teach (.*)"$
+action var inauri.teach 1; var inauri.topic $2 ; var inauri.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur|Izqhhrzu) whispers, "teach (.*)"$
 action var inauri.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var inauri.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
 action var inauri.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
@@ -50,6 +48,7 @@ var inauri.target 0
 var inauri.teach 0
 var inauri.topic 0
 var inauri.vitality 0
+
 
 ###############################
 ###    MAIN
@@ -96,7 +95,9 @@ inauri.loop:
     }
     gosub inauri.look
     pause 1
-    gosub inauri.privacy
+    gosub inauri.forage
+    pause 1
+    gosub inauri.burgle
     goto inauri.loop
 
 
@@ -128,6 +129,20 @@ inauri.arcana:
         gosub gaze my sano crystal
     }
     return
+
+
+inauri.burgle:
+    gosub burgle.setNextBurgleAt
+    if ($lib.timers.nextBurgleAt < $gametime) then {
+    put #echo >Log Red [inauri] Going to burgle
+    put stop teach
+    gosub moveToBurgle
+    put .burgle
+    waitforre ^BURGLE DONE
+    gosub moveToHouse
+    put #echo >Log Red [inauri] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
+    return
+    }
 
 
 inauri.door:
@@ -193,6 +208,19 @@ inauri.faSkin:
         gosub repair my $char.trainer.firstaid
     	gosub stow my $char.trainer.firstaid
     	put #echo >Log Cyan [inauri] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
+    }
+    return
+
+
+inauri.forage:
+    if ($Outdoorsmanship.LearningRate < 10) then {
+        put #echo >Log Orange [inauri] Going to forage.
+        put stop teach
+        gosub moveToForage
+        put .forage
+        waitforre ^FORAGE DONE
+        put #echo >Log Orange [inauri] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
+        gosub moveToHouse
     }
     return
 
@@ -368,6 +396,49 @@ inauri.vitalityHealSelf:
 ###############################
 ###    MOVE TO UTIL
 ###############################
+moveToBurgle:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        goto moveToBurgle
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        gosub automove 258
+        goto moveToBurgle
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToBurgle
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        if ($roomid = 91) then return
+        gosub automove 91
+        goto moveToBurgle
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+        goto moveToBurgle
+    }
+    # Shard - South of City
+    if ($zoneid = 68) then {
+        gosub automove 3
+        gosub move go path
+        goto moveToBurgle
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToBurgle
+    }
+    goto moveToBurgle
+
+
 moveToEngineer:
     if ("$roomname" = "Private Home Interior") then {
         put .house
@@ -410,6 +481,36 @@ moveToEngineerRepair:
         goto moveToEngineerRepair
     }
     goto moveToEngineerRepair
+
+
+moveToForage:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        goto moveToForage
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        gosub automove 258
+        goto moveToForage
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToForage
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        if ($roomid = 555) then return
+        gosub automove 555
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        if ($roomid = 50) then return
+        gosub automove 50
+    }
+    goto moveToForage
 
 
 moveToHouse:

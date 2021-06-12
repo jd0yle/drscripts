@@ -5,7 +5,7 @@
 # This script was stolen from BlacfireEnthusiast
 # and modified, adapted, and commited
 # by Hanryu (so blame the mac user)
-#debug 10
+#debug 5
 
 #### LOAD VARIABLES ####
 var status 0
@@ -16,30 +16,14 @@ action var status 1 when ^As you pull down on the (?:torch|stone basin) you hear
 action var status 0 when ^A gouged stone wall slowly closes
 
 MAINLOOP:
-if ($roomid = 264) then {
-  if (%status = 0) then {
-    gosub TURN torch on wall
-    }
-  gosub MOVE
-  pause 0.1
-  if ($roomid = 264) then {
-    var status 0
-    goto MAINLOOP
-    }
-  goto DONE
-  }
-if ($roomid = 263) then {
-  if (%status = 0) then {
-    gosub TURN basin on wall
-    }
-  gosub MOVE
-  pause 0.1
-  if ($roomid = 263) then {
-    var status 0
-    goto MAINLOOP
-    }
-  goto DONE
-  }
+     if (%status = 0) then 
+          {
+               if matchre("$roomdesc", "^Rising steeply from a rough-hewn opening") then gosub TURN torch on wall
+               if matchre("$roomdesc", "^The interior of the small cavern") then gosub TURN basin on wall
+          }
+gosub MOVE
+pause 0.1
+goto DONE
 
 DONE:
   put #parse MOVE SUCCESSFUL
@@ -66,7 +50,8 @@ MOVE:
   match RETURN Obvious
   send go wall
   matchwait 5
-goto MOVE
+  var status 0
+  goto MAINLOOP
 
 MOVE_RETREAT:
   gosub RETREAT
