@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts five
+var expectedNumBolts twelve
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -106,21 +106,8 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-        gosub automove portal
-        gosub move go portal
-        gosub automove temple
-        gosub automove huldah
-        action (standTrigger) off
-        gosub kneel
-        put pray huldah
-        gosub kneel
-        put kiss mist altar
-        action (standTrigger) on
-        gosub automove crossing
-        gosub automove portal
-        gosub move go portal
-
-        gosub automove 50
+        gosub moveToHouse
+        gosub runScript devotion
         pause 1
         put .izqhhrzu
         put .reconnect
@@ -128,10 +115,21 @@ main:
     }
 
 
+    startFight:
+    if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+        gosub getHealed
+        gosub waitForRepair
+        put #echo >Log #cc99ff Going to main combat
+        #gosub moveToRats
+        gosub moveToEels
+        put .fight
+        gosub waitForMainCombat
+        goto main
+    }
 
 
     startMagic:
-    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 25 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
+    #if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 25 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         gosub moveToHouse
@@ -182,17 +180,6 @@ main:
         put .afk
         put .magic
         gosub waitForMagic
-    }
-
-    startFight:
-    #if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
-        gosub getHealed
-        gosub waitForRepair
-        put #echo >Log #cc99ff Going to main combat
-        gosub moveToRats
-        put .fight
-        gosub waitForMainCombat
-        goto main
     #}
 
 
@@ -456,8 +443,9 @@ moveToEels:
 
     # Crossing W Gate
     if ("%zone" = "4") then {
+        if ($roomid >= 234 && $roomid <= 237) then return
         gosub runScript findSpot eel
-        return
+        goto moveToEels
     }
 
     if ("$roomname" = "Private Home Interior") then {

@@ -33,8 +33,8 @@ put #tvar char.wornFocus 0
 put #tvar char.cast.invokeSpell 0
 
 put #tvar char.cast.default.prep 1
-put #tvar char.cast.default.charge 1
-put #tvar char.cast.default.harness 1
+put #tvar char.cast.default.charge 5
+put #tvar char.cast.default.harness 0
 
 
 ###############################
@@ -121,17 +121,18 @@ put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 1
 
+#***** AP *****
+put #tvar char.fight.useMaf 1
+
 #***** CLERIC *****
 put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
-put #tvar char.fight.useMaf 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 0
-put #tvar char.fight.useMaf 0
 put #tvar char.fight.useObserve 0
 put #tvar char.fight.useSeer 0
 put #tvar char.fight.useShadowling 0
@@ -154,7 +155,6 @@ put #tvar char.fight.useUsol 0
 
 #***** RANGER *****
 put #tvar char.fight.useInst 0
-put #tvar char.fight.useMaf 0
 put #tvar char.fight.useStw 0
 
 

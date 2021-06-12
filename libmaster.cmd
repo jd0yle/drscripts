@@ -1287,13 +1287,25 @@ kick:
     goto retry
 
 
+kiss:
+    var location kiss1
+    var todo $0
+    kiss1:
+    matchre return kiss
+    matchre return ^You bend
+    matchre return ^I don't
+    put kiss %todo
+    goto retry
+
 
 kneel:
     var location kneel1
     var todo $0
     kneel1:
     matchre return ^Subservient type
+    matchre return ^You humbly
     matchre return ^You kneel
+    matchre return kneel
     put kneel %todo
     goto retry
 
@@ -1644,6 +1656,18 @@ poke:
     goto retry
 
 
+pour:
+    var location pour1
+    var todo $0
+    pour1:
+    matchre return ^You can't
+    matchre return ^I don't
+    matchre return ^Pour what
+    matchre return ^You quietly
+    put pour %todo
+    goto retry
+
+
 pray:
     var location pray1
     var todo $0
@@ -1874,6 +1898,9 @@ roll:
     var todo $0
     roll1:
     matchre return ^Roundtime
+    matchre return ^You can't
+    matchre return ^It is
+    matchre return ^You carefully
     matchre return ^You're having too much trouble focusing
     matchre return ^You realize you have not yet properly aligned
     matchre return ^You're too
@@ -2591,6 +2618,17 @@ untie:
     matchre return ^You are already
     matchre return ^You untie
     put untie %todo
+    goto retry
+
+
+unroll:
+    var location unroll1
+    var todo $0
+    unroll1:
+    matchre return ^You reverently
+    matchre return ^You need
+    matchre return ^You can't
+    put unroll %todo
     goto retry
 
 

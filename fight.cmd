@@ -384,6 +384,17 @@ buffs:
         return
     }
 
+    # CLERIC
+    if ($char.fight.useMapp = 1 && ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 3)) then {
+        gosub runScript cast mapp
+        return
+    }
+    if ($char.fight.useMpp = 1 && ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 3)) then {
+        gosub runScript cast mpp
+        return
+    }
+
+
     # MOON MAGE
     if ($char.fight.useSeer = 1 && ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3)) then {
         gosub runScript cast seer
