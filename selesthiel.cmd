@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts thirty-one
+var expectedNumBolts twenty-nine
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -156,18 +156,20 @@ main:
 	    put #tvar char.fight.backtrain 0
 	    put .fight
 	    gosub waitForMainCombat
-	    #goto main
+	    goto main
 
 
     # Backtrain
     backtrain:
+    if (1 = 0) then {
         put #echo >Log #0099ff Moving to backtrain
         gosub moveToShardBulls
         put #tvar char.fight.backtrain 1
         put .fight backtrain
         gosub waitForBacktrain
-        put #tvar char.fight.backtrain 0        goto main
-
+        put #tvar char.fight.backtrain 0
+        goto main
+    }
 
     #if ($Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Brawling.LearningRate < 30 || $Light_Thrown.LearningRate < 30 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30) then {
 
@@ -659,7 +661,7 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
         gosub resetState
         if ($bleeding = 1) then goto moveToHeal
         return

@@ -8,8 +8,8 @@ put #tvar char.appraise.item diamondique hhr'ata
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor ash leathers|ash gloves|ash cowl|demonscale shield|parry stick
-
+#put #tvar char.armor ash leathers|ash gloves|ash cowl|demonscale shield|parry stick
+put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|parry stick
 
 ###############################
 ###      BURGLE
@@ -20,7 +20,7 @@ put #tvar char.burgle.cooldown null
 ###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth cambrinth apple
+put #tvar char.cambrinth cambrinth ring
 put #tvar char.focusContainer canvas backpack
 put #tvar char.ritualFocus null
 put #tvar char.wornCambrinth 0
@@ -69,7 +69,7 @@ put #tvar char.fight.arrangeFull 1
 put #tvar char.fight.debil.use 1
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell burden
+put #tvar char.fight.debil.spell sick
 
 # The amount of mana to prep debilitation at
 put #tvar char.fight.debil.prepAt 1
@@ -91,7 +91,7 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell ec
+put #tvar char.fight.tmSpell horn
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
@@ -121,6 +121,14 @@ put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 1
 
+#***** CLERIC *****
+put #tvar char.fight.usePray 1
+put #tvar char.fight.prayTarget Huldah
+
+put #tvar char.fight.useMaf 1
+put #tvar char.fight.useMapp 1
+put #tvar char.fight.useMpp 1
+
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 0
 put #tvar char.fight.useMaf 0
@@ -145,9 +153,9 @@ put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 0
 
 #***** RANGER *****
-put #tvar char.fight.useInst 1
-put #tvar char.fight.useMaf 1
-put #tvar char.fight.useStw 1
+put #tvar char.fight.useInst 0
+put #tvar char.fight.useMaf 0
+put #tvar char.fight.useStw 0
 
 
 
@@ -178,20 +186,64 @@ put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.useInvokeSpell 0
 
-put #tvar char.magic.train.spell.Augmentation ease
-put #tvar char.magic.train.prep.Augmentation 1
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 2
+put #tvar char.magic.train.usePray 1
+put #tvar char.magic.train.prayTarget Huldah
 
-put #tvar char.magic.train.spell.Utility compost
+put #tvar char.magic.train.spell.Augmentation centering
+put #tvar char.magic.train.prep.Augmentation 1
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 3
+
+put #tvar char.magic.train.spell.Utility bless
 put #tvar char.magic.train.prep.Utility 1
-if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 2
+if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 3
 
 #put #tvar char.magic.train.spell.Warding maf
 #put #tvar char.magic.train.prep.Warding 1
-#if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 2
+#if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 3
+
+
+var var.magic.Augmentation 7
+put #tvar char.magic.train.spell.Augmentation centering
+put #tvar char.magic.train.prep.Augmentation 1
+if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
+
+# Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
+if (!($char.magic.train.lastBackfireGametime.Augmentation > -1)) then put #tvar char.magic.train.lastBackfireGametime.Augmentation 1
+if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 3600) then {
+    if (%var.magic.Augmentation > $char.magic.train.charge.Augmentation) then {
+        evalmath tmp ($char.magic.train.charge.Augmentation + 1)
+        put #tvar char.magic.train.charge.Augmentation %tmp
+        put #tvar char.magic.train.lastBackfireGametime.Augmentation $gametime
+        put #echo >Log [magic] Adjusting Augmentation charge amount +1 ($char.magic.train.charge.Augmentation)
+        unvar tmp
+    }
+}
+unvar var.magic.Augmentation
+
+
+
+var var.magic.Utility 7
+put #tvar char.magic.train.spell.Utility bless
+put #tvar char.magic.train.prep.Utility 1
+if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
+
+# Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
+if (!($char.magic.train.lastBackfireGametime.Utility > -1)) then put #tvar char.magic.train.lastBackfireGametime.Utility 1
+if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600) then {
+    if (%var.magic.Utility > $char.magic.train.charge.Utility) then {
+        evalmath tmp ($char.magic.train.charge.Utility + 1)
+        put #tvar char.magic.train.charge.Utility %tmp
+        put #tvar char.magic.train.lastBackfireGametime.Utility $gametime
+        put #echo >Log [magic] Adjusting Utility charge amount +1 ($char.magic.train.charge.Utility)
+        unvar tmp
+    }
+}
+unvar var.magic.Utility
+
+
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var var.magic.Warding 1
+var var.magic.Warding 7
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding

@@ -48,6 +48,7 @@ loopWait:
             put #script abort all except reconnect
             if ("$charactername" = "Qizhmur") then put .qizhmur
             if ("$charactername" = "Selesthiel") then put .selesthiel
+            if ("$charactername" = "Izqhhrzu") then put .izqhhrzu
             #if ("$charactername" = "Qizhmur" || "$charactername" = "Selesthiel" || "$charactername" = "Inauri" || "$charactername" = "Khurnaarti") then put .train
             var restartScripts 0
             put .reconnect

@@ -3,10 +3,13 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts seven
+var expectedNumBolts five
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
+
+action (health) goto getHealedTrigger when eval $health < 85
+action (health) goto getHealedTrigger when eval $bleeding = 1
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
@@ -31,7 +34,10 @@ gosub release symbiosis
 gosub retrieveBolts
 gosub stow hhr'ata
 gosub stow bola
+gosub stow right
+gosub stow left
 
+if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
 #matchre startRepair ^You tap a
 #matchre main ^I could not find
@@ -86,25 +92,33 @@ main:
         gosub sell my bundle
         gosub stow right
         gosub stow left
-        gosub get bundle from my skull
+        gosub get bundle from my backpack
         gosub sell my bundle
         gosub stow right
         gosub stow left
-        gosub get bundle from my skull
+        gosub get bundle from my backpack
         gosub sell my bundle
         gosub stow right
         gosub stow left
-        gosub get bundle from my portal
-        gosub sell my bundle
-        gosub stow right
-        gosub stow left
-        gosub get bundle from my portal
-        gosub sell my bundle
         gosub stow right
         gosub stow left
 
         put .dep
         waitforre ^DEP DONE$
+
+        gosub automove portal
+        gosub move go portal
+        gosub automove temple
+        gosub automove huldah
+        action (standTrigger) off
+        gosub kneel
+        put pray huldah
+        gosub kneel
+        put kiss mist altar
+        action (standTrigger) on
+        gosub automove crossing
+        gosub automove portal
+        gosub move go portal
 
         gosub automove 50
         pause 1
@@ -114,17 +128,10 @@ main:
     }
 
 
-    startFight:
-    if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Twohanded_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
-        gosub waitForRepair
-        put #echo >Log #cc99ff Going to main combat
-        gosub moveToEels
-        put .fight
-        gosub waitForMainCombat
-    }
+
 
     startMagic:
-    #if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
+    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 25 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         gosub moveToHouse
@@ -142,6 +149,10 @@ main:
 		        gosub whisper inauri teach sorcery
 		    }
 		}
+
+	    gosub listen to Selesthiel
+	    gosub listen to Inauri observe
+	    gosub whisper inauri teach sorcery
 
         if (1 = 0 && ($Sorcery.LearningRate < 2 || %startResearch = 1)) then {
             var startResearch 0
@@ -171,6 +182,17 @@ main:
         put .afk
         put .magic
         gosub waitForMagic
+    }
+
+    startFight:
+    #if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+        gosub getHealed
+        gosub waitForRepair
+        put #echo >Log #cc99ff Going to main combat
+        gosub moveToRats
+        put .fight
+        gosub waitForMainCombat
+        goto main
     #}
 
 
@@ -187,6 +209,78 @@ sorceryCont:
     put .reconnect
     put .afk
     goto magicCont
+
+
+getHealedTrigger:
+    put #script abort all except selesthiel
+    put .afk
+    put .reconnect
+    action (health) off
+    put #echo >Log #FF5501 [selesthiel.cmd] GETTING HEALED
+    put #echo >Log #FF5501 [$roomname]
+    put #echo >Log #FF5501 (health=$health bleeding=$bleeding)
+    if ($health < 50) then {
+        goto logout
+    }
+
+    gosub retreat
+    #gosub resetState
+    gosub stance shield
+    gosub stow right
+    gosub stow left
+    gosub release cyclic
+    gosub stow hhr'ata
+    gosub stow bola
+    gosub runScript loot
+
+    if ("$zoneid" = "69") then gosub automove 15
+
+    gosub getHealed
+
+    gosub moveToMagic
+
+    action (health) on
+
+    put #script abort all except selesthiel
+    put .reconnect
+    put .afk
+    pause .2
+    put .selesthiel
+
+
+getHealed:
+    gosub checkHealth
+    if (%injured = 1) then {
+        gosub moveToMagic
+
+        if (contains("$roomplayers", "Inauri")) then {
+	        gosub whisper inauri heal
+	        pause 30
+        }
+
+        if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
+        eval nextHealTime (300 + $lastHealedGametime)
+
+        if ($bleeding = 1) then {
+            gosub runScript house
+
+            gosub automove heal
+            put join list
+            matchre getHealedCont Yrisa crosses Izqhhrzu's name from the list.
+            matchwait 120
+
+            gosub getHealedCont
+
+        }
+    }
+    return
+
+getHealedCont:
+	put #var lastHealedGametime $gametime
+	#gosub automove portal
+	#gosub move go exit portal
+	gosub moveToMagic
+	if ($bleeding = 1) then goto getHealed
 
 
 checkHealth:
@@ -269,6 +363,12 @@ moveToBurgle:
         goto moveToBurgle
     }
 
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto moveToBurgle
+    }
+
     # NTR
     if ("%zone" = "7") then {
         gosub automove n gate
@@ -289,7 +389,6 @@ moveToBurgle:
 
     # FC
     if ("%zone" = "150") then {
-        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
         if ($Attunement.LearningRate < 20) then put #tvar powerwalk 1
         gosub automove portal
         put #tvar powerwalk 0
@@ -312,10 +411,15 @@ moveToRats:
     # FC
     if ("%zone" = "150") then {
         if ("$roomid" = "162" || "$roomid" = "163" || "$roomid" = "164") then return
-        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
         if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
         gosub runScript findSpot fcrat
         put #tvar powerwalk 0
+        goto moveToRats
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
         goto moveToRats
     }
 
@@ -363,11 +467,16 @@ moveToEels:
 
     # FC
     if ("%zone" = "150") then {
-        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
         if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
         gosub automove portal
         put #tvar powerwalk 0
         gosub move go portal
+        goto moveToEels
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
         goto moveToEels
     }
 
@@ -404,7 +513,6 @@ moveToHouse:
         if ("$roomid" = "50") then {
             gosub enterHouse
         } else {
-            if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
             gosub automove 50
             goto moveToHouse
         }
@@ -445,6 +553,12 @@ moveToHouse:
 
     # NTR
     if ("%zone" = "7") then {
+        gosub automove crossing
+        goto moveToHouse
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
         gosub automove crossing
         goto moveToHouse
     }
@@ -525,7 +639,6 @@ moveToMagic:
     if ("%zone" = "150") then {
         put #tvar powerwalk 0
         if ("$roomid" = "50") then return
-        if ($SpellTimer.Athleticism.active = 0 || $SpellTimer.Athleticism.duration < 5) then gosub runScript cast athleticism
         put #tvar powerwalk 1
         gosub automove 50
         goto moveToMagic
@@ -551,6 +664,12 @@ moveToMagic:
 
     # NTR
     if ("%zone" = "7") then {
+        gosub automove crossing
+        goto moveToMagic
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
         gosub automove crossing
         goto moveToMagic
     }
@@ -658,6 +777,8 @@ waitForMagicLoop:
         gosub retrieveBolts
         gosub stow hhr'ata
         gosub stow bola
+        gosub stow right
+        gosub stow left
         return
     }
     pause 2
@@ -678,7 +799,7 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Twohanded_Edged.LearningRate > 30 && $Bow.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Staves.LearningRate > 30 && $Slings.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Targeted_Magic.LearningRate > 25 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Bow.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Staves.LearningRate > 30 && $Slings.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Twohanded_Edged.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)) then {
         put #script abort all except izqhhrzu
         put .reconnect
         put .afk
@@ -692,6 +813,8 @@ waitForMainCombatLoop:
         gosub retrieveBolts
         gosub stow hhr'ata
         gosub stow bola
+        gosub stow right
+        gosub stow left
         return
     }
     pause 2

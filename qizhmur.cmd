@@ -26,7 +26,7 @@ action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
 action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
 action var isFullyPrepped 0 when ^You trace an angular sigil in the air
 
-action var numBolts $1 when ^You count some basilisk bolts in the sheath and see there are (\S+) left\.$
+action var numBolts $1 when ^You count some basilisk bolts in the.*and see there are (\S+) left\.$
 
 action put #var galleyDocked 1 when ^The galley \S+ reaches the dock
 action put #var galleyDocked 1 when glides into the dock

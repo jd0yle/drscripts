@@ -183,6 +183,7 @@ loop:
     gosub manageCyclics
     gosub fight.observe
     gosub huntApp
+    if ("$char.fight.usePray" = "1") then gosub pray.onTimer $char.fight.prayTarget
 
     if (%useAlmanac = 1) then gosub almanac.onTimer
     if (%useSanowret = 1 && $Arcana.LearningRate < 31 && $concentration = 100) then gosub gaze my sanowret crystal

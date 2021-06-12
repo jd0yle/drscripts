@@ -1287,6 +1287,17 @@ kick:
     goto retry
 
 
+
+kneel:
+    var location kneel1
+    var todo $0
+    kneel1:
+    matchre return ^Subservient type
+    matchre return ^You kneel
+    put kneel %todo
+    goto retry
+
+
 lean:
     var location lean1
     var todo $0
@@ -1638,12 +1649,14 @@ pray:
     var todo $0
     pray1:
     matchre return ^As you utter your prayer
+    matchre return ^Quietly touching
     matchre return ^The soft sound of your prayers wraps itself around you and brings you a sense of tranquility\.
     matchre return ^You begin to pray
     matchre return ^You begin to pray, kneeling before the altar\.
     matchre return ^You beseech your God for mercy\.
     matchre return ^You bow your head
     matchre return ^You continue praying for guidance\.
+    matchre return ^You glance
     matchre return ^You kneel down and begin to pray\.
     matchre return ^You pray fervently\.
     matchre return ^You want to pray here\?
@@ -2340,6 +2353,7 @@ swap:
     matchre return ^You switch your
     matchre return ^You turn
     matchre return ^Your eyes blaze
+    matchre return ^With one superbly balanced motion
     put swap %todo
     goto retry
 
@@ -2764,6 +2778,24 @@ percHealth.onTimer:
         }
     }
 	return
+
+
+pray.onTimer:
+    var todo $0
+    var location pray.onTimer1
+    
+    pray.onTimer1:
+    if (!($lastPrayGametime > 0)) then put #var lastPrayGametime 1
+	
+	evalmath nextPrayGametime $lastPrayGametime + 601
+
+	if ($gametime > %nextPrayGametime) then {
+	    put kneel
+        gosub pray %todo
+        gosub stand
+	    put #var lastPrayGametime $gametime
+	}
+    return
 
 
 refreshRegen:

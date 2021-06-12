@@ -43,6 +43,8 @@ loop:
         gosub almanac.onTimer
     }
 
+    if ($char.magic.train.usePray = 1) then gosub pray.onTimer $char.magic.train.prayTarget
+
     if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
 
 

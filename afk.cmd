@@ -3,7 +3,7 @@
 ###############################
 action goto afk.logout when eval $health < 50
 action goto afk.logout when eval $dead = 1
-action send stand when eval $standing = 0
+action (standTrigger) send stand when eval $standing = 0
 
 
 ###############################
