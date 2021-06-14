@@ -128,7 +128,7 @@ var hideme NO
 # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
 var pawn NO
 # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
-var donotpawnthis manual|guide|keepsake box|jewelry box|memory orb
+var donotpawnthis manual|guide|scimitar|keepsake box|arrow|memory orb|jewelry box
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
 # if you want to drop SOME things, put them here
@@ -145,8 +145,9 @@ var eddy NULL
 var pack satchel
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
-if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
-else var method ROPE
+#if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
+#else
+var method ROPE
 # ringtype is the type of lockpick ring you have.  It can be any of the following: lockpick ring|lockpick case|lockpick ankle-cuff|golden key
 var ringtype lockpick ring
 # Use your adjective-noun for your rope
@@ -161,13 +162,13 @@ var maxgrabs 5
 # do you want to hide before you search? Will ALWAYS be hidden for first search. ON will attempt to hide before any additional search. WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
 var hideme NO
 # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
-var pawn NO
+var pawn YES
 # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
-var donotpawnthis manual|guide|scimitar|opener|keepsake box|arrow
+var donotpawnthis manual|guide|scimitar|opener|keepsake box|arrow|memory orb|jewelry box
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
 # if you want to drop SOME things, put them here
-var trashthings NULL
+var trashthings basket|kaleidoscope|sieve|stick|diary|top
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }
