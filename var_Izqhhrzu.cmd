@@ -20,7 +20,7 @@ put #tvar char.burgle.cooldown null
 ###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth cambrinth ring
+put #tvar char.cambrinth cambrinth armband
 put #tvar char.focusContainer canvas backpack
 put #tvar char.ritualFocus null
 put #tvar char.wornCambrinth 0
@@ -33,7 +33,7 @@ put #tvar char.wornFocus 0
 put #tvar char.cast.invokeSpell 0
 
 put #tvar char.cast.default.prep 1
-put #tvar char.cast.default.charge 5
+put #tvar char.cast.default.charge 10
 put #tvar char.cast.default.harness 0
 
 
@@ -101,8 +101,8 @@ put #tvar char.fight.tmPrep 1
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|bastard sword|bastard sword|competition shortbow|dragonwood crossbow|diamondique hhr'ata|triple-weighted bola|white nightstick|leather sling|steel scimitar
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Large_Edged|Twohanded_Edged|Bow|Crossbow|Heavy_Thrown|Light_Thrown|Staves|Slings|Small_Edged
+put #tvar char.fight.weapons.items Empty|Empty|competition shortbow|dragonwood crossbow|diamondique hhr'ata|triple-weighted bola|white nightstick|leather sling|bastard sword|bastard sword
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Bow|Crossbow|Heavy_Thrown|Light_Thrown|Staves|Slings|Large_Edged|Twohanded_Edged
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
@@ -202,7 +202,7 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 3
 
 
-var var.magic.Augmentation 7
+var var.magic.Augmentation 14
 put #tvar char.magic.train.spell.Augmentation centering
 put #tvar char.magic.train.prep.Augmentation 1
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
@@ -222,7 +222,7 @@ unvar var.magic.Augmentation
 
 
 
-var var.magic.Utility 7
+var var.magic.Utility 14
 put #tvar char.magic.train.spell.Utility bless
 put #tvar char.magic.train.prep.Utility 1
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
@@ -243,7 +243,7 @@ unvar var.magic.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var var.magic.Warding 7
+var var.magic.Warding 14
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding

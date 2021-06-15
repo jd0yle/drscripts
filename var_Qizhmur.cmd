@@ -242,6 +242,13 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600)
 }
 unvar var.magic.Warding
 
+
+###############################
+###      PAWN
+###############################
+put #tvar char.pawn.container portal
+
+
 ###############################
 ###      REPAIR
 ###############################

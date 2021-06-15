@@ -1662,6 +1662,7 @@ pour:
     pour1:
     matchre return ^You can't
     matchre return ^I don't
+    matchre return ^Maybe you should kneel.
     matchre return ^Pour what
     matchre return ^You quietly
     put pour %todo
@@ -2371,6 +2372,7 @@ swap:
     var todo $0
     swap1:
     matchre return too injured to do that.$
+    matchre return ^Silver light kisses
     matchre return ^With a quiet
     matchre return ^You deftly change
     matchre return ^You effortlessly switch
@@ -2686,6 +2688,7 @@ whisper:
     var location whisper1
     var todo $0
     whisper1:
+    matchre return ^Whisper what
     matchre return ^Who are
     matchre return ^You whisper
     put whisper %todo

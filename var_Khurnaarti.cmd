@@ -189,6 +189,12 @@ put #tvar char.observe.predict 1
 
 
 ###############################
+###      PAWN
+###############################
+put #tvar char.pawn.container ???
+
+
+###############################
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar

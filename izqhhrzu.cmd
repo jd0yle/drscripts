@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts twelve
+var expectedNumBolts one hundred fifty-eight
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -16,7 +16,7 @@ action send $lastcommand when ^You can't move in that direction while unseen.
 action send listen to $1 when ^(\S+) begins to lecture
 action send listen to $2 when ^(\S+) begins to listen to (\S+)
 
-action var numBolts $1 when ^You count some.*bolts in the.*and see there are (\S+) left\.$
+action var numBolts $1 when ^You count some.*bolts in the.*and see there are (.*) left\.$
 
 
 timer start
@@ -115,21 +115,11 @@ main:
     }
 
 
-    startFight:
-    if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
-        gosub getHealed
-        gosub waitForRepair
-        put #echo >Log #cc99ff Going to main combat
-        #gosub moveToRats
-        gosub moveToEels
-        put .fight
-        gosub waitForMainCombat
-        goto main
-    }
+
 
 
     startMagic:
-    #if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 25 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
+    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 25 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         gosub moveToHouse
@@ -180,6 +170,19 @@ main:
         put .afk
         put .magic
         gosub waitForMagic
+        goto main
+    }
+
+    startFight:
+    #if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Bow.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+        gosub getHealed
+        gosub waitForRepair
+        put #echo >Log #cc99ff Going to main combat
+        #gosub moveToRats
+        gosub moveToBeisswurms
+        put .fight
+        gosub waitForMainCombat
+        goto main
     #}
 
 
@@ -332,6 +335,53 @@ castSpellsForMove:
     return
 
 
+moveToBeisswurms:
+    gosub setZone
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove 46
+        gosub runScript findSpot beisswurms
+        return
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove 396
+        goto moveToBeisswurms
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove ntr
+        goto moveToBeisswurms
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove n gate
+        goto moveToBeisswurms
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove n gate
+        pause 2
+        goto moveToBeisswurms
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToBeisswurms
+    }
+
+    echo No move target found, zoneid = $zoneid  zone = %zone
+    goto moveToBeisswurms
+
+
+
 moveToBurgle:
     gosub setZone
 
@@ -380,6 +430,12 @@ moveToBurgle:
         gosub automove portal
         put #tvar powerwalk 0
         gosub move go exit portal
+        goto moveToBurgle
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
         goto moveToBurgle
     }
 

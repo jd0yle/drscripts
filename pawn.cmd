@@ -1,15 +1,6 @@
 include libmaster.cmd
 
-####################################################################################################
-# CONFIG
-
-var container shadows
-
-if ("$charactername" = "Qizhmur") then {
-    var container portal
-}
-
-####################################################################################################
+var container $char.pawn.container
 
 var dryRun false
 if_1 then {

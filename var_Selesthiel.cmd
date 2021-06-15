@@ -281,6 +281,12 @@ put #tvar char.observe.predict 0
 
 
 ###############################
+###      PAWN
+###############################
+put #tvar char.pawn.container shadows
+
+
+###############################
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true

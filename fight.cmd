@@ -563,7 +563,8 @@ checkWeaponSkills.nextWeapon:
     math weapons.index add 1
 	if (%weapons.index > %weapons.length) then {
 	    var weapons.index 0
-	    evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
+	    #evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
+	    evalmath weapons.targetLearningRate (5 + %weapons.targetLearningRate)
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 	}
 	var weapons.lastChangeAt $gametime

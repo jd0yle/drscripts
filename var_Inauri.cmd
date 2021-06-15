@@ -95,6 +95,12 @@ put #tvar char.magic.train.harness.Warding 0
 
 
 ###############################
+###      PAWN
+###############################
+put #tvar char.pawn.container ???
+
+
+###############################
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true
