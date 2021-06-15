@@ -54,6 +54,7 @@ var inauri.vitality 0
 ###    MAIN
 ###############################
 inauri.loop:
+    gosub inauri.locationCheck
     if ("$lefthand" <> "Empty") then {
         gosub stow left
     }
@@ -140,6 +141,8 @@ inauri.burgle:
     put .burgle
     waitforre ^BURGLE DONE
     gosub moveToHouse
+    put .house
+    waitforre ^HOUSE DONE
     put #echo >Log Red [inauri] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
     return
     }
@@ -275,6 +278,14 @@ inauri.healVitality:
         gosub take $inauri.healTarget vitality
         var inauri.vitality 0
     }
+    return
+
+
+inauri.locationCheck:
+    if ("$roomname" = "Private Home Interior") then return
+    gosub movetoHouse
+    put .house
+    waitforre ^HOUSE DONE
     return
 
 

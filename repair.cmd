@@ -238,6 +238,9 @@ repair.repairSingle:
         gosub get my %repair.group(%repair.index)
         if (%repair.wornItem = 1) then {
             gosub remove my %repair.group(%repair.index)
+            if ("$lefthand" = "%repair.group(%repair.index)") then {
+                gosub swap
+            }
         }
         if ("$righthand" = "%repair.group(%repair.index)") then {
             gosub give %repair.npc
