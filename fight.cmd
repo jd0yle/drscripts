@@ -579,7 +579,7 @@ checkWeaponSkills.nextWeapon:
 ###      checkStances
 ###############################
 checkStances:
-    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "$righthandnoun" = "crossbow" || "$righthand" = "spiritwood lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "$righthandnoun" = "crossbow" || "$righthandnoun" = "latchbow" || "$righthandnoun" = "lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
         var stances.index 0
     } else {
         if ($%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate) then {

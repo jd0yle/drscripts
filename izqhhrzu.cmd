@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts one hundred fifty-eight
+var expectedNumBolts one hundred fifty-six
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -178,8 +178,7 @@ main:
         gosub getHealed
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        #gosub moveToRats
-        gosub moveToBeisswurms
+        gosub moveToBobcats
         put .fight
         gosub waitForMainCombat
         goto main
@@ -338,9 +337,13 @@ castSpellsForMove:
 moveToBeisswurms:
     gosub setZone
 
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToBeisswurms
+    }
+
     # Abandoned Mine
     if ("%zone" = "10") then {
-        gosub automove 46
         gosub runScript findSpot beisswurms
         return
     }
@@ -380,6 +383,58 @@ moveToBeisswurms:
     echo No move target found, zoneid = $zoneid  zone = %zone
     goto moveToBeisswurms
 
+
+
+moveToBobcats:
+    gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToBobcats
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($roomid >= 79 && $roomid <= 84) then return
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub runScript findSpot bobcat
+        put #tvar powerwalk 0
+        goto moveToBobcats
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto moveToBobcats
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto moveToBobcats
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToBobcats
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto moveToBobcats
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToBobcats
+    }
+
+    goto moveToBobcats
+    
 
 
 moveToBurgle:
