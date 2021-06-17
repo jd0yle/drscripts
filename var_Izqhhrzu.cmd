@@ -209,7 +209,7 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 3
 
 
-var var.magic.Augmentation 12
+var var.magic.Augmentation 16
 put #tvar char.magic.train.spell.Augmentation centering
 put #tvar char.magic.train.prep.Augmentation 1
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
@@ -229,7 +229,7 @@ unvar var.magic.Augmentation
 
 
 
-var var.magic.Utility 12
+var var.magic.Utility 16
 put #tvar char.magic.train.spell.Utility bless
 put #tvar char.magic.train.prep.Utility 1
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
@@ -250,7 +250,7 @@ unvar var.magic.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var var.magic.Warding 12
+var var.magic.Warding 16
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding

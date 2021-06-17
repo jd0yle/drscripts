@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts forty-one
+var expectedNumBolts forty
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
