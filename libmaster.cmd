@@ -773,8 +773,9 @@ commune:
     var location commune1
     var todo $0
     commune1:
-    matchre return ^You stop
     matchre return ^As you commune
+    matchre return ^Nothing happens
+    matchre return ^You stop
     put commune %todo
     goto retry
 
