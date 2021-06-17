@@ -104,6 +104,13 @@ khurnaarti.burgle:
         put .burgle
         waitforre ^BURGLE DONE
         gosub release rf
+        gosub moveToPawn
+        put .pawn
+        waitforre ^PAWN DONE
+        gosub automove portal
+        gosub move go meeting portal
+        put .deposit
+        waitforre ^DEPOSIT DONE
         gosub moveToHouse
         put #echo >Log Red [khurnaarti] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
         gosub khurnaarti.restart
@@ -375,9 +382,7 @@ moveToFangCove:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then {
-            put #script abort all except khurnaarti
-            put .train
-            put .khurnaarti
+            goto khurnaarti.restart
         }
         gosub automove 50
         goto moveToFangCove
@@ -496,3 +501,19 @@ moveToHunt:
         goto moveToHunt
     }
     goto moveToHunt
+
+
+moveToPawn:
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub automove go gate
+        goto moveToPawn
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        if ($roomid = 158) then return
+        gosub automove pawn
+        goto moveToPawn
+    }
+    goto moveToPaw

@@ -132,7 +132,7 @@ var donotpawnthis manual|guide|scimitar|keepsake box|arrow|memory orb|jewelry bo
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
 # if you want to drop SOME things, put them here
-var trashthings basket|kaleidoscope|sieve|stick|diary|top
+var trashthings basket|kaleidoscope|sieve|stick|diary|top|rat|mouse
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }
@@ -142,7 +142,7 @@ if ("$charactername" = "%CHARACTER4") then
 # do you use the temporal eddy for storage of items?  If yes, list the items in an array, with LOOT for burgle loot, ROPE for burgle rope entry, RING for lockpick ring and LOCKPICK for loose lockpicks.  NULL if you don't use the eddy
 var eddy NULL
 # where do you want to store your stolen items?  If storing in your eddy, you must use noun "portal"
-var pack satchel
+var pack rucksack
 # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
 # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
 #if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then var method LOCKPICK
@@ -162,13 +162,13 @@ var maxgrabs 5
 # do you want to hide before you search? Will ALWAYS be hidden for first search. ON will attempt to hide before any additional search. WARNING - MAY BE MORE RISKY BECAUSE OF ROUND TIME AND WILL REDUCE NUMBER OF POTENTIAL ROOMS YOU WILL HAVE TIME TO SEARCH
 var hideme NO
 # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
-var pawn YES
+var pawn NO
 # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
 var donotpawnthis manual|guide|scimitar|opener|keepsake box|arrow|memory orb|jewelry box
 # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
 var trashall NO
 # if you want to drop SOME things, put them here
-var trashthings basket|kaleidoscope|sieve|stick|diary|top
+var trashthings basket|kaleidoscope|sieve|stick|diary|top|rat|mouse
 # Rooms you do not want to search.  Choose from following: kitchen|bedroom|workroom|sanctum|armory|library
 var skip NULL
 }

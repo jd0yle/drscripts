@@ -8,7 +8,45 @@ put #tvar char.appraise.item my pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor chain balaclava|chain gloves|quilted hauberk|small targe|demonscale armguard|knee spikes|elbow spikes|steelsilk knuckles|steelsilk footwraps
+put #tvar char.armor cloth mask|cloth hood|cloth gloves|chain shirt|chain greaves|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
+
+
+###############################
+###      BURGLE
+###############################
+# ------ ATTEMPT HANDLING ------
+# hideBefore: NO/NULL|YES/ON
+# maxGrabs: 0-7
+# skipRoom: (kitchen|bedroom|workroom|sanctum|armory|library)
+# travel: location roomid  ie: knife 450
+put #tvar char.burgle.hideBefore NULL
+put #tvar char.burgle.maxGrabs 5
+put #tvar char.burgle.skipRoom NULL
+put #tvar char.burgle.travel NULL
+
+# ------ ENTRY HANDLING ------
+# entyMethod: LOCKPICK, ROPE, RING, or TOGGLE.
+# lockpickRingType: lockpick ring, lockpick case, lockpick ankle-cuff, golden key.
+# ropeType: heavy rope, braided rope
+# ropeWorn: NO/NULL, YES/ON
+put #tvar char.burgle.entryMethod TOGGLE
+put #tvar char.burgle.lockpickRingType lockpick ring
+put #tvar char.burgle.ropeType heavy rope
+put #tvar char.burgle.ropeWorn NULL
+
+# ------ LOOT HANDLING ------
+# pawn:  NO/NULL, YES/ON
+# keepThisList:  NULL or array
+# trashAllExceptKeep:  NO/NULL, YES/ON
+# trashThisList:  NULL or array
+put #tvar char.burgle.pawnAll YES
+put #tvar char.burgle.keepThisList keepsake box|memory orb|jewelry box
+put #tvar char.burgle.trashAllExceptKeep NO
+put #tvar char.burgle.trashThisList basket|kaleidoscope|sieve|stick|diary|top|rat|mouse
+
+# ------ STORAGE HANDLING ------
+# container: pack, rucksack, portal, shadows, backpack, satchel, etc.
+put #tvar char.burgle.container purse
 
 
 ###############################
@@ -65,7 +103,7 @@ put #tvar char.fight.forceShield 0
 
 #***** LOOT *****
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType treasure
+put #tvar char.fight.lootType goods
 
 # DEPRECATED Script-specifc options (ex: 'backtrain')
 put #tvar char.fight.opts null
@@ -191,7 +229,7 @@ put #tvar char.observe.predict 1
 ###############################
 ###      PAWN
 ###############################
-put #tvar char.pawn.container ???
+put #tvar char.pawn.container purse
 
 
 ###############################
