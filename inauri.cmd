@@ -140,6 +140,13 @@ inauri.burgle:
     gosub moveToBurgle
     put .burgle
     waitforre ^BURGLE DONE
+    gosub moveToPawn
+    put .pawn
+    waitforre ^PAWN DONE
+    gosub automove portal
+    gosub move go meeting portal
+    put .deposit
+    waitforre ^DEPOSIT DONE
     gosub moveToHouse
     put .house
     waitforre ^HOUSE DONE
@@ -162,13 +169,10 @@ inauri.engineer:
         if ($eng.repairNeeded = 1) then {
             put #echo >Log Yellow [inauri] Need to repair crafting tools.
             gosub stop teach
-            gosub moveToEngineer
-            gosub moveToEngineerRepair
-            put .repairtool
-            waitforre ^REPAIRTOOL DONE$
+            gosub moveToRepair
+            put .repair
+            waitforre ^REPAIR DONE$
             put #var eng.repairNeeded 0
-            put .deposit
-            waitforre ^DEPOSIT DONE$
             gosub moveToHouse
             put .house
             waitforre ^HOUSE DONE$
@@ -478,20 +482,27 @@ moveToEngineer:
     goto moveToEngineer
 
 
-moveToEngineerRepair:
+moveToFangCove:
+    # Crossing - City
+    if ($zoneid = 1) then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto moveToFangCove
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto moveToFangCove
+    }
     # Shard - City
     if ($zoneid = 67) then {
-        if ($roomid = 717) then return
-        gosub automove engineering book
-        goto moveToEngineerRepair
+        gosub automove portal
+        goto moveToFangCove
     }
     # Fang Cove
-    if ($zoneid = 150) then {
-        if ($roomid = 205) then return
-        gosub automove engineering clerk
-        goto moveToEngineerRepair
-    }
-    goto moveToEngineerRepair
+    if ($zoneid = 150) then return
+    goto moveToFangCove
 
 
 moveToForage:
@@ -548,3 +559,28 @@ moveToHouse:
         gosub automove 50
     }
     goto moveToHouse
+
+
+moveToPawn:
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        gosub automove portal
+        gosub move go gate
+        goto moveToPawn
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        if ($roomid = 158) then return
+        gosub automove pawn
+        goto moveToPawn
+    }
+    goto moveToPawn
+
+
+moveToRepair:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        return
+    }
+    return
