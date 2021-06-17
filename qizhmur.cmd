@@ -15,6 +15,8 @@ action send listen to $2 observe when ^(\S+) begins to listen to (\S+)
 
 action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's|Izqhhrzu's) face appears in the
 
+action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
+
 timer start
 
 var useBurgle 1
@@ -89,6 +91,7 @@ main:
         put #echo >Log #cc99ff Train: Going to burgle
 
         gosub moveToBurgle
+        gosub runScript tend
         gosub release spell
 
 
@@ -113,6 +116,8 @@ main:
 
         gosub release eotb
         gosub move go meeting portal
+
+        gosub runScript tend
 
         gosub automove bundle
         gosub remove my bundle
@@ -173,6 +178,8 @@ main:
 		    }
 		}
 
+		gosub runScript tend
+
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
             var startResearch 0
             gosub release cyclic
@@ -210,6 +217,7 @@ main:
         put #echo >Log #cc99ff Going to main combat
         #gosub moveToWarklin
         gosub moveToBulls
+        gosub runScript tend
         put .fight
         gosub waitForMainCombat
         goto main
@@ -428,7 +436,8 @@ moveToBurgle:
 
     # FC
     if ("%zone" = "150") then {
-        put #tvar powerwalk 1
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
         gosub automove portal
         put #tvar powerwalk 0
         gosub move go exit portal
@@ -498,7 +507,9 @@ moveToHouse:
         if ("$roomid" = "50") then {
             gosub enterHouse
         } else {
+            if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
             gosub automove 50
+            put #tvar powerwalk 0
             goto moveToHouse
         }
         return
@@ -624,7 +635,7 @@ moveToMagic:
     if ("%zone" = "150") then {
         put #tvar powerwalk 0
         if ("$roomid" = "106") then return
-        put #tvar powerwalk 1
+        if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
         gosub automove 106
         goto moveToMagic
     }

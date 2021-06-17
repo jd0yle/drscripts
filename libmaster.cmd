@@ -767,7 +767,17 @@ combine:
     matchre return ^You must be holding both substances to combine them
     put combine %todo
     goto retry
-    
+
+
+commune:
+    var location commune1
+    var todo $0
+    commune1:
+    matchre return ^You stop
+    matchre return ^As you commune
+    put commune %todo
+    goto retry
+
 
 count:
     var location Count1
@@ -2291,6 +2301,12 @@ stow:
             return
         }
     }
+    if ("$charactername" = "Izqhhrzu") then {
+        if ( ("%todo" = "right" && "$righthand" = "blood-red scythe") || ("%todo" = "" && "$righthand" = "blood-red scythe") || contains("%todo", "scythe") || ("%todo" = "left" && "$lefthand" = "blood-red scythe") ) then {
+            gosub put my scythe in my hip pouch
+            return
+        }
+    }
     matchre return ^But that is already in your inventory\.
     matchre return ^I can't find your container
     matchre return ^Stow what\?
@@ -2628,6 +2644,7 @@ unroll:
     var todo $0
     unroll1:
     matchre return ^You reverently
+    matchre return ^You must
     matchre return ^You need
     matchre return ^You can't
     put unroll %todo

@@ -45,6 +45,8 @@ loop:
 
     if ($char.magic.train.usePray = 1) then gosub pray.onTimer $char.magic.train.prayTarget
 
+    if ($char.magic.train.usePom = 1 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 3)) then gosub runScript cast pom
+
     if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
 
 

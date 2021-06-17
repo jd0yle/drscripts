@@ -151,7 +151,7 @@ put #tvar char.fight.useUsol 0
 
 if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.useSls 0
-	put #tvar char.fight.weapons.items ka'hurst hhr'ata|diamondwood nightstick|leather sling
+	put #tvar char.fight.weapons.items ka'hurst hhr'ata|diamondwood nightstick|blue sling
 	put #tvar char.fight.weapons.skills Heavy_Thrown|Staves|Slings
 
 	put #tvar char.fight.arrangeForPart 1

@@ -57,7 +57,7 @@ if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty
 
 if ("$preparedspell" != "None") then gosub release spell
 
-if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop") then goto ritualSpell
+if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom") then goto ritualSpell
 if ("%spell" = "col") then {
     gosub checkMoons
     if ($moon = null) then {

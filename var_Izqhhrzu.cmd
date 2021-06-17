@@ -22,7 +22,7 @@ put #tvar char.burgle.cooldown null
 ###############################
 put #tvar char.cambrinth cambrinth armband
 put #tvar char.focusContainer canvas backpack
-put #tvar char.ritualFocus null
+put #tvar char.ritualFocus dove totem
 put #tvar char.wornCambrinth 0
 put #tvar char.wornFocus 0
 
@@ -36,6 +36,11 @@ put #tvar char.cast.default.prep 1
 put #tvar char.cast.default.charge 12
 put #tvar char.cast.default.harness 0
 
+put #tvar char.cast.pom.prep 160
+
+put #tvar char.cast.sol.prep 15
+put #tvar char.cast.sol.charge 1
+put #tvar char.cast.sol.harness 0
 
 ###############################
 ###      COMBAT
@@ -101,8 +106,8 @@ put #tvar char.fight.tmPrep 3
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|competition shortbow|dragonwood crossbow|diamondique hhr'ata|triple-weighted bola|white nightstick|leather sling|bastard sword|bastard sword
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Bow|Crossbow|Heavy_Thrown|Light_Thrown|Staves|Slings|Large_Edged|Twohanded_Edged
+put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|triple-weighted bola|white nightstick|blue sling|bastard sword|bastard sword
+put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Light_Thrown|Staves|Slings|Large_Edged|Twohanded_Edged
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
@@ -130,6 +135,7 @@ put #tvar char.fight.prayTarget Huldah
 
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
+put #tvar char.fight.useSol 1
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 0
@@ -182,6 +188,7 @@ put #tvar char.loot.boxes 0
 ###############################
 put #tvar char.magic.train.minimumConcentration 30
 put #tvar char.magic.train.useAlmanac 0
+put #tvar char.magic.train.usePom 1
 put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0
 put #tvar char.magic.train.useInvokeSpell 0
@@ -202,7 +209,7 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 3
 
 
-var var.magic.Augmentation 14
+var var.magic.Augmentation 12
 put #tvar char.magic.train.spell.Augmentation centering
 put #tvar char.magic.train.prep.Augmentation 1
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
@@ -222,7 +229,7 @@ unvar var.magic.Augmentation
 
 
 
-var var.magic.Utility 14
+var var.magic.Utility 12
 put #tvar char.magic.train.spell.Utility bless
 put #tvar char.magic.train.prep.Utility 1
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
@@ -243,7 +250,7 @@ unvar var.magic.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var var.magic.Warding 14
+var var.magic.Warding 12
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding

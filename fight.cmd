@@ -393,6 +393,10 @@ buffs:
         gosub runScript cast mpp
         return
     }
+    if ($char.fight.useSol = 1 && ($SpellTimer.ShieldofLight.active != 1 || $SpellTimer.ShieldofLight.duration < 2)) then {
+        gosub runScript cast sol
+        return
+    }
 
 
     # MOON MAGE
