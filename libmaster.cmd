@@ -1694,6 +1694,7 @@ pray:
     matchre return ^You continue praying for guidance\.
     matchre return ^You glance
     matchre return ^You kneel down and begin to pray\.
+    matchre return ^You narrow your eyes
     matchre return ^You pray fervently\.
     matchre return ^You want to pray here\?
     matchre return ^Your fervent prayers are met with a sense of peace and security\.

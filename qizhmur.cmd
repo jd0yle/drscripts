@@ -13,6 +13,9 @@ action send $lastcommand when ^You can't move in that direction while unseen.
 action send listen to $1 observe when ^(\S+) begins to lecture
 action send listen to $2 observe when ^(\S+) begins to listen to (\S+)
 
+action send stop listen; send teach sorcery to izqhhrzu when eval contains("$roomplayers", "Izqhhrzu")
+#action send stop listen;send stop teach; send listen to inauri observe; send 3 listen to selesthiel observe when eval !contains("$roomplayers", "Izqhhrzu")
+
 action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's|Izqhhrzu's) face appears in the
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34

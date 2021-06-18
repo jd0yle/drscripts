@@ -5,13 +5,14 @@ var skillRanksToCheck 0
 
 if_1 then {
     var skillToCheck %1
+    eval skillToCheck replace("%skillToCheck", " ", "_")
 }
 
 if_2 then {
     var skillRanksToCheck %2
 }
 
-
+echo skillToCheck %skillToCheck  $%skillToCheck.Ranks   skillRanksToCheck %skillRanksToCheck
 
 evalmath numHours (($gametime - $lastLoginTime) / 60 / 60)
 evalmath numDays (($gametime - $lastLoginTime) / 60 / 60 / 24)
@@ -43,7 +44,9 @@ echo RPH  |  RPD  |  HPR  |  DPR  - SKILL: RANKS
 loop:
     #eval n replace(%skills(%i), " ", "_")
     #eval skillName replace(%skills(%i), " ", "_")
-    if ("%skillToCheck" = "null" || "%skillToCheck" = "%skills(%i)") then {
+
+    eval currSkillName replace("%skills(%i)", " ", "_")
+    if ("%skillToCheck" = "null" || "%skillToCheck" = "%currSkillName") then {
 	    evalmath rph round(%ranks(%i) / %numHours, 2)
 	    evalmath rpd round(%ranks(%i) / %numDays, 2)
 	    evalmath hpr round(1 / %rph, 2)
@@ -51,7 +54,8 @@ loop:
 
         var echoSkillRanks
 	    if (%skillRanksToCheck != 0) then {
-	        evalmath ranksToGain round(%skillRanksToCheck - $%skillToCheck.Ranks, 2)
+	        var tmpSkillRanks $%skillToCheck.Ranks
+	        evalmath ranksToGain round(%skillRanksToCheck - %tmpSkillRanks, 2)
 	        evalmath hoursToRanks round(%ranksToGain * %hpr, 2)
 	        evalmath daysToRanks round(%ranksToGain * %dpr, 2)
 	        var echoSkillRanks Time To Gain %ranksToGain ranks (%skillRanksToCheck): %hoursToRanks hrs  (%daysToRanks days)

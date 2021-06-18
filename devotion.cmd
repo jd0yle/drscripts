@@ -1,5 +1,7 @@
 include libmaster.cmd
 
+action send roll my rug when ^You should roll it up first
+
 gosub stow right
 gosub stow left
 
@@ -16,19 +18,24 @@ gosub get incense
 gosub get my water from large jar
 put sprinkle water at izqhhrzu
 gosub put water in my large jar
+put wave my incense at izqhhrzu
+pause
+pause
 gosub commune meraud
 gosub stow right
 gosub stow left
 
+gosub stand
+
 gosub get my rug
 gosub unroll my rug
-gosub kneel my rug
+put kneel my rug
+put kiss my rug
 
-gosub kiss my rug
 gosub pray huldah
 
 gosub get my wine
-gosub kneel my rug
+put kneel my rug
 put pour my wine on my rug
 gosub stow my wine
 
