@@ -218,8 +218,8 @@ put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda
-put #tvar char.observe.lore Xibar|Raven|Phoenix
-put #tvar char.observe.magic Yavash|Wolf|Toad
+put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia
+put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia
 put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda
 put #tvar char.observe.survival Ram|Yoakena|Szeldia
 

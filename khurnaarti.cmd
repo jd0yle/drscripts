@@ -507,7 +507,7 @@ moveToPawn:
     # Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove portal
-        gosub automove go gate
+        gosub move go gate
         goto moveToPawn
     }
     # Shard - City
