@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts one hundred fifty-three
+var expectedNumBolts one hundred fifty
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -117,8 +117,46 @@ main:
     }
 
     if ($Theurgy.LearningRate < 10 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 4)) then {
-        put #echo >Log #cc99ff Moving to cast PoM
+        put #echo >Log #cc99ff Moving to house for rituals
         gosub moveToHouse
+        gosub runScript countClericTools
+
+        if ($char.tools.numIncense < 20) then {
+            put #echo >Log #cc99ff Buying incense
+            if ("$roomname" = "Private Home Interior") then gosub runScript house
+            gosub runScript travel crossing
+            gosub automove teller
+            gosub withdraw 1 plat
+            gosub automove brother
+            put order incense
+            pause
+            put offer 62
+            pause
+            put stow my incense
+        }
+
+        if ($char.tools.numHolyWater < 2) then {
+            put #echo >Log #cc99ff Buying holy water
+            if ("$roomname" = "Private Home Interior") then gosub runScript house
+            gosub runScript travel crossing
+            gosub automove teller
+            gosub withdraw 1 plat
+            gosub automove chiz
+            put buy water
+            pause
+            put offer 1
+            pause
+            gosub move out
+            gosub prep bless
+            pause 5
+            gosub cast my water
+            gosub get my water from my large jar
+            put combine water
+            gosub put my water in my large jar
+            gosub runScript dep
+        }
+        put #echo >Log #cc99ff Moving to cast PoM
+		gosub moveToHouse
         gosub runScript cast pom
         gosub stand
         gosub runScript devotion

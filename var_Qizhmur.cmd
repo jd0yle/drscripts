@@ -193,7 +193,7 @@ var super.enemies null
 ###############################
 put #tvar char.inv.emptyGemPouchContainer wyvern skull
 put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.tempContainer wyvern skull
+put #tvar char.inv.tempContainer shadows
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.loot.boxes 0
 

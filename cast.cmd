@@ -24,7 +24,7 @@ var useCambrinth 1
 var cambrinthFull 0
 action var cambrinthFull 1 when dissipates (uselessly|harmlessly)\.$
 
-var noTargetSpells fp|cd
+var noTargetSpells fp|cd|bless
 var isFullyPrepped 0
 var stowedItemNoun null
 

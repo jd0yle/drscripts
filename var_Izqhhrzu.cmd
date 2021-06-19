@@ -72,12 +72,13 @@ put #tvar char.fight.arrangeFull 1
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
+put #tvar char.fight.debilPauseTime 10
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell sick
+put #tvar char.fight.debil.spell ps
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 1
+put #tvar char.fight.debil.prepAt 2
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -96,7 +97,7 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell horn
+put #tvar char.fight.tmSpell he
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)

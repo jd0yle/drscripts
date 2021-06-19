@@ -676,7 +676,8 @@ debil:
     #if (%debil.use = 1 && $mana > 80 && (%force = 1 || (!contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") && !contains("$roomobjs", "writhing web of shadows") )) ) then {
         if ($Debilitation.LearningRate < 33 || %forceDebil = 1) then {
             gosub prep %debil.spell %debil.prepAt
-            pause 4
+            if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
+            pause $char.fight.debilPauseTime
             gosub cast
         }
     }
