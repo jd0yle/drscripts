@@ -101,7 +101,7 @@ put #tvar char.fight.tmSpell he
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 3
+put #tvar char.fight.tmPrep 4
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 5

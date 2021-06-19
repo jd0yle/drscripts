@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts one hundred fifty
+var expectedNumBolts one hundred forty-three
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -85,7 +85,7 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        gosub automove crossing
+        gosub automove e gate
         gosub automove portal        
         gosub move go meeting portal
 
@@ -168,7 +168,7 @@ main:
         gosub getHealed
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToBobcats
+        gosub moveToKobolds
         put .fight
         gosub waitForMainCombat
         goto main
@@ -483,6 +483,38 @@ moveToBobcats:
     goto moveToBobcats
     
 
+moveToKobolds:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToKobolds
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub runScript findSpot kobold
+        return
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        gosub automove e gate
+        goto moveToKobolds
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToKobolds
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToKobolds
+    }
+    
+
 
 moveToBurgle:
     gosub setZone
@@ -538,6 +570,25 @@ moveToBurgle:
     # Abandoned Mine
     if ("%zone" = "10") then {
         gosub automove ntr
+        goto moveToBurgle
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ("$roomid" = "204") then return
+        gosub automove 204
+        goto moveToBurgle
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove 217
+        goto moveToBurgle
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
         goto moveToBurgle
     }
 
