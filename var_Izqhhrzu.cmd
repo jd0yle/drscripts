@@ -175,6 +175,15 @@ var super.enemies null
 
 
 ###############################
+###      INSTRUMENT
+###############################
+put #tvar char.instrument.noun rattle
+put #tvar char.instrument.tap voodoo priest's rattle
+put #tvar char.instrument.song scales
+put #tvar char.instrument.container thigh bag
+
+
+###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer canvas backpack
@@ -192,6 +201,7 @@ put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.usePom 1
 put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0
+put #tvar char.magic.train.useInstrument 1
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.usePray 1
