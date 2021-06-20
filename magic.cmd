@@ -39,18 +39,6 @@ if ($SpellTimer.RiteofContrition.active = 1 || $SpellTimer.RiteofGrace.active = 
 loop:
     if ($SpellTimer.RiteofGrace.active = 1) then gosub release cyclic
 
-    if ($char.magic.train.useInstrument = 1) then {
-        if ($Performance.LearningRate < 30 && $char.isPerforming != 1) then {
-            if ("$righthand" != "$char.instrument.tap") then {
-                gosub stow right
-                gosub get my $char.instrument.noun
-            }
-            gosub play $char.instrument.song on my $char.instrument.noun
-        } else {
-            if ("$righthand" = "$char.instrument.tap") then gosub put my $char.instrument.noun in my $char.instrument.container
-        }
-    }
-
     if ($char.magic.train.useAlmanac = 1) then {
         gosub almanac.onTimer
     }
@@ -197,7 +185,6 @@ done:
             }
         }
     }
-    if ($char.magic.train.useInstrument = 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.instrument.container
     pause .2
     put #parse MAGIC DONE
     exit
