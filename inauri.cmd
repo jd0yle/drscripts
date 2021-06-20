@@ -32,6 +32,7 @@ if (!($inauri.healTarget >0)) then put #var inauri.healTarget 0
 if (!($inauri.subScript >0)) then put #var inauri.subScript 0
 if (!($lastAlmanacGametime >0)) then put #var lastAlmanacGametime 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
+if (!($lastCompendiumGametime >0)) then put #var lastCompendiumGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #var lastMagicGametime 0
 if (!($lastPercHealthGametime >0)) then put #var lastPercHealthGametime 0
@@ -85,6 +86,8 @@ inauri.loop:
     if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
     pause 1
     gosub inauri.arcana
+    pause 1
+    gosub inauri.compendium
     pause 1
     gosub inauri.engineer
     pause 1
@@ -153,6 +156,22 @@ inauri.burgle:
     put #echo >Log Red [inauri] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
     return
     }
+
+
+inauri.compendium:
+    evalmath nextCompendiumAt $lastCompendiumGametime + 1200
+    if (%nextCompendiumAt > $gametime) then {
+        return
+    }
+    if !matchre("$righthand|$lefthand", "Empty") then {
+        gosub stow
+        gosub stow left
+    }
+    put #echo >Log Yellow [inauri] Beginning compendium.
+    put .compendium
+    waitforre ^COMPENDIUM DONE
+    put #echo >Log Yellow [inauri] Compendium complete.  FA: ($First_Aid.LearningRate/34) SCH: ($Scholarship.LearningRate/34)
+    return
 
 
 inauri.door:
