@@ -3,13 +3,13 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts one hundred forty-three
+var expectedNumBolts one hundred forty-nineteenxs
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
 action (health) goto getHealedTrigger when eval $health < 85
-action (health) goto getHealedTrigger when eval $bleeding = 1
+action (health) goto getHealedTriggzer when eval $bleeding = 1
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
