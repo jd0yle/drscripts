@@ -130,7 +130,7 @@ look.healPoison:
 look.look:
   evalmath nextLookAt $lastLookGametime + 240
   if (%nextLookAt < $gametime) then {
-    gosub look
+    gosub info
     put #var lastLookGametime $gametime
   }
 return

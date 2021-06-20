@@ -2,7 +2,7 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-action var khurnaarti.houseOpen 1 when ^(.*)suddenly opens\!$
+action goto khurnaarti.houseEnter when ^(.*)suddenly opens\!$
 action var khurnaarti.houseOpen 1 when ^(.*)suddenly rattles\!$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$
@@ -15,8 +15,8 @@ action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as
 ###    VARIABLES
 ###############################
 if (!($khurnaarti.student >0)) then put #var khurnaarti.student 0
-if (!($char.burgle.cooldown >0)) then put #var char.burgle.cooldown 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
+if (!($lastCompendiumGametime >0)) then put #var lastCompendiumGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
@@ -55,17 +55,19 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.arcana
     pause 1
+    gosub khurnaarti.compendium
+    pause 1
+    gosub khurnaarti.lock
+    pause 1
     gosub khurnaarti.burgle
     pause 1
     gosub khurnaarti.magic
     pause 1
     gosub khurnaarti.play
     pause 1
-    gosub khurnaarti.lock
-    pause 1
     gosub khurnaarti.forage
     pause 1
-    gosub khurnaarti.combatCheck
+    #gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
     pause 1
@@ -174,6 +176,23 @@ khurnaarti.combatLoop:
    goto khurnaarti.combatLoop
 
 
+khurnaarti.compendium:
+    evalmath nextCompendiumAt $lastCompendiumGametime + 1200
+    if (%nextCompendiumAt > $gametime) then {
+        return
+    }
+    if !matchre("$righthand|$lefthand", "Empty") then {
+        gosub stow
+        gosub stow left
+    }
+    put #echo >Log Yellow [khurnaarti] Beginning compendium.
+    put .compendium
+    waitforre ^COMPENDIUM DONE
+    put #var lastCompendiumGametime $gametime
+    put #echo >Log Yellow [khurnaarti] Compendium complete.  FA: ($First_Aid.LearningRate/34) SCH: ($Scholarship.LearningRate/34)
+    return
+
+
 khurnaarti.door:
     if (%khurnaarti.openDoor = 1) then {
         if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
@@ -244,6 +263,13 @@ khurnaarti.locationCheck:
     if ("$roomname" = "Private Home Interior") then {
         return
     }
+    # Shard
+    if ($zoneid = 66 || $zoneid = 67) then {
+        gosub automove portal
+        gosub move go meeting portal
+        gosub move 50
+    }
+    # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then return
         gosub automove portal
@@ -445,24 +471,24 @@ moveToHouse:
     }
     # Fang Cove
     if ($zoneid = 150) then {
-        if ($roomid = 50) then goto moveToHouse1
+        if ($roomid = 50) then {
+            gosub peer bothy
+            pause 20
+            if (%khurnaarti.houseOpen = 0) then {
+                goto moveToFangCove
+            }
+        }
         gosub automove 50
         goto moveToHouse
     }
-
-
-    moveToHouse1:
-    gosub peer bothy
-    pause 20
-    if (%khurnaarti.houseOpen = 0) then {
-        goto moveToFangCove
-    } else {
-        put .house
-        waitforre ^HOUSE DONE$
-        var khurnaarti.houseOpen 0
-        goto moveToHouse
-    }
     goto moveToHouse
+
+
+khurnaarti.houseEnter:
+    put .house
+    waitforre ^HOUSE DONE$
+    var khurnaarti.houseOpen 0
+    goto khurnaarti.restart
 
 
 moveToHunt:

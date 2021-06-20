@@ -14,14 +14,19 @@ action var engbolt.pageContent $1 when ^You turn your book to page \d+, instruct
 ###############################
 var engbolt.boltheadMaterial fang
 var engbolt.boltheadMaterialBag backpack
+var engbolt.numberCrafted 0
+var engbolt.numberNeeded %1
 var engbolt.page 10
 var engbolt.pageContent 0
 var engbolt.craftbag $char.craft.container
 var engbolt.defaultbag $char.craft.default.container
 
 
-
+if (%engbolt.numberNeeded = null) then {
+    var engbolt.numberNeeded 1
+}
 gosub store default %engbolt.craftbag
+put #echo >log [engbolt] Beginning. 0/%engbolt.numberNeeded
 ###############################
 ###    MAIN
 ###############################
@@ -71,14 +76,18 @@ engbolt.boltheads:
     }
 
         gosub assemble my bolts with my boltheads
-        gosub stow boltheads
+        if ("$lefthandnoun" = "boltheads") then {
+            gosub stow boltheads
+        }
         gosub get my glue
         if ("$lefthandnoun" <> "glue") then {
             put #echo >Log [engbolt] No glue, exiting at bolthead application.
             goto engbolt.exit
         }
         gosub apply my glue to my bolts
-        gosub stow glue
+        if ("$lefthandnoun" = "glue") then {
+            gosub stow glue
+        }
 
 
         engbolt.boltheadsLoop:
@@ -210,7 +219,13 @@ engbolt.shaper:
 engbolt.analyze:
     gosub analyze my bolts
     gosub stow bolts
+    evalmath engbolt.numberCrafted (%engbolt.numberCrafted + 1)
+    if (%engbolt.numberNeeded > %engbolt.numberCrafted) then {
+        put #echo >log [engbolt] Progress %engbolt.numberCrafted/%engbolt.numberNeeded
+        goto engbolt.book
+    }
     gosub store default %engbolt.defaultbag
+    put #echo >log [engbolt] Complete.
     goto engbolt.exit
 
 

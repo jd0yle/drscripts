@@ -8,7 +8,7 @@ put #tvar char.appraise.item my pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor cloth mask|cloth hood|cloth gloves|chain shirt|chain greaves|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
+put #tvar char.armor cotton mask|cotton hood|cotton gloves|chain shirt|chain greaves|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
 
 
 ###############################
@@ -103,7 +103,7 @@ put #tvar char.fight.forceShield 0
 
 #***** LOOT *****
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType goods
+put #tvar char.fight.lootType treasure
 
 # DEPRECATED Script-specifc options (ex: 'backtrain')
 put #tvar char.fight.opts null
@@ -236,7 +236,7 @@ put #tvar char.pawn.container purse
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song rumba
+put #tvar char.performance.song polka
 put #tvar char.performance.mood quiet
 
 

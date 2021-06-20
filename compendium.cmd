@@ -1,25 +1,55 @@
 include libmaster.cmd
-###############
-# Compendium
-###############
+###############################
+###    ACTIONS
+###############################
+action var compendiumStage 0 when ^You begin|^You continue
+action var compendiumStage 1 when ^In a sudden|with sudden|^With a sudden|^You attempt
+action var compendiumStage 2 when ^Why do you
 
-compendiumGetBook:
-  gosub get my $char.compendium
-  gosub open my $char.compendium
-  goto compendiumReadBook
 
-compendiumReadBook:
-  matchre compendiumReadBook ^(You begin|You continue)
-  matchre compendiumTurnBook ^(In a sudden|with sudden|With a sudden|You attempt)
-  matchre compendiumCloseBook ^Why do you
-  put study my $char.compendium
-  matchwait 5
+###############################
+###    CHAR VARIABLES
+###############################
+# 1 = Turn to new page.
+# 2 = Done with all pages.
+var compendiumStage 0
 
-compendiumTurnBook:
-  gosub turn my $char.compendium
-  goto compendiumReadBook
 
-compendiumCloseBook:
-  gosub close my $char.compendium
-  gosub stow my $char.compendium
-  exit
+###############################
+###    MAIN
+###############################
+    compendium:
+    gosub get my $char.compendium
+    if ("$righthandnoun" <> "$char.compendium") then goto compendiumError
+    gosub open my $char.compendium
+
+    compendiumLoop:
+        gosub study my $char.compendium
+        if (%compendiumStage = 0) then goto compendiumLoop
+        if (%compendiumStage = 1) then {
+            gosub turn my $char.compendium
+            goto compendiumLoop
+        }
+        if (%compendiumStage = 2) then {
+            gosub close my $char.compendium
+            gosub stow my $char.compendium
+            goto compendiumExit
+        }
+
+
+###############################
+###    EXIT
+###############################
+compendiumError:
+    if ("$char.compendium" <> NULL) then {
+        put #echo >Log Yellow [compendium] Your $char.compendium is missing!
+    } else {
+        put #echo >Log Yellow [compendium] Your $char.compendium variable is not set!
+    }
+    goto compendiumExit
+
+
+compendiumExit:
+    pause .2
+    put #parse COMPENDIUM DONE
+    exit
