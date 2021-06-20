@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts one hundred forty-nineteenxs
+var expectedNumBolts one hundred twenty-one
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -121,7 +121,7 @@ main:
         gosub moveToHouse
         gosub runScript countClericTools
 
-        if ($char.tools.numIncense < 20) then {
+        if ($char.inventory.numIncense < 20) then {
             put #echo >Log #cc99ff Buying incense
             if ("$roomname" = "Private Home Interior") then gosub runScript house
             #gosub runScript travel crossing
@@ -136,10 +136,10 @@ main:
             pause
             put offer 45
             pause
-            put stow my incense
+            gosub put my incense in my $char.storage.incense
         }
 
-        if ($char.tools.numHolyWater < 2) then {
+        if ($char.inventory.numHolyWater < 1) then {
             put #echo >Log #cc99ff Buying holy water
             if ("$roomname" = "Private Home Interior") then gosub runScript house
             #gosub runScript travel crossing
@@ -156,9 +156,9 @@ main:
             gosub prep bless
             pause 5
             gosub cast my water
-            gosub get my water from my large jar
+            gosub get my water from my $char.storage.holyWater
             put combine water
-            gosub put my water in my large jar
+            gosub put my water in my $char.storage.holyWater
             gosub runScript dep
         }
         put #echo >Log #cc99ff Moving to cast PoM

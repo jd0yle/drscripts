@@ -19,9 +19,9 @@ gosub count holy water in my witch jar
 pause
 put #echo >Log Holy Water: %numHolyWater -- Parts: %numHolyWaterParts
 
-put #var char.tools.numIncense %numIncense
-put #var char.tools.numHolyWater %numHolyWater
-put #var char.tools.numHolyWaterParts %numHolyWaterParts
+put #var char.inventory.numIncense %numIncense
+put #var char.inventory.numHolyWater %numHolyWater
+put #var char.inventory.numHolyWaterParts %numHolyWaterParts
 
 pause .2
 put #parse COUNTCLERICTOOLS DONE

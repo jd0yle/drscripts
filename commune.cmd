@@ -54,7 +54,7 @@ commune.lightIncense:
         return
     }
     if (!contains("$roomobjs", "incense")) then {
-        gosub get my incense
+        gosub get my incense from my $char.storage.incense
         if ("$righthandnoun" != "incense") then gosub commune.doneNoIncense
         gosub drop my incense
         goto commune.lightIncense
@@ -67,11 +67,11 @@ commune.lightIncense:
 
 commune.sprinkleHolyWater:
     var commune.sprinkleTarget $0
-	gosub get my water from witch jar
+	gosub get water from my $char.storage.holyWater
 	if ("$righthand" = "water") then gosub runScript cast bless my water
 	if ("$righthand" != "holy water") then goto commune.doneNoWater
 	gosub sprinkle water at %commune.sprinkleTarget
-	gosub put water in my witch jar
+	gosub put my water in my $char.storage.holyWater
 	return
 
 

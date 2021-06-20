@@ -1,7 +1,15 @@
 ###############################
+###      STORAGE
+###############################
+put #tvar char.storage.default canvas backpack
+
+put #tvar char.storage.holyWater witch jar
+put #tvar char.storage.incense $char.storage.default
+
+###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container canvas backpack
+put #tvar char.appraise.container $char.storage.default
 put #tvar char.appraise.item diamondique hhr'ata
 
 
@@ -10,6 +18,7 @@ put #tvar char.appraise.item diamondique hhr'ata
 ###############################
 #put #tvar char.armor ash leathers|ash gloves|ash cowl|demonscale shield|parry stick
 put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|parry stick
+
 
 ###############################
 ###      BURGLE
@@ -21,7 +30,7 @@ put #tvar char.burgle.cooldown null
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth cambrinth armband
-put #tvar char.focusContainer canvas backpack
+put #tvar char.focusContainer $char.storage.default
 put #tvar char.ritualFocus dove totem
 put #tvar char.wornCambrinth 0
 put #tvar char.wornFocus 0
@@ -184,6 +193,13 @@ put #tvar char.instrument.container thigh bag
 
 
 ###############################
+###      INVENTORY
+###############################
+# char.inventory.numIncense
+# char.inventory.numHolyWater
+
+
+###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer canvas backpack
@@ -322,6 +338,9 @@ put #tvar char.research.useSanowret 1
 put #tvar char.trainer.almanacContainer thigh bag
 put #tvar char.trainer.almanacItem almanac
 put #tvar char.trainer.firstaid 0
+
+
+
 
 pause .2
 put #parse CHARVARS DONE
