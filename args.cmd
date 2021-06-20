@@ -21,7 +21,7 @@ goto argsDone
 ###############################
 parseArgs:
 	var args %0
-	echo .%scriptname %args
+	#echo .%scriptname %args
 parseArgsCont:
     eval remainingArgLength length("%args")
 	if (%remainingArgLength > 0) then {

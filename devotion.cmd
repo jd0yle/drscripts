@@ -5,7 +5,7 @@ action send roll my rug when ^You should roll it up first
 gosub stow right
 gosub stow left
 
-gosub runScript commune
+gosub runScript commune --deity=meraud
 
 gosub stand
 

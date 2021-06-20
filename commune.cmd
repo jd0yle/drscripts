@@ -1,10 +1,21 @@
+####################################################################################################
+# commune.cmd
+# Cleric Commune
+#
+# Performs the commune of the specified deity.
+#
+# Args:
+#    --deity The commune to perform
+#
+# Example:
+# .commune --deity=meraud
+#
+####################################################################################################
 include libmaster.cmd
 include args.cmd
 
 gosub stow right
 gosub stow left
-
-echo %args.deity
 
 if ("%args.deity" = "meraud") then gosub commune.meraud
 if ("%args.deity" = ".deity") then {
