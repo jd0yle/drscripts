@@ -3003,6 +3003,7 @@ move:
     matchre stand.then.move ^You must be standing to do that\.
     matchre stand.then.move ^Perhaps you should stand up first.
     matchre stow.then.move ^Free up your hands first
+    #matchre move1 ^As you start towards
     put %todo
     goto retry
 
