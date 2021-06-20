@@ -157,9 +157,19 @@ main:
         put .afk
     }
 
+    startFight:
+    if ($Parry_Ability.LearningRate < 32 || $Shield_Usage.LearningRate < 32 || $Evasion.LearningRate < 32 || $Heavy_Thrown.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Staves.LearningRate < 30 || $Brawling.LearningRate < 30 || $Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30) then {
+        gosub waitForRepair
+        put #echo >Log #cc99ff Going to main combat
+        gosub moveToBulls
+        gosub runScript tend
+        put .fight
+        gosub waitForMainCombat
+        goto main
+    }
 
     startMagic:
-    if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Sorcery.LearningRate < 3) then {
+    #if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Sorcery.LearningRate < 3) then {
     #if (%startResearch = 1) then {
         put #echo >Log #cc99ff Going to magic
         gosub moveToHouse
@@ -212,19 +222,8 @@ main:
         put .magic
         gosub waitForMagic
         goto main
-    }
-
-    startFight:
-    #if ($Thanatology.LearningRate < 5 || $Parry_Ability.LearningRate < 20 || $Shield_Usage.LearningRate < 20 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 15 || $Targeted_Magic.LearningRate < 0) then {
-        gosub waitForRepair
-        put #echo >Log #cc99ff Going to main combat
-        #gosub moveToWarklin
-        gosub moveToBulls
-        gosub runScript tend
-        put .fight
-        gosub waitForMainCombat
-        goto main
     #}
+
     goto main
 
 

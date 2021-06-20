@@ -205,27 +205,17 @@ put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 1
 
-# AUGMENTATION
-put #tvar char.magic.train.spell.Augmentation obf
-put #tvar char.magic.train.prep.Augmentation 1
-if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 13
-put #tvar char.magic.train.harness.Augmentation 0
-
-# UTILITY
-put #tvar char.magic.train.spell.Utility gaf
-put #tvar char.magic.train.prep.Utility 1
-if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 10
-put #tvar char.magic.train.harness.Utility 0
-
+# CYCLIC
 put #tvar char.magic.train.cyclic.Utility 1
 put #tvar char.magic.train.cyclic.spell.Utility roc
 put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
-put #tvar char.magic.train.cyclic.prep.Utility 0
+put #tvar char.magic.train.cyclic.prep.Utility 15
 
-
+# AUGMENTATION
 var var.magic.Augmentation 27
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
+put #tvar char.magic.train.harness.Augmentation 0
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -235,16 +225,17 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 
         evalmath tmp ($char.magic.train.charge.Augmentation + 1)
         put #tvar char.magic.train.charge.Augmentation %tmp
         put #tvar char.magic.train.lastBackfireGametime.Augmentation $gametime
-        put #echo >Log [magic] Adjusting Augmentation charge amount +1 ($char.magic.train.charge.Augmentation)
+        put #echo >Log [%scriptname] Adjusting Augmentation charge amount +1 ($char.magic.train.charge.Augmentation)
         unvar tmp
     }
 }
 unvar var.magic.Augmentation
 
-
+# UTILITY
 var var.magic.Utility 27
 put #tvar char.magic.train.spell.Utility gaf
 put #tvar char.magic.train.prep.Utility 1
+put #tvar char.magic.train.harness.Utility 0
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -254,19 +245,18 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
         evalmath tmp ($char.magic.train.charge.Utility + 1)
         put #tvar char.magic.train.charge.Utility %tmp
         put #tvar char.magic.train.lastBackfireGametime.Utility $gametime
-        put #echo >Log [magic] Adjusting Utility charge amount +1 ($char.magic.train.charge.Utility)
+        put #echo >Log [%scriptname] Adjusting Utility charge amount +1 ($char.magic.train.charge.Utility)
         unvar tmp
     }
 }
 unvar var.magic.Utility
 
-
 # WARDING
 var var.magic.Warding 27
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
+put #tvar char.magic.train.harness.Warding 0
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding
-put #tvar char.magic.train.harness.Warding 12
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Warding > -1)) then put #tvar char.magic.train.lastBackfireGametime.Warding 1
@@ -275,7 +265,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600)
         evalmath tmp ($char.magic.train.charge.Warding + 1)
         put #tvar char.magic.train.charge.Warding %tmp
         put #tvar char.magic.train.lastBackfireGametime.Warding $gametime
-        put #echo >Log [magic] Adjusting Warding charge amount +1 ($char.magic.train.charge.Warding)
+        put #echo >Log [%scriptname] Adjusting Warding charge amount +1 ($char.magic.train.charge.Warding)
         unvar tmp
     }
 }
