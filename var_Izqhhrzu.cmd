@@ -201,7 +201,6 @@ put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.usePom 1
 put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0
-put #tvar char.magic.train.useInstrument 1
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.usePray 1

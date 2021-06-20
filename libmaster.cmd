@@ -781,11 +781,12 @@ commune:
 
 
 count:
-    var location Count1
+    var location count1
     var todo $0
     count1:
     matchre return ^I could not find what
     matchre return ^That doesn't tell you much of anything.
+    matchre return ^There are
     matchre return ^You count out
     matchre return ^You count some
     matchre return ^You count up the items in your
@@ -1329,6 +1330,20 @@ lean:
     matchre return ^You lean
     matchre return ^You shift your weight\.
     put lean %todo
+    goto retry
+
+
+light:
+    var location light1
+    var todo $0
+    light1:
+    matchre return ^You strike
+    matchre return ^Light
+    matchre return ^But the
+    matchre return ^Please rephrase
+    matchre return ^What
+    matchre return ^You can't
+    put light %todo
     goto retry
 
 
@@ -2168,6 +2183,16 @@ smell:
     goto retry
 
 
+sprinkle:
+    var location sprinkle1
+    var todo $0
+    sprinkle1:
+    matchre return ^You sprinkle
+    matchre return ^Sprinkle
+    put sprinkle %todo
+    goto retry
+
+
 stance:
     var location stance1
     var todo $0
@@ -2306,6 +2331,10 @@ stow:
     if ("$charactername" = "Izqhhrzu") then {
         if ( ("%todo" = "right" && "$righthand" = "blood-red scythe") || ("%todo" = "" && "$righthand" = "blood-red scythe") || contains("%todo", "scythe") || ("%todo" = "left" && "$lefthand" = "blood-red scythe") ) then {
             gosub put my scythe in my hip pouch
+            return
+        }
+        if ( ("%todo" = "right" && "$righthand" = "holy water") || ("%todo" = "" && "$righthand" = "holy water") || contains("%todo", "holy water") || ("%todo" = "left" && "$lefthand" = "holy water") ) then {
+            gosub put my holy water in my witch jar
             return
         }
     }
@@ -2681,6 +2710,7 @@ wave:
     wave1:
     matchre return ^I do not understand
     matchre return ^You slowly wave the
+    matchre return ^You wave
     put wave %todo
     goto retry
 
@@ -3149,14 +3179,15 @@ runScript:
     var location runScript1
 
     runScript1:
-	    eval doneString toupper(%scriptName)
+	    eval doneString toupper("%scriptName")
 		matchre runScriptDone ^%doneString DONE$
 		put .%todo
 
 	runScriptLoop:
 		matchre runScriptDone ^%doneString DONE$
 		matchwait 15
-        eval lowerScriptName tolower(%scriptName)
+        eval lowerScriptName tolower("%scriptName")
+        var lowerScriptName %lowerScriptName.cmd
 		if (!contains("$scriptlist", "%lowerScriptName")) then {
 		    put #echo #FF9900 [runScript] *%lowerScriptName* NOT IN SCRIPTLIST ($scriptlist), RETURNING
 		    put #echo >Log #FF9900 [runScript] %lowerScriptName exited without #parse
