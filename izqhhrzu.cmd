@@ -85,7 +85,7 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        gosub automove e gate
+        gosub automove n gate
         gosub automove portal        
         gosub move go meeting portal
 
@@ -124,13 +124,17 @@ main:
         if ($char.tools.numIncense < 20) then {
             put #echo >Log #cc99ff Buying incense
             if ("$roomname" = "Private Home Interior") then gosub runScript house
-            gosub runScript travel crossing
+            #gosub runScript travel crossing
+            #gosub automove teller
+            #gosub withdraw 1 plat
+            #gosub automove brother
             gosub automove teller
-            gosub withdraw 1 plat
-            gosub automove brother
+            gosub withdraw 1 silver
+            gosub runScript travel shard
+            gosub automove cleric
             put order incense
             pause
-            put offer 62
+            put offer 45
             pause
             put stow my incense
         }
@@ -138,15 +142,17 @@ main:
         if ($char.tools.numHolyWater < 2) then {
             put #echo >Log #cc99ff Buying holy water
             if ("$roomname" = "Private Home Interior") then gosub runScript house
-            gosub runScript travel crossing
+            #gosub runScript travel crossing
+            #gosub automove teller
+            #gosub withdraw 1 plat
+            #gosub automove chiz
+            gosub runScript travel shard
             gosub automove teller
-            gosub withdraw 1 plat
-            gosub automove chiz
-            put buy water
+            gosub withdraw 1 silver
+            gosub automove alchemy supplies
+            put order 1
             pause
-            put offer 1
-            pause
-            gosub move out
+            put order 1
             gosub prep bless
             pause 5
             gosub cast my water
@@ -781,13 +787,8 @@ moveToHouse:
 
     # Shard East Gate Area
     if ("%zone" = "66") then {
-        if ("$roomname" = "Private Home Interior") then return
-        if ("$roomid" = "252") then {
-            gosub enterHouse
-            return
-        } else {
-            gosub automove 252
-        }
+        gosub automove portal
+        gosub move go portal
         goto moveToHouse
     }
 

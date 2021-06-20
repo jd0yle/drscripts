@@ -2487,6 +2487,15 @@ target2:
     goto target1
 
 
+tdps:
+    var location tdps1
+    var todo $0
+    tdps1:
+    matchre return ^An attendant
+    matchre return ^You have
+    put tdps %todo
+    goto retry
+
 teach:
     var location teach1
     var todo $0
@@ -2731,6 +2740,7 @@ withdraw:
     var todo $0
     withdraw1:
     matchre return clerk
+    matchre return copper|silver|bronze|gold|platinum|Kronar|Dokora|Lirum
     put withdraw %todo
     goto retry
 
@@ -2894,7 +2904,7 @@ automove:
         echo [libmaster automove]: No more attempts, it's dead, Jim
         return
     } else {
-        echo [libmaster automove]: Automove failed, retrying (%moveAttemptsRemaining)
+        echo [libmaster automove]: Automove failed, Destination = %toroom, retrying (%moveAttemptsRemaining)
     }
     pause
     put look

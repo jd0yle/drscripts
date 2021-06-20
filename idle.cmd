@@ -27,7 +27,7 @@ loop:
     if (%t > %nextAlarmAt) then {
         evalmath nextAlarmAt %t + 240
         # echo [$time]
-        gosub look my blades
+        gosub tdps
     }
     pause 2
     goto loop
