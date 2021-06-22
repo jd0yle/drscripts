@@ -93,7 +93,15 @@ khurnaarti.arcana:
 
 
 khurnaarti.astrology:
-    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
+    if !matchre("$righthand|$lefthand", "Empty") then {
+        gosub stow
+        gosub stow left
+    }
+    if ($Astrology.LearningRate < 33) then {
+        put #echo >Log maroon [khurnaarti] Beginning Astrology.
+        gosub observe.onTimer
+        put #echo >Log maroon [khurnaarti] Astrology complete. ASTR: ($Astrology.LearningRate/34)
+    }
     return
 
 
@@ -210,6 +218,10 @@ khurnaarti.faSkin:
      evalmath nextTrainerAt $lastTrainerGametime + 3600
     if (%nextTrainerAt > $gametime) then {
         return
+    }
+    if !matchre("$righthand|$lefthand", "Empty") then {
+        gosub stow
+        gosub stow left
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
         put #echo >Log Cyan [khurnaarti] Beginning trainer.

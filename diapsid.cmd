@@ -12,6 +12,7 @@ action goto givePrize when ^$diapsid.winner whispers, "(.*)prize(.*)"$/i
 if (!($lastCoinGametime >0)) then put #var lastCoinGametime 0
 var avoidCoin null
 put #tvar diapsid.prizeGiven 0
+put #window hide Talk
 
 ###############################
 ###      METHODS
@@ -106,15 +107,19 @@ givePrize:
         goto botWait
     }
     put ooc $diapsid.winner [DR Discord Giveaways] Hi there!  Congrats on your win!  Please give me a moment to get your prize to you.
+    put #window show Talk
+
     if ($diapsid.prizeMoney = 1) then {
         pause 2
         matchre errorFound ^\[You have exceeded your coin handoff limit of once every 30 minutes\.
         matchre giveCongrats ^You give
         matchre requestCoinFix ^$diapsid.winner is not interested in taking coins from you.
     	put give $diapsid.winner $diapsid.prize platinum Kronar
-    	put #echo >log Awarded $diapsid.prize platinum to $diapsid.winner.
     	matchwait 5
+    	put #echo >log Awarded $diapsid.prize platinum to $diapsid.winner.
     	goto botWait
+    } else {
+        goto getPrize
     }
 
 
@@ -145,4 +150,10 @@ errorFound:
     evalMath nextCoin (lastCoinGametime + 3600)
     put #echo >log Coin Hand Off Timer not ready.
     put ooc $diapsid.winner [DR Discord Giveaways] I'm incredibly sorry for this, but I am still under a F2P Coin Handoff Timer.  Please check back anywhere from 15 to 30 minutes.
+    goto botWait
+
+
+testPrize:
+    put ooc $diapsid.winner [DR Discord Giveaways]  Here is your $diapsid.prize prize!  Enjoy!
+    put #echo >log Awarded $diapsid.prize to $diapsid.winner.
     goto botWait
