@@ -217,11 +217,11 @@ put #tvar char.predict.tool.container shadows
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda
+put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena
 put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia
 put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia
 put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda
-put #tvar char.observe.survival Ram|Yoakena|Szeldia
+put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena
 
 put #tvar char.observe.predict 1
 
@@ -235,8 +235,8 @@ put #tvar char.pawn.container purse
 ###############################
 ###      PERFORMANCE
 ###############################
-put #tvar char.performance.instrument guti'adar
-put #tvar char.performance.song polka
+put #tvar char.performance.instrument rattle
+put #tvar char.performance.song reel
 put #tvar char.performance.mood quiet
 
 
