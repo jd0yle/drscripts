@@ -624,7 +624,7 @@ cast:
     matchre return ^With a flick of your wrist,
     matchre return ^With a wave of your hand,
     matchre return ^You attempt to quiet your mind
-    matchre return ^You can't cast .+ on yourself\!
+    matchre return ^You can't cast
     matchre return ^You clench your hands into fists
     matchre return ^You cup your hand before
     matchre return ^You don't have a spell prepared\!

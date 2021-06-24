@@ -3,13 +3,13 @@ include libmaster.cmd
 #put .var_izqhhrzu
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts one hundred forty-two
+var expectedNumBolts one hundred thirty-nine
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
 action (health) goto getHealedTrigger when eval $health < 85
-action (health) goto getHealedTriggzer when eval $bleeding = 1
+action (health) goto getHealedTrigger when eval $bleeding = 1
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
@@ -85,7 +85,8 @@ main:
         put .armor wear
         waitforre ^ARMOR DONE$
 
-        gosub automove n gate
+        #gosub automove n gate
+        gosub automove crossing
         gosub automove portal        
         gosub move go meeting portal
 
@@ -108,8 +109,8 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-        gosub moveToHouse
-        gosub runScript devotion
+        #gosub moveToHouse
+        #gosub runScript devotion
         pause 1
         put .izqhhrzu
         put .reconnect
@@ -124,17 +125,18 @@ main:
         if ($char.inventory.numIncense < 20) then {
             put #echo >Log #cc99ff Buying incense
             if ("$roomname" = "Private Home Interior") then gosub runScript house
-            #gosub runScript travel crossing
-            #gosub automove teller
-            #gosub withdraw 1 plat
-            #gosub automove brother
+            gosub runScript travel crossing
             gosub automove teller
             gosub withdraw 1 silver
-            gosub runScript travel shard
-            gosub automove cleric
+            gosub automove brother
+            #gosub automove teller
+            #gosub withdraw 1 silver
+            #gosub runScript travel shard
+            #gosub automove cleric
             put order incense
             pause
-            put offer 45
+            #put offer 45
+            put offer 62
             pause
             gosub put my incense in my $char.storage.incense
         }
@@ -142,14 +144,14 @@ main:
         if ($char.inventory.numHolyWater < 1) then {
             put #echo >Log #cc99ff Buying holy water
             if ("$roomname" = "Private Home Interior") then gosub runScript house
-            #gosub runScript travel crossing
-            #gosub automove teller
-            #gosub withdraw 1 plat
-            #gosub automove chiz
-            gosub runScript travel shard
+            gosub runScript travel crossing
             gosub automove teller
             gosub withdraw 1 silver
-            gosub automove alchemy supplies
+            gosub automove chiz
+            #gosub runScript travel shard
+            #gosub automove teller
+            #gosub withdraw 1 silver
+            #gosub automove alchemy supplies
             put order 1
             pause
             put order 1
@@ -174,7 +176,7 @@ main:
         gosub getHealed
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToKobolds
+        gosub moveToGerbils
         put .fight
         gosub waitForMainCombat
         goto main
@@ -293,7 +295,8 @@ getHealedTrigger:
 getHealed:
     gosub checkHealth
     if (%injured = 1) then {
-        gosub moveToMagic
+        put #echo >Log Moving to get healed (moveToHouse)
+        gosub moveToHouse
 
         if (contains("$roomplayers", "Inauri")) then {
 	        gosub whisper inauri heal
@@ -438,55 +441,62 @@ moveToBeisswurms:
 
 
 
-moveToBobcats:
+moveToGerbils:
+    put #echo Yellow Moving to gerbils
     gosub setZone
 
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
-        goto moveToBobcats
+        goto moveToGerbils
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub runScript findSpot gerbil
+        return
     }
 
     # FC
     if ("%zone" = "150") then {
-        if ($roomid >= 79 && $roomid <= 84) then return
-        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
-        gosub runScript findSpot bobcat
         put #tvar powerwalk 0
-        goto moveToBobcats
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go portal
+        goto moveToGerbils
     }
 
     # Crossing Temple
     if ("%zone" = "2a") then {
         gosub automove crossing
-        goto moveToBobcats
+        goto moveToGerbils
     }
 
     # NTR
     if ("%zone" = "7") then {
-        gosub automove n gate
-        goto moveToBobcats
+        gosub automove vineyard
+        goto moveToGerbils
     }
 
     # Crossing N Gate
     if ("%zone" = "6") then {
-        gosub automove crossing
-        goto moveToBobcats
+        gosub automove ntr
+        goto moveToGerbils
     }
 
     # Crossing W Gate
     if ("%zone" = "4") then {
-        gosub automove crossing
-        goto moveToBobcats
+        gosub automove n gate
+        goto moveToGerbils
     }
 
     # Crossing
     if ("%zone" = "1") then {
-        gosub automove portal
-        gosub move go portal
-        goto moveToBobcats
+        gosub automove n gate
+        goto moveToGerbils
     }
 
-    goto moveToBobcats
+    goto moveToGerbils
     
 
 moveToKobolds:
@@ -549,6 +559,12 @@ moveToBurgle:
     # NTR
     if ("%zone" = "7") then {
         gosub automove n gate
+        goto moveToBurgle
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
         goto moveToBurgle
     }
 
@@ -631,6 +647,12 @@ moveToRats:
         goto moveToRats
     }
 
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
+        goto moveToBurgle
+    }
+
     # Crossing N Gate
     if ("%zone" = "6") then {
         gosub automove crossing
@@ -706,6 +728,7 @@ moveToEels:
 
 
 moveToHouse:
+    put #echo >Debug #cc99ff moveToHouse (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
     if ("$roomname" = "Private Home Interior") then return
@@ -757,6 +780,12 @@ moveToHouse:
     # NTR
     if ("%zone" = "7") then {
         gosub automove crossing
+        goto moveToHouse
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
         goto moveToHouse
     }
 
@@ -863,6 +892,12 @@ moveToMagic:
     # NTR
     if ("%zone" = "7") then {
         gosub automove crossing
+        goto moveToMagic
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
         goto moveToMagic
     }
 
@@ -1039,7 +1074,7 @@ retrieveBoltsLoop:
     put .loot
     waitforre ^LOOT DONE$
     math retrieveAttempts add 1
-    if (%retrieveAttempts < 10 && $monstercount > 0) then goto retrieveBoltsLoop
+    if (%retrieveAttempts < 1 && $monstercount > 0) then goto retrieveBoltsLoop
     var expectedNumBolts %numBolts
     return
 
