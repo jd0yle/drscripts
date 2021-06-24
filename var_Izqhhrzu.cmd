@@ -32,7 +32,7 @@ put #tvar char.burgle.cooldown null
 put #tvar char.cambrinth cambrinth armband
 put #tvar char.focusContainer $char.storage.default
 put #tvar char.ritualFocus dove totem
-put #tvar char.wornCambrinth 0
+put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
 
 
@@ -42,14 +42,18 @@ put #tvar char.wornFocus 0
 put #tvar char.cast.invokeSpell 0
 
 put #tvar char.cast.default.prep 1
-put #tvar char.cast.default.charge 12
+put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
 
 put #tvar char.cast.pom.prep 160
 
 put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 1
+put #tvar char.cast.sol.charge 5
 put #tvar char.cast.sol.harness 0
+
+put #tvar char.cast.pfe.prep 5
+put #tvar char.cast.pfe.charge 10
+put #tvar char.cast.pfe.harness 0
 
 ###############################
 ###      COMBAT
@@ -110,10 +114,10 @@ put #tvar char.fight.tmSpell he
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 4
+put #tvar char.fight.tmPrep 5
 
 # How long to pause before casting.
-put #tvar char.fight.tmPause 5
+put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|triple-weighted bola|white nightstick|blue sling|bastard sword
@@ -143,8 +147,10 @@ put #tvar char.fight.useMaf 1
 put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
+put #tvar char.fight.useBless 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
+put #tvar char.fight.usePfe 1
 put #tvar char.fight.useSol 1
 
 #***** MOON MAGE *****

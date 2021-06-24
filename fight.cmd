@@ -10,6 +10,7 @@
 ####################################################################################################
 include var_mobs.cmd
 include libmaster.cmd
+include args.cmd
 
 
 ####################################################################################################
@@ -145,6 +146,12 @@ init:
 
     ## Start with the weapon with the lowest learning rate
     initLoop:
+        # Start with the weapon specified by the command line args, if present
+        eval args.startWeapon replace("%args.startWeapon", " ", "_")
+        if ("%weapons.skills(%weapons.index)" = "%args.startWeapon") then {
+            var weapons.lowestLearningRateIndex %weapons.index
+            goto initContinue
+        }
         if ($%weapons.skills(%weapons.index).LearningRate < $%weapons.skills(%weapons.lowestLearningRateIndex).LearningRate) then {
             var weapons.lowestLearningRateIndex %weapons.index
         }
@@ -393,6 +400,10 @@ buffs:
         gosub runScript cast mpp
         return
     }
+    if ($char.fight.usePfe = 1 && ($SpellTimer.ProtectionfromEvil.active != 1 || $SpellTimer.ProtectionfromEvil.duration < 3)) then {
+        gosub runScript cast pfe
+        return
+    }
     if ($char.fight.useSol = 1 && ($SpellTimer.ShieldofLight.active != 1 || $SpellTimer.ShieldofLight.duration < 2)) then {
         gosub runScript cast sol
         return
@@ -545,13 +556,34 @@ checkWeaponSkills:
 
     if ("%handItem" != "%weapons.items(%weapons.index)") then {
         gosub stow right
-        if ("%weapons.items(%weapons.index)" != "Empty") then gosub get my %weapons.items(%weapons.index)
+        if ("%weapons.items(%weapons.index)" != "Empty" && "%weapons.skills(%weapons.index)" != "Targeted_Magic") then {
+            gosub get my %weapons.items(%weapons.index)
+            if ($char.fight.useBless = 1) then {
+                gosub prep bless
+                gosub charge my $char.cambrinth 5
+                gosub invoke my $char.cambrinth 5
+
+                # For ranged weapons, bless the ammo, not the weapon
+                var blessTarget none
+                if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Crossbow") then var blessTarget $char.fight.ammo.Crossbow
+                if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Bow") then var blessTarget $char.fight.ammo.Bow
+                if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Crossbow") then var blessTarget $char.fight.ammo.Slings
+                if ("%blessTarget" = "none") then var blessTarget %weapons.items(%weapons.index)
+                gosub cast my %blessTarget
+                unvar blessTarget
+            }
+        } else {
+            # Bless self for brawling
+            if ($char.fight.useBless = 1 && ($SpellTimer.Bless.active !=1 || $SpellTimer.Bless.duration < 3)) then {
+                gosub prep bless
+                gosub charge my $char.cambrinth 5
+                gosub invoke my $char.cambrinth 5
+                gosub cast
+            }
+        }
     }
 
-    if ("%weapons.items(%weapons.index)" = "bastard sword") then {
-        if ("%weapons.skills(%weapons.index)" = "Large_Edged" && "%weapon_hand" != "he") then gosub swap my sword
-        if ("%weapons.skills(%weapons.index)" = "Twohanded_Edged" && "%weapon_hand" != "The") then gosub swap my sword
-    }
+    if ("%weapons.items(%weapons.index)" = "bastard sword") then gosub checkWeaponSkills.swapWeapon
 
     if ("%weapons.skills(%weapons.index)" = "Crossbow" && $char.fight.wornCrossbow = 1) then gosub remove my %weapons.items(%weapons.index)
 
@@ -573,6 +605,18 @@ checkWeaponSkills.nextWeapon:
 	}
 	var weapons.lastChangeAt $gametime
 	return
+
+
+checkWeaponSkills.swapWeapon:
+    if ("%weapons.skills(%weapons.index)" = "Large_Edged" && "%weapon_hand" != "he") then {
+        gosub swap my sword
+        goto checkWeaponSkills.swapWeapon
+    }
+    if ("%weapons.skills(%weapons.index)" = "Twohanded_Edged" && "%weapon_hand" != "The") then {
+        gosub swap my sword
+        goto checkWeaponSkills.swapWeapon
+    }
+    return
 
 
 ##

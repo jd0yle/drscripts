@@ -105,8 +105,10 @@ action var weapon_hand The when ^Your eyes blaze as your hands move to a two-han
 action var weapon_hand The when ^You fiercely switch your grip so that your sword can be used as a two-handed edged weapon\.$
 action var weapon_hand The when ^You switch your sword so that you can use it as a two-handed edged weapon\.$
 action var weapon_hand The when ^You turn your sword easily in your hands and end with it in position to be used as a two-handed edged weapon\.$
+action var weapon_hand The when ^Silver light kisses the surface of your bastard sword as you shift it to a two-handed edged grip\.$
 
-action var weapon_hand he when ^With a quiet snarl, you move your hands to grip your sword as a heavy edged weapon\.$
+
+action var weapon_hand he when ^With a quiet snarl, you move your hands to grip your.*as a heavy edged weapon\.$
 action var weapon_hand he when ^You deftly change your grip on your sword so it can be used as a heavy edged weapon\.$
 action var weapon_hand he when ^You draw out your .* sword from the .*, gripping it firmly in your right hand\.$
 action var weapon_hand he when ^You effortlessly switch to a grip for using your sword as a heavy edged weapon\.$
@@ -114,6 +116,7 @@ action var weapon_hand he when ^Your eyes blaze as your hands move to a heavy ed
 action var weapon_hand he when ^You fiercely switch your grip so that your sword can be used as a heavy edged weapon\.$
 action var weapon_hand he when ^You switch your sword so that you can use it as a heavy edged weapon\.$
 action var weapon_hand he when ^You turn your sword easily in your hands and end with it in position to be used as a heavy edged weapon\.$
+action var weapon_hand he when ^Silver light kisses the surface of your.*as you shift it to a heavy edged grip\.$
 var weapon_hand NONERIGHTNOW
 
 
@@ -2909,9 +2912,7 @@ pray.onTimer:
 	evalmath nextPrayGametime $lastPrayGametime + 601
 
 	if ($gametime > %nextPrayGametime) then {
-	    put kneel
         gosub pray %todo
-        gosub stand
 	    put #var lastPrayGametime $gametime
 	}
     return
