@@ -7,6 +7,7 @@ action var khurnaarti.houseOpen 1 when ^(.*)suddenly rattles\!$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$
 action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel|Izqhhrzu)'s face appears in the
+action var khurnaarti.openDoor 0 when ^(\S+) opens the door\.
 action put #var lib.student 0 when ^Inauri stops teaching\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 
@@ -22,12 +23,13 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
-var khurnaarti.class debil
+var khurnaarti.class tm
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
 var khurnaarti.houseType 0
 var khurnaarti.needHeal 0
 var khurnaarti.openDoor 0
+put #tvar khurnaarti.subScript 0
 
 
 ###############################
@@ -40,6 +42,8 @@ khurnaarti.loop:
     gosub khurnaarti.locationCheck
     pause 1
     gosub khurnaarti.healthCheck
+    pause 1
+    if ($khurnaarti.subScript > 0) then goto khurnaarti.resumeScript
     pause 1
     if (%khurnaarti.openDoor = 1) then gosub khurnaarti.door
     pause 1
@@ -204,14 +208,16 @@ khurnaarti.compendium:
 khurnaarti.door:
     if (%khurnaarti.openDoor = 1) then {
         if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
-            put #script pause all except khurnaarti
+            if matchre("$scriptlist", "magic|research|compendium") then {
+                put #tvar khurnaarti.subScript $1
+                put #script abort $khurnaarti.subScript
+            }
             gosub unlock door
             gosub open door
-            put #script resume all
         }
     }
     var khurnaarti.openDoor 0
-    return
+    goto khurnaarti.loop
 
 
 khurnaarti.faSkin:
@@ -345,10 +351,28 @@ khurnaarti.play:
     return
 
 
+khurnaarti.resumeScript:
+    if ("$khurnaarti.subScript" = "magic") then {
+        put .magic noLoop
+    }
+    if ("$khurnaarti.subScript" = "research") then {
+        put .research sorcery
+    }
+    if ("$khurnaarti.subScript" = "compendium") then {
+        if ("$righthandnoun" <> "$char.compendium") then {
+            gosub stow
+            gosub get my $char.compendium
+            put .compendium
+        }
+    }
+    put #tvar khurnaarti.subScript 0
+    return
+
+
 khurnaarti.restart:
     put #echo >log Orange [khurnaarti] Restarting script..
     put #script abort all except khurnaarti
-    put .train
+    put .reconnect
     put .khurnaarti
     exit
 

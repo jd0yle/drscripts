@@ -6,6 +6,7 @@ if ("$charactername" = "Inauri") then {
     action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto look.healWound when ^(Khurnaarti|Selesthiel|Izqhhrzu) whispers, "heal
     #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Izqhhrzu)'s face appears in the
+    action var look.openDoor 0 when ^(\S+) opens the door\.
     action var look.disease 1 when ^(Her|His) wounds are infected\.$
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
@@ -40,26 +41,11 @@ look.loop:
         if (%look.poison = 1 || %look.poisonSelf = 1) then gosub look.healPoison
         if (%look.disease = 1 || %look.diseaseSelf = 1) then gosub look.healDisease
         if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
-        if ($inauri.subScript <> 0) then {
-            if (!contains("$scriptlist", "$inauri.subScript")) then {
-                put #echo >Log [look] $inauri.subScript crashed, restarting it..
-
-                if ("$inauri.subScript" = "engineer") then {
-                    if ("$righthand" <> "Empty" && "$nextTool" <> 0) then {
-                        put .engineer 1 necklace
-                    } else put .engineer 2 necklace
-                }
-
-                if ("$inauri.subScript" = "magic" then {
-                    put .magic noLoop
-                }
-            }
-        }
         if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
         pause 1
     }
+    if ($inauri.subScript > 0) then gosub look.resumeScript
     if (%look.openDoor = 1) then gosub look.door
-    var look.openDoor 0
     pause 2
     gosub look.look
     goto look.loop
@@ -69,15 +55,15 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-    put #script pause all except look
+    if matchre("$scriptlist", "engineer|magic") then {
+        put #tvar inauri.subScript $1
+        put #script abort $inauri.subScript
+    }
+    if (%look.openDoor = 0) then goto look.loop
     gosub unlock door
     gosub open door
     var look.openDoor 0
-    put #script resume all
-    if ("$inauri.subScript" = "engineer") then {
-        put .engineer 1 burin
-    }
-    return
+    goto look.loop
 
 
 look.healDisease:
@@ -99,17 +85,18 @@ look.healWound:
         put #var inauri.heal 0
         goto look.loop
     }
-    put #script pause all except look
-    put #script resume train
+    if matchre("$scriptlist", "engineer|magic") then {
+        put #tvar inauri.subScript $1
+        put #script abort $inauri.subScript
+    }
     gosub redirect all to left leg
     gosub touch $inauri.healTarget
     gosub take $inauri.healTarget ever quick
     if (%look.vitality = 1) then {
         gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget vitality
+        gosub take $inauri.healTarget vitality quick
         var look.vitality 0
     }
-    put #script resume all
     put #var inauri.heal 0
     goto look.loop
 
@@ -130,14 +117,43 @@ look.healPoison:
 look.look:
   evalmath nextLookAt $lastLookGametime + 240
   if (%nextLookAt < $gametime) then {
-    gosub info
+    gosub tdp
     put #var lastLookGametime $gametime
   }
 return
 
 
+look.resumeScript:
+    if ("$inauri.subScript" = "engineer" && "$righthand" <> "Empty") then {
+        if ("$lefthand" = "Empty") then gosub stow left
+            put .engineer 1 $righthandnoun
+        } else {
+            put .engineer 2 $char.craft.item
+        }
+    }
+    if ("$inauri.subScript|$khurnaarti.subScript" = "magic") then {
+        put .magic noLoop
+    }
+    if ("$inauri.subScript|$khurnaarti.subScript" = "research") then {
+        put .research sorcery
+    }
+    if ("$khurnaarti.subScript" = "compendium") then {
+        if ("$righthandnoun" <> "$char.compendium") then {
+            gosub stow
+            gosub get my $char.compendium
+            put .compendium
+        }
+    }
+    put #tvar khurnaarti.subScript 0
+    put #tvar inauri.subScript 0
+    return
+
+
 look.teach:
-    put #script pause all except look
+    if matchre("$scriptlist", "engineer|magic|research") then {
+        put #tvar inauri.subScript $1
+        put #script abort $inauri.subScript
+    }
     if ($lib.class = 1) then {
         if ("$class" = "Enchanting") then {
             var look.teach 0
@@ -150,16 +166,20 @@ look.teach:
     }
     gosub teach %look.topic to %look.target
     var look.teach 0
-    put #script resume all
-    if ("$inauri.subScript" = "engineer") then {
-        put .engineer 1 $char.craft.item
-    }
     return
 
 
 look.vitalityHeal:
-    put #script pause all except look
-
+    if matchre("$scriptlist", "engineer|magic") then {
+        put #tvar inauri.subScript $1
+        put #script abort $inauri.subScript
+    }
+    gosub link all cancel
+    if ($lib.magicInert = 1 && $bleeding = 1) then {
+        put #echo >Log [look] Bleeding, low vitality, and magically inert.
+        put exit
+        exit
+    }
 
     look.vitalityHealLoop:
         pause .2
@@ -168,7 +188,5 @@ look.vitalityHeal:
         gosub cast
         if ($health < 60) then {
             goto look.vitalityHealLoop
-        } else {
-            put #script resume all
         }
-        return
+        goto look.loop

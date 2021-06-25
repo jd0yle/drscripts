@@ -46,10 +46,11 @@ loopWait:
         var attemptInterval 15
         if (%restartScripts = 1) then {
             put #script abort all except reconnect
+            if ("$charactername" = "Inauri") then put .look
+            if ("$charactername" = "Izqhhrzu") then put .izqhhrzu
+            if ("$charactername" = "Khurnaarti") then put .khurnaarti
             if ("$charactername" = "Qizhmur") then put .qizhmur
             if ("$charactername" = "Selesthiel") then put .selesthiel
-            if ("$charactername" = "Izqhhrzu") then put .izqhhrzu
-            #if ("$charactername" = "Qizhmur" || "$charactername" = "Selesthiel" || "$charactername" = "Inauri" || "$charactername" = "Khurnaarti") then put .train
             var restartScripts 0
             put .reconnect
         }
