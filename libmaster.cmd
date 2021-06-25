@@ -1358,6 +1358,21 @@ light:
     goto retry
 
 
+link:
+    var location link1
+    var todo $0
+    link1:
+    matchre return ^Any deep empathic link or offers to form have been cancelled\.$
+    matchre return ^You are maintaining a manifestation of the Hand of Hodierna link with (\S+)\.$
+    matchre return ^You extend additional tendrils of life energy towards (\S+)
+    matchre return ^You have a diagnostic link with (\S+)\.$
+    matchre return ^You have a persistent diagnostic link with (\S+)\.$
+    matchre return ^You gently allow the persistent link between you and (\S+) to dissipate\.$
+    matchre return ^You reach out to (\S+) with your empathic senses
+    put link %todo
+    goto retry
+
+
 listen:
     var location listen1
     var todo $0
