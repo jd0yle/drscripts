@@ -106,6 +106,7 @@ action var weapon_hand The when ^You fiercely switch your grip so that your swor
 action var weapon_hand The when ^You switch your sword so that you can use it as a two-handed edged weapon\.$
 action var weapon_hand The when ^You turn your sword easily in your hands and end with it in position to be used as a two-handed edged weapon\.$
 action var weapon_hand The when ^Silver light kisses the surface of your bastard sword as you shift it to a two-handed edged grip\.$
+action var weapon_hand The when ^With one superbly balanced motion, you shift your bastard sword to a two-handed edged grip in front of your heart\.$
 
 
 action var weapon_hand he when ^With a quiet snarl, you move your hands to grip your.*as a heavy edged weapon\.$
@@ -117,6 +118,7 @@ action var weapon_hand he when ^You fiercely switch your grip so that your sword
 action var weapon_hand he when ^You switch your sword so that you can use it as a heavy edged weapon\.$
 action var weapon_hand he when ^You turn your sword easily in your hands and end with it in position to be used as a heavy edged weapon\.$
 action var weapon_hand he when ^Silver light kisses the surface of your.*as you shift it to a heavy edged grip\.$
+action var weapon_hand he when ^With one superbly balanced motion, you shift your bastard sword to a heavy edged grip in front of your heart\.$
 var weapon_hand NONERIGHTNOW
 
 
@@ -779,6 +781,7 @@ commune:
     matchre return ^As you commune
     matchre return ^Nothing happens
     matchre return ^You stop
+    matchre return ^You struggle to commune
     put commune %todo
     goto retry
 
@@ -1911,11 +1914,13 @@ release:
     matchre return sphere suddenly flares with a cold light and vaporizes\!$
     matchre return ^That would be a neat trick.  Try finding a shadowling first\.$
     matchre return ^The greenish hues
+    matchre return ^The heightened sense of spiritual awareness leaves you\.$
     matchre return ^The Refractive Field pattern fades from you\.
     matchre return ^The refractive field surrounding you
     matchre return ^The Rite of Contrition
     matchre return ^The Rite of Grace matrix loses
     matchre return ^The shimmering globe of blue fire
+    matchre return ^The swirling fog dissipates from around you\.$
     matchre return ^The tingling across your body diminishes as you feel the motes of energy fade away
     matchre return ^Type RELEASE HELP for more options\.
     matchre return ^You aren't harnessing any mana\.
@@ -2955,6 +2960,7 @@ automove:
         return
     } else {
         echo [libmaster automove]: Automove failed, Destination = %toroom, retrying (%moveAttemptsRemaining)
+        gosub moveRandom
     }
     pause
     put look

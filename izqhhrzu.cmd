@@ -256,11 +256,11 @@ sorceryCont:
 
 
 getHealedTrigger:
-    put #script abort all except selesthiel
+    put #script abort all except izqhhrzu
     put .afk
     put .reconnect
     action (health) off
-    put #echo >Log #FF5501 [selesthiel.cmd] GETTING HEALED
+    put #echo >Log #FF5501 GETTING HEALED
     put #echo >Log #FF5501 [$roomname]
     put #echo >Log #FF5501 (health=$health bleeding=$bleeding)
     if ($health < 50) then {
@@ -285,11 +285,11 @@ getHealedTrigger:
 
     action (health) on
 
-    put #script abort all except selesthiel
+    put #script abort all except izqhhrzu
     put .reconnect
     put .afk
     pause .2
-    put .selesthiel
+    put .izqhhrzu
 
 
 getHealed:
@@ -324,7 +324,7 @@ getHealedCont:
 	put #var lastHealedGametime $gametime
 	#gosub automove portal
 	#gosub move go exit portal
-	gosub moveToMagic
+	gosub moveToHouse
 	if ($bleeding = 1) then goto getHealed
 
 
@@ -390,55 +390,6 @@ castSpellsForMove:
     return
 
 
-moveToBeisswurms:
-    gosub setZone
-
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToBeisswurms
-    }
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub runScript findSpot beisswurms
-        return
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove 396
-        goto moveToBeisswurms
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove ntr
-        goto moveToBeisswurms
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        gosub automove n gate
-        goto moveToBeisswurms
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove n gate
-        pause 2
-        goto moveToBeisswurms
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        gosub automove portal
-        gosub move go exit portal
-        goto moveToBeisswurms
-    }
-
-    echo No move target found, zoneid = $zoneid  zone = %zone
-    goto moveToBeisswurms
-
 
 
 moveToGerbils:
@@ -462,7 +413,7 @@ moveToGerbils:
         if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
         gosub automove portal
         put #tvar powerwalk 0
-        gosub move go portal
+        if (contains("$roomobjs", "portal")) then gosub move go portal
         goto moveToGerbils
     }
 
@@ -497,38 +448,6 @@ moveToGerbils:
     }
 
     goto moveToGerbils
-    
-
-moveToKobolds:
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToKobolds
-    }
-
-    # Shard East Gate Area
-    if ("$zoneid" = "66") then {
-        gosub runScript findSpot kobold
-        return
-    }
-
-    # Shard West Gate Area
-    if ("$zoneid" = "69") then {
-        gosub automove e gate
-        goto moveToKobolds
-    }
-
-    # Shard
-    if ("$zoneid" = "67") then {
-        gosub automove 132
-        goto moveToKobolds
-    }
-
-    # FC
-    if ("$zoneid" = "150") then {
-        gosub automove portal
-        gosub move go exit portal
-        goto moveToKobolds
-    }
     
 
 
@@ -618,114 +537,6 @@ moveToBurgle:
 
 
 
-moveToRats:
-    gosub setZone
-
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToRats
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        if ("$roomid" = "162" || "$roomid" = "163" || "$roomid" = "164") then return
-        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
-        gosub runScript findSpot fcrat
-        put #tvar powerwalk 0
-        goto moveToRats
-    }
-
-    # Crossing Temple
-    if ("%zone" = "2a") then {
-        gosub automove crossing
-        goto moveToRats
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove n gate
-        goto moveToRats
-    }
-
-    # Vineyard
-    if ("%zone" = "7a") then {
-        gosub automove ntr
-        goto moveToBurgle
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove crossing
-        goto moveToRats
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        gosub automove crossing
-        goto moveToRats
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove portal
-        gosub move go portal
-        goto moveToRats
-    }
-
-    goto moveToRats
-    
-    
-moveToEels:
-    gosub setZone
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        if ($roomid >= 234 && $roomid <= 237) then return
-        gosub runScript findSpot eel
-        goto moveToEels
-    }
-
-    if ("$roomname" = "Private Home Interior") then {
-        gosub runScript house
-        goto moveToEels
-    }
-
-    # FC
-    if ("%zone" = "150") then {
-        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
-        gosub automove portal
-        put #tvar powerwalk 0
-        gosub move go portal
-        goto moveToEels
-    }
-
-    # Crossing Temple
-    if ("%zone" = "2a") then {
-        gosub automove crossing
-        goto moveToEels
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove n gate
-        goto moveToEels
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove crossing
-        goto moveToEels
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove w gate
-        goto moveToEels
-    }
-
-    goto moveToEels    
-
-
 
 moveToHouse:
     put #echo >Debug #cc99ff moveToHouse (zoneid=$zoneid roomid=$roomid)
@@ -746,6 +557,14 @@ moveToHouse:
         #goto moveToHouse
     }
 
+    if (matchre("$roomobjs", "portal")) then {
+        #gosub move go portal
+        #goto moveToHouse
+    } else {
+        #gosub runScript travel crossing portal
+        #goto moveToHouse
+    }
+
     # Storm Bulls
     if ("%zone" = "112") then {
         gosub automove leth
@@ -755,7 +574,7 @@ moveToHouse:
     # Leth
     if ("%zone" = "61") then {
         gosub automove portal
-                gosub move go meeting portal
+        gosub move go meeting portal
         goto moveToHouse
     }
 
@@ -779,7 +598,7 @@ moveToHouse:
 
     # NTR
     if ("%zone" = "7") then {
-        gosub automove crossing
+        gosub automove n gate
         goto moveToHouse
     }
 
@@ -866,7 +685,6 @@ moveToMagic:
     if ("%zone" = "150") then {
         put #tvar powerwalk 0
         if ("$roomid" = "50") then return
-        put #tvar powerwalk 1
         gosub automove 50
         goto moveToMagic
     }
@@ -1058,6 +876,8 @@ waitForMainCombatLoop:
 retrieveBolts:
     var retrieveAttempts 0
 retrieveBoltsLoop:
+    return
+
     gosub count my bolts
     if ("%numBolts" = "%expectedNumBolts") then {
         gosub stow right

@@ -45,7 +45,15 @@ put #tvar char.cast.default.prep 1
 put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
 
+put #tvar char.cast.ghs.prep 1
+put #tvar char.cast.ghs.charge 0
+put #tvar char.cast.ghs.harness 0
+
 put #tvar char.cast.pom.prep 160
+
+put #tvar char.cast.rev.prep 5
+put #tvar char.cast.rev.charge 0
+put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
 put #tvar char.cast.sol.charge 5
@@ -141,16 +149,18 @@ put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
 #***** AP *****
-put #tvar char.fight.useMaf 1
+put #tvar char.fight.useMaf 0
 
 #***** CLERIC *****
 put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
 put #tvar char.fight.useBless 1
+put #tvar char.fight.useGhs 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
 put #tvar char.fight.usePfe 1
+put #tvar char.fight.useRev 0
 put #tvar char.fight.useSol 1
 
 #***** MOON MAGE *****

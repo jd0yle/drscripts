@@ -80,11 +80,11 @@ commune.sprinkleHolyWater:
 ###############################
 commune.doneNoIncense:
     put #echo >Log Red [commune] No incense!
-    goto done
+    goto commune.done
 
 commune.doneNoWater:
     put #echo >Log Red [commune] No water!
-    goto done
+    goto commune.done
 
 commune.done:
     put #parse COMMUNE DONE

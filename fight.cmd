@@ -313,7 +313,11 @@ attackCrossbow:
         gosub retreat
         pause 2
     } else {
-        pause 4
+        if ("$charactername" = "Izqhhrzu") then {
+            pause 8
+        } else {
+           pause 4
+       }
     }
     gosub cast
     gosub checkHide
@@ -567,7 +571,7 @@ checkWeaponSkills:
                 var blessTarget none
                 if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Crossbow") then var blessTarget $char.fight.ammo.Crossbow
                 if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Bow") then var blessTarget $char.fight.ammo.Bow
-                if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Crossbow") then var blessTarget $char.fight.ammo.Slings
+                if ("%blessTarget" = "none" && "%weapons.skills(%weapons.index)" = "Slings") then var blessTarget $char.fight.ammo.Slings
                 if ("%blessTarget" = "none") then var blessTarget %weapons.items(%weapons.index)
                 gosub cast my %blessTarget
                 unvar blessTarget
@@ -814,6 +818,8 @@ makeNewBundle:
 ###      manageCyclics
 ###############################
 manageCyclics:
+    if ("$guild" = "Cleric") then gosub manageCyclics.cleric
+
     # USOL
     if (%useUsol = 1) then {
         var shouldCastUsol 1
@@ -903,6 +909,68 @@ manageCyclics:
 
     return
 
+
+manageCyclics.cleric:
+    var clericCyclicToUse none
+    if ($char.fight.useGhs = 1) then var clericCyclicToUse ghs
+    if ($char.fight.useRev = 1 && $Warding.LearningRate > 15 && $Utility.LearningRate < 30) then var clericCyclicToUse rev
+
+    # GHOST SHROUD
+    if ($char.fight.useGhs = 1 && "%clericCyclicToUse" = "ghs") then {
+        var shouldCastGhs 1
+        if ($SpellTimer.GhostShroud.active = 1) then var shouldCastGhs 0
+        if ($mana < 80) then var shouldCastGhs 0
+        if ($monstercount < 1) then var shouldCastGhs 0
+
+        if (%shouldCastGhs = 1) then {
+            gosub release cyclic
+            gosub prep ghs
+            gosub waitForPrep
+            gosub cast
+        }
+
+        if ($SpellTimer.GhostShroud.active = 1) then {
+            var shouldReleaseGhs 0
+            if ($mana < 60) then var shouldReleaseGhs 1
+
+            evalmath timeSinceLastGhs ($gametime - $lastCastGhs)
+            if (%timeSinceLastGhs > 300) then var shouldReleaseGhs 1
+
+            if (%shouldReleaseGhs = 1) then gosub release ghs
+        }
+    } else {
+        if ($SpellTimer.GhostShroud.active = 1) then gosub release ghs
+    }
+
+    # REVELATION
+    if ($char.fight.useRev = 1  && "%clericCyclicToUse" = "rev") then {
+        var shouldCastRev 1
+        if ($SpellTimer.Revelation.active = 1) then var shouldCastRev 0
+        if ($mana < 80) then var shouldCastRev 0
+        if ($monstercount < 1) then var shouldCastRev 0
+        if ($Augmentation.LearningRate > 29 && $Utility.LearningRate > 29) then var shouldCastRev 0
+
+        if (%shouldCastRev = 1) then {
+            gosub release cyclic
+            gosub prep rev
+            gosub waitForPrep
+            gosub cast
+        }
+
+        if ($SpellTimer.Revelation.active = 1) then {
+            var shouldReleaseRev 0
+            if ($mana < 60) then var shouldReleaseRev 1
+
+            evalmath timeSinceLastRev ($gametime - $lastCastRev)
+            if (%timeSinceLastRev > 300) then var shouldReleaseRev 1
+
+            if (%shouldReleaseRev = 1) then gosub release rev
+        }
+    } else {
+        if ($SpellTimer.Revelation.active = 1) then gosub release rev
+    }
+
+    return
 
 
 ###############################

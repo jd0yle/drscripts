@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty-six
+var expectedNumBolts sixty-six
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -357,7 +357,7 @@ moveToBurgle:
 
 moveToMagic:
     if (contains("$roomplayers", "Inauri") then {
-        if ($Enchanting.LearningRate < 15) then {
+        if ($Enchanting.LearningRate < 30) then {
             gosub whisper inauri teach enchanting
             #gosub teach tm to inauri
         } else {
