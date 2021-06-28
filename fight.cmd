@@ -396,6 +396,10 @@ buffs:
     }
 
     # CLERIC
+    if ($char.fight.useBenediction = 1 && ($SpellTimer.Benediction.active != 1 || $SpellTimer.Benediction.duration < 2)) then {
+        gosub runScript cast benediction
+        return
+    }
     if ($char.fight.useMapp = 1 && ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 3)) then {
         gosub runScript cast mapp
         return
@@ -406,6 +410,10 @@ buffs:
     }
     if ($char.fight.usePfe = 1 && ($SpellTimer.ProtectionfromEvil.active != 1 || $SpellTimer.ProtectionfromEvil.duration < 3)) then {
         gosub runScript cast pfe
+        return
+    }
+    if ($char.fight.useSap = 1 && ($SpellTimer.SanctifyPattern.active != 1 || $SpellTimer.SanctifyPattern.duration < 2)) then {
+        gosub runScript cast sap debilitation
         return
     }
     if ($char.fight.useSol = 1 && ($SpellTimer.ShieldofLight.active != 1 || $SpellTimer.ShieldofLight.duration < 2)) then {

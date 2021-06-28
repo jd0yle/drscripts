@@ -173,8 +173,8 @@ main:
 
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
-        gosub getHealed
-        gosub waitForRepair
+        #gosub getHealed
+        #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
         gosub moveToGerbils
         put .fight

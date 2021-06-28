@@ -171,11 +171,11 @@ put #tvar char.fight.useSls 0
 # (Will still use harvest when low on material, consume for devour, etc.)
 put #tvar char.fight.necroRitual dissection
 
-put #tvar char.fight.avoidDivineOutrage 0
+put #tvar char.fight.avoidDivineOutrage 1
 
-put #tvar char.fight.useCh 1
+put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0
-put #tvar char.fight.usePhp 1
+put #tvar char.fight.usePhp 0
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 1
 
