@@ -175,12 +175,10 @@ inauri.compendium:
 
 
 inauri.door:
-   put #script pause all except inauri
-   gosub unlock door
-   gosub open door
-   var inauri.openDoor 0
-   put #script resume all
-   return
+    gosub unlock door
+    gosub open door
+    var inauri.openDoor 0
+    return
 
 
 inauri.engineer:
@@ -210,12 +208,12 @@ inauri.engineer:
             put .house
             waitforre ^HOUSE DONE$
         }
-        put #var inauri.subScript engineer
+        put #tvar inauri.subScript engineer
         put #echo >Log Yellow [inauri] Beginning engineering.
         put .engineer 5 $char.craft.item
         waitforre ^ENGINEER DONE
         put #echo >Log Yellow [inauri] Engineering complete.  ENG:($Engineering.LearningRate/34)
-        put #var inauri.subScript 0
+        put #tvar inauri.subScript 0
     }
     return
 
@@ -276,7 +274,7 @@ inauri.healWound:
     put #var inauri.heal 0
     if (%inauri.vitality = 1) then {
         gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget vitality
+        gosub take $inauri.healTarget vitality quick
         var inauri.vitality 0
     }
     goto inauri.loop
@@ -298,7 +296,7 @@ inauri.healPoison:
 inauri.healVitality:
     if (%inauri.vitality = 1) then {
         gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget vitality
+        gosub take $inauri.healTarget vitality quick
         var inauri.vitality 0
     }
     return
@@ -329,16 +327,14 @@ inauri.magic:
     evalmath nextMagic $lastMagicGametime + 3600
     if (%nextMagic < $gametime) then {
         if ($Augmentation.LearningRate < 5) then {
-            put #var inauri.subScript magic
+            put #tvar inauri.subScript magic
             put .look
             put #echo >Log Purple [inauri] Beginning magic.
             put .magic noLoop
             waitforre ^MAGIC DONE
-            put #var inauri.subScript 0
+            put #tvar inauri.subScript 0
             put #echo >Log Purple [inauri] Magic complete. Ward:($Warding.LearningRate/34)
-            gosub clear
-            put .train
-            put #script abort all except train
+            gosub inauri.restart
         }
     }
     return
@@ -379,6 +375,14 @@ inauri.research:
     return
 
 
+inauri.restart:
+    put #echo >log Orange [inauri] Restarting script..
+    put #script abort all except inauri
+    put .reconnect
+    put .inauri
+    exit
+
+
 inauri.teach:
     if ($lib.class = 1) then {
         if ("$class" = "Enchanting") then {
@@ -396,8 +400,7 @@ inauri.teach:
 
 
 inauri.unity:
-    put #script pause all except inauri
-    put unity Selesthiel
+    put #send unity Selesthiel
     var inauri.targetAwake 0
 
     inauri.unityLoop:
@@ -411,8 +414,12 @@ inauri.unity:
 
 
 inauri.vitalityHealSelf:
-    put #script pause all except inauri
-
+    gosub link all cancel
+    if ($lib.magicInert = 1 && $bleeding = 1) then {
+        put #echo >Log [inauri] Bleeding, low vitality, and magically inert.
+        put exit
+        exit
+    }
 
     inauri.vitalityHealLoop:
         pause .2
