@@ -12,7 +12,6 @@ action goto givePrize when ^$diapsid.winner whispers, "(.*)prize(.*)"$/i
 if (!($lastCoinGametime >0)) then put #var lastCoinGametime 0
 var avoidCoin null
 put #tvar diapsid.prizeGiven 0
-put #window hide Talk
 
 ###############################
 ###      METHODS
@@ -21,7 +20,7 @@ botWait:
     gosub botAvoids
     pause 2
     if ($standing = 0) then gosub stand
-    gosub look
+    gosub tdp
     pause 200
     goto botWait
 
@@ -107,7 +106,6 @@ givePrize:
         goto botWait
     }
     put ooc $diapsid.winner [DR Discord Giveaways] Hi there!  Congrats on your win!  Please give me a moment to get your prize to you.
-    put #window show Talk
 
     if ($diapsid.prizeMoney = 1) then {
         pause 2
