@@ -209,7 +209,7 @@ put #tvar char.magic.train.useInvokeSpell 1
 put #tvar char.magic.train.cyclic.Utility 1
 put #tvar char.magic.train.cyclic.spell.Utility roc
 put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
-put #tvar char.magic.train.cyclic.prep.Utility 15
+put #tvar char.magic.train.cyclic.prep.Utility 20
 
 # AUGMENTATION
 var var.magic.Augmentation 27

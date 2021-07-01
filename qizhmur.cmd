@@ -110,7 +110,7 @@ main:
 
         #gosub automove crossing
         if ($SpellTimer.RiteofGrace.active != 1) then {
-            gosub prep rog 15
+            gosub prep rog 20
             gosub waitForPrep
             gosub cast
         }
@@ -287,7 +287,7 @@ castSpellsForMove:
     #if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
     if ($SpellTimer.RiteofGrace.active != 1) then {
-        gosub prep rog 15
+        gosub prep rog 20
         gosub waitForPrep
         gosub release cyclic
         gosub cast
