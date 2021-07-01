@@ -27,19 +27,27 @@ var compendiumStage 0
         gosub study my $char.compendium
         if (%compendiumStage = 0) then goto compendiumLoop
         if (%compendiumStage = 1) then {
-            gosub turn my $char.compendium
+            if ($Scholarship.LearningRate > 30 && $First_Aid.LearningRate > 30) then {
+                goto compendiumDone
+            } else {
+                gosub turn my $char.compendium
+            }
             goto compendiumLoop
         }
         if (%compendiumStage = 2) then {
-            gosub close my $char.compendium
-            gosub stow my $char.compendium
-            goto compendiumExit
+            goto compendiumDone
         }
 
 
 ###############################
 ###    EXIT
 ###############################
+compendiumDone:
+    gosub close my $char.compendium
+    gosub stow my $char.compendium
+    goto compendiumExit
+
+
 compendiumError:
     if ("$char.compendium" <> NULL) then {
         put #echo >Log Yellow [compendium] Your $char.compendium is missing!
