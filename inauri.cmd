@@ -25,8 +25,6 @@ action goto inauri.unity when ^Selesthiel crumples to the ground and is still\.$
 ###############################
 ###    CHAR VARIABLES
 ###############################
-if (!($activeResearch >0)) then put #var activeResearch 0
-if (!($expSleep >0)) then put #var expSleep 0
 if (!($inauri.heal >0)) then put #var inauri.heal 0
 if (!($inauri.healTarget >0)) then put #var inauri.healTarget 0
 if (!($inauri.subScript >0)) then put #var inauri.subScript 0

@@ -98,7 +98,7 @@ put #tvar char.fight.forceShield 0
 # all|treasure|gems whatever the loot options are
 put #tvar char.fight.lootType treasure
 
-# DEPRECATED Script-specifc options (ex: 'backtrain')
+# DEPRECATED Script-specific options (ex: 'backtrain')
 put #tvar char.fight.opts null
 
 

@@ -66,7 +66,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.faSkin
     pause 1
-    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+    if ($Attunement.LearningRate < 33 && $lib.magicInert <> 1) then gosub perc.onTimer
     pause 1
     if ($Astrology.LearningRate < 30) then gosub khurnaarti.astrology
     pause 1
@@ -78,7 +78,7 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.burgle
     pause 1
-    gosub khurnaarti.magic
+    if ($mana > 30 && $lib.magicInert <> 1) then gosub khurnaarti.magic
     pause 1
     gosub khurnaarti.play
     pause 1
@@ -87,6 +87,8 @@ khurnaarti.loop:
     #gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.look
+    pause 1
+    if (&& $lib.magicInert <> 1) then gosub khurnaarti.research
     pause 1
     goto khurnaarti.loop
 
