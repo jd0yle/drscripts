@@ -41,6 +41,12 @@ if ("%mob" = "eel") then {
     var waitroomid 220
 }
 
+if ("%mob" = "gargoyle") then {
+    var minRoomId 65
+    var maxRoomId 75
+    var waitroomid 50
+}
+
 if ("%mob" = "gerbil") then {
     var minRoomId 35
     var maxRoomId 40

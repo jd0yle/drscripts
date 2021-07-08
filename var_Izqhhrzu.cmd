@@ -97,13 +97,13 @@ put #tvar char.fight.arrangeFull 1
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
-put #tvar char.fight.debilPauseTime 10
+put #tvar char.fight.debilPauseTime 5
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell ps
+put #tvar char.fight.debil.spell sick
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 2
+put #tvar char.fight.debil.prepAt 5
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -122,14 +122,14 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell he
+put #tvar char.fight.tmSpell horn
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 put #tvar char.fight.tmPrep 5
 
 # How long to pause before casting.
-put #tvar char.fight.tmPause 7
+put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|triple-weighted bola|white nightstick|blue sling|bastard sword
@@ -160,11 +160,11 @@ put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
 put #tvar char.fight.useBenediction 0
-put #tvar char.fight.useBless 1
+put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
-put #tvar char.fight.usePfe 1
+put #tvar char.fight.usePfe 0
 put #tvar char.fight.useRev 0
 put #tvar char.fight.useSap 0
 put #tvar char.fight.useSol 0

@@ -793,6 +793,7 @@ count:
     matchre return ^I could not find what
     matchre return ^That doesn't tell you much of anything.
     matchre return ^There are
+    matchre return ^There is
     matchre return ^You count out
     matchre return ^You count some
     matchre return ^You count up the items in your

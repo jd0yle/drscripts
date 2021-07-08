@@ -122,7 +122,7 @@ main:
         gosub moveToHouse
         gosub runScript countClericTools
 
-        if ($char.inventory.numIncense < 20) then {
+        if ($char.inventory.numIncense < 10) then {
             put #echo >Log #cc99ff Buying incense
             if ("$roomname" = "Private Home Interior") then gosub runScript house
             gosub runScript travel crossing
@@ -145,23 +145,30 @@ main:
             put #echo >Log #cc99ff Buying holy water
             if ("$roomname" = "Private Home Interior") then gosub runScript house
             gosub runScript travel crossing
-            gosub automove teller
-            gosub withdraw 1 silver
-            gosub automove chiz
+            gosub automove temple
+            gosub automove holy water
+            gosub get my witch jar
+            put fill my witch jar with water from basin
+            gosub stow my witch jar
+            gosub automove crossing
+
+            #gosub automove teller
+            #gosub withdraw 1 silver
+            #gosub automove chiz
             #gosub runScript travel shard
             #gosub automove teller
             #gosub withdraw 1 silver
             #gosub automove alchemy supplies
-            put order 1
-            pause
-            put order 1
-            gosub prep bless
-            pause 5
-            gosub cast my water
-            gosub get my water from my $char.storage.holyWater
-            put combine water
-            gosub put my water in my $char.storage.holyWater
-            gosub runScript dep
+            #put order 1
+            #pause
+            #put order 1
+            #gosub prep bless
+            #pause 5
+            #gosub cast my water
+            #gosub get my water from my $char.storage.holyWater
+            #put combine water
+            #gosub put my water in my $char.storage.holyWater
+            #gosub runScript dep
         }
         put #echo >Log #cc99ff Moving to cast PoM
 		gosub moveToHouse
@@ -176,7 +183,7 @@ main:
         #gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToGerbils
+        gosub moveToGargoyles
         put .fight
         gosub waitForMainCombat
         goto main
@@ -389,6 +396,92 @@ castSpellsForMove:
     }
     return
 
+
+
+moveToGargoyles:
+    put #echo >Debug #cc99ff moveToGargoyles (zoneid=$zoneid roomid=$roomid)
+    gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToGargoyles
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub runScript findSpot gargoyle
+        return
+    }
+
+    # Shard S Gate
+    if ("%zone" = "68") then {
+        gosub automove e gate
+        goto moveToGargoyles
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToGargoyles
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto moveToGargoyles
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
+        goto moveToGargoyles
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto moveToGargoyles
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToGargoyles
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto moveToGargoyles
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal      
+        gosub move go meeting portal     
+        goto moveToGargoyles
+    }
+
+    # Shard East Gate Area
+    if ("%zone" = "66") then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToGargoyles
+    }
+
+    # Shard
+    if ("%zone" = "67") then {
+        gosub automove 132
+        goto moveToGargoyles
+    }
+
+    # Shard West Gate Area
+    if ("%zone" = "69") then {
+        gosub automove n gate
+        goto moveToGargoyles
+    }
+
+    goto moveToGargoyles
 
 
 
@@ -651,8 +744,6 @@ moveToHouse:
         gosub automove n gate
         goto moveToHouse
     }
-
-
 
     goto moveToHouse
 
