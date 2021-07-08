@@ -109,74 +109,16 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-        #gosub moveToHouse
-        #gosub runScript devotion
+		#if ($Theurgy.LearningRate < 10 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 4)) then {
+        gosub clericRituals
+        #}
         pause 1
         put .izqhhrzu
         put .reconnect
         put .afk
     }
 
-    if ($Theurgy.LearningRate < 10 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 4)) then {
-        put #echo >Log #cc99ff Moving to house for rituals
-        gosub moveToHouse
-        gosub runScript countClericTools
 
-        if ($char.inventory.numIncense < 10) then {
-            put #echo >Log #cc99ff Buying incense
-            if ("$roomname" = "Private Home Interior") then gosub runScript house
-            gosub runScript travel crossing
-            gosub automove teller
-            gosub withdraw 1 silver
-            gosub automove brother
-            #gosub automove teller
-            #gosub withdraw 1 silver
-            #gosub runScript travel shard
-            #gosub automove cleric
-            put order incense
-            pause
-            #put offer 45
-            put offer 62
-            pause
-            gosub put my incense in my $char.storage.incense
-        }
-
-        if ($char.inventory.numHolyWater < 1) then {
-            put #echo >Log #cc99ff Buying holy water
-            if ("$roomname" = "Private Home Interior") then gosub runScript house
-            gosub runScript travel crossing
-            gosub automove temple
-            gosub automove holy water
-            gosub get my witch jar
-            put fill my witch jar with water from basin
-            gosub stow my witch jar
-            gosub automove crossing
-
-            #gosub automove teller
-            #gosub withdraw 1 silver
-            #gosub automove chiz
-            #gosub runScript travel shard
-            #gosub automove teller
-            #gosub withdraw 1 silver
-            #gosub automove alchemy supplies
-            #put order 1
-            #pause
-            #put order 1
-            #gosub prep bless
-            #pause 5
-            #gosub cast my water
-            #gosub get my water from my $char.storage.holyWater
-            #put combine water
-            #gosub put my water in my $char.storage.holyWater
-            #gosub runScript dep
-        }
-        put #echo >Log #cc99ff Moving to cast PoM
-		gosub moveToHouse
-        gosub runScript cast pom
-        gosub stand
-        gosub runScript devotion
-        gosub stand
-    }
 
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
@@ -249,6 +191,68 @@ main:
 
     goto main
 
+
+clericRituals:
+    put #echo >Log #cc99ff Moving to house for rituals
+    gosub moveToHouse
+    gosub runScript countClericTools
+
+    if ($char.inventory.numIncense < 10) then {
+        put #echo >Log #cc99ff Buying incense
+        if ("$roomname" = "Private Home Interior") then gosub runScript house
+        gosub runScript travel crossing
+        gosub automove teller
+        gosub withdraw 1 silver
+        gosub automove brother
+        #gosub automove teller
+        #gosub withdraw 1 silver
+        #gosub runScript travel shard
+        #gosub automove cleric
+        put order incense
+        pause
+        #put offer 45
+        put offer 62
+        pause
+        gosub put my incense in my $char.storage.incense
+    }
+
+    if ($char.inventory.numHolyWater < 1) then {
+        put #echo >Log #cc99ff Buying holy water
+        if ("$roomname" = "Private Home Interior") then gosub runScript house
+        gosub runScript travel crossing
+        gosub automove temple
+        gosub automove holy water
+        gosub get my witch jar
+        put fill my witch jar with water from basin
+        gosub stow my witch jar
+        gosub automove crossing
+
+        #gosub automove teller
+        #gosub withdraw 1 silver
+        #gosub automove chiz
+        #gosub runScript travel shard
+        #gosub automove teller
+        #gosub withdraw 1 silver
+        #gosub automove alchemy supplies
+        #put order 1
+        #pause
+        #put order 1
+        #gosub prep bless
+        #pause 5
+        #gosub cast my water
+        #gosub get my water from my $char.storage.holyWater
+        #put combine water
+        #gosub put my water in my $char.storage.holyWater
+        #gosub runScript dep
+    }
+    put #echo >Log #cc99ff Moving to cast PoM
+	gosub moveToHouse
+    gosub runScript cast pom
+    gosub stand
+    gosub runScript devotion
+    gosub stand
+
+    return
 
 
 sorceryCont:

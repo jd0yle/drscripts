@@ -570,6 +570,9 @@ checkWeaponSkills:
         gosub stow right
         if ("%weapons.items(%weapons.index)" != "Empty" && "%weapons.skills(%weapons.index)" != "Targeted_Magic") then {
             gosub get my %weapons.items(%weapons.index)
+
+            if ("$righthand" = "Empty") then gosub remove my %weapons.items(%weapons.index)
+
             if ($char.fight.useBless = 1) then {
                 gosub prep bless
                 gosub charge my $char.cambrinth 5
