@@ -127,7 +127,7 @@ var skip $BURGLE.SKIP
 if !matchre("%method", "(?i)(RING|ROPE|LOCKPICK)") then
 {
 echo ERROR WITH VARIABLE FOR BNE METHOD
-put #echo >log red BURGLE: Error with variables
+put #echo >log #009933 [burgle] Error with variables
 goto end
 }
 
@@ -549,27 +549,27 @@ DONE_3:
 	matchwait 5
 
 BURGLETIMER:
-	put #echo >log red New Burgle Cooldown: $1 Rois
-	put #echo >log red Burgled %successful items
-	put #echo >log red Found following rooms: %rooms_captured
+	put #echo >log #009933 [burgle] New Burgle Cooldown: $1 Rois
+	put #echo >log #009933 [burgle] Burgled %successful items
+	put #echo >log #009933 [burgle] Found following rooms: %rooms_captured
 	     if ("%item3" != "NULL") then
           {
-               put #echo >log red Found: %item1, %item2, %item3
+               put #echo >log #009933 [burgle] Found: %item1, %item2, %item3
                goto END
           }
      if ("%item2" != "NULL") then
           {
-               put #echo >log red Found: %item1, %item2
+               put #echo >log #009933 [burgle] Found: %item1, %item2
                goto END
           }
      if ("%item1" != "NULL") then
           {
-               put #echo >log red Found: %item1
+               put #echo >log #009933 [burgle] Found: %item1
                goto END
           }
      if ("%item1" != "NULL") then
           {
-               put #echo >log red No successful searches
+               put #echo >log #009933 [burgle] No successful searches
                goto END
           }
 	goto END
@@ -814,7 +814,7 @@ TAKEOVER:
 	echo #####       JAILED - FINE: %fine
 	echo #####
 	echo ###################################
-	put #echo >log red Jailed when burgling!
+	put #echo >log #009933 [burgle] Jailed when burgling!
 	goto DONE
 
 CLANJUSTICE:
@@ -825,7 +825,7 @@ CLANJUSTICE:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Caught in clan justice!
+	put #echo >log #009933 [burgle] Caught in clan justice!
 	goto DONE
 
 RETURN:
@@ -840,7 +840,7 @@ NOBURGLE:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Not a valid place to burgle
+	put #echo >log #009933 [burgle] Not a valid place to burgle
 	goto END
 
 NORING:
@@ -850,7 +850,7 @@ NORING:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Missing lockpick ring?
+	put #echo >log #009933 [burgle] Missing lockpick ring?
 	goto END
 
 NOLOCKPICK:
@@ -860,7 +860,7 @@ NOLOCKPICK:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Missing lockpick?
+	put #echo >log #009933 [burgle] Missing lockpick?
 	goto END
 
 NOROPE:
@@ -870,7 +870,7 @@ NOROPE:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Missing climbing rope?
+	put #echo >log #009933 [burgle] Missing climbing rope?
 	goto END
 
 NOHIDE:
@@ -881,7 +881,7 @@ NOHIDE:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Error with hiding?
+	put #echo >log #009933 [burgle] Error with hiding?
 	goto END
 
 GUARDABORT:
@@ -892,7 +892,7 @@ GUARDABORT:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Did not burgle - guard alert!
+	put #echo >log #009933 [burgle] Did not burgle - guard alert!
 	goto END
 
 NOTYET:
@@ -903,7 +903,7 @@ NOTYET:
 	echo #####
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: $1 minute cooldown left
+	put #echo >log #009933 [burgle] $1 minute cooldown left
 #	waitfor A tingling on the back of your neck draws attention
 #	goto CHECKTIMER
 	goto END
@@ -914,7 +914,7 @@ ERROR:
 	echo #####       UNKNOWN ERROR WITH $0
 	echo #####
 	echo ###################################
-	put #echo >log red Burgle: Unknown error
+	put #echo >log #009933 [burgle] Unknown error
 	goto END
 
 END:

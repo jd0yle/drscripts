@@ -98,7 +98,7 @@ put #tvar char.fight.forceShield 0
 # all|treasure|gems whatever the loot options are
 put #tvar char.fight.lootType treasure
 
-# DEPRECATED Script-specifc options (ex: 'backtrain')
+# DEPRECATED Script-specific options (ex: 'backtrain')
 put #tvar char.fight.opts null
 
 
@@ -111,8 +111,8 @@ put #tvar char.fight.tmPause 7
 # ------ WEAPONS ------
 #put #tvar char.fight.weapons.items assassin's blade|blue sling
 #put #tvar char.fight.weapons.skills Small_Edged|Slings
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
 put #tvar char.fight.wornCrossbow 0
 
 # ------ ARMOR ------
@@ -149,7 +149,7 @@ put #tvar char.fight.useSls 0
 ###      FRIENDS
 ###############################
 var friends (Inauri|Qizhmur|Selesthiel)
-var enemies null
+var enemies (Nemi|Ponni|Sothios|Kethrai)
 var super.enemies null
 
 
@@ -209,8 +209,8 @@ put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena
-put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia
-put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia
+put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi
+put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia|Amlothi
 put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda
 put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena
 
@@ -227,7 +227,7 @@ put #tvar char.pawn.container purse
 ###      PERFORMANCE
 ###############################
 put #tvar char.performance.instrument rattle
-put #tvar char.performance.song reel
+put #tvar char.performance.song serenade
 put #tvar char.performance.mood quiet
 
 

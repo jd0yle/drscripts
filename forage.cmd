@@ -9,6 +9,14 @@ if_1 then {
     if ("%1" = "noLoop") then var noLoop true
 }
 
+if !matchre("$righthand|$lefthand", "Empty") then {
+    gosub stow
+    gosub stow left
+    if !matchre("$righthand|$lefthand", "Empty") then {
+        put #echo >Log [forage] Error:  Unable to empty hands, skipping foraging.
+        goto forageExit
+    }
+}
 ###############
 # Main
 ###############
