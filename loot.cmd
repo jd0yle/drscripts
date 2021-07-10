@@ -7,8 +7,8 @@ var scrolls scroll|ostracon|\broll|leaf|vellum|tablet|(?<!of )parchment|bark|pap
 var treasuremaps \bmap\b
 var gems1 agate|alexandrite|amber|amethyst|andalusite|aquamarine|bead|beryl|bloodgem|bloodstone|carnelian|chrysoberyl|carnelian|chalcedony
 var gems2 chrysoberyl|chrysoprase|citrine|coral|crystal|diamond\b|diopside|emerald|egg\b|eggcase|garnet|gem|goldstone|glossy malachite
-#var gems3 hematite|iolite|ivory|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
-var gems3 hematite|iolite|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
+var gems3 hematite|iolite|ivory(?!\s)|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
+#var gems3 hematite|iolite|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
 
 # Commented, testing to match quartz without matching quartz gargoyle or quartz hide
 #var gems4 opal|pearl|pebble|peridot|quartz.(?!gargoyle)|ruby|sapphire|spinel|star-stone|sunstone|talon|tanzanite|tooth|topaz|tourmaline|tsavorite|turquoise|zircon

@@ -1422,6 +1422,7 @@ lock:
     matchre return ^You don't
     matchre return ^You do not
     matchre return ^You lock
+    matchre return ^You need
     matchre return ^You quickly lock
     matchre return ^You rattle
     matchre return ^What were you referring to
@@ -1620,6 +1621,7 @@ perform:
     matchre return prevents a meaningful dissection.
     matchre return ^Rituals do not work upon constructs\.$
     matchre return ^Roundtime
+    matchre return ^That's not
     matchre return ^The blood on your palm bubbles slightly
     matchre return ^The harvesting ritual performed
     matchre return ^This corpse has already
@@ -1691,6 +1693,7 @@ play:
     play1:
     matchre return with only the slightest hint
     matchre return ^You begin
+    matchre return ^You cannot
     matchre return ^You effortlessly
     matchre return ^You fumble
     matchre return ^You play
@@ -2828,6 +2831,7 @@ almanac.onTimer:
 	if (!($lastAlmanacGametime > 0)) then put #var lastAlmanacGametime 1
 	evalmath nextStudyAt $lastAlmanacGametime + 600
 	if (%nextStudyAt < $gametime) then gosub runScript almanac noloop
+	unvar nextStudyAt
 	return
 
 
@@ -2856,6 +2860,7 @@ appraise.onTimer:
     evalmath nextAppGametime $lastAppGametime + 61
 
     if ($gametime > %nextAppGametime) then gosub runScript appraise %todo
+    unvar nextAppGametime
     return
 
 
@@ -2870,6 +2875,7 @@ hunt.onTimer:
         gosub hunt
         put #var lastHuntGametime $gametime
     }
+    unvar nextHuntGametime
     return
 
 
@@ -2881,7 +2887,7 @@ observe.onTimer:
 	if (!($lastObserveAt > -1)) then put #var lastObserveAt 0
 	evalmath nextObserveGametime ($lastObserveAt + 240)
 	if ($gametime > %nextObserveGametime || $isObsOnCd != true) then gosub runScript observe %todo
-	#if ($gametime > %nextObserveGametime) then gosub runScript observe %todo
+	unvar nextObserveGametime
 	return
 
 
@@ -2902,6 +2908,7 @@ perc.onTimer:
         }
 	    put #var lastPercGametime $gametime
 	}
+	unvar nextPercGametime
     return
 
 

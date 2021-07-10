@@ -1061,6 +1061,8 @@ releaseUnwantedSpells:
 ###      sortArmorRanks
 ###############################
 sortArmorRanks:
+    return
+
     var newArmor.skills null
     var newArmor.items null
     sortArmorNext:

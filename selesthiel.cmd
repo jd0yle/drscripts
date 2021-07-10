@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts sixty-six
+var expectedNumBolts forty-eight
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1

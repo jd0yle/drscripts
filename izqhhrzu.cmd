@@ -61,9 +61,17 @@ if_1 then {
     if ("%1" = "magic") then {
         goto startMagic
     }
+    if ("%1" = "perform") then {
+        var startPerform 1
+    }
 }
 
 gosub burgle.setNextBurgleAt
+
+if (%startPerform = 1) then {
+    gosub moveToHouse
+    gosub performance
+}
 
 main:
     if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
@@ -84,6 +92,15 @@ main:
 
         put .armor wear
         waitforre ^ARMOR DONE$
+
+	    if ($Performance.LearningRate < 34) then {
+	        if ("$righthandnoun" != "rattle") then {
+	            gosub stow right
+	            gosub stow left
+	            gosub get my rattle
+	            gosub play ruff
+	        }
+	    }
 
         #gosub automove n gate
         gosub automove crossing
@@ -109,14 +126,20 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
-		#if ($Theurgy.LearningRate < 10 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 4)) then {
+
         gosub clericRituals
-        #}
+
+        gosub moveToHouse
+
+        gosub performance
+
         pause 1
         put .izqhhrzu
         put .reconnect
         put .afk
     }
+
+    if ($Performance.LearningRate < 34) then gosub performance
 
 
 
@@ -183,6 +206,9 @@ main:
         }
         put .reconnect
         put .afk
+
+        gosub runScript caracal
+
         put .magic
         gosub waitForMagic
         goto main
@@ -199,6 +225,8 @@ clericRituals:
 
     if ($char.inventory.numIncense < 10) then {
         put #echo >Log #cc99ff Buying incense
+        gosub stow right
+        gosub stow left
         if ("$roomname" = "Private Home Interior") then gosub runScript house
         gosub runScript travel crossing
         gosub automove teller
@@ -218,6 +246,8 @@ clericRituals:
 
     if ($char.inventory.numHolyWater < 1) then {
         put #echo >Log #cc99ff Buying holy water
+        gosub stow right
+        gosub stow left
         if ("$roomname" = "Private Home Interior") then gosub runScript house
         gosub runScript travel crossing
         gosub automove temple
@@ -247,6 +277,8 @@ clericRituals:
     }
     put #echo >Log #cc99ff Moving to cast PoM
 	gosub moveToHouse
+    gosub stow right
+    gosub stow left
     gosub runScript cast pom
     gosub stand
     gosub runScript devotion
@@ -369,6 +401,45 @@ healWithRats:
         goto healWithRats
     }
     pause .01
+    return
+
+
+performance:
+    put #echo >Log #cc99ff Moving to house for performance
+    gosub moveToHouse
+    put #echo >Log Start perform ($Performance.LearningRate/34)
+
+	if ("$roomname" = "Private Home Interior") then {
+		if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then {
+			gosub whisper inauri teach forging
+		} else {
+		    gosub listen to inauri observe
+		}
+    }
+
+    gosub stow right
+    gosub stow left
+
+
+performance.cont:
+    if ($Performance.LearningRate < 34) then {
+        if ("$righthandnoun" != "rattle") then {
+            gosub stow right
+            gosub stow left
+            gosub get my rattle
+        }
+        if ($monstercount > 0) then gosub retreat
+        gosub play ruff
+        matchre performance.cont ^You finish playing
+        matchwait 300
+    }
+    goto performance.done
+
+
+performance.done:
+    put #echo >Log End perform ($Performance.LearningRate/34)
+    gosub stow right
+    gosub stow left
     return
 
 
@@ -639,7 +710,10 @@ moveToHouse:
     put #echo >Debug #cc99ff moveToHouse (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
-    if ("$roomname" = "Private Home Interior") then return
+    if ("$roomname" = "Private Home Interior") then {
+		if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then gosub whisper inauri teach forging
+        return
+    }
 
     # FC
     if ("%zone" = "150") then {
@@ -757,6 +831,7 @@ enterHouse:
     matchre enterHouseCont suddenly opens
     gosub peer bothy
     matchwait 20
+    gosub stow right
     gosub open bothy
     gosub move go bothy
     return
