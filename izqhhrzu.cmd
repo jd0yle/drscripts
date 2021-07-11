@@ -1,7 +1,6 @@
 include libmaster.cmd
 
-#put .var_izqhhrzu
-#waitforre ^CHARVARS DONE
+#debug 10
 
 var expectedNumBolts one hundred thirty-nine
 
@@ -405,6 +404,7 @@ healWithRats:
 
 
 performance:
+    if ($Performance.LearningRate > 5) then return
     put #echo >Log #cc99ff Moving to house for performance
     gosub moveToHouse
     put #echo >Log Start perform ($Performance.LearningRate/34)
@@ -429,7 +429,7 @@ performance.cont:
             gosub get my rattle
         }
         if ($monstercount > 0) then gosub retreat
-        gosub play ditty
+        gosub play lullaby
         matchre performance.cont ^You finish playing
         matchwait 300
     }
