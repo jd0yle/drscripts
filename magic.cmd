@@ -73,6 +73,28 @@ loop:
         gosub gaze my sanowret crystal
     }
 
+    if ($char.magic.train.revSorcery = 1) then {
+        if ($SpellTimer.Revelation.active != 1) then {
+            var shouldCastRev 1
+            if ($Sorcery.LearningRate > 33 && $Augmentation.LearningRate > 33 && $Utility.LearningRate > 33) then var shouldCastRev 0
+            if ($mana < 80) then var shouldCastRev 0
+
+            if (%shouldCastRev = 1) then {
+                gosub release cyclic
+                gosub runScript cast rev
+            }
+        } else {
+            var shouldReleaseRev 0
+            if ($mana < 60) then var shouldReleaseRev 1
+            if ($Sorcery.LearningRate > 33 && $Augmentation.LearningRate > 33 && $Utility.LearningRate > 33) then var shouldReleaseRev 1
+
+            evalmath nextCastRevGametime (300 + $char.cast.cyclic.lastCastGametime.rev)
+            if (%nextCastRevGametime < $gametime) then var shouldReleaseRev 1
+
+            if (%shouldReleaseRev = 1) then gosub release rev
+        }
+    }
+
     if ($char.magic.train.cyclic.Utility = 1) then {
         var shouldCastRoc 1
 

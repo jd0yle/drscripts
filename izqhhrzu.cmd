@@ -422,14 +422,14 @@ performance:
 
 
 performance.cont:
-    if ($Performance.LearningRate < 34) then {
+    if ($Performance.LearningRate < 30) then {
         if ("$righthandnoun" != "rattle") then {
             gosub stow right
             gosub stow left
             gosub get my rattle
         }
         if ($monstercount > 0) then gosub retreat
-        gosub play ruff
+        gosub play ditty
         matchre performance.cont ^You finish playing
         matchwait 300
     }

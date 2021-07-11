@@ -36,6 +36,9 @@ put #tvar char.cast.default.prep 30
 put #tvar char.cast.default.charge 70
 put #tvar char.cast.default.harness 0
 
+put #tvar char.cast.rev.prep 20
+put #tvar char.cast.rev.charge 0
+
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
 put #tvar char.cast.rtr.prep 800
@@ -189,19 +192,7 @@ put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
-#put #tvar char.magic.train.spell.Augmentation cv
-#put #tvar char.magic.train.prep.Augmentation 10
-#if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 60
-
-#put #tvar char.magic.train.spell.Utility sm
-#put #tvar char.magic.train.prep.Utility 20
-#if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility 40
-
-#put #tvar char.magic.train.spell.Warding maf
-#put #tvar char.magic.train.prep.Warding 10
-#if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 60
-
-
+put #tvar char.magic.train.revSorcery 1
 
 var tmp.charge.Augmentation 65
 put #tvar char.magic.train.spell.Augmentation cv

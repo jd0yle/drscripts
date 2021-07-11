@@ -74,7 +74,7 @@ var harness $char.cast.default.harness
 
 # If the character has specific values for this spell, use those values
 if ($char.cast.%spell.prep > 0) then var prepAt $char.cast.%spell.prep
-if ($char.cast.%spell.charge > 0) then var charge $char.cast.%spell.charge
+if ($char.cast.%spell.charge > -1) then var charge $char.cast.%spell.charge
 if ($char.cast.%spell.chargeTimes > 0) then var chargeTimes $char.cast.%spell.chargeTimes
 if ($char.cast.%spell.harness > 0) then var prepAt $char.cast.%spell.harness
 

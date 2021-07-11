@@ -137,9 +137,11 @@ main:
             gosub clean my flame
             gosub wear my flame
 
-            put .research sorcery
-            waitforre ^RESEARCH DONE$
-            gosub getHealed
+            if ($char.magic.train.revSorcery != 1) then {
+	            put .research sorcery
+	            waitforre ^RESEARCH DONE$
+	            gosub getHealed
+            }
         }
 
         put #echo >Log #00ffff Magic start - Warding: $Warding.LearningRate/34

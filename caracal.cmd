@@ -9,7 +9,7 @@
 include libmaster.cmd
 
 
-var loopsRemaining 10
+var loopsRemaining 20
 
 caracal.main:
 	if ($First_Aid.LearningRate > 33) then goto caracal.done
