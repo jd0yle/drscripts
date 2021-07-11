@@ -831,6 +831,8 @@ makeNewBundle:
 manageCyclics:
     if ("$guild" = "Cleric") then gosub manageCyclics.cleric
 
+    if ("$guild" = "Moon Mage") then gosub manageCyclics.moonMage
+
     # USOL
     if (%useUsol = 1) then {
         var shouldCastUsol 1
@@ -856,6 +858,10 @@ manageCyclics:
     } else {
         if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
     }
+
+    return
+
+    # 7/11/21 JD - Keeping legacy MM cyclic management here but unreachable until manageCyclics.moonMage is proven
 
     #STARLIGHT SPHERE
     if (%useSls = 1 && $Time.isDay = 0) then {
@@ -982,6 +988,38 @@ manageCyclics.cleric:
     }
 
     return
+
+
+manageCyclics.moonMage:
+	# SLS
+	if (%useSls = 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && %$Targeted_Magic.LearningRate < 27 && $Time.isDay = 0) then {
+	    gosub prep sls
+	    gosub waitForMana
+	    gosub cast spider in sky
+	} else {
+	    if ($SpellTimer.StarlightSphere.active = 1 && ($Targeted_Magic.LearningRate > 31 || $mana < 60)) then gosub release sls
+	}
+
+	# SHW (if SLS is not active)
+	if (%useShw = 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Debilitation.LearningRate < 27 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29) then {
+		gosub cast shw
+	} else {
+		if ($SpellTimer.ShadowWeb.active = 1 && ($Debilitation.LearningRate > 30 || $mana < 60)) then gosub release shw
+	}
+
+	# REV (if SLS and SHW are not active)
+	    # release REV if we last cast it more than 5 minutes ago
+	evalmath fight.tmp.nextCastRevGametime (300 + $char.cast.cyclic.lastCastGametime.rev)
+    if (%fight.tmp.nextCastRevGametime < $gametime && $SpellTimer.Revelation.active = 1) then gosub release rev
+    unvar fight.tmp.nextCastRevGametime
+
+	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 $$ ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
+		gosub cast rev
+	} else {
+		if ($SpellTimer.Revelation.active = 1 && $mana < 60) then gosub release rev
+	}
+
+	return
 
 
 ###############################

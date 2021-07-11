@@ -132,6 +132,7 @@ put #tvar char.fight.useStealth 1
 put #tvar char.fight.useCol 1
 put #tvar char.fight.useMaf 1
 put #tvar char.fight.useObserve 1
+put #tvar char.fight.useRevSorcery 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 1
