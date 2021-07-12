@@ -932,6 +932,22 @@ manageCyclics.cleric:
     if ($char.fight.useGhs = 1) then var clericCyclicToUse ghs
     if ($char.fight.useRev = 1 && $Warding.LearningRate > 15 && $Utility.LearningRate < 30) then var clericCyclicToUse rev
 
+    if ($char.fight.useRev = 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || $Augmentation.LearningRate < 10)) then {
+        gosub runScript cast rev
+    } else {
+        evalmath timeSinceLastRev ($gametime - $lastCastRev)
+        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 60 || ($Utility.LearningRate > 20 && $Augmentation.LearningRate > 20) )) then gosub release rev
+    }
+
+    if ($char.fight.useGhs = 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80) then {
+        gosub runScript cast ghs
+    } else {
+        evalmath timeSinceLastGhs ($gametime - $lastCastGhs)
+        if ($SpellTimer.GhostShroud.active = 1 && %timeSinceLastGhs > 300) then gosub release ghs
+    }
+
+    return
+
     # GHOST SHROUD
     if ($char.fight.useGhs = 1 && "%clericCyclicToUse" = "ghs") then {
         var shouldCastGhs 1
@@ -941,7 +957,7 @@ manageCyclics.cleric:
 
         if (%shouldCastGhs = 1) then {
             gosub release cyclic
-            gosub prep ghs
+            gosub prep ghs 6
             gosub waitForPrep
             gosub cast
         }
@@ -992,9 +1008,9 @@ manageCyclics.cleric:
 
 manageCyclics.moonMage:
 	# SLS
-	if (%useSls = 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && %$Targeted_Magic.LearningRate < 27 && $Time.isDay = 0) then {
-	    gosub prep sls
-	    gosub waitForMana
+	if (%useSls = 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Targeted_Magic.LearningRate < 27 && $Time.isDay = 0) then {
+	    gosub prep sls $char.cast.sls.prep
+	    gosub waitForPrep
 	    gosub cast spider in sky
 	} else {
 	    if ($SpellTimer.StarlightSphere.active = 1 && ($Targeted_Magic.LearningRate > 31 || $mana < 60)) then gosub release sls
@@ -1002,19 +1018,20 @@ manageCyclics.moonMage:
 
 	# SHW (if SLS is not active)
 	if (%useShw = 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Debilitation.LearningRate < 27 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29) then {
-		gosub cast shw
+		gosub runScript cast shw
 	} else {
 		if ($SpellTimer.ShadowWeb.active = 1 && ($Debilitation.LearningRate > 30 || $mana < 60)) then gosub release shw
 	}
 
 	# REV (if SLS and SHW are not active)
 	    # release REV if we last cast it more than 5 minutes ago
+	if (!($char.cast.cyclic.lastCastGametime.rev > -1) then put #tvar char.cast.cyclic.lastCastGametime.rev 1
 	evalmath fight.tmp.nextCastRevGametime (300 + $char.cast.cyclic.lastCastGametime.rev)
     if (%fight.tmp.nextCastRevGametime < $gametime && $SpellTimer.Revelation.active = 1) then gosub release rev
     unvar fight.tmp.nextCastRevGametime
 
-	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 $$ ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
-		gosub cast rev
+	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
+		gosub runScript cast rev
 	} else {
 		if ($SpellTimer.Revelation.active = 1 && $mana < 60) then gosub release rev
 	}

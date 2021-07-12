@@ -42,20 +42,20 @@ put #tvar char.wornFocus 0
 put #tvar char.cast.invokeSpell 0
 
 put #tvar char.cast.default.prep 1
-put #tvar char.cast.default.charge 20
+put #tvar char.cast.default.charge 30
 put #tvar char.cast.default.harness 0
 
 put #tvar char.cast.benediction.prep 15
 put #tvar char.cast.benediction.charge 5
 put #tvar char.cast.benediction.harness 0
 
-put #tvar char.cast.ghs.prep 1
+put #tvar char.cast.ghs.prep 6
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
 put #tvar char.cast.pom.prep 160
 
-put #tvar char.cast.rev.prep 5
+put #tvar char.cast.rev.prep 6
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -165,7 +165,7 @@ put #tvar char.fight.useGhs 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
 put #tvar char.fight.usePfe 0
-put #tvar char.fight.useRev 0
+put #tvar char.fight.useRev 1
 put #tvar char.fight.useSap 0
 put #tvar char.fight.useSol 0
 

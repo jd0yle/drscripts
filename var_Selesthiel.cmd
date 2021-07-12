@@ -39,6 +39,12 @@ put #tvar char.cast.default.harness 0
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
 
+put #tvar char.cast.shw.prep 25
+put #tvar char.cast.shw.charge 0
+
+put #tvar char.cast.sls.prep 30
+put #tvar char.cast.sls.charge 0
+
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
 put #tvar char.cast.rtr.prep 800

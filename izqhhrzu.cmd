@@ -422,6 +422,10 @@ performance:
 
 
 performance.cont:
+    if ($SpellTimer.Revelation.active != 1) then {
+        gosub release cyclic
+        gosub runScript cast rev
+    }
     if ($Performance.LearningRate < 30) then {
         if ("$righthandnoun" != "rattle") then {
             gosub stow right
