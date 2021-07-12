@@ -148,14 +148,15 @@ put #tvar char.fight.useSls 0
 ###############################
 ###      FRIENDS
 ###############################
-var friends (Inauri|Qizhmur|Selesthiel)
-var enemies (Nemi|Ponni|Sothios|Kethrai)
-var super.enemies null
+put #tvar friends (Inauri|Qizhmur|Selesthiel|Izqhhrzu)
+put #tvar enemies (Nemy|Ponni|Sothios|Kethrai)
+put #tvar super.enemies null
 
 
 ###############################
 ###      LOCKSMITHING
 ###############################
+put #tvar char.locks.boxTypes jewelry box|keepsake box
 put #tvar char.locks.boxType jewelry box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer shadows
@@ -185,17 +186,17 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 3
+put #tvar char.magic.train.charge.Augmentation 7
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 3
+put #tvar char.magic.train.charge.Utility 7
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding psy
 put #tvar char.magic.train.prep.Warding 5
-put #tvar char.magic.train.charge.Warding 3
+put #tvar char.magic.train.charge.Warding 7
 put #tvar char.magic.train.harness.Warding 0
 
 
@@ -208,12 +209,14 @@ put #tvar char.predict.tool.container shadows
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena
+put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh
 put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi
-put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia|Amlothi
+put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia|Amlothi|Dawgolesh
 put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda
 put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena
-
+#off/surv 90 Er'qutra
+#lore/off/def 100 forge
+#magic/lore/off/def/surv 125 eye
 put #tvar char.observe.predict 1
 
 

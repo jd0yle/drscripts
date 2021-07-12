@@ -3,9 +3,9 @@ include libmaster.cmd
 ###    IDLE ACTION TRIGGERS
 ###############################
 if ("$charactername" = "Inauri") then {
-    action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto look.healWound when ^(Khurnaarti|Selesthiel|Izqhhrzu) whispers, "heal
+    action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto look.healWound when ^($friends) whispers, "heal
     #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
-    action var look.openDoor 1 when ^(Qizhmur|Selesthiel|Khurnaarti|Izqhhrzu)'s face appears in the
+    action var look.openDoor 1 when ^($friends)'s face appears in the
     action var look.openDoor 0 when ^(\S+) opens the door\.
     action var look.disease 1 when ^(Her|His) wounds are infected\.$
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
@@ -30,7 +30,9 @@ var look.target 0
 var look.teach 0
 var look.topic 0
 
-
+if !matchre("$scriptlist", "reconnect") then {
+    put .reconnect
+}
 ###############################
 ###    MAIN
 ###############################
@@ -43,8 +45,8 @@ look.loop:
         if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
         if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
         pause 1
+        if ($inauri.subScript > 0) then gosub look.resumeScript
     }
-    if ($inauri.subScript > 0) then gosub look.resumeScript
     if (%look.openDoor = 1) then gosub look.door
     pause 2
     gosub look.look
@@ -55,7 +57,7 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-    if matchre("$scriptlist", "engineer|magic") then {
+    if matchre("$scriptlist", "engineer|magic|engbolt") then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
@@ -85,7 +87,7 @@ look.healWound:
         put #var inauri.heal 0
         goto look.loop
     }
-    if matchre("$scriptlist", "engineer|magic") then {
+    if matchre("$scriptlist", "engineer|magic|engbolt|research") then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
@@ -129,6 +131,13 @@ look.resumeScript:
             put .engineer 1 $righthandnoun
         } else {
             put .engineer 2 $char.craft.item
+        }
+    }
+    if ("$inauri.subScript" = "engbolt" && "$righthand" <> "Empty") then {
+        if ("$lefthand" = "Empty") then gosub stow left
+            put .engbolt 1
+        } else {
+            put .engbolt 2
         }
     }
     if ("$inauri.subScript|$khurnaarti.subScript" = "magic") then {

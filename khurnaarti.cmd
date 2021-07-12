@@ -56,6 +56,8 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.healthCheck
     pause 1
+    gosub khurnaarti.scriptCheck
+    pause 1
     if ($khurnaarti.subScript > 0) then goto khurnaarti.resumeScript
     pause 1
     if (%khurnaarti.openDoor = 1) then gosub khurnaarti.door
@@ -424,6 +426,17 @@ khurnaarti.restart:
     exit
 
 
+khurnaarti.scriptCheck:
+    if !matchre("$scriptlist", "reconnect") then {
+        put .reconnect
+    }
+
+    if !matchre("$scriptlist", "afk") then {
+        put .afk
+    }
+    return
+
+
 ###############################
 ###    MOVE TO
 ###############################
@@ -613,6 +626,12 @@ moveToHunt:
 
 
 moveToPawn:
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid= 433) then return
+        gosub automove pawn
+        goto moveToPawn
+    }
     # Shard - East Gate
     if ($zoneid = 66) then {
         gosub automove portal
@@ -625,4 +644,4 @@ moveToPawn:
         gosub automove pawn
         goto moveToPawn
     }
-    goto moveToPaw
+    goto moveToPawn
