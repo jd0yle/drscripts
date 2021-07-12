@@ -36,7 +36,7 @@ action (invFeet) var toLoot %toLoot|$1 when (%lootables)
 action (invFeet) off
 
 var newGemPouch 0
-action var newGemPouch 1 when ^You think the gem pouch is too full to fit another gem into.
+action var newGemPouch 1 when ^You think the (.*) pouch is too full to fit another gem into.
 action var newGemPouch 1 when ^The gem pouch is too full to fit any more gems!
 action var newGemPouch 1 when ^WARNING: You are carrying an extremely large number of items on your person\.$
 
