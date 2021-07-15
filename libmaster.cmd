@@ -1241,6 +1241,7 @@ invoke:
     matchre return ^You are in no condition
     matchre return ^You don't have any
     matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane\.
+    matchre return ^You hold
     matchre return ^You must begin preparing a ritual spell before you can focus it
     matchre return You reach for its center and forge a magical link
     matchre return ^You're not sure what would happen
@@ -1932,6 +1933,7 @@ release:
     matchre return ^Release what
     matchre return sphere suddenly flares with a cold light and vaporizes\!$
     matchre return ^That would be a neat trick.  Try finding a shadowling first\.$
+    matchre return ^The deadening murk around you subsides\.$
     matchre return ^The greenish hues
     matchre return ^The heightened sense of spiritual awareness leaves you\.$
     matchre return ^The Refractive Field pattern fades from you\.

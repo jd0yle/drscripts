@@ -132,13 +132,13 @@ put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
-put #tvar char.fight.useStealth 1
+put #tvar char.fight.useStealth 0
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 1
 put #tvar char.fight.useMaf 1
 put #tvar char.fight.useObserve 1
-put #tvar char.fight.useRevSorcery 1
+put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 1
@@ -199,7 +199,7 @@ put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
-put #tvar char.magic.train.revSorcery 1
+put #tvar char.magic.train.revSorcery 0
 
 var tmp.charge.Augmentation 65
 put #tvar char.magic.train.spell.Augmentation cv
@@ -241,7 +241,7 @@ unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 36
+var tmp.charge.Warding 34
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding

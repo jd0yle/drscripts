@@ -147,7 +147,7 @@ main:
         #gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToGargoyles
+        gosub moveToLeucros
         put .fight
         gosub waitForMainCombat
         goto main
@@ -433,7 +433,7 @@ performance.cont:
             gosub get my rattle
         }
         if ($monstercount > 0) then gosub retreat
-        gosub play lullaby
+        gosub play waltz
         matchre performance.cont ^You finish playing
         matchwait 300
     }
@@ -620,6 +620,76 @@ moveToGerbils:
     }
 
     goto moveToGerbils
+    
+    
+moveToLeucros:
+    gosub setZone
+
+    # Leucros
+    if ("%zone" = "11") then {
+        if ($roomid >= 12 && $roomid <= 22 && "$roomplayers" = "") then return
+        gosub runScript findSpot leucro
+        goto moveToLeucros
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        put #tvar powerwalk 0
+        gosub automove crossing
+        goto moveToLeucros
+    }
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToLeucros
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto moveToLeucros
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove leucro
+        goto moveToLeucros
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
+        goto moveToLeucros
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove ntr
+        goto moveToLeucros
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove n gate
+        goto moveToLeucros
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($Attunement.LearningRate < 20) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go exit portal
+        goto moveToLeucros
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToLeucros
+    }
+
+    goto moveToLeucros    
     
 
 

@@ -55,6 +55,9 @@ put #tvar char.cast.ghs.harness 0
 
 put #tvar char.cast.pom.prep 160
 
+put #tvar char.cast.rejuv.prep 5
+put #tvar char.cast.rejuv.charge 20
+
 put #tvar char.cast.rev.prep 6
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
@@ -93,7 +96,7 @@ put #tvar char.fight.wornCrossbow 0
 
 #***** ARRANGE *****
 put #tvar char.fight.arrangeForPart 0
-put #tvar char.fight.arrangeFull 1
+put #tvar char.fight.arrangeFull 0
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
@@ -245,7 +248,7 @@ put #tvar char.magic.train.usePray 1
 put #tvar char.magic.train.prayTarget Huldah
 
 put #tvar char.magic.train.spell.Augmentation centering
-put #tvar char.magic.train.prep.Augmentation 1
+put #tvar char.magic.train.prep.Augmentation 20
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation 3
 
 put #tvar char.magic.train.spell.Utility bless
@@ -257,9 +260,9 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 #if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding 3
 
 
-var var.magic.Augmentation 16
+var var.magic.Augmentation 20
 put #tvar char.magic.train.spell.Augmentation centering
-put #tvar char.magic.train.prep.Augmentation 1
+put #tvar char.magic.train.prep.Augmentation 20
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %var.magic.Augmentation
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -277,9 +280,9 @@ unvar var.magic.Augmentation
 
 
 
-var var.magic.Utility 16
+var var.magic.Utility 10
 put #tvar char.magic.train.spell.Utility bless
-put #tvar char.magic.train.prep.Utility 1
+put #tvar char.magic.train.prep.Utility 30
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %var.magic.Utility
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -298,9 +301,9 @@ unvar var.magic.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var var.magic.Warding 16
-put #tvar char.magic.train.spell.Warding maf
-put #tvar char.magic.train.prep.Warding 1
+var var.magic.Warding 30
+put #tvar char.magic.train.spell.Warding mpp
+put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %var.magic.Warding
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value

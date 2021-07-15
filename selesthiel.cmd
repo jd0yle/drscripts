@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty-eight
+var expectedNumBolts fifty-five
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -138,8 +138,7 @@ main:
             gosub wear my flame
 
             if ($char.magic.train.revSorcery != 1) then {
-	            put .research sorcery
-	            waitforre ^RESEARCH DONE$
+	            gosub runScript research sorcery
 	            gosub getHealed
             }
         }
@@ -151,14 +150,16 @@ main:
         goto main
     }
 
-    # Main Combat
+	# Main Combat
     startFight:
+    #if ($Evasion.LearningRate < 30 || $Shield_Usage.LearningRate < 30 || $Parry_Ability.LearningRate < 30 || Targeted_Magic.LearningRate < 30 || $Light_Thrown.LearningRate < 30 || $Brawling.LearningRate < 30 || $Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30) then {
 	    put #echo >Log #cc99ff Moving to combat
 	    gosub moveToWyverns
 	    put #tvar char.fight.backtrain 0
 	    put .fight
 	    gosub waitForMainCombat
 	    goto main
+   # }
 
 
     # Backtrain

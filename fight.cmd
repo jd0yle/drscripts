@@ -932,11 +932,12 @@ manageCyclics.cleric:
     if ($char.fight.useGhs = 1) then var clericCyclicToUse ghs
     if ($char.fight.useRev = 1 && $Warding.LearningRate > 15 && $Utility.LearningRate < 30) then var clericCyclicToUse rev
 
-    if ($char.fight.useRev = 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || $Augmentation.LearningRate < 10)) then {
+    if ($char.fight.useRev = 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
+        if ($SpellTimer.GhostShroud.active = 1) then gosub release cyclic
         gosub runScript cast rev
     } else {
         evalmath timeSinceLastRev ($gametime - $lastCastRev)
-        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 60 || ($Utility.LearningRate > 20 && $Augmentation.LearningRate > 20) )) then gosub release rev
+        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 60 || ($Utility.LearningRate > 20 && $Warding.LearningRate < 30) )) then gosub release rev
     }
 
     if ($char.fight.useGhs = 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80) then {
@@ -981,7 +982,7 @@ manageCyclics.cleric:
         if ($SpellTimer.Revelation.active = 1) then var shouldCastRev 0
         if ($mana < 80) then var shouldCastRev 0
         if ($monstercount < 1) then var shouldCastRev 0
-        if ($Augmentation.LearningRate > 29 && $Utility.LearningRate > 29) then var shouldCastRev 0
+        if ($Utility.LearningRate > 29) then var shouldCastRev 0
 
         if (%shouldCastRev = 1) then {
             gosub release cyclic
