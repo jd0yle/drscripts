@@ -91,6 +91,7 @@ main:
     if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
+        put exp 0 all
         put #echo >Log #cc99ff Train: Going to burgle
 
         gosub moveToBurgle

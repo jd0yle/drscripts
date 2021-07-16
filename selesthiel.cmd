@@ -57,6 +57,7 @@ main:
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
+		put exp 0 all
 
         gosub moveToBurgle
 

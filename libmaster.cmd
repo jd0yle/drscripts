@@ -352,9 +352,13 @@ analyze:
     matchre return ^Analyze what
     matchre return ^Roundtime
     matchre return ^You fail to find any holes
-    matchre return ^You must be closer
+    matchre analyze.advance ^You must be closer
     put analyze %todo
     goto retry
+
+analyze.advance:
+    gosub advance
+    return
 
 
 app:
@@ -456,9 +460,10 @@ attack:
     attack1:
     if $stamina < 85 then pause 4
     if $standing = 0 then put stand
-    matchre advance2 ^It would help if you were closer
-    matchre advance2 ^You are already advancing
-    matchre advance2 ^You aren't close enough to attack\.
+    matchre attack.advance ^You must be closer
+    matchre attack.advance ^It would help if you were closer
+    matchre attack.advance ^You are already advancing
+    matchre attack.advance ^You aren't close enough to attack\.
     matchre attack2 ^You should stand up first\.
     matchre return ^At what are you trying
     matchre return ^But you don't have a ranged weapon in your hand to fire with\!
@@ -487,6 +492,11 @@ attack2:
     gosub stand
     var location attack1
     goto Attack1
+
+
+attack.advance:
+	gosub advance
+	return
 
 
 awake:
@@ -2965,9 +2975,24 @@ refreshRegen:
 
 automove:
     var toroom $0
+    var location automove1
     var moveAttemptsRemaining 5
+	automove1:
 
     if ("$roomname" = "Private Home Interior") then return
+
+    if ("$roomid" = "0") then {
+        gosub moveRandom
+        goto automove1
+    }
+
+    if (!($north && $northeast && east && $southeast && $south && $southwest && $west && $northwest && $out)) then {
+        var cardinalDirections north|northeast|east|southeast|south|southwest|west|northwest
+        #random 1 8
+        #put %cardinalDirections(%r)
+        #pause .5
+        #goto automove1
+    }
 
     automovecont:
     match return YOU HAVE ARRIVED
@@ -2985,7 +3010,11 @@ automove:
         return
     } else {
         echo [libmaster automove]: Automove failed, Destination = %toroom, retrying (%moveAttemptsRemaining)
-        gosub moveRandom
+        #gosub moveRandom
+        var cardinalDirections north|northeast|east|southeast|south|southwest|west|northwest
+        random 1 8
+        put %cardinalDirections(%r)
+        pause
     }
     pause
     put look
@@ -3094,6 +3123,7 @@ stow.then.move:
 moveRandom:
     pause .2
     var People.Room empty
+    var direction north
     random 1 8
     if %r = 1 and $north = 0 then goto moverandom
     if %r = 2 and $northeast = 0 then goto moverandom

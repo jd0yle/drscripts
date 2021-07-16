@@ -106,7 +106,7 @@ var stances.targetLearningRate 5
 eval stances.length count("%stances.list", "|")
 var stances.index 0
 
-action send adv when ^You must be closer to use tactical abilities on your opponent.
+#action send adv when ^You must be closer to use tactical abilities on your opponent.
 action var doAnalyze 1 when ^Utilizing \S+ tactics
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 action var doAnalyze 1 when ^You can no longer see openings
