@@ -2392,6 +2392,7 @@ stow:
     matchre return ^I can't find your container
     matchre return ^Stow what\?
     matchre return ^There doesn't seem to be anything left in the pile\.$
+    matchre return ^You can't pick that up with your hands that damaged\.$
     matchre return ^You carefully
     matchre return ^You hang your
     matchre return ^You need a free hand to pick that up.
