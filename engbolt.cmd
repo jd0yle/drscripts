@@ -16,7 +16,7 @@ var engbolt.boltheadMaterial fang
 var engbolt.boltheadMaterialBag backpack
 var engbolt.numberCrafted 0
 var engbolt.numberNeeded %1
-var engbolt.page 10
+var engbolt.page 9
 var engbolt.pageContent 0
 var engbolt.craftbag $char.craft.container
 var engbolt.defaultbag $char.craft.default.container
