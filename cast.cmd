@@ -145,12 +145,13 @@ goto done
 ###############################
 ritualSpell:
     if ("$righthand" <> "Empty" && "$lefthand" <> "Empty") then {
-        gosub stow
+        gosub stow right
         gosub stow left
     }
     if ($char.wornFocus = 1) then {
         gosub remove my $char.ritualFocus
-    } else {
+    }
+    if ("$righthand" = "Empty") then {
         gosub get my $char.ritualFocus
     }
     gosub prep %spell $char.cast.%spell.prep

@@ -3,7 +3,7 @@ include libmaster.cmd
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts thirty
+var expectedNumBolts twenty-eight
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -91,6 +91,7 @@ main:
     if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
+        put exp 0 all
         put #echo >Log #cc99ff Train: Going to burgle
 
         gosub moveToBurgle

@@ -84,7 +84,7 @@ if ("%mob" = "juvenilewyvern") then {
 }
 
 if ("%mob" = "leucro") then {
-    var minRoomId 16
+    var minRoomId 12
     var maxRoomId 22
 }
 

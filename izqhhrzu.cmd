@@ -77,6 +77,7 @@ main:
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
+		put exp 0 all
 
         gosub moveToBurgle
         gosub release spell
@@ -91,15 +92,6 @@ main:
 
         put .armor wear
         waitforre ^ARMOR DONE$
-
-	    if ($Performance.LearningRate < 34) then {
-	        if ("$righthandnoun" != "rattle") then {
-	            gosub stow right
-	            gosub stow left
-	            gosub get my rattle
-	            gosub play ruff
-	        }
-	    }
 
         #gosub automove n gate
         gosub automove crossing
@@ -125,6 +117,7 @@ main:
         put .dep
         waitforre ^DEP DONE$
 
+		gosub getHealed
 
         gosub clericRituals
 
@@ -132,22 +125,24 @@ main:
 
         gosub performance
 
+        gosub getHealed
+
         pause 1
         put .izqhhrzu
         put .reconnect
         put .afk
     }
 
-    if ($Performance.LearningRate < 34) then gosub performance
+    if ($Performance.LearningRate < 10) then gosub performance
 
 
 
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
-        #gosub getHealed
+        gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToGargoyles
+        gosub moveToLeucros
         put .fight
         gosub waitForMainCombat
         goto main
@@ -404,7 +399,7 @@ healWithRats:
 
 
 performance:
-    if ($Performance.LearningRate > 5) then return
+    if ($Performance.LearningRate > 0) then return
     put #echo >Log #cc99ff Moving to house for performance
     gosub moveToHouse
     put #echo >Log Start perform ($Performance.LearningRate/34)
@@ -426,14 +421,14 @@ performance.cont:
         gosub release cyclic
         gosub runScript cast rev
     }
-    if ($Performance.LearningRate < 30) then {
+    if ($Performance.LearningRate < 10) then {
         if ("$righthandnoun" != "rattle") then {
             gosub stow right
             gosub stow left
             gosub get my rattle
         }
         if ($monstercount > 0) then gosub retreat
-        gosub play lullaby
+        gosub play waltz
         matchre performance.cont ^You finish playing
         matchwait 300
     }
@@ -621,6 +616,76 @@ moveToGerbils:
 
     goto moveToGerbils
     
+    
+moveToLeucros:
+    gosub setZone
+
+    # Leucros
+    if ("%zone" = "11") then {
+        if ($roomid >= 12 && $roomid <= 22 && "$roomplayers" = "") then return
+        gosub runScript findSpot leucro
+        goto moveToLeucros
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        put #tvar powerwalk 0
+        gosub automove crossing
+        goto moveToLeucros
+    }
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToLeucros
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto moveToLeucros
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove leucro
+        goto moveToLeucros
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
+        goto moveToLeucros
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove ntr
+        goto moveToLeucros
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove n gate
+        goto moveToLeucros
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($Attunement.LearningRate < 20) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go exit portal
+        goto moveToLeucros
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToLeucros
+    }
+
+    goto moveToLeucros    
+    
 
 
 moveToBurgle:
@@ -641,6 +706,11 @@ moveToBurgle:
         goto moveToBurgle
     }
 
+    if ("$roomid" = "0") then {
+        gosub moveRandom
+        goto moveToBurgle
+    }
+
     # Crossing Temple
     if ("%zone" = "2a") then {
         gosub automove crossing
@@ -650,6 +720,12 @@ moveToBurgle:
     # NTR
     if ("%zone" = "7") then {
         gosub automove n gate
+        goto moveToBurgle
+    }
+
+    # LEUCROS
+    if ("%zone" = "11") then {
+        gosub automove ntr
         goto moveToBurgle
     }
 
@@ -738,6 +814,12 @@ moveToHouse:
     } else {
         #gosub runScript travel crossing portal
         #goto moveToHouse
+    }
+
+    # LEUCROS
+    if ("%zone" = "11") then {
+        gosub automove ntr
+        goto moveToHouse
     }
 
     # Storm Bulls
@@ -860,6 +942,12 @@ moveToMagic:
         put #tvar powerwalk 0
         if ("$roomid" = "50") then return
         gosub automove 50
+        goto moveToMagic
+    }
+
+    # LEUCROS
+    if ("%zone" = "11") then {
+        gosub automove ntr
         goto moveToMagic
     }
 
