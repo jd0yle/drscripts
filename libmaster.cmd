@@ -2774,6 +2774,13 @@ wave:
     goto retry
 
 
+wealth:
+    var location wealth
+    matchre return Wealth\:
+    put wealth
+    goto retry
+
+
 wear:
     var location wear1
     var todo $0

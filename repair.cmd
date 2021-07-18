@@ -179,7 +179,7 @@ repair.fetchItems:
 ###      UTILITY
 ###############################
 repair.checkMoney:
-    put wealth
+    gosub wealth
     evalmath repair.currencyTotal $char.repair.money * 10000
     if ($zoneid = 1) then {
         evalmath repair.currencyKronars $Kronars + 0
