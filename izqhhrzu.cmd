@@ -399,6 +399,8 @@ healWithRats:
 
 
 performance:
+	return
+
     if ($Performance.LearningRate > 0) then return
     put #echo >Log #cc99ff Moving to house for performance
     gosub moveToHouse
@@ -428,7 +430,7 @@ performance.cont:
             gosub get my rattle
         }
         if ($monstercount > 0) then gosub retreat
-        gosub play waltz
+        gosub play lullaby
         matchre performance.cont ^You finish playing
         matchwait 300
     }

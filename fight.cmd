@@ -313,11 +313,7 @@ attackCrossbow:
         gosub retreat
         pause 2
     } else {
-        if ("$charactername" = "Izqhhrzu") then {
-            pause 8
-        } else {
-           pause 4
-       }
+        pause 4
     }
     gosub cast
     gosub checkHide

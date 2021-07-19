@@ -32,44 +32,17 @@ put #tvar char.wornFocus 0
 ###############################
 put #tvar char.cast.invokeSpell 1
 
-put #tvar char.cast.default.prep 40
+put #tvar char.cast.default.prep 20
 put #tvar char.cast.default.charge 40
 put #tvar char.cast.default.harness 0
-
-put #tvar char.cast.ch.prep 20
-put #tvar char.cast.ch.charge 40
+put #tvar char.cast.default.chargeTimes 2
 
 put #tvar char.cast.devour.prep 30
-put #tvar char.cast.devour.charge 30
+put #tvar char.cast.devour.charge 40
 
 put #tvar char.cast.eotb.prep 20
 put #tvar char.cast.eotb.charge 40
 put #tvar char.cast.eotb.chargeTimes 1
-
-put #tvar char.cast.gaf.prep 40
-put #tvar char.cast.gaf.charge 50
-put #tvar char.cast.gaf.chargeTimes 1
-
-put #tvar char.cast.maf.prep 40
-put #tvar char.cast.maf.charge 50
-put #tvar char.cast.maf.chargeTimes 1
-
-put #tvar char.cast.nr.prep 25
-put #tvar char.cast.nr.charge 50
-put #tvar char.cast.nr.chargeTimes 1
-
-put #tvar char.cast.obf.prep 40
-put #tvar char.cast.obf.charge 50
-put #tvar char.cast.obf.chargeTimes 1
-put #tvar char.cast.obf.harness 0
-
-put #tvar char.cast.php.prep 40
-put #tvar char.cast.php.charge 50
-put #tvar char.cast.php.chargeTimes 1
-
-put #tvar char.cast.qe.prep 35
-put #tvar char.cast.qe.charge 60
-put #tvar char.cast.qe.chargeTimes 1
 
 
 ###############################

@@ -53,10 +53,10 @@ put #tvar char.cast.ghs.prep 7
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
-put #tvar char.cast.pom.prep 160
+put #tvar char.cast.pom.prep 250
 
 put #tvar char.cast.rejuv.prep 5
-put #tvar char.cast.rejuv.charge 20
+put #tvar char.cast.rejuv.charge 25
 
 put #tvar char.cast.rev.prep 8
 put #tvar char.cast.rev.charge 0

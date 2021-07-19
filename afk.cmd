@@ -17,6 +17,7 @@ var logoutReason 0
 ###############################
 afk.loop:
     pause 2
+    pause 2
     goto afk.loop
 
 

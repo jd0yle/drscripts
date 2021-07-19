@@ -3308,7 +3308,8 @@ waitForMana:
 
     waitForMana1:
     pause .5
-    if ($mana > %waitManaForAmount || "$preparedspell" = "None") then return
+    #if ($mana > %waitManaForAmount || "$preparedspell" = "None") then return
+    if ($mana > %waitManaForAmount) then return
     goto waitForMana1
 
 
