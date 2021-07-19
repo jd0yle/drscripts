@@ -6,6 +6,7 @@ if ("$charactername" = "Inauri") then {
     action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto look.healWound when ^($friends) whispers, "heal
     #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^($friends)'s face appears in the
+    action goto look.houseMove when ^($friends) whispers, "inside|^($friends) whispers, "outside
     action var look.openDoor 0 when ^(\S+) opens the door\.
     action var look.disease 1 when ^(Her|His) wounds are infected\.$
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
@@ -114,6 +115,12 @@ look.healPoison:
         var look.poisonSelf 0
     }
     return
+
+
+look.houseMove:
+    put .house
+    waitforre ^HOUSE DONE
+    goto look.loop
 
 
 look.look:

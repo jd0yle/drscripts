@@ -7,6 +7,8 @@ action var repair.waitTimeMin 2 ; var repair.waitTimeSec 60 when ^.* be ready an
 action var repair.wornArmor 1 when ^You aren't wearing anything like that\.$
 action var repair.wornItem 1 when ^But that is already in your inventory\.$
 action goto repair.checkForTicket when ^.*\b(not ready)\b.*$
+action goto repair.forceNight when ^Bonk\! You smash your nose\.$
+
 
 ###############################
 ###      VARIABLES
@@ -36,6 +38,7 @@ if ($char.repair.waitRoomId > 0) then var repair.waitRoomId $char.repair.waitRoo
 ###############################
 var repair.forceFangCove $char.repair.forceFangCove
 var repair.forceRepairman false
+var repair.forceNight false
 
 if ("$guild" = "Necromancer") then {
     var repair.forceFangCove true
@@ -84,9 +87,13 @@ repair.checkForTicket:
 
 repair.main:
     if (%repair.forceFangCove = true) then {
-        if ($Time.isDay = 0) then {
-            if ("$Time.timeOfDay" <> "sunrise") then {
-                var repair.forceRepairman true
+        if (%repair.forceNight = true) then {
+            var repair.forceRepairman true
+        } else {
+            if ($Time.isDay = 0) then {
+                if ("$Time.timeOfDay" <> "sunrise") then {
+                    var repair.forceRepairman true
+                }
             }
         }
         if ($zoneid <> 150) then {
@@ -172,7 +179,7 @@ repair.fetchItems:
 ###      UTILITY
 ###############################
 repair.checkMoney:
-    put wealth
+    gosub wealth
     evalmath repair.currencyTotal $char.repair.money * 10000
     if ($zoneid = 1) then {
         evalmath repair.currencyKronars $Kronars + 0
@@ -200,6 +207,12 @@ repair.checkTicketTime:
         put #script abort look
     }
     return
+
+
+repair.forceNight:
+    # Encountered a closed shop.
+    var repair.forceNight true
+    goto repair.main
 
 
 repair.getNpc:

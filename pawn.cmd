@@ -7,7 +7,7 @@ if_1 then {
     var dryRun true
 }
 
-var sellables bathrobe|sphere|cylinder|bangles|towel|cufflinks|bottoms|top|lunchbox|razor|bowl|amulet|skillet|stove|handkerchief|sieve|stick|pillow|mortar|pestle|brush|bear|earrings|choker|haircomb|sieve|knife|broom|cube|dagger|helm|nightgown|comb|cloak|fabric|bank|bowl|nightcap|fan|scissors|paperweight|yardstick|diary|kaleidoscope|hauberk|pajamas|shaper|leaflet|arrows|lamp|slippers|apron|prism|blanket|quill|locket|rod|shield|lens|cylinder|bracer|rasp|ring|charts|distaff|sipar|case|cowbell|hammer|pins|mirror|gloves|crossbow|scroll|leathers|case|telescope|telescope case|scimitar|statuette|plate|cudgel|slate|briquet|blossom|oil|napkin|cookbook|twine|tankard|snare|bottoms|opener|shakers|jug|amulet|vase|knives
+var sellables bathrobe|canvas tote|sphere|cylinder|bangles|towel|cufflinks|bottoms|top|lunchbox|razor|bowl|amulet|skillet|stove|handkerchief|sieve|stick|pillow|mortar|pestle|brush|bear|earrings|choker|haircomb|sieve|knife|broom|cube|dagger|helm|nightgown|comb|cloak|fabric|bank|bowl|nightcap|fan|scissors|paperweight|yardstick|diary|kaleidoscope|hauberk|pajamas|shaper|leaflet|arrows|lamp|slippers|apron|prism|blanket|quill|locket|rod|shield|lens|cylinder|bracer|rasp|ring|charts|distaff|sipar|case|cowbell|hammer|pins|mirror|gloves|crossbow|scroll|leathers|telescope case|telescope|scimitar|statuette|plate|cudgel|slate|briquet|blossom|oil|napkin|cookbook|twine|tankard|snare|bottoms|opener|shakers|jug|amulet|vase|knives
 var soldItems null
 
 action var items $1 when ^You rummage through.*and see (.*)\.$

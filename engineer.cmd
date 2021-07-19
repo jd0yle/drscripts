@@ -112,8 +112,11 @@ eng.prepareItem:
     gosub eng.findChapter
     gosub turn my book to chapter %eng.chapter
     # Action for finding book page because genie is dumb.
-    #action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) (articulated|detailed|pair of)? wood $eng.craft.item(.*)$
-    action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) fine wood $eng.craft.item(.*)$
+    if ("$eng.craft.item" = "burin") then {
+        action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) fine wood $eng.craft.item(.*)$
+    } else {
+        action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) (articulated|detailed|pair of)? wood $eng.craft.item(.*)$
+    }
     gosub read my book
     if (%eng.page = 0) then {
         put #echo >Log Yellow [eng] Could not locate page for $eng.craft.item, exiting.
