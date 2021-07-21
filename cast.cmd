@@ -98,11 +98,13 @@ if (%useCambrinth = 1) then {
 
     if (%charge > 0) then gosub charge my $char.cambrinth %charge
 
-    var invokeAmount %charge
-    if (%chargeTimes = 2 && %cambrinthFull != 1) then {
-        gosub charge my $char.cambrinth %charge
-        evalmath invokeAmount (%invokeAmount * 2)
-    }
+	var invokeAmount %charge
+	gosub chargeLoop
+
+    #if (%chargeTimes > 1 && %cambrinthFull != 1) then {
+    #    gosub charge my $char.cambrinth %charge
+    #    evalmath invokeAmount (%invokeAmount * 2)
+    #}
 
     var invokeSpell
     if ($char.cast.invokeSpell = 1) then var invokeSpell spell
@@ -139,6 +141,15 @@ if ("%target" != "0arget") then {
 
 goto done
 
+
+chargeLoop:
+    if (%chargeTimes > 1 && %cambrinthFull != 1) then {
+        gosub charge my $char.cambrinth %charge
+        evalmath invokeAmount (%invokeAmount + %charge)
+        evalmath chargeTimes (%chargeTimes - 1)
+        goto chargeLoop
+    }
+    return
 
 ###############################
 ###      ritualSpell

@@ -1245,6 +1245,7 @@ invoke:
     invoke1:
     matchre return ^A finely balanced tago suddenly leaps
     matchre return By directing your focus, you ensure that energy drawn only when spells are cast\.
+    matchre return ^Closing your eyes
     matchre return ^Invoke what?
     matchre return ^Roundtime
     matchre return ^The cambrinth
@@ -3305,7 +3306,7 @@ waitForPrep:
     waitForPrep1:
     gosub waitForMana 30
     pause .1
-    if (%isFullyPrepped = 1 || "$preparedspell" = "None") then return
+    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > 30) then return
     goto waitForPrep1
 
 
@@ -3316,7 +3317,7 @@ waitForMana:
     waitForMana1:
     pause .5
     #if ($mana > %waitManaForAmount || "$preparedspell" = "None") then return
-    if ($mana > %waitManaForAmount) then return
+    if ($mana >= %waitManaForAmount) then return
     goto waitForMana1
 
 

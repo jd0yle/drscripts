@@ -199,7 +199,7 @@ put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
-put #tvar char.magic.train.revSorcery 0
+put #tvar char.magic.train.revSorcery 1
 
 var tmp.charge.Augmentation 65
 put #tvar char.magic.train.spell.Augmentation cv

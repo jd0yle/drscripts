@@ -35,7 +35,7 @@ if ("$charactername" = "%CHARACTER1") then {
     # do you use the temporal eddy for storage of items?  If yes, list the items in an array, with LOOT for burgle loot, ROPE for burgle rope entry, RING for lockpick ring and LOCKPICK for loose lockpicks.  NULL if you don't use the eddy
     var eddy NULL
     # where do you want to store your stolen items?  If storing in your eddy, you must use noun "portal"
-    var pack portal
+    var pack shadows
     # method can be RING, LOCKPICK, ROPE, or TOGGLE; RING (uses lockpick stacker) and LOCKPICK (uses spare lockpicks) teach locks, ROPE teaches athletics.
     # TOGGLE will swap between RING and ROPE - must set your lockpick stacker variable and rope variable
     if ($Athletics.LearningRate > 2 && $Athletics.LearningRate > $Locksmithing.LearningRate) then var method LOCKPICK
@@ -57,7 +57,7 @@ if ("$charactername" = "%CHARACTER1") then {
     # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
     var pawn NO
     # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
-    var donotpawnthis book|memory orb
+    var donotpawnthis memory orb
     # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
     var trashall YES
     # if you want to drop SOME things, put them here

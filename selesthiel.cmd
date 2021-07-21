@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts fifty-four
+var expectedNumBolts forty-six
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -20,6 +20,11 @@ action send listen to $1 when ^(\S+) begins to lecture
 action send release rf;send go meeting portal when ^But no one can see you
 action send release rf;send rummage my shadows when ^You feel about some dark encompassing shadows of twilight dreamweave\.$
 
+action (duskruinCheck) if (contains("$roomname", "Duskruin") || contains("$roomobjs", "a palisade gate")) then goto escapeDuskruin when eval $roomname
+
+action (checkTeach) var isInClass 1 when You are in this class
+
+action put exp mods when ^Your spell.*backfire.*
 
 if_1 then {
     if ("%1" = "fight") then var startAt fight
@@ -126,7 +131,7 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 25 || $Utility.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 3) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 1) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
@@ -209,6 +214,77 @@ abortScripts:
     gosub stow right
     gosub stow left
     return
+
+
+checkTeaching:
+	if (contains("$roomplayers", "Inauri") then {
+		action (checkTeach) on
+		var isInClass 0
+		put assess teach
+		pause 3
+		if (%isInClass != 1) then {
+			if (contains("$roomplayers", "Inauri") then {
+		        if ($Enchanting.LearningRate < 30) then {
+		            gosub whisper inauri teach enchanting
+		        } else {
+		            gosub stop teach
+		            gosub stop listen
+		            gosub teach tm to inauri
+		        }
+		        gosub listen to Inauri
+		        pause 2
+	        }
+		}
+		action (checkTeach) off
+	}
+	return
+
+
+
+escapeDuskruin:
+    action (duskruinCheck) off
+    put #echo >Log #FF0000 ATTEMPTING TO ESCAPE DUSKRUIN
+	put #script abort all except %scriptname
+	if ("$roomname" = "Duskruin, Central Parade") then {
+		gosub move go gate
+		gosub move go meeting portal
+		gosub move west
+	} else {
+		put south
+		pause
+		put south
+        pause
+		put south
+        pause
+		put southeast
+        pause
+		put southeast
+        pause
+		put southeast
+        pause
+		put southwest
+        pause
+		put southwest
+        pause
+		put southwest
+        pause
+		put east
+		pause
+		put east
+		pause
+		put east
+		pause
+		gosub move west
+		if ("$roomname" != "Duskruin, Central Parade") then {
+		    echo LOST IN DUSKRUIN! EXITING
+		    put #echo >Log #FF0000 LOST IN DUSKRUIN! EXITING
+		    put #script abort all
+		    exit
+		}
+		goto escapeDuskruin
+	}
+	put #echo >Log #00FF00 Back in Fang Cove!
+	put .selesthiel
 
 
 getHealedTrigger:
@@ -360,18 +436,19 @@ moveToBurgle:
 
 
 moveToMagic:
-    if (contains("$roomplayers", "Inauri") then {
-        if ($Enchanting.LearningRate < 30) then {
-            gosub whisper inauri teach enchanting
-            #gosub teach tm to inauri
-        } else {
-            gosub stop teach
-            gosub stop listen
-            gosub teach tm to inauri
-        }
-        gosub listen to Inauri
-        pause 2
-    }
+    #if (contains("$roomplayers", "Inauri") then {
+    #    if ($Enchanting.LearningRate < 30) then {
+    #        gosub whisper inauri teach enchanting
+    #    } else {
+    #        gosub stop teach
+    #        gosub stop listen
+    #        gosub teach tm to inauri
+    #    }
+    #    gosub listen to Inauri
+    #    pause 2
+    #}
+
+    gosub checkTeaching
 
     if ("$roomname" = "Private Home Interior") then {
         return

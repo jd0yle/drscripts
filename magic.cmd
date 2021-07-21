@@ -81,7 +81,10 @@ loop:
 
             if (%shouldCastRev = 1) then {
                 gosub release cyclic
-                gosub runScript cast rev
+                #gosub runScript cast rev
+                gosub invoke tattoo
+                gosub waitForPrep
+                gosub cast
             }
         } else {
             var shouldReleaseRev 0
@@ -165,7 +168,8 @@ loop:
             put #tvar char.magic.train.charge.%skill %tmp
             put #tvar char.magic.train.lastBackfireGametime.%skill $gametime
         }
-        if ("$char.magic.train.spell.%skill" = "shear") then gosub release shear
+        #if ("$char.magic.train.spell.%skill" = "shear") then gosub release shear
+        if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
     }
 
     gosub waitForMana 80

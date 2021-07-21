@@ -1,9 +1,11 @@
 include libmaster.cmd
 
+put awake
+
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts twenty-seven
+var expectedNumBolts twenty-five
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -159,7 +161,7 @@ main:
     }
 
     startFight:
-    if ($Parry_Ability.LearningRate < 32 || $Shield_Usage.LearningRate < 32 || $Evasion.LearningRate < 32 || $Heavy_Thrown.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Staves.LearningRate < 30 || $Brawling.LearningRate < 30 || $Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30) then {
+    if ($Parry_Ability.LearningRate < 32 || $Shield_Usage.LearningRate < 32 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Staves.LearningRate < 30 || $Brawling.LearningRate < 30 || $Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30) then {
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
         gosub moveToBulls
