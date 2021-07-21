@@ -45,11 +45,3 @@ waitForMob:
     pause .5
     goto moblistChange
 
-
-
-
-#hhr  get my hhr;throw
-#za   zombie attack $arenamob
-#pv   prep pv 20;-7 cast $arenaMob
-
-

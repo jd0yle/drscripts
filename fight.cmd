@@ -1006,6 +1006,7 @@ manageCyclics.cleric:
 manageCyclics.moonMage:
 	# SLS
 	if (%useSls = 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Targeted_Magic.LearningRate < 27 && $Time.isDay = 0) then {
+	    gosub release cyclic
 	    gosub prep sls $char.cast.sls.prep
 	    gosub waitForPrep
 	    gosub cast spider in sky
@@ -1015,6 +1016,7 @@ manageCyclics.moonMage:
 
 	# SHW (if SLS is not active)
 	if (%useShw = 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Debilitation.LearningRate < 27 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29) then {
+		gosub release cyclic
 		gosub runScript cast shw
 	} else {
 		if ($SpellTimer.ShadowWeb.active = 1 && ($Debilitation.LearningRate > 30 || $mana < 60)) then gosub release shw
@@ -1028,6 +1030,7 @@ manageCyclics.moonMage:
     unvar fight.tmp.nextCastRevGametime
 
 	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
+		gosub release cyclic
 		gosub invoke my tattoo
 		gosub waitForPrep
 		gosub cast
