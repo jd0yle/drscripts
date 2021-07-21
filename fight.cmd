@@ -1028,7 +1028,9 @@ manageCyclics.moonMage:
     unvar fight.tmp.nextCastRevGametime
 
 	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
-		gosub runScript cast rev
+		gosub invoke my tattoo
+		gosub waitForPrep
+		gosub cast
 	} else {
 		if ($SpellTimer.Revelation.active = 1 && $mana < 60) then gosub release rev
 	}

@@ -32,7 +32,15 @@ if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2
     gosub runScript cast pg
 }
 
+if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then {
+    gosub runScript cast aus
+}
+
 if (%skillset = null) then gosub findSkillSet
+
+if ("$char.predict.preferred.skill" != "") then {
+	if ("$predictPool.$char.predict.preferred.skillset" = "complete") then var skillset $char.predict.preferred.skill
+}
 
 if (%skillset != null) then {
     if ($monstercount > 0) then gosub stance shield

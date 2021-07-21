@@ -138,7 +138,7 @@ put #tvar char.fight.useStealth 0
 put #tvar char.fight.useCol 1
 put #tvar char.fight.useMaf 1
 put #tvar char.fight.useObserve 1
-put #tvar char.fight.useRevSorcery 0
+put #tvar char.fight.useRevSorcery 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 1
@@ -265,6 +265,9 @@ unvar tmp.charge.Warding
 ###############################
 put #tvar char.predict.tool divination bones
 put #tvar char.predict.tool.container telescope case
+
+put #tvar char.predict.preferred.skillset magic
+put #tvar char.predict.preferred.skill Sorcery
 
 put #tvar char.observe.telescope clockwork telescope
 put #tvar char.observe.telescope.container telescope case
