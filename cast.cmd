@@ -171,6 +171,7 @@ ritualSpell:
     gosub cast
     if ($char.wornFocus = 1) then {
         gosub wear my $char.ritualFocus
+        gosub wear my $char.ritualFocus
     } else {
         gosub put my $char.ritualFocus in my $char.focusContainer
     }

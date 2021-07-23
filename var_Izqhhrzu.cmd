@@ -31,9 +31,12 @@ put #tvar char.burgle.cooldown null
 ###############################
 put #tvar char.cambrinth cambrinth armband
 put #tvar char.focusContainer $char.storage.default
-put #tvar char.ritualFocus dove totem
 put #tvar char.wornCambrinth 1
-put #tvar char.wornFocus 0
+
+#put #tvar char.ritualFocus dove totem
+#put #tvar char.wornFocus 1
+put #tvar char.ritualFocus ouroboros ring
+put #tvar char.wornFocus 1
 
 
 ###############################
