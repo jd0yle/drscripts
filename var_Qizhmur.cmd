@@ -85,7 +85,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debil.spell pv
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 5
+put #tvar char.fight.debil.prepAt 20
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -114,8 +114,8 @@ put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|ka'hurst hhr'ata|frying pan|spiritwood lockbow|diamondwood nightstick
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|ka'hurst hhr'ata|frying pan|spiritwood lockbow|diamondwood nightstick|kertig maul
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Twohanded_Blunt
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
@@ -132,7 +132,7 @@ put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
-put #tvar char.fight.useStealth 1
+put #tvar char.fight.useStealth 0
 
 #***** GENERAL *****
 put #tvar char.fight.useMaf 1

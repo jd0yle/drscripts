@@ -149,6 +149,8 @@ main:
             }
         }
 
+        if ($First_Aid.LearningRate < 10) then gosub runScript textbook
+
         put #echo >Log #00ffff Magic start - Warding: $Warding.LearningRate/34
         put .magic
         gosub waitForMagic

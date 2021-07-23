@@ -35,6 +35,7 @@ put #tvar char.cast.invokeSpell 0
 put #tvar char.cast.default.prep 30
 put #tvar char.cast.default.charge 70
 put #tvar char.cast.default.harness 0
+put #tvar char.cast.default.chargeTimes 1
 
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
@@ -114,8 +115,8 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow
+put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor

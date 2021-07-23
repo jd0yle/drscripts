@@ -5,7 +5,7 @@ put awake
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts twenty-five
+var expectedNumBolts twenty-two
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -117,7 +117,9 @@ main:
             gosub waitForPrep
             gosub cast
         }
-        gosub automove leth
+        #gosub automove leth
+        #gosub automove portal
+        gosub automove n gate
         gosub automove portal
 
         gosub release eotb
@@ -153,7 +155,7 @@ main:
         #gosub runScript repair
         #gosub waitForRepair
 
-        gosub automove 106
+        gosub automove 50
         pause 1
         put .qizhmur
         put .reconnect
@@ -161,10 +163,13 @@ main:
     }
 
     startFight:
-    if ($Parry_Ability.LearningRate < 32 || $Shield_Usage.LearningRate < 32 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Staves.LearningRate < 30 || $Brawling.LearningRate < 30 || $Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30) then {
+    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
+		echo GONNA GO FIGHT
+		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToBulls
+        #gosub moveToBulls
+        gosub moveToShardBulls
         gosub runScript tend
         put .fight
         gosub waitForMainCombat
@@ -265,6 +270,10 @@ healWithRats:
     gosub checkHealth
     if ($injured = 1 || $bleeding = 1) then {
         if ("$roomname" = "Private Home Interior") then gosub runScript house
+        if ($zoneid != 150) then {
+            gosub moveToMagic
+            goto healWithRats
+        }
         gosub runScript findSpot fcrat
         #if ($SpellTimer.Devour.active = 0) then gosub runScript devourfcrat
         gosub runScript devourfcrat
@@ -500,6 +509,43 @@ moveToBulls:
     goto moveToBulls
 
 
+moveToShardBulls:
+	gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToShardBulls
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        gosub runScript findSpot shardbull
+        return
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToShardBulls
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToShardBulls
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go exit portal
+        goto moveToShardBulls
+    }
+
+    goto moveToShardBulls
+
 
 moveToHouse:
     gosub setZone
@@ -584,13 +630,11 @@ moveToHouse:
 
     # Shard East Gate Area
     if ("%zone" = "66") then {
-        if ("$roomname" = "Private Home Interior") then return
-        if ("$roomid" = "252") then {
-            gosub enterHouse
-            return
-        } else {
-            gosub automove 252
-        }
+        gosub automove portal
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        gosub move go meeting portal
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+
         goto moveToHouse
     }
 
@@ -636,99 +680,42 @@ moveToMagic:
 
     if ("$roomname" = "Private Home Interior") then return
 
-    # FC
-    if ("%zone" = "150") then {
-        put #tvar powerwalk 0
-        if ("$roomid" = "106") then return
-        if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
-        gosub automove 106
-        goto moveToMagic
-    }
-
     gosub castSpellsForMove
 
-
-
-    # Ice Caves
-    if ("%zone" = "68a") then {
-        gosub automove 30
-        goto moveToMagic
-    }
-
-    # Shard S Gate
-    if ("%zone" = "68") then {
-        gosub automove e gate
-        goto moveToMagic
-    }
-
-    # Abandoned Mine
-    if ("%zone" = "10") then {
-        gosub automove ntr
-        goto moveToMagic
-    }
-
-    # NTR
-    if ("%zone" = "7") then {
-        gosub automove crossing
-        goto moveToMagic
-    }
-
-    # Crossing N Gate
-    if ("%zone" = "6") then {
-        gosub automove crossing
-        goto moveToMagic
-    }
-
-    # Crossing W Gate
-    if ("%zone" = "4") then {
-        gosub automove crossing
-        goto moveToMagic
-    }
-
-    # Crossing
-    if ("%zone" = "1") then {
-        gosub automove portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        gosub move go meeting portal
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+    # FC
+    if ("$zoneid" = "150") then {
+        if ($roomid = 50) then {
+            gosub runScript house
+            goto moveToMagic
+        }
+		put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+        gosub automove 50
         goto moveToMagic
     }
 
     # Shard East Gate Area
-    if ("%zone" = "66") then {
+    if ("$zoneid" = "66") then {
         gosub automove portal
-        gosub release eotb
+        gosub release rf
         gosub move go meeting portal
         goto moveToMagic
     }
 
     # Shard
-    if ("%zone" = "67") then {
+    if ("$zoneid" = "67") then {
         gosub automove 132
         goto moveToMagic
     }
 
     # Shard West Gate Area
-    if ("%zone" = "69") then {
+    if ("$zoneid" = "69") then {
         gosub automove n gate
         goto moveToMagic
     }
 
-    # Storm Bulls
-    if ("%zone" = "112") then {
-        gosub automove leth
-        goto moveToMagic
-    }
-
-    # Leth
-    if ("%zone" = "61") then {
-        gosub automove portal
-        gosub release eotb
-        gosub move go meeting portal
-        goto moveToMagic
-    }
-
     goto moveToMagic
+
 
 
 moveToRedGremlin:
@@ -928,7 +915,9 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 32 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 32 && $Heavy_Thrown.LearningRate > 32 && $Targeted_Magic.LearningRate > 32)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30)) then {
+        echo WAITLOOPDONE
+        echo ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)
         put #script abort all except qizhmur
         put .reconnect
         put .afk
