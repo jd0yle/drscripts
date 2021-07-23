@@ -119,6 +119,7 @@ top:
         put .cast aus
         waitforre ^CAST DONE
     }
+    gosub release cyclic
     gosub prep mg
     if (%use100thAbility = 1) then {
 	    gosub harness 50
