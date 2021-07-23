@@ -364,8 +364,8 @@ var spells %spells|mab
 var spell.mab Magnetic Ballista|mab|Earth Manipulation|Warrior Mage|Elemental|Y|Puncture damage, Impact damage, Creates a ballista that fires rocks.|standard|targeted||||15|100|intermediate|80|800|2|10|3
 var spells %spells|mapp
 var spell.mapp Major Physical Protection|mapp|Holy Defense|Cleric|Holy|N|+Defending skill, +Evasion skill|standard|augmentation||||5|100|intermediate|80|800|10|40|3
-var spells %spells|malediction
-var spell.malediction Malediction|malediction|Holy Evocations|Cleric|Holy|N|-Defensive Factor, -Offensive Factor|battle|debilitation||spirit|fortitude|5|33|intermediate|80|800|-1||2
+var spells %spells|male
+var spell.male Malediction|male|Holy Evocations|Cleric|Holy|N|-Defensive Factor, -Offensive Factor|battle|debilitation||spirit|fortitude|5|33|intermediate|80|800|-1||2
 var spells %spells|maf
 var spell.maf Manifest Force|maf|Analogous Patterns|None|Any|N|ablative physical damage barrier|standard|warding||||1|100|intro|0|400|10|40|1
 var spells %spells|mof

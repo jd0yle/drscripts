@@ -53,6 +53,10 @@ put #tvar char.cast.ghs.prep 7
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
+put #tvar char.cast.hyh.prep 6
+put #tvar char.cast.hyh.charge 0
+put #tvar char.cast.hyh.harness 0
+
 put #tvar char.cast.pom.prep 250
 
 put #tvar char.cast.rejuv.prep 5
@@ -63,7 +67,7 @@ put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 5
+put #tvar char.cast.sol.charge 15
 put #tvar char.cast.sol.harness 0
 
 put #tvar char.cast.pfe.prep 5
@@ -129,7 +133,7 @@ put #tvar char.fight.tmSpell horn
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 5
+put #tvar char.fight.tmPrep 10
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 5
@@ -165,12 +169,13 @@ put #tvar char.fight.prayTarget Huldah
 put #tvar char.fight.useBenediction 0
 put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
+put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
 put #tvar char.fight.usePfe 0
 put #tvar char.fight.useRev 1
 put #tvar char.fight.useSap 0
-put #tvar char.fight.useSol 0
+put #tvar char.fight.useSol 1
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 0
