@@ -48,11 +48,14 @@ action var doScribe 1 when The.* structure looks ready for additional scribing
 action var doScribe 1 when You do not see anything that would prevent scribing additional sigils onto
 action var doScribe 1 when free of problems that would impede further sigil scribing.
 action var doScribe 1 when The.* appears free of problems that would impede further sigil scribing.
+action var doScribe 1 when ^You can't tell anything else
 action var doScribe 1; var useMeditate 1 when ^The sigil pattern has shifted and the fount requires alignment through meditation before scribing can continue.
 
 action var useLoop 1 when ^You notice many of the scribed sigils are slowly merging back into
 action var useMeditate 1 when ^The traced sigil pattern blurs before your eyes, making it difficult to follow
 action var useFocus 1 when struggles to accept the sigil
+#action var useFocus 1 when ^You estimate that it is
+action var doScribe 1 when ^You estimate that it is
 
 action var doImbue 1 when ^Once finished you sense an imbue spell will be required to continue enchanting.
 action var doImbue 1 when ^The.* requires an application of an imbue spell to advance the enchanting process.
@@ -119,15 +122,19 @@ enchantLoop:
     if (%doSigil = 1) then {
         gosub stow right
         gosub stow left
-        put .findSigil %sigilToScribe
-        waitfor FOUND SIGIL
-        if ("$righthand" = "Empty") then {
+
+        gosub get my %sigilToScribe book
+        gosub turn my book to page 1
+        gosub pull my book
+
+        if ("$lefthandnoun" != "sigil-scroll") then {
             echo MISSING %sigilToScribe SIGIL, CANNOT CONTINUE
             exit
         }
-        gosub study my book
+
+        gosub study my sigil-scroll
         gosub trace %baseItem on brazier
-        gosub stow
+        gosub stow my book
     }
 
     if (%doImbue != 1) then {
@@ -159,19 +166,33 @@ checkSigils:
     var index 0
     gosub stow right
     gosub stow left
+    echo CHECKING SIGILS %len %sigilsNeeded
 checkSigilsLoop:
     if (%index > %len) then return
     if ("%sigilsNeeded(%index)" != "null") then {
-        put .findSigil %sigilsNeeded(%index)
-        waitfor FOUND SIGIL
-        if ("$righthand" = "Empty") then {
-            echo MISSING %sigilToScribe SIGIL, CANNOT CONTINUE
-            exit
-        }
+        gosub get my %sigilsNeeded(%index) book
+        gosub turn my book to contents
+
+        matchre checkSigils.foundSigil (\d+) -- (\S+),
+        matchre checkSigils.noSigil ^\[You can turn
+        put read my book
+        matchwait 10
+
+        echo SKIPPED A MATCHWAIT
         gosub stow right
+        goto checkSigilsLoop
     }
     math index add 1
     goto checkSigilsLoop
+
+checkSigils.foundSigil:
+	math index add 1
+	gosub stow my %sigilsNeeded(%index) book
+	goto checkSigilsLoop
+
+checkSigils.noSigil:
+    echo MISSING %sigilToScribe SIGIL, CANNOT CONTINUE
+    exit
 
 
 setArtificingBook:

@@ -351,6 +351,7 @@ analyze:
     analyze1:
     matchre return ^Analyze what
     matchre return ^Roundtime
+    matchre return ^You can't
     matchre return ^You fail to find any holes
     matchre analyze.advance ^You must be closer
     put analyze %todo
@@ -1061,6 +1062,7 @@ focus:
     matchre return ^You are in no condition to do that\.
     matchre return ^You focus your magical senses
     matchre return ^You move into the chaotic tides
+    matchre return ^You need
     matchre return ^You reach out into the seemingly infinite strands of Lunar mana
     matchre return ^Your link to the .+ is intact\.
     put focus %todo
@@ -1860,7 +1862,9 @@ pull:
     matchre return ^With a muttered curse
     matchre return ^You are a little too busy with combat to worry about that right now\.
     matchre return ^You throw away the ruined portion
+    matchre return ^You must
     matchre return ^You tug
+    matchre return ^You remove
     put pull %todo
     goto retry
 
@@ -2117,6 +2121,7 @@ scribe:
     matchre return ^You lean in towards
     matchre return ^You need another
     matchre return ^That tool does not seem
+    matchre return ^The burin doesn't
     matchre return ^Roundtime
     put scribe %todo
     goto retry

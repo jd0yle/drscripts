@@ -29,7 +29,7 @@ put #tvar char.burgle.cooldown null
 ###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth cambrinth armband
+put #tvar char.cambrinth aoustone muhenta
 put #tvar char.focusContainer $char.storage.default
 put #tvar char.wornCambrinth 1
 
@@ -45,14 +45,16 @@ put #tvar char.wornFocus 1
 put #tvar char.cast.invokeSpell 0
 
 put #tvar char.cast.default.prep 1
-put #tvar char.cast.default.charge 30
+put #tvar char.cast.default.charge 25
 put #tvar char.cast.default.harness 0
+put #tvar char.cast.default.chargeTimes 2
 
 put #tvar char.cast.benediction.prep 15
-put #tvar char.cast.benediction.charge 5
+put #tvar char.cast.benediction.charge 20
 put #tvar char.cast.benediction.harness 0
+put #tvar char.cast.benediction.chargeTimes 1
 
-put #tvar char.cast.ghs.prep 7
+put #tvar char.cast.ghs.prep 8
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -60,22 +62,29 @@ put #tvar char.cast.hyh.prep 6
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
+put #tvar char.cast.mapp.prep 5
+put #tvar char.cast.mapp.charge 20
+put #tvar char.cast.mapp.harness 0
+put #tvar char.cast.mapp.chargeTimes 2
+
 put #tvar char.cast.pom.prep 250
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 
-put #tvar char.cast.rev.prep 8
+put #tvar char.cast.rev.prep 9
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
 put #tvar char.cast.sol.charge 15
 put #tvar char.cast.sol.harness 0
+put #tvar char.cast.sol.chargeTimes 1
 
 put #tvar char.cast.pfe.prep 5
-put #tvar char.cast.pfe.charge 10
+put #tvar char.cast.pfe.charge 15
 put #tvar char.cast.pfe.harness 0
+put #tvar char.cast.pfe.chargeTimes 2
 
 ###############################
 ###      COMBAT
@@ -139,7 +148,7 @@ put #tvar char.fight.tmSpell horn
 put #tvar char.fight.tmPrep 10
 
 # How long to pause before casting.
-put #tvar char.fight.tmPause 5
+put #tvar char.fight.tmPause 10
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling
@@ -169,7 +178,7 @@ put #tvar char.fight.useMaf 0
 put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
-put #tvar char.fight.useBenediction 0
+put #tvar char.fight.useBenediction 1
 put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
