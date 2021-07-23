@@ -1,8 +1,8 @@
 ###############################
 ###    IDLE ACTIONS
 ###############################
-action var logoutReason health goto afk.logout when eval $health < 50
-action var logoutReason dead goto afk.logout when eval $dead = 1
+action var logoutReason health; goto afk.logout when eval $health < 50
+action var logoutReason dead; goto afk.logout when eval $dead = 1
 action (standTrigger) send stand when eval $standing = 0
 
 
