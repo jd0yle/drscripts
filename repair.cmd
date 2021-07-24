@@ -160,7 +160,8 @@ repair.fetchItems:
     repair.fetchItemsLoop:
         gosub get my %repair.ticketName ticket
         if ("$righthandnoun" = "ticket") then {
-            gosub give %repair.ticketName
+            gosub repair.getNpc
+            gosub give %repair.npc
             if ("$righthand" <> "large sack") then {
                 gosub wear $righthandnoun
                 gosub stow $righthandnoun
