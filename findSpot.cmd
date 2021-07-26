@@ -89,7 +89,7 @@ if ("%mob" = "leucro") then {
 }
 
 if ("%mob" = "peccary") then {
-    var minRoomId 257
+    var minRoomId 255
     var maxRoomId 263
     var waitroomid 163
 }

@@ -106,6 +106,8 @@ var stances.targetLearningRate 5
 eval stances.length count("%stances.list", "|")
 var stances.index 0
 
+var skillsToUseShield Crossbow|Slings|Bow|Twohanded_Blunt|Twohanded_Edged
+
 #action send adv when ^You must be closer to use tactical abilities on your opponent.
 action var doAnalyze 1 when ^Utilizing \S+ tactics
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
@@ -600,7 +602,8 @@ checkWeaponSkills:
 
     put #statusbar 6 Weapon: %weapons.skills(%weapons.index) $%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate
 
-    if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings") then gosub stance shield
+    #if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings") then gosub stance shield
+    if (matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)")) then gosub stance shield
 
     return
 
@@ -638,7 +641,8 @@ checkWeaponSkills.swapWeapon:
 ###      checkStances
 ###############################
 checkStances:
-    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "$righthandnoun" = "crossbow" || "$righthandnoun" = "latchbow" || "$righthandnoun" = "lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    #if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "$righthandnoun" = "crossbow" || "$righthandnoun" = "latchbow" || "$righthandnoun" = "lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    if ($health < 90 || matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)") || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
         var stances.index 0
     } else {
         if ($%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate) then {
@@ -929,24 +933,27 @@ manageCyclics.cleric:
     if ($char.fight.useRev = 1 && $Warding.LearningRate > 15 && $Utility.LearningRate < 30) then var clericCyclicToUse rev
 	if ($char.fight.useHyh = 1) then var clericCyclicToUse hyh
 
+	#if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80 && $Debilitation.LearningRate < 27) then {
 	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80) then {
 		gosub release cyclic
 		gosub runScript cast hyh male
 	} else {
 		evalmath fight.tmp.nextCastHyhGametime (300 + $char.cast.cyclic.lastCastGametime.hyh)
 		if (%fight.tmp.nextCastHyhGametime < $gametime && $SpellTimer.HydraHex.active = 1) then gosub release hyh
+		#if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 31 || $mana < 60)) then gosub release hyh
         unvar fight.tmp.nextCastHyhGametime
 	}
+	return
 
-    if ($char.fight.useRev = 1 && $char.fight.useHyh != 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
-        if ($SpellTimer.GhostShroud.active = 1) then gosub release cyclic
+    if ($char.fight.useRev = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
+        if ($SpellTimer.GhostShroud.active = 1 || $SpellTimer.HydraHex.active = 1) then gosub release cyclic
         gosub runScript cast rev
     } else {
         evalmath timeSinceLastRev ($gametime - $lastCastRev)
         if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 60 || ($Utility.LearningRate > 20 && $Warding.LearningRate < 30) )) then gosub release rev
     }
 
-    if ($char.fight.useGhs = 1 && $char.fight.useHyh != 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80) then {
+    if ($char.fight.useGhs = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80) then {
         gosub runScript cast ghs
     } else {
         evalmath timeSinceLastGhs ($gametime - $lastCastGhs)

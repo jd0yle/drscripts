@@ -15,6 +15,8 @@ action send $lastcommand when ^You can't move in that direction while unseen.
 action send listen to $1 when ^(\S+) begins to lecture
 action send listen to $2 when ^(\S+) begins to listen to (\S+)
 
+action send load when ^But your.*isn't loaded!f
+
 action var numBolts $1 when ^You count some.*bolts in the.*and see there are (.*) left\.$
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
@@ -94,9 +96,13 @@ main:
         waitforre ^ARMOR DONE$
 
         #gosub automove n gate
-        gosub automove crossing
-        gosub automove portal        
-        gosub move go meeting portal
+        #gosub automove crossing
+        #gosub automove portal
+        #gosub move go meeting portal
+
+		gosub runScript travel mriss
+		gosub automove portal
+		gosub move go meeting portal
 
         gosub automove bundle
         gosub remove my bundle
@@ -125,6 +131,8 @@ main:
 
         gosub performance
 
+        if ($First_Aid.LearningRate < 10) then gosub runScript caracal
+
         gosub getHealed
 
         pause 1
@@ -142,7 +150,7 @@ main:
         gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToLeucros
+        gosub moveToPeccaries
         put .fight
         gosub waitForMainCombat
         goto main
@@ -166,13 +174,13 @@ main:
 		    gosub listen to Inauri observe
 		} else {
 		    if (contains("$roomplayers", "Inauri")) then {
-		        gosub whisper inauri teach sorcery
+		        #gosub whisper inauri teach sorcery
 		    }
 		}
 
 	    gosub listen to Selesthiel
 	    gosub listen to Inauri observe
-	    gosub whisper inauri teach sorcery
+	    #gosub whisper inauri teach sorcery
 
         if (1 = 0 && ($Sorcery.LearningRate < 2 || %startResearch = 1)) then {
             var startResearch 0
@@ -217,7 +225,9 @@ clericRituals:
     gosub moveToHouse
     gosub runScript countClericTools
 
-    if ($char.inventory.numIncense < 10) then {
+	var skipInventory 1
+
+    if (%skipInventory != 1 && $char.inventory.numIncense < 10) then {
         put #echo >Log #cc99ff Buying incense
         gosub stow right
         gosub stow left
@@ -238,7 +248,7 @@ clericRituals:
         gosub put my incense in my $char.storage.incense
     }
 
-    if ($char.inventory.numHolyWater < 1) then {
+    if (%skipInventory != 1 && $char.inventory.numHolyWater < 1) then {
         put #echo >Log #cc99ff Buying holy water
         gosub stow right
         gosub stow left
@@ -408,7 +418,7 @@ performance:
 
 	if ("$roomname" = "Private Home Interior") then {
 		if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then {
-			gosub whisper inauri teach forging
+			#gosub whisper inauri teach forging
 		} else {
 		    gosub listen to inauri observe
 		}
@@ -687,11 +697,51 @@ moveToLeucros:
     }
 
     goto moveToLeucros    
-    
 
 
 moveToBurgle:
     gosub setZone
+
+	if ("%zone" = "108") then {
+		gosub automove portal
+		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		gosub move go meeting portal
+		gosub move west
+		if ($SpellTimer.GhostShroud.active != 1) then {
+			gosub release cyclic
+			gosub runScript cast ghs
+		}
+		gosub runScript dep
+		gosub automove teller
+		gosub withdraw 1 gold
+		gosub automove excha
+		gosub exchange all dok for lirum
+		gosub runScript travel kresh 299
+		put #tvar powerwalk 0
+		goto moveToBurgle
+	}
+
+	if ("%zone" = "107") then {
+		if ("$roomid" = "299") then return
+		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		gosub automove 299
+		put #tvar powerwalk 0
+		# 299 = telescope
+		goto moveToBurgle
+	}
+
+	if ("%zone" = "107a") then {
+		gosub runScript travel kresh
+		goto moveToBurgle
+	}
+
+	if ("%zone" = "150") then {
+		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		gosub automove portal
+		put #tvar powerwalk 0
+		gosub move go portal
+		goto moveToBurgle
+	}
 
     # Crossing W Gate
     if ("%zone" = "4") then {
@@ -793,7 +843,7 @@ moveToHouse:
     gosub setZone
 
     if ("$roomname" = "Private Home Interior") then {
-		if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then gosub whisper inauri teach forging
+		#if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then gosub whisper inauri teach forging
         return
     }
 
@@ -803,20 +853,39 @@ moveToHouse:
         if ("$roomid" = "50") then {
             gosub enterHouse
         } else {
+            if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
             gosub automove 50
+            put #tvar powerwalk 0
             goto moveToHouse
         }
         return
         #goto moveToHouse
     }
 
-    if (matchre("$roomobjs", "portal")) then {
-        #gosub move go portal
-        #goto moveToHouse
-    } else {
-        #gosub runScript travel crossing portal
-        #goto moveToHouse
-    }
+	# M'RISS
+	if ("%zone" = "108") then {
+		gosub automove portal
+		gosub move go meeting portal
+		goto moveToHouse
+	}
+
+	# MER'KRESH
+	if ("%zone" = "107") then {
+		if ($SpellTimer.GhostShroud.active != 1) then {
+			gosub release cyclic
+			gosub runScript cast ghs
+		}
+		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		gosub runScript travel mriss
+		put #tvar powerwalk 0
+		goto moveToHouse
+	}
+
+	# GALLEY
+	if ("%zone" = "107a") then {
+		gosub runScript travel mriss
+		goto moveToHouse
+	}
 
     # LEUCROS
     if ("%zone" = "11") then {
@@ -914,6 +983,47 @@ moveToHouse:
     goto moveToHouse
 
 
+moveToPeccaries:
+    put #echo >Debug #cc99ff moveToPeccaries (zoneid=$zoneid roomid=$roomid)
+    gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+		gosub runScript house
+        goto moveToPeccaries
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToPeccaries
+    }
+
+	# M'RISS
+	if ("%zone" = "108") then {
+		gosub runScript findSpot peccary
+		return
+	}
+
+	# MER'KRESH
+	if ("%zone" = "107") then {
+		if ($SpellTimer.GhostShroud.active != 1) then {
+			gosub release cyclic
+			gosub runScript cast ghs
+		}
+		gosub runScript travel mriss
+		goto moveToPeccaries
+	}
+
+	# GALLEY
+	if ("%zone" = "107a") then {
+		gosub runScript travel mriss
+		goto moveToPeccaries
+	}
+
+	goto moveToPeccaries
+
+
 enterHouse:
     matchre enterHouseCont suddenly rattles
     matchre enterHouseCont suddenly opens
@@ -943,9 +1053,36 @@ moveToMagic:
     if ("%zone" = "150") then {
         put #tvar powerwalk 0
         if ("$roomid" = "50") then return
+        if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
         gosub automove 50
+        put #tvar powerwalk 0
         goto moveToMagic
     }
+
+	# M'RISS
+	if ("%zone" = "108") then {
+		gosub automove portal
+		gosub move go meeting portal
+		goto moveToHouse
+	}
+
+	# MER'KRESH
+	if ("%zone" = "107") then {
+		if ($SpellTimer.GhostShroud.active != 1) then {
+			gosub release cyclic
+			gosub runScript cast ghs
+		}
+		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		gosub runScript travel mriss
+		put #tvar powerwalk 0
+		goto moveToHouse
+	}
+
+	# GALLEY
+	if ("%zone" = "107a") then {
+		gosub runScript travel mriss
+		goto moveToHouse
+	}
 
     # LEUCROS
     if ("%zone" = "11") then {

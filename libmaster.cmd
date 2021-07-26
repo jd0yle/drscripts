@@ -107,6 +107,7 @@ action var weapon_hand The when ^You switch your sword so that you can use it as
 action var weapon_hand The when ^You turn your sword easily in your hands and end with it in position to be used as a two-handed edged weapon\.$
 action var weapon_hand The when ^Silver light kisses the surface of your bastard sword as you shift it to a two-handed edged grip\.$
 action var weapon_hand The when ^With one superbly balanced motion, you shift your bastard sword to a two-handed edged grip in front of your heart\.$
+action var weapon_hand The when ^You shift your.*to a two-handed edged grip while quietly paying homage to the war gods\.$
 
 
 action var weapon_hand he when ^With a quiet snarl, you move your hands to grip your.*as a heavy edged weapon\.$
@@ -119,6 +120,7 @@ action var weapon_hand he when ^You switch your sword so that you can use it as 
 action var weapon_hand he when ^You turn your sword easily in your hands and end with it in position to be used as a heavy edged weapon\.$
 action var weapon_hand he when ^Silver light kisses the surface of your.*as you shift it to a heavy edged grip\.$
 action var weapon_hand he when ^With one superbly balanced motion, you shift your bastard sword to a heavy edged grip in front of your heart\.$
+action var weapon_hand he when ^You shift your.*to a heavy edged grip while quietly paying homage to the war gods\.$
 var weapon_hand NONERIGHTNOW
 
 
@@ -979,12 +981,14 @@ empty:
 
 
 exchange:
-    var location exchage1
+    var location exchange1
     var todo $0
     exchange1:
     matchre return EXCHANGE
     matchre return money-changer
     matchre return ^But you don't
+    matchre return ^You count out
+    matchre return Lirums|Dokoras|Kronars
     put exchange %todo
     goto retry
 
@@ -2483,6 +2487,7 @@ swap:
     matchre return ^You fiercely switch
     matchre return ^You have nothing to swap\!
     matchre return ^You move
+    matchre return ^You shift
     matchre return ^You switch your
     matchre return ^You turn
     matchre return ^Your eyes blaze
@@ -3275,6 +3280,7 @@ runScript:
     var location runScript1
 
     runScript1:
+        put #echo >Debug #FF9900 runScript start %todo
 	    eval doneString toupper("%scriptName")
 		matchre runScriptDone ^%doneString DONE$
 		put .%todo
@@ -3293,6 +3299,7 @@ runScript:
 	    goto runScriptLoop
 
     runScriptDone:
+        put #echo >Debug #FF9900 runScript end %todo
         return
 
 

@@ -82,10 +82,12 @@ put #tvar char.fight.arrangeFull 0
 put #tvar char.fight.debil.use 1
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell pv
+#put #tvar char.fight.debil.spell pv
+put #tvar char.fight.debil.spell df
+put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 20
+put #tvar char.fight.debil.prepAt 18
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -192,7 +194,7 @@ put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
 put #tvar char.magic.train.cyclic.prep.Utility 20
 
 # AUGMENTATION
-var var.magic.Augmentation 27
+var var.magic.Augmentation 30
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
 put #tvar char.magic.train.harness.Augmentation 0
@@ -212,7 +214,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 
 unvar var.magic.Augmentation
 
 # UTILITY
-var var.magic.Utility 27
+var var.magic.Utility 30
 put #tvar char.magic.train.spell.Utility gaf
 put #tvar char.magic.train.prep.Utility 1
 put #tvar char.magic.train.harness.Utility 0
@@ -232,7 +234,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
 unvar var.magic.Utility
 
 # WARDING
-var var.magic.Warding 27
+var var.magic.Warding 30
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 put #tvar char.magic.train.harness.Warding 0

@@ -131,7 +131,7 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 25 || $Utility.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
