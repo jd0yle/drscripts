@@ -464,21 +464,17 @@ sorceryDevour:
 
 
 castSpellsForMove:
-    #gosub release symbiosis
     if ("$preparedspell" != "None") then gosub release spell
-    #if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
-    if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
-    if ($SpellTimer.RiteofGrace.active != 1) then {
-        gosub prep rog 15
-        gosub waitForPrep
-        gosub release cyclic
-        gosub cast
-    }
-
-    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then {
-        gosub prep eotb
-        pause 3
-        gosub cast
+    if ($Warding.LearningRate < $Utility.LearningRate) then {
+        if ($SpellTimer.GhostShroud.active != 1) then {
+            gosub release cyclic
+            gosub runScript cast ghs
+        }
+    } else {
+        if ($SpellTimer.Revelation.active != 1) then {
+            gosub release cyclic
+            gosub runScript cast rev
+        }
     }
     return
 
@@ -702,15 +698,19 @@ moveToLeucros:
 moveToBurgle:
     gosub setZone
 
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToBurgle
+    }
+
 	if ("%zone" = "108") then {
 		gosub automove portal
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
 		gosub move go meeting portal
 		gosub move west
-		if ($SpellTimer.GhostShroud.active != 1) then {
-			gosub release cyclic
-			gosub runScript cast ghs
-		}
+
+		gosub castSpellsForMove
+
 		gosub runScript dep
 		gosub automove teller
 		gosub withdraw 1 gold
@@ -871,10 +871,8 @@ moveToHouse:
 
 	# MER'KRESH
 	if ("%zone" = "107") then {
-		if ($SpellTimer.GhostShroud.active != 1) then {
-			gosub release cyclic
-			gosub runScript cast ghs
-		}
+		gosub castSpellsForMove
+
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
 		gosub runScript travel mriss
 		put #tvar powerwalk 0
@@ -994,7 +992,11 @@ moveToPeccaries:
 
     # FC
     if ("%zone" = "150") then {
+        put #tvar powerwalk 0
+        gosub castSpellsForMove
+        if ($Attunement.LearningRate < 32) then put #tvar powerwalk 1
         gosub automove portal
+        put #tvar powerwalk 0
         gosub move go portal
         goto moveToPeccaries
     }
@@ -1007,10 +1009,8 @@ moveToPeccaries:
 
 	# MER'KRESH
 	if ("%zone" = "107") then {
-		if ($SpellTimer.GhostShroud.active != 1) then {
-			gosub release cyclic
-			gosub runScript cast ghs
-		}
+		gosub castSpellsForMove
+
 		gosub runScript travel mriss
 		goto moveToPeccaries
 	}
@@ -1068,10 +1068,8 @@ moveToMagic:
 
 	# MER'KRESH
 	if ("%zone" = "107") then {
-		if ($SpellTimer.GhostShroud.active != 1) then {
-			gosub release cyclic
-			gosub runScript cast ghs
-		}
+		gosub castSpellsForMove
+
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
 		gosub runScript travel mriss
 		put #tvar powerwalk 0

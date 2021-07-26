@@ -603,7 +603,10 @@ checkWeaponSkills:
     put #statusbar 6 Weapon: %weapons.skills(%weapons.index) $%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate
 
     #if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings") then gosub stance shield
-    if (matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)")) then gosub stance shield
+    if (matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)")) then {
+        echo FORCING SHIELD BECAUSE WEAPONTYPE
+        gosub stance shield
+    }
 
     return
 
@@ -641,9 +644,10 @@ checkWeaponSkills.swapWeapon:
 ###      checkStances
 ###############################
 checkStances:
-    #if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "$righthandnoun" = "crossbow" || "$righthandnoun" = "latchbow" || "$righthandnoun" = "lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
-    if ($health < 90 || matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)") || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    if ($health < 90 || "%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Slings" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Twohanded_Blunt" || "$righthandnoun" = "crossbow" || "$righthandnoun" = "latchbow" || "$righthandnoun" = "lockbow" || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
+    #if ($health < 90 || matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)") || $Parry_Ability.LearningRate > 32 || %forceShield = 1) then {
         var stances.index 0
+        echo forcing shield because reasons
     } else {
         if ($%stances.skills(%stances.index).LearningRate > %stances.targetLearningRate) then {
             if (!($lastStanceGametime > -1)) then put #var lastStanceGametime 0
@@ -651,6 +655,7 @@ checkStances:
 
             #delay conditions: currently in shield, shield and parry are over 32, lessthan 300s timeSinceLastStance
             if (%stances.skills(%stances.index) = "shield" && %timeSinceLastStance < 300 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 32) then {
+                echo Staying on shield
                 return
             }
             math stances.index add 1
