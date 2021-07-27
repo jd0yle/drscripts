@@ -850,6 +850,7 @@ moveToHouse:
     # FC
     if ("%zone" = "150") then {
         if ("$roomname" = "Private Home Interior") then return
+        gosub castSpellsForMove
         if ("$roomid" = "50") then {
             gosub enterHouse
         } else {

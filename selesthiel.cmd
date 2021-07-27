@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty-six
+var expectedNumBolts forty-five
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -131,7 +131,8 @@ main:
 
     # Magic
     startMagic:
-    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
+    #if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 20) then {
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
@@ -714,7 +715,8 @@ waitForMagic:
     }
 
 waitForMagicLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
+    #if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || $Warding.LearningRate > 29) then {
         put #script abort all except selesthiel
         put .reconnect
         put .afk

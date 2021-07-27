@@ -25,6 +25,10 @@ if ($char.magic.train.cyclic.Utility = 1) then {
     #var magic.skills Augmentation|Warding
 }
 
+if ($char.magic.train.revSorcery = 1) then {
+	var magic.skills Warding
+}
+
 
 eval magic.length count("%magic.skills", "|")
 if (!($magic.index > -1)) then put #tvar magic.index 0
@@ -50,7 +54,7 @@ loop:
     if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
 
 
-    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 33) then gosub observe.onTimer
+    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 31) then gosub observe.onTimer
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
     if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
 

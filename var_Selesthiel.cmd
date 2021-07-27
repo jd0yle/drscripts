@@ -8,7 +8,8 @@ put #tvar char.appraise.item gem pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
+#put #tvar char.armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
+put #tvar char.armor moonsilk moonsilk pants|moonsilk shirt|ka'hurst gloves|ka'hurst balaclava|steelsilk handwraps|steelsilk footwraps|demonscale shield|parry stick
 
 
 ###############################
@@ -202,7 +203,7 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.revSorcery 1
 
-var tmp.charge.Augmentation 65
+var tmp.charge.Augmentation 68
 put #tvar char.magic.train.spell.Augmentation cv
 put #tvar char.magic.train.prep.Augmentation 10
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %tmp.charge.Augmentation
@@ -222,7 +223,7 @@ unvar tmp.charge.Augmentation
 
 
 
-var tmp.charge.Utility 45
+var tmp.charge.Utility 47
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %tmp.charge.Utility
