@@ -36,6 +36,8 @@ if (%blacklistLength = 0) then put #var empty.blacklist the
 #action var items %items|$1  when ^  (\w+.*)
 action var contents $1 when ^In the.*you see (.*)
 
+action var containerIsEmpty 1 when  but there is nothing in there\.$
+
 
 
 pause .2
@@ -50,7 +52,8 @@ eval items replacere("%items", " and ((?:a|some).*?)\.", "|\$1")
 var index 0
 eval numItems count("%items", "|")
 
-if (%numItems = 0) then {
+#if (%numItems = 0) then {
+if (%containerIsEmpty = 1) then {
     echo CONTAINER %fromContainer IS EMPTY!
     goto done
 }
