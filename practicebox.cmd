@@ -45,7 +45,7 @@ pb.doCount:
 
 
     pb.doCountLoop:
-        if (matchre("%pb.itemArr(%pb.index)", "\b$char.locks.boxType\b")) then {
+        if (matchre("%pb.itemArr(%pb.index)", "\b($char.locks.boxTypes)\b")) then {
             math pb.numCount add 1
         }
         math pb.index add 1
@@ -74,20 +74,28 @@ pb.countDone:
 ###############################
 pb.main:
     if (%pb.newBox = 1) then {
-        gosub put my $char.locks.boxType in my bucket
+        if matchre("$righthand", "($char.locks.boxTypes)") then {
+            gosub put my $righthand in my bucket
+        }
+        if matchre("$lefthand", "($char.locks.boxTypes)") then {
+            gosub put my $lefthand in my bucket
+        }
         gosub tap my bucket
         gosub tap my bucket
-    }
-    gosub get my $char.locks.boxType
-    if ("$righthand" <> "$char.locks.boxType") then {
-        put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
-        put #var pb.haveBox 1
-        put #var lastPracticeBoxGametime $gametime
-        goto pb.exit
-    }
-    if ("$char.locks.lockpickType" <> "ring") then {
-        if ("$lefthandnoun" <> "lockpick") then {
-            gosub get my lockpick
+        gosub get my $char.locks.boxTypes(1)
+        if ("$righthand" = "Empty") then {
+            gosub get my $char.locks.boxTypes(2)
+        }
+        if ("$righthand" = "Empty") then {
+            put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
+            put #var pb.haveBox 1
+            put #var lastPracticeBoxGametime $gametime
+            goto pb.exit
+        }
+        if ("$char.locks.lockpickType" <> "ring") then {
+            if ("$lefthandnoun" <> "lockpick") then {
+                gosub get my lockpick
+            }
         }
     }
     gosub lock my $char.locks.boxType
