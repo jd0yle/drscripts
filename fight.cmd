@@ -26,8 +26,6 @@ var arrangeForPart $char.fight.arrangeForPart
 var arrangeFull $char.fight.arrangeFull
 
 var useArmor $char.fight.useArmor
-var armor.skills $char.fight.armor.skills
-var armor.items $char.fight.armor.items
 
 var avoidDivineOutrage $char.fight.avoidDivineOutrage
 
@@ -96,7 +94,6 @@ var weapons.targetLearningRate 5
 var weapons.lastChangeAt $gametime
 
 var armor.index 0
-eval armor.length count("%armor.skills", "|")
 var armor.lastChangeAt 0
 var armor.targetLearningRate 5
 
@@ -503,34 +500,63 @@ buffCol:
 ###      checkArmorSkills
 ###############################
 checkArmorSkills:
-    if ($%armor.skills(%armor.index).LearningRate >= %armor.targetLearningRate) then {
-        # By default, don't switch armor faster than once every 30 seconds.
-        # But if all the weapon skills are moving, wait 60 seconds before swapping
-        var timeBetweenArmorSwaps 120
-        if (%armor.targetLearningRate > 10) then var timeBetweenArmorSwaps 120
-        evalmath changeArmorAt %armor.lastChangeAt + %timeBetweenArmorSwaps
-        if ($gametime < %changeArmorAt) then {
-            math armor.index add 1
-            if (%armor.index > %armor.length) then {
-                var armor.index 0
-                evalmath armor.targetLearningRate (5 + $%armor.skills(%armor.index).LearningRate)
-                if (%armor.targetLearningRate > 34) then var armor.targetLearningRate 34
-            }
-            var armor.lastChangeAt $gametime
-        }
+    if (!(%armorIndex > -1)) then var armorIndex 0
+    var tmpArmorSkill $char.fight.armor.skill.%armorIndex
+
+	if (!($char.fight.lastArmorSwapGametime > -1)) then put #tvar char.fight.lastArmorSwapGametime 1
+	evalmath fight.tmp.nextArmorSwapGametime ($char.fight.lastArmorSwapGametime + 300)
+
+    if ($%tmpArmorSkill(0).LearningRate >= %armor.targetLearningRate && (%armor.targetLearningRate < 34 || $gametime > %fight.tmp.nextArmorSwapGametime)) then {
+		put #echo >Log [fight] Swap armor %tmpArmorSkill $%tmpArmorSkill(0).LearningRate / 34
+		gosub checkArmorSkills.removeArmor $char.fight.armor.items.%armorIndex
+		math armorIndex add 1
+		if (contains("$char.fight.armor.skill.%armorIndex", "char.fight.armor")) then var armorIndex 0
+		var tmpArmorSkill $char.fight.armor.skill.%armorIndex
+		gosub checkArmorSkills.wearArmor $char.fight.armor.items.%armorIndex
+		evalmath armor.targetLearningRate ($%tmpArmorSkill.LearningRate + 5)
+		if (%armor.targetLearningRate > 34) then var armor.targetLearningRate 34
+		put #tvar char.fight.lastArmorSwapGametime $gametime
     }
-    if ("%currentArmor" != "%armor.items(%armor.index)") then {
-        gosub remove greaves
-        gosub stow greaves
-        gosub remove moonsilk pants
-        gosub stow pants
-        gosub get my %armor.items(%armor.index)
-        gosub wear my %armor.items(%armor.index)
-        var currentArmor %armor.items(%armor.index)
-    }
-    put #statusbar 8 Armor: %armor.skills(%armor.index) $%armor.skills(%armor.index).LearningRate/%armor.targetLearningRate
+
+    put #statusbar 8 Armor: %tmpArmorSkill $%tmpArmorSkill(0).LearningRate/%armor.targetLearningRate
+    unvar tmpArmorSkill
+    unvar fight.tmp.nextArmorSwapGametime
+
     return
 
+
+checkArmorSkills.removeArmor:
+	var armorItems $0
+	var tmpRemoveArmorIndex 0
+
+	checkArmorSkills.removeArmor.loop:
+		gosub retreat
+		gosub remove my %armorItems(%tmpRemoveArmorIndex)
+		gosub stow my %armorItems(%tmpRemoveArmorIndex)
+		math tmpRemoveArmorIndex add 1
+		if (%tmpRemoveArmorIndex > count("%armorItems", "|")) then {
+			unvar armorItems
+			unvar tmpRemoveArmorIndex
+			return
+		}
+		goto checkArmorSkills.removeArmor.loop
+
+
+checkArmorSkills.wearArmor:
+	var armorItems $0
+	var tmpWearArmorIndex 0
+
+	checkArmorSkills.wearArmor.loop:
+		gosub retreat
+		gosub get my %armorItems(%tmpWearArmorIndex)
+		gosub wear my %armorItems(%tmpWearArmorIndex)
+		math tmpWearArmorIndex add 1
+		if (%tmpWearArmorIndex > count("%armorItems", "|")) then {
+			unvar armorItems
+			unvar tmpWearArmorIndex
+			return
+		}
+		goto checkArmorSkills.wearArmor.loop
 
 
 ###############################
@@ -1018,34 +1044,18 @@ releaseUnwantedSpells:
 ###      sortArmorRanks
 ###############################
 sortArmorRanks:
-    return
+	var tmpIndex 0
+	var armorIndex 0
 
-    var newArmor.skills null
-    var newArmor.items null
-    sortArmorNext:
-        var lowestSkillIndex null
-        var currIndex 0
-        sortArmorLoop:
-            if (!contains("%newArmor.skills", "%armor.skills(%currIndex)")) then {
-                if (%lowestSkillIndex = null || $%armor.skills(%currIndex).Ranks < $%armor.skills(%lowestSkillIndex).Ranks) then {
-                    var lowestSkillIndex %currIndex
-                }
-            }
-            math currIndex add 1
-            if (%currIndex <= %armor.length) then goto sortArmorLoop
-            if (%newArmor.skills = null) then {
-                var newArmor.skills %armor.skills(%lowestSkillIndex)
-                var newArmor.items %armor.items(%lowestSkillIndex)
-            } else {
-                var newArmor.skills %newArmor.skills|%armor.skills(%lowestSkillIndex)
-                var newArmor.items %newArmor.items|%armor.items(%lowestSkillIndex)
-            }
-            if (count("%newArmor.skills", "|") < %armor.length) then {
-                goto sortArmorNext
-            }
-            var armor.skills %newArmor.skills
-            var armor.items %newArmor.items
-            return
+	sortArmorRanks.loop:
+		if ($$char.fight.armor.skill.%tmpIndex.LearningRate < $$char.fight.armor.skill.%armorIndex.LearningRate) then var armorIndex %tmpIndex
+		math tmpIndex add 1
+		if (contains("$char.fight.armor.skill.%tmpIndex", "char.fight.armor")) then {
+			unvar tmpIndex
+			return
+		}
+		goto sortArmorRanks.loop
+
 
 
 ###############################

@@ -120,8 +120,6 @@ put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|com
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown|Polearms
 
 #***** ARMOR *****
-put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
-put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
 put #tvar char.fight.useArmor 0
 
 put #tvar char.fight.armor.skill.0 Light_Armor
