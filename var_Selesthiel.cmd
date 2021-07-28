@@ -124,6 +124,12 @@ put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
 put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves
 put #tvar char.fight.useArmor 0
 
+put #tvar char.fight.armor.skill.0 Light_Armor
+put #tvar char.fight.armor.items.0 moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves
+
+put #tvar char.fight.armor.skill.1 Chain_Armor
+put #tvar char.fight.armor.items.1 ka'hurst hauberk|ka'hurst gloves|ka'hurst balaclava
+
 #***** USE *****
 # Use vars are all "Do this thing or not"
 # All default to 0

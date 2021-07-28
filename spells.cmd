@@ -678,6 +678,7 @@ var spell.zephyr Zephyr|zephyr|Air Manipulation|Warrior Mage|Elemental|N|Fatigue
 
 gosub populateDetails
 
+if ("%1" = "") then goto spells.end
 
 var name %1
 if (contains("%fields", "%name")) then {
@@ -685,6 +686,8 @@ if (contains("%fields", "%name")) then {
     var fieldValue %2
     goto byField
 }
+
+
 
 gosub printSpellInfo %name
 
@@ -787,14 +790,30 @@ populateDetails:
 
 
 printSpellInfo:
-var spellAbbr $1
+	var spellAbbr $1
+	echo
+	echo Name: %spell.%spellAbbr.name      Abbr.: %spell.%spellAbbr.abbr
+	echo Guild: %spell.%spellAbbr.guild      Spellbook: %spell.%spellAbbr.spellbook      Mana: %spell.%spellAbbr.mana      Slots: %spell.%spellAbbr.slots
+	echo Difficulty: %spell.%spellAbbr.difficulty      Type: %spell.%spellAbbr.type      Skill: %spell.%spellAbbr.skill
+	echo Offense Contest: %spell.%spellAbbr.contestoffense      Defense Contest: %spell.%spellAbbr.contestdefense      Notes: %spell.%spellAbbr.notes
+	echo Prep Min:%spell.%spellAbbr.prepmin Max: %spell.%spellAbbr.prepmax   -   Skill Min: %spell.%spellAbbr.skillmin Max: %spell.%spellAbbr.skillmax   -   Duration Min: %spell.%spellAbbr.durationmin Max: %spell.%spellAbbr.durationmax
+	echo Effect: %spell.%spellAbbr.effect
+	echo
+	gosub parseSpellInfo
+	return
+	goto done
 
-echo
-echo Name: %spell.%spellAbbr.name      Abbr.: %spell.%spellAbbr.abbr
-echo Guild: %spell.%spellAbbr.guild      Spellbook: %spell.%spellAbbr.spellbook      Mana: %spell.%spellAbbr.mana      Slots: %spell.%spellAbbr.slots
-echo Difficulty: %spell.%spellAbbr.difficulty      Type: %spell.%spellAbbr.type      Skill: %spell.%spellAbbr.skill
-echo Offense Contest: %spell.%spellAbbr.contestoffense      Defense Contest: %spell.%spellAbbr.contestdefense      Notes: %spell.%spellAbbr.notes
-echo Prep Min:%spell.%spellAbbr.prepmin Max: %spell.%spellAbbr.prepmax   -   Skill Min: %spell.%spellAbbr.skillmin Max: %spell.%spellAbbr.skillmax   -   Duration Min: %spell.%spellAbbr.durationmin Max: %spell.%spellAbbr.durationmax
-echo Effect: %spell.%spellAbbr.effect
-echo
-goto done
+
+parseSpellInfo:
+	var index 0
+	eval len count("%fields", "|")
+
+	parseSpellInfoLoop:
+		if (%index > %len) then return
+		echo SPELLINFO %fields(%index) %spell.%spellAbbr.%fields(%index)
+		put #parse SPELLINFO %fields(%index) %spell.%spellAbbr.%fields(%index)
+		math index add 1
+		goto parseSpellInfoLoop
+
+
+spells.end:

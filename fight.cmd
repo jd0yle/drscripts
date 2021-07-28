@@ -832,123 +832,29 @@ makeNewBundle:
 ###############################
 manageCyclics:
     if ("$guild" = "Cleric") then gosub manageCyclics.cleric
-
     if ("$guild" = "Moon Mage") then gosub manageCyclics.moonMage
-
-    # USOL
-    if (%useUsol = 1) then {
-        var shouldCastUsol 1
-        if ($SpellTimer.UniversalSolvent.active = 1) then var shouldCastUsol 0
-        if ($mana < 80) then var shouldCastUsol 0
-        if ($Targeted_Magic.LearningRate > 30) then var shouldCastUsol 0
-        if ($monstercount < 2) then var shouldCastUsol 0
-
-        if (%shouldCastUsol = 1) then {
-            gosub prep usol
-            gosub waitForPrep
-            gosub cast creatures
-        }
-
-        if ($SpellTimer.UniversalSolvent.active = 1) then {
-            var shouldReleaseUsol 0
-            if ($mana < 60) then var shouldReleaseUsol 1
-            if ("$roomplayers" != "") then var shouldReleaseUsol 1
-            if ($Targeted_Magic.LearningRate > 33) then var shouldReleaseUsol 1
-
-            if (%shouldReleaseUsol = 1) then gosub release usol
-        }
-    } else {
-        if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
-    }
-
-    return
-
-    # 7/11/21 JD - Keeping legacy MM cyclic management here but unreachable until manageCyclics.moonMage is proven
-
-    #STARLIGHT SPHERE
-    if (%useSls = 1 && $Time.isDay = 0) then {
-        var shouldCastSls 1
-        if ($SpellTimer.StarlightSphere.active = 1) then var shouldCastSls 0
-        if ($mana < 80) then var shouldCastSls 0
-        if ($Targeted_Magic.LearningRate >= 27) then var shouldCastSls 0
-        if ($monstercount < 2) then var shouldCastSls 0
-
-        #if ("$charactername" = "Selesthiel") then var shouldCastSls 0
-
-        if (%shouldCastSls = 1) then {
-            gosub prep Sls
-            gosub waitForPrep
-            gosub cast spider in sky
-        }
-
-        if ($SpellTimer.StarlightSphere.active = 1) then {
-            var shouldReleaseSls 0
-            if ($mana < 60) then var shouldReleaseSls 1
-            if ("$roomplayers" != "") then var shouldReleaseSls 1
-            if ($Targeted_Magic.LearningRate > 32) then var shouldReleaseSls 1
-
-            #if ("$charactername" = "Selesthiel") then var shouldReleaseSls 1
-
-            if (%shouldReleaseSls = 1) then gosub release sls
-        }
-    } else {
-        if ($SpellTimer.StarlightSphere.active = 1) then gosub release sls
-    }
-
-    # SHADOW WEB
-    if (%useShw = 1) then {
-        if (!($lastCastShw > -1)) then put #var lastCastShw 0
-
-        var shouldCastShw 1
-        if ($SpellTimer.ShadowWeb.active = 1) then var shouldCastShw 0
-        if ($mana < 80) then var shouldCastShw 0
-        if ($monstercount < 2) then var shouldCastShw 0
-        if ($Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30 || $Evasion.LearningRate < 30) then var shouldCastShw 0
-        if ($SpellTimer.StarlightSphere.active = 1) then var shouldCastShw 0
-
-        if (%shouldCastShw = 1) then {
-            gosub prep shw
-            gosub waitForPrep
-            gosub cast
-        }
-
-        evalmath nextCastShw 300 + $lastCastShw
-
-        if ($SpellTimer.ShadowWeb.active = 1) then {
-            var shouldReleaseShw 0
-            if ($mana < 60) then var shouldReleaseShw 1
-            if ($Parry_Ability.LearningRate < 10 || $Shield_Usage.LearningRate < 10 || $Evasion.LearningRate < 10) then var shouldReleaseShw 1
-            if (%nextCastShw < $gametime) then {
-                var shouldReleaseShw 1
-            }
-
-            if (%shouldReleaseShw = 1) then gosub release shw
-        }
-    }
-
-    return
+    if ("$guild" = "Necromancer") then gosub manageCyclics.necromancer
+	return
 
 
 manageCyclics.cleric:
-    var clericCyclicToUse none
-    if ($char.fight.useGhs = 1) then var clericCyclicToUse ghs
-    if ($char.fight.useRev = 1 && $Warding.LearningRate > 15 && $Utility.LearningRate < 30) then var clericCyclicToUse rev
-	if ($char.fight.useHyh = 1) then var clericCyclicToUse hyh
-
-	#if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80 && $Debilitation.LearningRate < 27) then {
-	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80) then {
+	# HYH
+	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80 && $Debilitation.LearningRate < 27) then {
+	#if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80) then {
 		gosub release cyclic
 		gosub runScript cast hyh male
 	} else {
 		evalmath fight.tmp.nextCastHyhGametime (300 + $char.cast.cyclic.lastCastGametime.hyh)
-		if (%fight.tmp.nextCastHyhGametime < $gametime && $SpellTimer.HydraHex.active = 1) then gosub release hyh
-		#if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 31 || $mana < 60)) then gosub release hyh
+		#if (%fight.tmp.nextCastHyhGametime < $gametime && $SpellTimer.HydraHex.active = 1) then gosub release hyh
+		if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 31 || $mana < 60)) then gosub release hyh
         unvar fight.tmp.nextCastHyhGametime
 	}
-	return
+
+	#return
 
     if ($char.fight.useRev = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
         if ($SpellTimer.GhostShroud.active = 1 || $SpellTimer.HydraHex.active = 1) then gosub release cyclic
+        gosub release cyclic
         gosub runScript cast rev
     } else {
         evalmath timeSinceLastRev ($gametime - $lastCastRev)
@@ -956,6 +862,7 @@ manageCyclics.cleric:
     }
 
     if ($char.fight.useGhs = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80) then {
+        gosub release cyclic
         gosub runScript cast ghs
     } else {
         evalmath timeSinceLastGhs ($gametime - $lastCastGhs)
@@ -964,62 +871,6 @@ manageCyclics.cleric:
 
     return
 
-    # GHOST SHROUD
-    if ($char.fight.useGhs = 1 && "%clericCyclicToUse" = "ghs") then {
-        var shouldCastGhs 1
-        if ($SpellTimer.GhostShroud.active = 1) then var shouldCastGhs 0
-        if ($mana < 80) then var shouldCastGhs 0
-        if ($monstercount < 1) then var shouldCastGhs 0
-
-        if (%shouldCastGhs = 1) then {
-            gosub release cyclic
-            gosub prep ghs 6
-            gosub waitForPrep
-            gosub cast
-        }
-
-        if ($SpellTimer.GhostShroud.active = 1) then {
-            var shouldReleaseGhs 0
-            if ($mana < 60) then var shouldReleaseGhs 1
-
-            evalmath timeSinceLastGhs ($gametime - $lastCastGhs)
-            if (%timeSinceLastGhs > 300) then var shouldReleaseGhs 1
-
-            if (%shouldReleaseGhs = 1) then gosub release ghs
-        }
-    } else {
-        if ($SpellTimer.GhostShroud.active = 1) then gosub release ghs
-    }
-
-    # REVELATION
-    if ($char.fight.useRev = 1  && "%clericCyclicToUse" = "rev") then {
-        var shouldCastRev 1
-        if ($SpellTimer.Revelation.active = 1) then var shouldCastRev 0
-        if ($mana < 80) then var shouldCastRev 0
-        if ($monstercount < 1) then var shouldCastRev 0
-        if ($Utility.LearningRate > 29) then var shouldCastRev 0
-
-        if (%shouldCastRev = 1) then {
-            gosub release cyclic
-            gosub prep rev
-            gosub waitForPrep
-            gosub cast
-        }
-
-        if ($SpellTimer.Revelation.active = 1) then {
-            var shouldReleaseRev 0
-            if ($mana < 60) then var shouldReleaseRev 1
-
-            evalmath timeSinceLastRev ($gametime - $lastCastRev)
-            if (%timeSinceLastRev > 300) then var shouldReleaseRev 1
-
-            if (%shouldReleaseRev = 1) then gosub release rev
-        }
-    } else {
-        if ($SpellTimer.Revelation.active = 1) then gosub release rev
-    }
-
-    return
 
 
 manageCyclics.moonMage:
@@ -1058,6 +909,36 @@ manageCyclics.moonMage:
 	}
 
 	return
+
+
+manageCyclics.necromancer:
+    # USOL
+    if (%useUsol = 1) then {
+        var shouldCastUsol 1
+        if ($SpellTimer.UniversalSolvent.active = 1) then var shouldCastUsol 0
+        if ($mana < 80) then var shouldCastUsol 0
+        if ($Targeted_Magic.LearningRate > 30) then var shouldCastUsol 0
+        if ($monstercount < 2) then var shouldCastUsol 0
+
+        if (%shouldCastUsol = 1) then {
+            gosub prep usol
+            gosub waitForPrep
+            gosub cast creatures
+        }
+
+        if ($SpellTimer.UniversalSolvent.active = 1) then {
+            var shouldReleaseUsol 0
+            if ($mana < 60) then var shouldReleaseUsol 1
+            if ("$roomplayers" != "") then var shouldReleaseUsol 1
+            if ($Targeted_Magic.LearningRate > 33) then var shouldReleaseUsol 1
+
+            if (%shouldReleaseUsol = 1) then gosub release usol
+        }
+    } else {
+        if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
+    }
+
+    return
 
 
 ###############################

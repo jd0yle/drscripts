@@ -54,7 +54,7 @@ put #tvar char.cast.benediction.charge 20
 put #tvar char.cast.benediction.harness 0
 put #tvar char.cast.benediction.chargeTimes 1
 
-put #tvar char.cast.ghs.prep 8
+put #tvar char.cast.ghs.prep 9
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -72,7 +72,7 @@ put #tvar char.cast.pom.prep 250
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 
-put #tvar char.cast.rev.prep 9
+put #tvar char.cast.rev.prep 10
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 

@@ -5,7 +5,7 @@ put awake
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts fourteen
+var expectedNumBolts seven
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
