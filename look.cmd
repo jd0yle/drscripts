@@ -172,6 +172,16 @@ look.teach:
     }
     if ($lib.class = 1) then {
         if ("$class" = "Enchanting") then {
+            if ("%look.target" = "Selesthiel") then {
+                put whisper %look.target Did I forget to give your hearing back to you?  I'm already teaching you, love.
+            } else {
+                put whisper %look.target I'm teaching Enchanting.  You'll listen and you'll like it.
+            }
+            var look.teach 0
+            return
+        }
+        if contains("$class", "%look.topic") then {
+            put whisper %look.target I am already teaching you $class.
             var look.teach 0
             return
         }

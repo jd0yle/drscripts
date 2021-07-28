@@ -1268,6 +1268,17 @@ invoke:
     goto retry
 
 
+join:
+    var location join1
+    var todo $0
+    join1:
+    matchre return glances at you briefly and then steps away
+    matchre return ^You hold out your dueling slip
+    matchre return ^You join
+    put join %todo
+    goto retry
+
+
 juggle:
     var location juggle1
     var todo $0
@@ -1404,6 +1415,7 @@ listen:
     matchre return isn't teaching a class\.
     matchre return isn't teaching you anymore\.
     matchre return ^Who do you want to listen to
+    matchre return ^You've already listened to your surroundings\.
     matchre return ^You are already listening to someone\.
     matchre return ^You are already offering someone else a class
     matchre return ^You begin to listen
@@ -1535,6 +1547,7 @@ observe:
     matchre return ^Roundtime
     matchre return ^That's a bit hard to do here, since you cannot see the sky\.
     matchre return ^You are a bit too distracted
+    matchre return ^You observe your surroundings
     matchre return ^You scan the skies for a few moments\.
     matchre return ^Your search for the constellation
     put observe %todo
@@ -1575,6 +1588,16 @@ order:
     matchre return says, "You can purchase
     matchre return Just order it again
     put order %todo
+    goto retry
+
+
+pace:
+    var location pace1
+    var todo %todo
+    pace1:
+    matchre return ^You pace
+    matchre return ^You weave back
+    put pace %todo
     goto retry
 
 
@@ -2243,6 +2266,16 @@ smell:
     goto retry
 
 
+sneak:
+    var location sneak1
+    var todo $0
+    sneak1:
+    matchre return ^Roundtime
+    matchre return You prepare yourself to sneak
+    put sneak %todo
+    goto retry
+
+
 sprinkle:
     var location sprinkle1
     var todo $0
@@ -2674,6 +2707,15 @@ touch:
     goto retry
 
 
+track:
+    var location track1
+    var todo $0
+    track1:
+    matchre return ^It's not safe enough to track anything\.
+    put track %todo
+    goto retry
+
+
 turn:
     var location turn1
     var todo $0
@@ -2771,6 +2813,18 @@ unwrap:
     matchre return ^You may undo the affects of TENDing to an injured area by using the UNWRAP command to remove the bandages\.
     matchre return ^You unwrap your bandages\.
     put unwrap my %todo
+    goto retry
+
+
+watch:
+    var location watch1
+    var todo $0
+    watch1:
+    matchre return ^You are not currently watching anything\.
+    matchre return ^You begin watching for the presence
+    matchre return ^You feel too distracted to be on the lookout for somebody again right now\.
+    matchre return You see something entering the area\.
+    put watch %todo
     goto retry
 
 

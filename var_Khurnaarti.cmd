@@ -111,8 +111,8 @@ put #tvar char.fight.tmPause 7
 # ------ WEAPONS ------
 #put #tvar char.fight.weapons.items assassin's blade|blue sling
 #put #tvar char.fight.weapons.skills Small_Edged|Slings
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt
 put #tvar char.fight.wornCrossbow 0
 
 # ------ ARMOR ------
@@ -137,7 +137,7 @@ put #tvar char.fight.useMaf 1
 
 # ------ MOON MAGE ------
 put #tvar char.fight.useCol 1
-put #tvar char.fight.useObserve 0
+put #tvar char.fight.useObserve 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
@@ -157,7 +157,7 @@ put #tvar super.enemies null
 ###      LOCKSMITHING
 ###############################
 put #tvar char.locks.boxTypes jewelry box|keepsake box
-put #tvar char.locks.boxType jewelry box
+put #tvar char.locks.boxType box
 put #tvar char.locks.lockpickType ring
 put #tvar char.locks.boxContainer shadows
 
@@ -240,7 +240,7 @@ put #tvar char.performance.mood quiet
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
 put #tvar char.repair.leather demonscale armguard|demonscale shield|cotton mask|cotton hood|cotton gloves
-put #tvar char.repair.metal diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|chain shirt|chain greaves
+put #tvar char.repair.metal diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst hauberk|flamewood riste|assassin's blade
 
 
 ###############################
