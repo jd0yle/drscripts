@@ -41,6 +41,9 @@ put #tvar char.cast.default.chargeTimes 1
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
 
+put #tvar char.cast.rs.prep 40
+put #tvar char.cast.rs.charge 80
+
 put #tvar char.cast.shw.prep 25
 put #tvar char.cast.shw.charge 0
 
@@ -87,7 +90,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debil.spell mb
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 20
+put #tvar char.fight.debil.prepAt 40
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -116,6 +119,9 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
+#put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata|Imperial spear|flamewood riste
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown|Polearms|Twohanded_Blunt
+
 put #tvar char.fight.weapons.items Empty|Empty|haralun scimitar|hunting bola|competition crossbow|ka'hurst hhr'ata|Imperial spear
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Light_Thrown|Crossbow|Heavy_Thrown|Polearms
 
@@ -147,7 +153,7 @@ put #tvar char.fight.useObserve 1
 put #tvar char.fight.useRevSorcery 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
-put #tvar char.fight.useShadows 1
+put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 1
 

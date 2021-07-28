@@ -34,7 +34,7 @@ if ("%obj" != "door") then {
     if (contains("$roomobjs", "sandalwood door") then var closeObj door
     if (contains("$roomobjs", "bothy") then var closeObj bothy
     gosub close %closeObj
-    gosub lock %closeObj
+    if ("$charactername" = "Selesthiel" || "$charactername" = "Inauri") then gosub lock %closeObj
 }
 
 pause .2
