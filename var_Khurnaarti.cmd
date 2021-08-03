@@ -73,6 +73,12 @@ put #tvar char.cast.dc.prep 50
 
 
 ###############################
+###      COMMON
+###############################
+put #tvar char.common.scripts magic|research
+
+
+###############################
 ###      FIGHT
 ###############################
 # ------ AMMO ------
@@ -137,7 +143,7 @@ put #tvar char.fight.useMaf 1
 
 # ------ MOON MAGE ------
 put #tvar char.fight.useCol 1
-put #tvar char.fight.useObserve 1
+put #tvar char.fight.useObserve 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
@@ -209,13 +215,11 @@ put #tvar char.predict.tool.container shadows
 put #tvar char.observe.telescope powdery telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh
-put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi
+put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh|forge
+put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi|forge
 put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia|Amlothi|Dawgolesh
-put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda
-put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena
-#off/surv 90 Er'qutra
-#lore/off/def 100 forge
+put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda|Er'qutra|forge
+put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena|Er'qutra
 #magic/lore/off/def/surv 125 eye
 put #tvar char.observe.predict 1
 

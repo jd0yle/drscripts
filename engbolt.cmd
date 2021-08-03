@@ -98,7 +98,7 @@ engbolt.boltheads:
             put #echo >Log [engbolt] Missing shaper.
             goto engbolt.exit
         }
-        gosub shape bolt with shaper
+        gosub shape my bolt with shaper
         pause .2
         goto engbolt.boltheadsLoop
 
