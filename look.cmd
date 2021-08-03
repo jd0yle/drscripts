@@ -13,10 +13,10 @@ if ("$charactername" = "Inauri") then {
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
     action var look.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
+    action var look.teach 1; var look.topic $2 ; var look.target $1 when ^($friends) whispers, "teach (.*)"$
     action var look.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
     action goto look.vitalityHeal when eval $health < 30
 }
-action var look.teach 1; var look.topic $2 ; var look.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur|Izqhhrzu) whispers, "teach (.*)"$
 
 
 ###############################
@@ -32,7 +32,7 @@ var look.target 0
 var look.teach 0
 var look.topic 0
 
-if !matchre("$scriptlist", "reconnect") then {
+if !(matchre("$scriptlist", "reconnect")) then {
     put .reconnect
 }
 ###############################
@@ -59,7 +59,7 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-    if (matchre("$scriptlist", "($char.common.scripts))")) then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
@@ -89,7 +89,7 @@ look.healWound:
         put #var inauri.heal 0
         goto look.loop
     }
-    if (matchre("$scriptlist", "($char.common.scripts))")) then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
@@ -172,7 +172,7 @@ look.resumeScript:
 
 
 look.teach:
-    if (matchre("$scriptlist", "($char.common.scripts))")) then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
@@ -204,7 +204,7 @@ look.teach:
 
 
 look.vitalityHeal:
-    if (matchre("$scriptlist", "($char.common.scripts))")) then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }

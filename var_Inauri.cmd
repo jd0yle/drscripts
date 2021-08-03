@@ -94,8 +94,8 @@ put #tvar char.craft.workorder.item burin
 ###      FRIENDS
 ###############################
 put #tvar friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh|Izqhhrzu|Khurnaarti)
-put #tvar enemies (Kattena|Nideya|Psaero|Zehira)
-put #tvar super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
+put #tvar enemies (Nideya|Psaero)
+put #tvar super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Kattena|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
 
 
 ###############################
