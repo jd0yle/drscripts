@@ -8,7 +8,9 @@ put #tvar char.appraise.item my gem pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor demonscale leathers|demonscale gloves|demonscale shield|demonscale helm|demonscale mask|calcified femur
+#put #tvar char.armor demonscale leathers|demonscale gloves|demonscale shield|demonscale helm|demonscale mask|calcified femur
+#put #tvar char.armor demonscale leathers|ka'hurst gloves|demonscale shield|ka'hurst balaclava|calcified femur
+put #tvar char.armor demonscale leathers|chain gloves|demonscale shield|chain balaclava|calcified femur
 
 
 ###############################
@@ -116,8 +118,8 @@ put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|assassin's blade|ka'hurst hhr'ata|frying pan|spiritwood lockbow|diamondwood nightstick|kertig maul
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Small_Edged|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Twohanded_Blunt
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor

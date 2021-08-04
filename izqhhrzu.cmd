@@ -21,6 +21,7 @@ action var numBolts $1 when ^You count some.*bolts in the.*and see there are (.*
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
 
+gosub awake
 
 timer start
 

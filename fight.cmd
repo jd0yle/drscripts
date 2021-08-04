@@ -391,6 +391,10 @@ buffs:
     }
 
     # CLERIC
+    if ($char.fight.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && $SpellTimer.OsrelMeraud.duration < 50) then {
+        gosub runScript cast om orb
+        return
+    }
     if ($char.fight.useBenediction = 1 && ($SpellTimer.Benediction.active != 1 || $SpellTimer.Benediction.duration < 2)) then {
         gosub runScript cast benediction
         return

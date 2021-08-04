@@ -5,7 +5,7 @@ put awake
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts seven
+var expectedNumBolts twenty-six
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -15,10 +15,11 @@ action send $lastcommand when ^You can't move in that direction while unseen.
 action send listen to $1 observe when ^(\S+) begins to lecture
 action send listen to $2 observe when ^(\S+) begins to listen to (\S+)
 
-action send stop listen; send teach sorcery to izqhhrzu when eval contains("$roomplayers", "Izqhhrzu")
+#action send stop listen; send teach sorcery to izqhhrzu when eval contains("$roomplayers", "Izqhhrzu")
 #action send stop listen;send stop teach; send listen to inauri observe; send 3 listen to selesthiel observe when eval !contains("$roomplayers", "Izqhhrzu")
 
 action send unlock door; send open door when ^(?:Qizhmur's|Khurnaarti's|Izqhhrzu's) face appears in the
+action goto houseDelay when ^\.\.\.All this activity is beginning to make you tired\.$
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
 
@@ -94,7 +95,7 @@ main:
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
         put exp 0 all
-        put #echo >Log #cc99ff Train: Going to burgle
+        put #echo >Log #cc99ff Going to burgle
 
         gosub moveToBurgle
         gosub runScript tend
@@ -162,8 +163,9 @@ main:
         put .afk
     }
 
-    startFight:
-    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
+    startFight:        
+    #if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
+    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Targeted_Magic.LearningRate < 29 || $Brawling.LearningRate < 29 || $Small_Edged.LearningRate < 29 || $Heavy_Thrown.LearningRate < 29 || $Light_Thrown.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Staves.LearningRate < 29 || $Twohanded_Blunt.LearningRate < 29) then {
 		echo GONNA GO FIGHT
 		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
         gosub waitForRepair
@@ -198,7 +200,7 @@ main:
 		        gosub teach tm to inauri
 		    }
 		}
-
+echo tending
 		gosub runScript tend
 
         if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
@@ -287,7 +289,9 @@ healWithRats:
 
 sorceryDevour:
     if ($SpellTimer.Devour.duration > 20) then return
+    echo GOING TO DEVOUR FCRAT
     if ("$roomname" = "Private Home Interior") then gosub runScript house
+
     gosub runScript findSpot fcrat
     gosub runScript devourfcrat
     goto sorceryDevour
@@ -312,6 +316,24 @@ castSpellsForMove:
         gosub cast
     }
     return
+
+
+houseDelay:
+	put #echo >log #99FF01 TOO MUCH HOUSE, DELAYING
+	gosub release cyclic
+	gosub runScript cast rog
+	gosub prep eotb
+	pause 3
+	gosub cast
+	pause 60
+	gosub perc
+	pause 60
+    gosub perc
+    pause 60
+    gosub perc
+	pause 60
+	gosub perc
+	put .qizhmur
 
 
 moveToAdanf:
@@ -666,8 +688,6 @@ enterHouse:
     gosub move go bothy
     return
 
-
-
 enterHouseCont:
     gosub open bothy
     gosub move go bothy
@@ -850,6 +870,8 @@ moveToWarklin:
 setZone:
     var zone $zoneid
 
+	if ("$roomname" = "Private Home Interior") then return
+
     if ("$roomname" = "Belarritaco Bay, The Galley Dock") then var zone 108
     if ("$roomname" = "Mer'Kresh, The Galley Dock") then var zone 107
     if ("$roomname" = "The Galley Sanegazat") then var zone 107a
@@ -916,9 +938,8 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
-        echo WAITLOOPDONE
-        echo ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30)
+    #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 32 && $Shield_Usage.LearningRate > 32 && $Evasion.LearningRate > 32 && $Targeted_Magic.LearningRate > 32 && $Brawling.LearningRate > 32 && $Small_Edged.LearningRate > 32 && $Heavy_Thrown.LearningRate > 32 && $Light_Thrown.LearningRate > 32 && $Crossbow.LearningRate > 32 && $Staves.LearningRate > 32 && $Twohanded_Blunt.LearningRate > 32)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk

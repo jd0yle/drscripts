@@ -17,7 +17,8 @@ put #tvar char.appraise.item diamondique hhr'ata
 ###      ARMOR
 ###############################
 #put #tvar char.armor ash leathers|ash gloves|ash cowl|demonscale shield|parry stick
-put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|parry stick
+#put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|parry stick
+put #tvar char.armor ka'hurst hauberk|moonsilk gloves|moonsilk mask|moonsilk hood|demonscale shield|parry stick
 
 
 ###############################
@@ -67,6 +68,10 @@ put #tvar char.cast.mapp.charge 20
 put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
+put #tvar char.cast.om.prep 30
+put #tvar char.cast.om.charge 10
+put #tvar char.cast.om.chargeTimes 1
+
 put #tvar char.cast.pom.prep 250
 
 put #tvar char.cast.rejuv.prep 5
@@ -87,17 +92,14 @@ put #tvar char.cast.pfe.harness 0
 put #tvar char.cast.pfe.chargeTimes 2
 
 ###############################
-###      COMBAT
+###      CRAFTING
 ###############################
-put #tvar char.combat.spell.Debilitation 0
-put #tvar char.combat.prep.Debilitation 0
-put #tvar char.combat.charge.Debilitation 0
-put #tvar char.combat.harness.Debilitation 0
+put #tvar char.craft.container $char.inv.defaultContainer
+put #tvar char.craft.default.container $char.inv.defaultContainer
+put #tvar char.craft.tool.container $char.inv.defaultContainer
 
-put #tvar char.combat.spell.Targeted_Magic 0
-put #tvar char.combat.prep.Targeted_Magic 0
-put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 0
+put #tvar char.craft.workorder.item burin
+#put #tvar char.craft.item burin
 
 
 ###############################
@@ -141,18 +143,20 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell horn
+#put #tvar char.fight.tmSpell horn
+put #tvar char.fight.tmSpell fs
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 10
+#put #tvar char.fight.tmPrep 10
+put #tvar char.fight.tmPrep 6
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 10
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling
-put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings
+put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
+put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
@@ -184,6 +188,7 @@ put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
+put #tvar char.fight.useOm 1
 put #tvar char.fight.usePfe 0
 put #tvar char.fight.useRev 1
 put #tvar char.fight.useSap 0
@@ -259,7 +264,7 @@ put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.usePom 1
 put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0
-put #tvar char.magic.train.useInvokeSpell 0
+put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.usePray 1
 put #tvar char.magic.train.prayTarget Huldah

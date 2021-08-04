@@ -80,7 +80,7 @@ if ("%mob" = "kobold") then {
 if ("%mob" = "juvenilewyvern") then {
     var minRoomId 452
     var maxRoomId 463
-    var waitroomid 435
+    var waitroomid 388
 }
 
 if ("%mob" = "leucro") then {
@@ -109,7 +109,7 @@ if ("%mob" = "warklin") then {
 if ("%mob" = "wyvern") then {
     var minRoomId 567
     var maxRoomId 572
-    var waitroomid 435
+    var waitroomid 388
 }
 
 if ("%mob" = "wyvern2") then {
@@ -154,6 +154,7 @@ checkThisRoom:
             }
             gosub automove %waitroomid
             gosub hide
+            put #echo >Log #FFCC01 [findSpot] No open %mob room
             echo ******************************
             echo * COULD NOT FIND OPEN ROOM
             echo * WAITING 120 SECONDS

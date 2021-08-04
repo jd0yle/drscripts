@@ -37,7 +37,7 @@ var eng.craft.numberNeeded %1
 var eng.cut 0
 var eng.page 0
 
-put .look
+if ("$charactername" = "Inauri") then put .look
 gosub store default $char.craft.container
 goto eng.finishItem
 

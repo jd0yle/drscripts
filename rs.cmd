@@ -8,7 +8,7 @@ if_1 then {
 	exit
 }
 
-if ($SpellTimer.BraunsConjecture.active != 1 || $SpellTimer.BraunsConjecture.duration < 5) then gosub runScript cast bc
+#if ($SpellTimer.BraunsConjecture.active != 1 || $SpellTimer.BraunsConjecture.duration < 5) then gosub runScript cast bc
 if ($SpellTimer.ClearVision.active != 1 || $SpellTimer.ClearVision.duration < 5) then gosub runScript cast cv
 
 gosub prep locate 50

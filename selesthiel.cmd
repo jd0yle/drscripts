@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty
+var expectedNumBolts twenty-five
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -26,8 +26,13 @@ action (checkTeach) var isInClass 1 when You are in this class
 
 action put exp mods when ^Your spell.*backfire.*
 
+action send release rf when ^You can't move in that direction while unseen\.$
+
+action goto selesthiel.arrested when ^"Stop right there!"
+
 if_1 then {
     if ("%1" = "fight") then var startAt fight
+    if ("%1" = "magic") then var startAt magic
 }
 
 
@@ -53,6 +58,10 @@ timer start
 if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
 if ("%startAt" = "fight") then goto startFight
+if ("%startAt" = "magic") then
+	echo starting at magic
+	goto startMagic
+}
 
 main:
     gosub abortScripts
@@ -132,7 +141,8 @@ main:
     # Magic
     startMagic:
     #if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
-    if ($bleeding = 1 || $Warding.LearningRate < 20) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 20 || %startMagic = 1) then {
+        var startMagic 0
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
         gosub getHealed
@@ -150,7 +160,7 @@ main:
             }
         }
 
-        if ($First_Aid.LearningRate < 10) then gosub runScript textbook
+        #if ($First_Aid.LearningRate < 10) then gosub runScript textbook
 
         put #echo >Log #00ffff Magic start - Warding: $Warding.LearningRate/34
         put .magic
@@ -224,11 +234,12 @@ checkTeaching:
 		action (checkTeach) on
 		var isInClass 0
 		put assess teach
-		pause 3
+		pause 6
 		if (%isInClass != 1) then {
 			if (contains("$roomplayers", "Inauri") then {
 		        if ($Enchanting.LearningRate < 30) then {
 		            gosub whisper inauri teach enchanting
+		            pause 10
 		        } else {
 		            gosub stop teach
 		            gosub stop listen
@@ -731,6 +742,7 @@ waitForMagicLoop:
 
 waitForMainCombat:
     pause 2
+    if ("$zoneid" != "69") then put .selesthiel
     put #script abort all except selesthiel
     put .reconnect
     put .afk
@@ -756,6 +768,19 @@ waitForMainCombatLoop:
     pause 2
     goto waitForMainCombatLoop
 
+
+selesthiel.arrested:
+	echo
+	echo ****************************
+	echo ** ARRESTED
+	echo ****************************
+	echo
+	put #echo >Log #FF0000 ARRESTED!
+	put exit
+	put #script abort all except selesthiel
+	put exit
+    put #script abort all except selesthiel
+    exit
 
 logout:
     put exit
