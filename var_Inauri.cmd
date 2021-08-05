@@ -75,6 +75,12 @@ put #tvar char.cast.pop.harness 0
 
 
 ###############################
+###      COMMON
+###############################
+put #tvar char.common.scripts engineer|magic|research|engbolt
+
+
+###############################
 ###      CRAFTING
 ###############################
 put #tvar char.craft.container workbag
@@ -88,8 +94,8 @@ put #tvar char.craft.workorder.item burin
 ###      FRIENDS
 ###############################
 put #tvar friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh|Izqhhrzu|Khurnaarti)
-put #tvar enemies (Kattena|Nideya|Psaero|Zehira)
-put #tvar super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
+put #tvar enemies (Nideya|Psaero)
+put #tvar super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Kattena|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
 
 
 ###############################
@@ -140,6 +146,7 @@ put #tvar char.repair.money 10
 put #tvar char.repair.leather moonsilk shirt|moonsilk pants|demonscale shield
 #put #tvar char.repair.metal jagged scythe|assassin's blade|ka'hurst hhr'ata|frying pan|chain balaclava|chain gloves|wood shaper|tapered rasp|carving knife|metal drawknife|basic stamp
 put #tvar char.repair.metal wood shaper|tapered rasp|carving knife|metal drawknife|basic stamp
+
 
 ###############################
 ###      RESEARCH

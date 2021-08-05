@@ -7,15 +7,16 @@ if ("$charactername" = "Inauri") then {
     #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
     action var look.openDoor 1 when ^($friends)'s face appears in the
     action goto look.houseMove when ^($friends) whispers, "inside|^($friends) whispers, "outside
+    action var look.wounds 0 when \.\.\. no injuries to speak of\.
     action var look.openDoor 0 when ^(\S+) opens the door\.
     action var look.disease 1 when ^(Her|His) wounds are infected\.$
     action var look.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
     action var look.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
     action var look.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
+    action var look.teach 1; var look.topic $2 ; var look.target $1 when ^($friends) whispers, "teach (.*)"$
     action var look.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
     action goto look.vitalityHeal when eval $health < 30
 }
-action var look.teach 1; var look.topic $2 ; var look.target $1 when ^(Khurnaarti|Selesthiel|Qizhmur|Izqhhrzu) whispers, "teach (.*)"$
 
 
 ###############################
@@ -31,7 +32,7 @@ var look.target 0
 var look.teach 0
 var look.topic 0
 
-if !matchre("$scriptlist", "reconnect") then {
+if !(matchre("$scriptlist", "reconnect")) then {
     put .reconnect
 }
 ###############################
@@ -58,7 +59,7 @@ look.loop:
 ###    METHODS
 ###############################
 look.door:
-    if matchre("$scriptlist", "engineer|magic|engbolt") then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
@@ -88,19 +89,24 @@ look.healWound:
         put #var inauri.heal 0
         goto look.loop
     }
-    if matchre("$scriptlist", "engineer|magic|engbolt|research") then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
+    var look.wounds 1
     gosub redirect all to left leg
     gosub touch $inauri.healTarget
-    gosub take $inauri.healTarget ever quick
-    if (%look.vitality = 1) then {
-        gosub touch $inauri.healTarget
-        gosub take $inauri.healTarget vitality quick
-        var look.vitality 0
+    if (%look.wounds = 1 || %look.vitality = 1) then {
+        if (%look.vitality = 1) then {
+            gosub take $inauri.healTarget vitality quick
+            var look.vitality 0
+        }
+        gosub take $inauri.healTarget ever quick
+        put #var inauri.heal 0
+        var look.wounds 0
+    } else {
+        gosub whisper $inauri.healTarget You have no wounds.
     }
-    put #var inauri.heal 0
     goto look.loop
 
 
@@ -166,16 +172,18 @@ look.resumeScript:
 
 
 look.teach:
-    if matchre("$scriptlist", "engineer|magic|research") then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }
     if ($lib.class = 1) then {
+        gosub assess teach
         if ("$class" = "Enchanting") then {
             if ("%look.target" = "Selesthiel") then {
-                put whisper %look.target Did I forget to give your hearing back to you?  I'm already teaching you, love.
+                put kiss Selesthiel forehead
             } else {
-                put whisper %look.target I'm teaching Enchanting.  You'll listen and you'll like it.
+                put stare %look.target
+                put shake head inauri
             }
             var look.teach 0
             return
@@ -196,7 +204,7 @@ look.teach:
 
 
 look.vitalityHeal:
-    if matchre("$scriptlist", "engineer|magic") then {
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $1
         put #script abort $inauri.subScript
     }

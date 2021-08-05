@@ -14,11 +14,13 @@ include libmaster.cmd
 ###############################
 action goto khurnaarti.houseEnter when ^(.*)suddenly opens\!$
 action var khurnaarti.houseOpen 1 when ^(.*)suddenly rattles\!$
+#action var khurnaarti.houseOpen 1 when ^(.*)suddenly slams shut\!
+#action #send peer bothy when ^The door to a little fieldstone bothy suddenly closes\!
 action var khurnaarti.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var khurnaarti.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$
-action var khurnaarti.needHeal 1 ; goto khurnaarti.loop when eval $vitality < 60
+action var khurnaarti.needHeal 1 ; goto khurnaarti.loop when eval $bleeding = 1
 action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel|Izqhhrzu)'s face appears in the
 action var khurnaarti.openDoor 0 when ^(\S+) opens the door\.
 action put #var lib.student 0 when ^Inauri stops teaching\.$
@@ -116,7 +118,7 @@ khurnaarti.arcana:
 
 
 khurnaarti.astrology:
-    if !matchre("$righthand|$lefthand", "Empty") then {
+    if !(matchre("$righthand|$lefthand", "Empty")) then {
         gosub stow
         gosub stow left
     }
@@ -222,7 +224,7 @@ khurnaarti.compendium:
     if (%nextCompendiumAt > $gametime) then {
         return
     }
-    if !matchre("$righthand|$lefthand", "Empty") then {
+    if !(matchre("$righthand|$lefthand", "Empty")) then {
         gosub stow
         gosub stow left
     }
@@ -237,7 +239,7 @@ khurnaarti.compendium:
 khurnaarti.door:
     if (%khurnaarti.openDoor = 1) then {
         if !(contains("$roomplayers", "Selesthiel") || contains("$roomplayers", "Inauri")) then {
-            if matchre("$scriptlist", "magic|research|compendium") then {
+            if (matchre("$scriptlist", "($char.common.scripts))")) then {
                 put #tvar khurnaarti.subScript $1
                 put #script abort $khurnaarti.subScript
             }
@@ -427,11 +429,11 @@ khurnaarti.restart:
 
 
 khurnaarti.scriptCheck:
-    if !matchre("$scriptlist", "reconnect") then {
+    if !(matchre("$scriptlist", "reconnect")) then {
         put .reconnect
     }
 
-    if !matchre("$scriptlist", "afk") then {
+    if !(matchre("$scriptlist", "afk")) then {
         put .afk
     }
     return

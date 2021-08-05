@@ -1,9 +1,8 @@
 include libmaster.cmd
 ###############################
 # Lockpick Practice Boxes
-#
-# Used by .khurnaarti (30APR2021)
 ###############################
+
 
 ###############################
 ###    IDLE ACTIONS
@@ -73,34 +72,36 @@ pb.countDone:
 ###    MAIN
 ###############################
 pb.main:
-    if (%pb.newBox = 1) then {
-        if matchre("$righthand", "($char.locks.boxTypes)") then {
-            gosub put my $righthand in my bucket
-        }
-        if matchre("$lefthand", "($char.locks.boxTypes)") then {
-            gosub put my $lefthand in my bucket
-        }
-        gosub tap my bucket
-        gosub tap my bucket
-        gosub get my $char.locks.boxTypes(1)
-        if ("$righthand" = "Empty") then {
-            gosub get my $char.locks.boxTypes(2)
-        }
-        if ("$righthand" = "Empty") then {
-            put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
-            put #var pb.haveBox 1
-            put #var lastPracticeBoxGametime $gametime
-            goto pb.exit
-        }
-        if ("$char.locks.lockpickType" <> "ring") then {
-            if ("$lefthandnoun" <> "lockpick") then {
-                gosub get my lockpick
-            }
+    if matchre("$righthand", "($char.locks.boxTypes)") then {
+        gosub put my $righthand in my bucket
+    }
+    if matchre("$lefthand", "($char.locks.boxTypes)") then {
+        gosub put my $lefthand in my bucket
+    }
+    gosub tap my bucket
+    gosub tap my bucket
+    gosub get my $char.locks.boxTypes(1)
+    if ("$righthand" = "Empty") then {
+        gosub get my $char.locks.boxTypes(2)
+    }
+    if ("$righthand" = "Empty") then {
+        put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.
+        put #var pb.haveBox 1
+        put #var lastPracticeBoxGametime $gametime
+        goto pb.exit
+    }
+    if ("$char.locks.lockpickType" <> "ring") then {
+        if ("$lefthandnoun" <> "lockpick") then {
+            gosub get my lockpick
         }
     }
+
+
+pb.loop:
     gosub lock my $char.locks.boxType
     gosub pick my $char.locks.boxType
-    if ($Locksmithing.LearningRate < 30) then goto pb.main
+    if (%pb.newBox = 1) then goto pb.main
+    if ($Locksmithing.LearningRate < 30) then goto pb.loop
     goto pb.exit
 
 
