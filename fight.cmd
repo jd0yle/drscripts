@@ -245,9 +245,12 @@ loop:
         }
 
         if (%continue = 1) then {
-            gosub analyze
-            var lastAnalyzeTimeAt $gametime
-            if (evalmath($gametime - %lastAnalyzeTime) > 60) then gosub analyze
+            #gosub analyze
+
+            if (evalmath($gametime - %lastAnalyzeTime) > 60) then {
+                gosub analyze
+                var lastAnalyzeTimeAt $gametime
+            }
             if (%doAnalyze = 0) then gosub attackAnalyzed
         }
 
@@ -274,13 +277,29 @@ attackAnalyzed:
     gosub debil
     gosub checkHide
 
+	var doOffhand 0
+	var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
+
+	if ($char.fight.trainOffhand = 1) then {
+		if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") then var doOffhand 1
+		if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
+	}
+
     attackLoop:
-        gosub attack %attacks(%index)
+        if (%doOffhand = 1) then {
+            if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
+            gosub attack %attacks(%index) left
+        } else {
+            gosub attack %attacks(%index)
+        }
         math index add 1
-        if (%index > %length) then return
+        if (%index > %length) then goto attackAnalyzedDone
         goto attackLoop
 
 
+attackAnalyzedDone:
+	if (%doOffhand = 1 && "$lefthand" != "Empty") then gosub swap
+	return
 
 ###############################
 ###      attackCrossbow
@@ -327,16 +346,37 @@ attackCrossbow:
 attackThrownWeapon:
     if ("%weapons.items(%weapons.index)" != "Empty") then { # Empty thrown weapons means using throwing blades
         if ("$righthand" != "%weapons.items(%weapons.index)" ) then {
+            gosub stow right
+            gosub stow left
             gosub stow my %weapons.items(%weapons.index)
             gosub get my %weapons.items(%weapons.index)
         }
 
         gosub debil
         gosub checkHide
+
+		var doOffhand 0
+		var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
+
+
+
+		if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32) then {
+			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") then {
+				var doOffhand 1
+			}
+		}
+
+		var throwCommand throw
+		if (%doOffhand = 1) then var throwCommand throw left
+
+
         if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata" || "$righthandnoun" = "pan" || "$righthandnoun" = "wand" || "$righthandnoun" = "naphtha") then {
-            gosub attack throw
+            if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
+            gosub attack %throwCommand
             gosub get %weapons.items(%weapons.index)
-            gosub attack throw
+
+            if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
+            gosub attack %throwCommand
             gosub get %weapons.items(%weapons.index)
         } else {
             gosub attack lob
@@ -345,7 +385,11 @@ attackThrownWeapon:
             gosub get %weapons.items(%weapons.index)
         }
         if ("$righthand" != "%weapons.items(%weapons.index)" ) then {
-            gosub get my %weapons.items(%weapons.index)
+            if ("$lefthand" = "%weapons.items(%weapons.index)") then {
+                gosub swap
+            } else {
+                gosub get my %weapons.items(%weapons.index)
+            }
         }
     } else {
         if (!contains("$righthand", "throwing blade")) then gosub stow right
@@ -596,6 +640,7 @@ checkWeaponSkills:
 
     if ("%handItem" != "%weapons.items(%weapons.index)") then {
         gosub stow right
+        gosub stow left
         if ("%weapons.items(%weapons.index)" != "Empty" && "%weapons.skills(%weapons.index)" != "Targeted_Magic") then {
             gosub get my %weapons.items(%weapons.index)
 

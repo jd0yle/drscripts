@@ -54,6 +54,10 @@ put #tvar char.cast.php.prep 20
 put #tvar char.cast.php.charge 20
 put #tvar char.cast.php.chargeTimes 4
 
+put #tvar char.cast.rog.prep 20
+put #tvar char.cast.rog.charge 0
+put #tvar char.cast.rog.chargeTimes 0
+
 ###############################
 ###      COMBAT
 ###############################
@@ -120,6 +124,8 @@ put #tvar char.fight.tmPause 5
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings
+
+put #tvar char.fight.trainOffhand 1
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor

@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts twenty-five
+var expectedNumBolts ten
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -240,6 +240,7 @@ checkTeaching:
 		        if ($Enchanting.LearningRate < 30) then {
 		            gosub whisper inauri teach enchanting
 		            pause 10
+		            gosub whisper inauri heal
 		        } else {
 		            gosub stop teach
 		            gosub stop listen

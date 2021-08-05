@@ -9,6 +9,7 @@ action goto logout when eval $dead = 1
 
 action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
+action (health) goto getHealedTrigger when ^GETHEALED
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
@@ -354,8 +355,8 @@ getHealed:
         if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
         eval nextHealTime (300 + $lastHealedGametime)
 
-        if ($bleeding = 1) then {
-            gosub runScript house
+        #if ($bleeding = 1) then {
+            if ("$roomname" = "Private Home Interior") then gosub runScript house
 
             gosub automove heal
             put join list
@@ -364,7 +365,7 @@ getHealed:
 
             gosub getHealedCont
 
-        }
+        #}
     }
     return
 
@@ -465,6 +466,7 @@ sorceryDevour:
 
 
 castSpellsForMove:
+	return
     if ("$preparedspell" != "None") then gosub release spell
     if ($Warding.LearningRate < $Utility.LearningRate) then {
         if ($SpellTimer.GhostShroud.active != 1) then {

@@ -38,7 +38,7 @@ var spell %1
 if_2 then {
     var target %2
 } else {
-    if (!matchre("%spell", "%noTargetSpells") then var target $charactername
+    if (!matchre("%spell", "%noTargetSpells")) then var target $charactername
 }
 
 
@@ -66,6 +66,10 @@ if ("%spell" = "col") then {
     }
 }
 
+if ("%spell" = "om") then {
+	var target orb
+}
+
 # Init to character spell defaults
 var prepAt $char.cast.default.prep
 var charge $char.cast.default.charge
@@ -85,6 +89,15 @@ if (!(%chargeTimes > -1)) then var chargeTimes 1
 if (!(%harness > -1)) then var harness 0
 
 if (%useCambrinth = 0 || %charge = 0 || %chargeTimes = 0) then var useCambrinth 0
+
+if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
+	evalmath prepAt (%prepAt + (%charge * %chargeTimes))
+	var charge 0
+	var chargeTimes 0
+	var useCambrinth 0
+
+	echo USING OM, prepAt %prepAt, charge %charge, chargeTimes %chargeTimes
+}
 
 gosub prep %spell %prepAt
 
@@ -133,10 +146,14 @@ gosub waitForPrep
 
 if ("%spell" = "devour") then gosub get my material
 
-if ("%target" != "0arget") then {
-    gosub cast %target
+if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
+	gosub touch orb
 } else {
-    gosub cast
+	if ("%target" != "0arget") then {
+	    gosub cast %target
+	} else {
+	    gosub cast
+	}
 }
 
 goto done

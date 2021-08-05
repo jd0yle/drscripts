@@ -120,6 +120,9 @@ main:
         }
         #gosub automove leth
         #gosub automove portal
+
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
         gosub automove n gate
         gosub automove portal
 
@@ -157,6 +160,7 @@ main:
         #gosub waitForRepair
 
         gosub automove 50
+        put #tvar powerwalk 0
         pause 1
         put .qizhmur
         put .reconnect
@@ -705,11 +709,12 @@ moveToMagic:
 
     # FC
     if ("$zoneid" = "150") then {
+        put #tvar powerwalk 0
         if ($roomid = 50) then {
             gosub runScript house
             goto moveToMagic
+            return
         }
-		put #tvar powerwalk 0
         if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
         gosub automove 50
         goto moveToMagic

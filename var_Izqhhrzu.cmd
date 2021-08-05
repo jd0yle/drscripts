@@ -50,21 +50,28 @@ put #tvar char.cast.default.charge 25
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 2
 
+put #tvar char.cast.useOm 1
+put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
+
 put #tvar char.cast.benediction.prep 15
-put #tvar char.cast.benediction.charge 20
+put #tvar char.cast.benediction.charge 30
 put #tvar char.cast.benediction.harness 0
 put #tvar char.cast.benediction.chargeTimes 1
+
+put #tvar char.cast.centering.prep 1
+put #tvar char.cast.centering.charge 20
+put #tvar char.cast.centering.chargeTimes 4
 
 put #tvar char.cast.ghs.prep 9
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
-put #tvar char.cast.hyh.prep 6
+put #tvar char.cast.hyh.prep 7
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
 put #tvar char.cast.mapp.prep 5
-put #tvar char.cast.mapp.charge 20
+put #tvar char.cast.mapp.charge 25
 put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
@@ -72,7 +79,7 @@ put #tvar char.cast.om.prep 30
 put #tvar char.cast.om.charge 10
 put #tvar char.cast.om.chargeTimes 1
 
-put #tvar char.cast.pom.prep 250
+put #tvar char.cast.pom.prep 300
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
@@ -82,9 +89,9 @@ put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 15
+put #tvar char.cast.sol.charge 13
 put #tvar char.cast.sol.harness 0
-put #tvar char.cast.sol.chargeTimes 1
+put #tvar char.cast.sol.chargeTimes 2
 
 put #tvar char.cast.pfe.prep 5
 put #tvar char.cast.pfe.charge 15
@@ -149,7 +156,7 @@ put #tvar char.fight.tmSpell fs
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 #put #tvar char.fight.tmPrep 10
-put #tvar char.fight.tmPrep 6
+put #tvar char.fight.tmPrep 5
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 10
@@ -157,6 +164,11 @@ put #tvar char.fight.tmPause 10
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+
+#put #tvar char.fight.weapons.items diamondique hhr'ata
+#put #tvar char.fight.weapons.skills Heavy_Thrown
+
+put #tvar char.fight.trainOffhand 1
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
