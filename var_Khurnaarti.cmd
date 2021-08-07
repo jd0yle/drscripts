@@ -8,7 +8,7 @@ put #tvar char.appraise.item my pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor cotton mask|cotton hood|cotton gloves|chain shirt|chain greaves|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
+put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|quilted hauberk|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
 
 
 ###############################
@@ -75,7 +75,9 @@ put #tvar char.cast.dc.prep 50
 ###############################
 ###      COMMON
 ###############################
-put #tvar char.common.scripts magic|research
+put #tvar char.common.container shadows
+put #tvar char.common.container.extra purse
+put #tvar char.common.scripts deposit|pawn|burgle|caracal|compendium|deposit|forage|magic|pawn|repair|research
 
 
 ###############################
@@ -115,10 +117,12 @@ put #tvar char.fight.tmPause 7
 
 
 # ------ WEAPONS ------
-#put #tvar char.fight.weapons.items assassin's blade|blue sling
-#put #tvar char.fight.weapons.skills Small_Edged|Slings
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt
+#Slings
+#blue sling
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
 put #tvar char.fight.wornCrossbow 0
 
 # ------ ARMOR ------
@@ -129,6 +133,7 @@ put #tvar char.fight.useArmor 0
 # ------ USE ------
 # Use vars are all "Do this thing or not"
 # All default to 0
+put #tvar char.fight.trainOffhand 1
 put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
@@ -154,8 +159,8 @@ put #tvar char.fight.useSls 0
 ###############################
 ###      FRIENDS
 ###############################
-put #tvar friends (Inauri|Qizhmur|Selesthiel|Izqhhrzu)
-put #tvar enemies (Nemy|Ponni|Sothios|Kethrai)
+put #tvar friends Inauri|Qizhmur|Selesthiel|Izqhhrzu
+put #tvar enemies Nemy|Ponni|Sothios|Kethrai
 put #tvar super.enemies null
 
 
@@ -243,8 +248,8 @@ put #tvar char.performance.mood quiet
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.leather demonscale armguard|demonscale shield|cotton mask|cotton hood|cotton gloves
-put #tvar char.repair.metal diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst hauberk|flamewood riste|assassin's blade
+put #tvar char.repair.leather demonscale armguard|demonscale shield|quilted hauberk
+put #tvar char.repair.metal diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade
 
 
 ###############################

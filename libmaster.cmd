@@ -155,6 +155,14 @@ var foragable 0
 
 
 ###############################
+###    JUSTICE
+###############################
+action put #var lib.justice 0 when You're fairly certain this area is lawless and unsafe\.$
+action put #var lib.justice 1 when After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
+action put #var lib.justice 2 when After assessing the area, you believe there is some kind of unusual law enforcement in this area\.$
+
+
+###############################
 ##    MAGIC
 ###############################
 if ("$charactername" = "Inauri") then {
@@ -1290,6 +1298,16 @@ juggle:
     matchre return ^What were you referring to\?
     matchre return ^Your injuries make juggling impossible\.
     put juggle %todo
+    goto retry
+
+
+justice:
+    var location justice
+    justice1:
+    matchre return You're fairly certain this area is lawless and unsafe\.$
+    matchre return After assessing the area, you believe there is some kind of unusual law enforcement in this area\.$
+    matchre return After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
+    put justice
     goto retry
 
 
