@@ -291,7 +291,7 @@ attackAnalyzed:
 	var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
 
 	if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32 && $Offhand_Weapon.LearningRate <= $%weapons.skills(%weapons.index).LearningRate) then {
-		if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") then var doOffhand 1
+		if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)")) then var doOffhand 1
 		if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
 	}
 
@@ -388,7 +388,7 @@ attackThrownWeapon:
 
 
 		if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32 && $Offhand_Weapon.LearningRate <= $%weapons.skills(%weapons.index).LearningRate) then {
-			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") then {
+			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)")) then {
 				var doOffhand 1
 			}
 		}
