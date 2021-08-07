@@ -356,6 +356,8 @@ getHealed:
         eval nextHealTime (300 + $lastHealedGametime)
 
         #if ($bleeding = 1) then {
+        gosub checkHealth
+        if (%injured = 1) then {
             if ("$roomname" = "Private Home Interior") then gosub runScript house
 
             gosub automove heal
@@ -365,7 +367,7 @@ getHealed:
 
             gosub getHealedCont
 
-        #}
+        }
     }
     return
 

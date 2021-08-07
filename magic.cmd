@@ -1,5 +1,7 @@
 include libmaster.cmd
+
 action var lastSpellBackfired 1 when ^Your spell.*backfire
+action (expMods) var debuffSkills %debuffSkills|$2 when ^--(\d+)\(\d+%\) (.*?) \(\d+ effective ranks\)
 
 ###############################
 ###      INIT
@@ -84,11 +86,18 @@ loop:
             if ($mana < 80) then var shouldCastRev 0
 
             if (%shouldCastRev = 1) then {
-                gosub release cyclic
-                #gosub runScript cast rev
-                gosub invoke tattoo
-                gosub waitForPrep
-                gosub cast
+                var debuffSkills null
+                action (expMods) on
+                put exp mods
+                pause 2
+                action (expMods) off
+                if (!contains("%debuffSkills", "Sorcery")) then {
+                    gosub release cyclic
+                    #gosub runScript cast rev
+                    gosub invoke tattoo
+                    gosub waitForPrep
+                    gosub cast
+                }
             }
         } else {
             var shouldReleaseRev 0
