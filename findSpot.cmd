@@ -38,7 +38,7 @@ if ("%mob" = "bull") then {
 if ("%mob" = "caracal") then {
     var minRoomId 189
     var maxRoomId 202
-    var waitroomid 188
+    var waitroomid 163
 }
 
 
