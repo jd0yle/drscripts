@@ -113,6 +113,22 @@ inauri.burgle:
     }
 
 
+inauri.caracal:
+    evalmath nextTrainerAt $lastTrainerGametime + 3600
+    if (%nextTrainerAt > $gametime) then {
+        return
+    }
+    if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
+        put #echo >Log #009933 [inauri] Beginning trainer.
+        put #tvar inauri.subScript caracal
+        put .caracal
+        waitforre ^CARACAL DONE
+    	put #echo >Log #009933 [inauri] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
+    	put #tvar inauri.subScript 0
+    }
+    return
+
+
 inauri.compendium:
     evalmath nextCompendiumAt $lastCompendiumGametime + 1200
     if (%nextCompendiumAt > $gametime) then {
@@ -134,8 +150,9 @@ inauri.compendium:
 
 inauri.door:
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $1
+        put #tvar inauri.subScript $0
         put #script abort $inauri.subScript
+        put #echo >Log [inauri] Aborting $inauri.subScript to open the door.
     }
     if (%inauri.openDoor = 0) then goto inauri.loop
     gosub unlock door
@@ -152,10 +169,10 @@ inauri.engbolt:
         gosub inauri.engineerLumber
     }
     put #tvar inauri.subScript engbolt
-    put #echo >Log Yellow [inauri] Beginning engbolt.
+    put #echo >Log #ffcc00 [inauri] Beginning engbolt.
     put .engbolt 5
     waitforre ^ENGBOLT DONE
-    put #echo >Log Yellow [inauri] Engbolt complete.  ENG:($Engineering.LearningRate/34)
+    put #echo >Log #ffcc00 [inauri] Engbolt complete.  ENG:($Engineering.LearningRate/34)
     put #tvar inauri.subScript 0
     gosub get my bolts
     gosub put my bolts on bookcase
@@ -171,17 +188,17 @@ inauri.engineer:
             gosub inauri.engineerLumber
         }
         put #tvar inauri.subScript engineer
-        put #echo >Log Yellow [inauri] Beginning engineering.
+        put #echo >Log #ffcc00 [inauri] Beginning engineering.
         put .engineer 5 $char.craft.item
         waitforre ^ENGINEER DONE
-        put #echo >Log Yellow [inauri] Engineering complete.  ENG:($Engineering.LearningRate/34)
+        put #echo >Log #ffcc00 [inauri] Engineering complete.  ENG:($Engineering.LearningRate/34)
         put #tvar inauri.subScript 0
     }
     return
 
 
 inauri.engineerLumber:
-    put #echo >Log Yellow [inauri] Need lumber for engineering.
+    put #echo >Log #ffcc00 [inauri] Need lumber for engineering.
     gosub stop teach
     gosub moveToEngineer
     put #tvar inauri.subScript workorder
@@ -200,7 +217,7 @@ inauri.engineerLumber:
 
 
 inauri.engineerRepair:
-    put #echo >Log Yellow [inauri] Need to repair crafting tools.
+    put #echo >Log #ffcc00 [inauri] Need to repair crafting tools.
     gosub stop teach
     put .house
     waitforre ^HOUSE DONE
@@ -215,31 +232,15 @@ inauri.engineerRepair:
     return
 
 
-inauri.caracal:
-    evalmath nextTrainerAt $lastTrainerGametime + 3600
-    if (%nextTrainerAt > $gametime) then {
-        return
-    }
-    if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
-        put #echo >Log Cyan [inauri] Beginning trainer.
-        put #tvar inauri.subScript caracal
-        put .caracal
-        waitforre ^CARACAL DONE
-    	put #echo >Log Cyan [inauri] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
-    	put #tvar inauri.subScript 0
-    }
-    return
-
-
 inauri.forage:
     if ($Outdoorsmanship.LearningRate < 10) then {
-        put #echo >Log Orange [inauri] Going to forage.
+        put #echo >Log #009933 [inauri] Going to forage.
         put #tvar inauri.subScript forage
         put stop teach
         gosub moveToForage
         put .forage
         waitforre ^FORAGE DONE
-        put #echo >Log Orange [inauri] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
+        put #echo >Log #009933 [inauri] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
         put #tvar inauri.subScript 0
         gosub moveToHouse
     }
@@ -264,6 +265,11 @@ inauri.healDisease:
 
 
 inauri.healWound:
+    if (matchre("$scriptlist", "($char.common.scripts)")) then {
+        put #tvar inauri.subScript $0
+        put #script abort $inauri.subScript
+        put #echo >Log [inauri] Aborting $inauri.subScript to heal $inauri.healTarget.
+    }
     if ($inauri.healTarget = 0) then {
         put #var inauri.heal 0
         return
@@ -350,9 +356,9 @@ inauri.magic:
             put .magic noLoop
             waitforre ^MAGIC DONE
             put #tvar inauri.subScript 0
-            put #echo >Log Purple [inauri] Magic complete. Aug:($AugmentationWarding.LearningRate/34)
-            put #echo >Log Purple [inauri] Magic complete. Utility:($Utility.LearningRate/34)
-            put #echo >Log Purple [inauri] Magic complete. Ward:($Warding.LearningRate/34)
+            put #echo >Log #6600ff [inauri] Magic complete. Aug:($AugmentationWarding.LearningRate/34)
+            put #echo >Log #6600ff [inauri] Magic complete. Utility:($Utility.LearningRate/34)
+            put #echo >Log #6600ff [inauri] Magic complete. Ward:($Warding.LearningRate/34)
             put #tvar inauri.subScript 0
         }
     }
@@ -363,15 +369,15 @@ inauri.research:
     if ($Sorcery.LearningRate < 5) then {
         gosub justice
         if ($lib.justice <> 0) then {
-            put #echo >Log Purple [inauri] Skipping research due to justice.
+            put #echo >Log #6600ff [inauri] Skipping research due to justice.
             return
         }
-        put #echo >Log Purple [inauri] Beginning research.
+        put #echo >Log #6600ff [inauri] Beginning research.
         put #tvar inauri.subScript magic
         put .look
         put .research sorcery
         waitforre ^RESEARCH DONE
-        put #echo >Log Purple [inauri] Research complete. Sorc:($Sorcery.LearningRate/34)
+        put #echo >Log #6600ff [inauri] Research complete. Sorc:($Sorcery.LearningRate/34)
         put #tvar inauri.subScript 0
     }
     return
@@ -430,8 +436,9 @@ inauri.restart:
 
 inauri.teach:
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $1
+        put #tvar inauri.subScript $0
         put #script abort $inauri.subScript
+        put #echo >Log [inauri] Aborting $inauri.subScript to teach %inauri.target.
     }
     if ($lib.class = 1) then {
         gosub assess teach

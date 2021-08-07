@@ -79,7 +79,7 @@ put #tvar char.cast.pop.harness 0
 ###############################
 put #tvar char.common.container satchel
 put #tvar char.common.container.extra workbag
-put #tvar char.common.scripts burgle|caracal|compendium|deposit|engbolt|engineer|forage|magic|pawn|repair|research|workorder|
+put #tvar char.common.scripts burgle|caracal|compendium|deposit|engbolt|engineer|forage|magic|pawn|repair|research|workorder
 
 
 ###############################

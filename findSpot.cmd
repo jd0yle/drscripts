@@ -35,6 +35,13 @@ if ("%mob" = "bull") then {
     var waitroomid telescope
 }
 
+if ("%mob" = "caracal") then {
+    var minRoomId 189
+    var maxRoomId 202
+    var waitroomid 188
+}
+
+
 if ("%mob" = "eel") then {
     var minRoomId 234
     var maxRoomId 237

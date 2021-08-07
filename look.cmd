@@ -21,6 +21,7 @@ if ("$charactername" = "Inauri") then {
 ###############################
 ###    VARIABLES
 ###############################
+if (!($inauri.subScript >0)) then put #tvar inauri.subScript 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if ("$charactername" = "Inauri") then {
     var look.poison 0
@@ -65,7 +66,7 @@ look.loop:
 ###############################
 look.door:
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $1
+        put #tvar inauri.subScript $0
         put #script abort $inauri.subScript
     }
     if (%look.openDoor = 0) then goto look.loop
@@ -95,7 +96,7 @@ look.healWound:
         goto look.loop
     }
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $1
+        put #tvar inauri.subScript $0
         put #script abort $inauri.subScript
     }
     var look.wounds 1
@@ -178,7 +179,7 @@ look.resumeScript:
 
 look.teach:
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $1
+        put #tvar inauri.subScript $0
         put #script abort $inauri.subScript
     }
     if ($lib.class = 1) then {
@@ -210,7 +211,7 @@ look.teach:
 
 look.vitalityHeal:
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $1
+        put #tvar inauri.subScript $0
         put #script abort $inauri.subScript
     }
     gosub link all cancel
