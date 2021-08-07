@@ -77,7 +77,9 @@ put #tvar char.cast.pop.harness 0
 ###############################
 ###      COMMON
 ###############################
-put #tvar char.common.scripts engineer|magic|research|engbolt
+put #tvar char.common.container satchel
+put #tvar char.common.container.extra workbag
+put #tvar char.common.scripts burgle|caracal|compendium|deposit|engbolt|engineer|forage|magic|pawn|repair|research|workorder|
 
 
 ###############################
@@ -93,9 +95,9 @@ put #tvar char.craft.workorder.item burin
 ###############################
 ###      FRIENDS
 ###############################
-put #tvar friends (Asherasa|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh|Izqhhrzu|Khurnaarti)
-put #tvar enemies (Nideya|Psaero)
-put #tvar super.enemies (Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Kattena|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek)
+put #tvar friends Asherasa|Izqhhrzu|Khurnaarti|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh
+put #tvar enemies Nideya|Psaero
+put #tvar super.enemies Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Kattena|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek
 
 
 ###############################
