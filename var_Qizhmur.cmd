@@ -127,6 +127,8 @@ put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_E
 
 put #tvar char.fight.trainOffhand 1
 
+put #tvar char.fight.aimPauseMin 1
+
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
 put #tvar char.fight.armor.items ring greaves|scale greaves|light greaves

@@ -31,7 +31,7 @@ put #tvar char.wornFocus 0
 ###############################
 ###      CAST
 ###############################
-put #tvar char.cast.invokeSpell 0
+put #tvar char.cast.invokeSpell 1
 
 put #tvar char.cast.default.prep 30
 put #tvar char.cast.default.charge 70
@@ -119,10 +119,15 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|competition crossbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
 
+#put #tvar char.fight.weapons.items smokewood latchbow
+#put #tvar char.fight.weapons.skills Crossbow
+
 put #tvar char.fight.trainOffhand 1
+
+put #tvar char.fight.aimPauseMin 6
 
 #***** ARMOR *****
 put #tvar char.fight.useArmor 0
@@ -208,7 +213,7 @@ put #tvar char.magic.train.minimumConcentration 30
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
-put #tvar char.magic.train.useInvokeSpell 0
+put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.revSorcery 1
 

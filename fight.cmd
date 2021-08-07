@@ -105,6 +105,8 @@ var stances.index 0
 
 var skillsToUseShield Crossbow|Slings|Bow|Twohanded_Blunt|Twohanded_Edged
 
+var debilConditions sleeping|immobilized|writhing|webbed|stunned
+
 #action send adv when ^You must be closer to use tactical abilities on your opponent.
 action var doAnalyze 1 when ^Utilizing \S+ tactics
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
@@ -112,7 +114,7 @@ action var doAnalyze 1 when ^You can no longer see openings
 action var doAnalyze 1 when You fail to find any
 action var doAnalyze 1 when ^ then lies still\.$
 
-action put get my scimitar;put get my assassin blade when ^Wouldn't it be better if you used a melee weapon
+action put get my scimitar;put get my assassin blade;put get my sword when ^Wouldn't it be better if you used a melee weapon
 
 action send circle when ^Analyze what
 
@@ -125,10 +127,14 @@ action send get %weapons.items(%weapons.index); send load when ^You need to hold
 
 action var useHunt 0 when ^You find yourself unable to hunt in this area.
 
+action var useCollect 0 when any collecting efforts would be futile\.$
+
 action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
 put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime \$gametime;#var stance \$1} {stance}
 put #trigger {e/\$stance/} {#statusbar 7 Stance: \$stance} {stance}
+
+action (expMods) var debuffSkills %debuffSkills|$2 when ^--(\d+)\(\d+%\) (.*?) \(\d+ effective ranks\)
 
 ###############################
 ###      init
@@ -205,7 +211,11 @@ loop:
             gosub attack bob
         }
         if (%numMobs = 0) then {
-            gosub collect dirt
+            if (%useCollect != 0) then {
+                gosub collect dirt
+            } else {
+                pause 4
+            }
 
             if (contains("$roomobjs", "a pile of")) then {
                 gosub kick pile
@@ -280,7 +290,7 @@ attackAnalyzed:
 	var doOffhand 0
 	var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
 
-	if ($char.fight.trainOffhand = 1) then {
+	if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32 && $Offhand_Weapon.LearningRate <= $%weapons.skills(%weapons.index).LearningRate) then {
 		if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") then var doOffhand 1
 		if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
 	}
@@ -331,12 +341,29 @@ attackCrossbow:
         gosub retreat
         pause 2
     } else {
-        pause 4
+        var tmpAimPause $char.fight.aimPauseMin
+        if (!(%tmpAimPause > -1)) then var tmpAimPause 4
+
+        # Assume casting a debilitation spell takes 7 seconds (4 to prep and pause, 3 second RT to cast)
+        if (matchre("$monsterlist", "(%debilConditions)")) then {
+            evalmath tmpAimPause (%tmpAimPause - 7)
+        }
+        if (%tmpAimPause < 1) then var tmpAimPause 1
+        gosub attackCrossbow.aimPause %tmpAimPause
+        #pause %tmpAimPause
+        #pause 4
     }
     gosub cast
     gosub checkHide
     gosub fire
     return
+
+attackCrossbow.aimPause:
+	var tmpAimPause $1
+	echo AIMING FOR %tmpAimPause
+	matchre return ^You think you have your best shot possible now\.$
+	matchwait %tmpAimPause
+	return
 
 
 
@@ -360,7 +387,7 @@ attackThrownWeapon:
 
 
 
-		if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32) then {
+		if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32 && $Offhand_Weapon.LearningRate <= $%weapons.skills(%weapons.index).LearningRate) then {
 			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") then {
 				var doOffhand 1
 			}
@@ -807,10 +834,9 @@ checkHide:
 debil:
     var force 0
     if ("$1" = "force") then var force 1
-    var debilConditions sleeping|immobilized|writhing|webbed
-    if (%debil.use = 1 && $mana > 80 && (%force = 1 || !contains("$monsterlist", "%debilConditions")) then {
-    #if (%debil.use = 1 && $mana > 80 && (%force = 1 || (!contains("$monsterlist", "sleeping") && !contains("$monsterlist", "immobilized") && !contains("$roomobjs", "writhing web of shadows") )) ) then {
-        if ($Debilitation.LearningRate < 32 || %forceDebil = 1) then {
+    #if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)")) then {
+    if (%debil.use = 1 && $mana > 80 && !matchre("$monsterlist", "(%debilConditions)")) then {
+        if ($Debilitation.LearningRate < 32 || %force = 1) then {
             gosub prep %debil.spell %debil.prepAt
             if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
             pause $char.fight.debilPauseTime
@@ -825,8 +851,8 @@ debil:
 ###      fight.observe
 ###############################
 fight.observe:
-    if (%useObserve = 1 && $Astrology.LearningRate < 30) then gosub runScript observe
-    if (%useObserve = 1 && $Astrology.LearningRate < 22) then gosub runScript predict
+    if (%useObserve = 1 && $Astrology.LearningRate < 30 && $monstercount < 4) then gosub runScript observe
+    if (%useObserve = 1 && $Astrology.LearningRate < 22 && $monstercount < 4) then gosub runScript predict
     return
 
 
@@ -839,7 +865,7 @@ huntApp:
        gosub hunt.onTimer
        return
     }
-    if (%useAppraise = 1 && $Appraisal.LearningRate < 30) then {
+    if (%useAppraise = 1 && $Appraisal.LearningRate < 30 && $monstercount < 4) then {
         gosub appraise.onTimer
         return
     }
@@ -975,10 +1001,17 @@ manageCyclics.moonMage:
     unvar fight.tmp.nextCastRevGametime
 
 	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
-		gosub release cyclic
-		gosub invoke my tattoo
-		gosub waitForPrep
-		gosub cast
+		var debuffSkills null
+		action (expMods) on
+		put exp mods
+		pause 2
+		action (expMods) off
+		if (!matchre("%debuffSkills", "(Sorcery)")) then {
+			gosub release cyclic
+			gosub invoke my tattoo
+			gosub waitForPrep
+			gosub cast
+		}
 	} else {
 		if ($SpellTimer.Revelation.active = 1 && $mana < 60) then gosub release rev
 	}

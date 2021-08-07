@@ -5,10 +5,14 @@ put awake
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts twenty-six
+var expectedNumBolts sixty-five
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
+
+action (health) goto getHealedTrigger when eval $health < 85
+action (health) goto getHealedTrigger when eval $bleeding = 1
+action (health) goto getHealedTrigger when ^TESTHEAL
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
@@ -252,6 +256,62 @@ sorceryCont:
     put .reconnect
     put .afk
     goto magicCont
+
+
+
+getHealedTrigger:
+    put #script abort all except qizhmur
+    put .afk
+    put .reconnect
+    action (health) off
+    put #echo >Log #FF5501 [qizhmur.cmd] GETTING HEALED
+    put #echo >Log #FF5501 [$roomname]
+    put #echo >Log #FF5501 (health=$health bleeding=$bleeding)
+    if ($health < 50) then {
+        goto logout
+    }
+
+    gosub retreat
+    gosub stance shield
+    gosub stow right
+    gosub stow left
+    gosub release cyclic
+    gosub stow hhr'ata
+    gosub stow bola
+    gosub runScript loot
+
+    if ("$zoneid" = "69") then gosub automove 15
+
+    gosub getHealed
+
+    gosub moveToMagic
+
+    action (health) on
+
+    put #script abort all except qizhmur
+    put .reconnect
+    put .afk
+    pause .2
+    put .qizhmur
+
+
+getHealed:
+    gosub checkHealth
+    if (%injured = 1) then {
+        gosub moveToMagic
+        if ("$roomname" = "Private Home Interior") then gosub runScript house
+        gosub runScript findSpot fcrat
+        gosub runScript devourfcrat
+        gosub getHealedCont
+    }
+    return
+
+getHealedCont:
+	put #var lastHealedGametime $gametime
+	gosub moveToMagic
+	if ($bleeding = 1) then goto getHealed
+
+
 
 
 checkHealth:
@@ -712,7 +772,7 @@ moveToMagic:
         put #tvar powerwalk 0
         if ($roomid = 50) then {
             gosub runScript house
-            goto moveToMagic
+            #goto moveToMagic
             return
         }
         if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
@@ -944,7 +1004,8 @@ waitForMainCombat:
 
 waitForMainCombatLoop:
     #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
-    if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 32 && $Shield_Usage.LearningRate > 32 && $Evasion.LearningRate > 32 && $Targeted_Magic.LearningRate > 32 && $Brawling.LearningRate > 32 && $Small_Edged.LearningRate > 32 && $Heavy_Thrown.LearningRate > 32 && $Light_Thrown.LearningRate > 32 && $Crossbow.LearningRate > 32 && $Staves.LearningRate > 32 && $Twohanded_Blunt.LearningRate > 32)) then {
+    #var skills $char.fight.weapons.skills|Parry_Ability|Shield_Usage|Evasion
+	 if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 32 && $Shield_Usage.LearningRate > 32 && $Evasion.LearningRate > 14 && $Targeted_Magic.LearningRate > 32 && $Brawling.LearningRate > 32 && $Small_Edged.LearningRate > 32 && $Heavy_Thrown.LearningRate > 32 && $Light_Thrown.LearningRate > 32 && $Crossbow.LearningRate > 32 && $Staves.LearningRate > 32 && $Twohanded_Blunt.LearningRate > 32)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk
@@ -963,6 +1024,11 @@ waitForMainCombatLoop:
     pause 2
     goto waitForMainCombatLoop
 
+
+#checkLearningRates:
+#	var checkLearningRatesResult 0
+#	var index 0
+#	checkLearningRates.loop:
 
 
 retrieveBolts:
