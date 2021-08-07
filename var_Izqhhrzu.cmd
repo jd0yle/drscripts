@@ -50,7 +50,7 @@ put #tvar char.cast.default.charge 25
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 2
 
-put #tvar char.cast.useOm 0
+put #tvar char.cast.useOm 1
 put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
 
 put #tvar char.cast.benediction.prep 15
@@ -128,8 +128,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debilPauseTime 5
 
 # The debilitation spell to use
-#put #tvar char.fight.debil.spell sick
-put #tvar char.fight.debil.spell ps
+put #tvar char.fight.debil.spell sick
 
 # The amount of mana to prep debilitation at
 put #tvar char.fight.debil.prepAt 5
@@ -151,17 +150,17 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell he
-#put #tvar char.fight.tmSpell fs
+#put #tvar char.fight.tmSpell horn
+put #tvar char.fight.tmSpell fs
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 10
-#put #tvar char.fight.tmPrep 5
+#put #tvar char.fight.tmPrep 10
+put #tvar char.fight.tmPrep 5
 
 # How long to pause before casting.
-#put #tvar char.fight.tmPause 10
-put #tvar char.fight.tmPause 4
+put #tvar char.fight.tmPause 10
+#put #tvar char.fight.tmPause 4
 
 
 #***** WEAPONS *****
@@ -200,12 +199,12 @@ put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
 put #tvar char.fight.useBenediction 1
-put #tvar char.fight.useBless 1
+put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMpp 1
-put #tvar char.fight.useOm 0
+put #tvar char.fight.useOm 1
 put #tvar char.fight.usePfe 0
 put #tvar char.fight.useRev 1
 put #tvar char.fight.useSap 0

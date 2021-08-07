@@ -5,7 +5,7 @@ put awake
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts sixty-five
+var expectedNumBolts fifty-six
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -173,7 +173,7 @@ main:
 
     startFight:        
     #if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
-    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Targeted_Magic.LearningRate < 29 || $Brawling.LearningRate < 29 || $Small_Edged.LearningRate < 29 || $Heavy_Thrown.LearningRate < 29 || $Light_Thrown.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Staves.LearningRate < 29 || $Twohanded_Blunt.LearningRate < 29) then {
+    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 14 || $Targeted_Magic.LearningRate < 29 || $Brawling.LearningRate < 29 || $Small_Edged.LearningRate < 29 || $Heavy_Thrown.LearningRate < 29 || $Light_Thrown.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Staves.LearningRate < 29 || $Twohanded_Blunt.LearningRate < 29) then {
 		echo GONNA GO FIGHT
 		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
         gosub waitForRepair
@@ -746,7 +746,7 @@ enterHouse:
     gosub release eotb
     matchre enterHouseCont suddenly rattles
     matchre enterHouseCont suddenly opens
-    gosub peer bothy
+    put peer bothy
     matchwait 20
     gosub open bothy
     gosub move go bothy
@@ -756,7 +756,7 @@ enterHouseCont:
     gosub open bothy
     gosub move go bothy
     gosub close door
-    gosub lock door
+    #gosub lock door
     return
 
 
@@ -771,7 +771,7 @@ moveToMagic:
     if ("$zoneid" = "150") then {
         put #tvar powerwalk 0
         if ($roomid = 50) then {
-            gosub runScript house
+            gosub enterHouse
             #goto moveToMagic
             return
         }
@@ -1005,7 +1005,7 @@ waitForMainCombat:
 waitForMainCombatLoop:
     #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
     #var skills $char.fight.weapons.skills|Parry_Ability|Shield_Usage|Evasion
-	 if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 32 && $Shield_Usage.LearningRate > 32 && $Evasion.LearningRate > 14 && $Targeted_Magic.LearningRate > 32 && $Brawling.LearningRate > 32 && $Small_Edged.LearningRate > 32 && $Heavy_Thrown.LearningRate > 32 && $Light_Thrown.LearningRate > 32 && $Crossbow.LearningRate > 32 && $Staves.LearningRate > 32 && $Twohanded_Blunt.LearningRate > 32)) then {
+	 if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > 14 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Staves.LearningRate > 30 && $Twohanded_Blunt.LearningRate > 30)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk
