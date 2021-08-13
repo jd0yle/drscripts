@@ -18,6 +18,8 @@ action put #script abort all except %scriptname; goto restartScript when eval $l
 eval characterScript tolower($charactername)
 
 loop:
+pause
+goto loop
     if ($dead = 1 || $health < 50) then goto doneDead
 
     if (1 = 0 && "$charactername" = "Qizhmur") then {

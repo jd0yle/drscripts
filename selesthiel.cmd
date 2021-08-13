@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty-five
+var expectedNumBolts forty-one
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -141,7 +141,7 @@ main:
     # Magic
     startMagic:
     #if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
-    if ($bleeding = 1 || $Warding.LearningRate < 20 || %startMagic = 1) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 25 || $Utility.LearningRate < 0 || $Augmentation.LearningRate < 0 || %startMagic = 1) then {
         var startMagic 0
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
@@ -759,7 +759,7 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29 && $Twohanded_Blunt.LearningRate > 29 && $Staves.LearningRate > 29)) then {
         gosub resetState
         if ($bleeding = 1) then goto moveToHeal
         return

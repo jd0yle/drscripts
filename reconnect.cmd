@@ -15,7 +15,6 @@ action put #var connected 0 when ConnectionTimedOut
 
 
 timer start
-var calculatedGametime $gametime
 
 loopWait:
     if ($health < 50 || $dead = 1) then {
@@ -38,7 +37,7 @@ loopWait:
             pause 2
         } else {
             evalmath timeLeft (%nextAttemptAt - %t)
-            pause .5
+            pause .01
         }
     } else {
         var reconnecting 0
@@ -56,23 +55,27 @@ loopWait:
         }
     }
 
-
-
-    if (%elapsedGametime > 30) then {
-        #echo %elapsedGametime since gametime updated (%elapsedGametime - $gametime > %calculatedGametime + 30)
-        #put #var connected 0
-    }
-    math calculatedGametime add 2
-
+	# We want to store the current gametime in storedGameTime, then compare it gametime later. If they're the same, then
+	# we haven't received any ticks from the server and can assume we're not connected.
     if (!(%storedGameTime > 0)) then var storedGameTime 1
-    if (%storedGameTime = $gametime) then {
-        put #var connected 0
-        var forceReconnect 1
-    } else {
-        var storedGametime $gametime
+
+    if (!(%lastCompareGametimeAt > 0)) then var lastCompareGametimeAt 1
+
+	evalmath nextCompareGametimeAt (%lastCompareGametimeAt + 30)
+    if (%nextCompareGametimeAt < $gametime) then {
+	    #echo [reconnect] $time Stored gametime is %storedGameTime actual gametime is $gametime
+	    if (%storedGameTime = $gametime) then {
+	        put #echo >Log #FF0000 [reconnect] GAMETIME NOT UPDATED (%storedGameTime vs $gametime), FORCING connected=0
+	        put #var connected 0
+	        #var forceReconnect 1
+	    } else {
+	        var storedGameTime $gametime
+	    }
+	    var lastCompareGametimeAt $gametime
     }
 
     pause 2
+    pause
     goto loopWait
 
 

@@ -173,9 +173,9 @@ main:
 
     startFight:        
     #if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
-    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 14 || $Targeted_Magic.LearningRate < 29 || $Brawling.LearningRate < 29 || $Small_Edged.LearningRate < 29 || $Heavy_Thrown.LearningRate < 29 || $Light_Thrown.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Staves.LearningRate < 29 || $Twohanded_Blunt.LearningRate < 29) then {
+    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 0 || $Targeted_Magic.LearningRate < 29 || $Brawling.LearningRate < 29 || $Small_Edged.LearningRate < 29 || $Heavy_Thrown.LearningRate < 29 || $Light_Thrown.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Staves.LearningRate < 29 || $Twohanded_Blunt.LearningRate < 29) then {
 		echo GONNA GO FIGHT
-		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
+		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
         #gosub moveToBulls
@@ -606,6 +606,7 @@ moveToShardBulls:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
+        if ($roomid >= 597 && $roomid <= 695 && "$roomplayers" = "" && !contains("$roomobjs", "dirt construct")) then return
         gosub runScript findSpot shardbull
         return
     }
@@ -1003,9 +1004,9 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 25 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
+    #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 0 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
     #var skills $char.fight.weapons.skills|Parry_Ability|Shield_Usage|Evasion
-	 if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > 14 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Staves.LearningRate > 30 && $Twohanded_Blunt.LearningRate > 30)) then {
+	 if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Staves.LearningRate > 30 && $Twohanded_Blunt.LearningRate > 30)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk

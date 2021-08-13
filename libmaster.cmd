@@ -550,8 +550,9 @@ bank:
 
 block.stop:
     var location block.stop
+    matchre return ^In the name of love
     matchre return ^Okay\.
-    matchre return ^You stop trying to defend against
+    matchre return ^You stop
     matchre return ^You aren't trying to defend against a second foe\!
     put block stop
     goto retry
@@ -2393,7 +2394,8 @@ stop:
     stop1:
     matchre return ^But you aren't listening to anyone\.
     matchre return ^But you aren't teaching anyone\.
-    matchre return ^You stop listening to
+    matchre return ^In the name of love
+    matchre return ^You stop
     matchre return ^You stop practicing your climbing skills\.
     matchre return ^You stop teaching\.
     matchre return ^You stop trying to teach

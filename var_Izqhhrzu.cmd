@@ -62,11 +62,11 @@ put #tvar char.cast.centering.prep 1
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 9
+put #tvar char.cast.ghs.prep 12
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
-put #tvar char.cast.hyh.prep 7
+put #tvar char.cast.hyh.prep 8
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
@@ -76,15 +76,15 @@ put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
 put #tvar char.cast.om.prep 30
-put #tvar char.cast.om.charge 10
+put #tvar char.cast.om.charge 20
 put #tvar char.cast.om.chargeTimes 1
 
-put #tvar char.cast.pom.prep 300
+put #tvar char.cast.pom.prep 325
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 
-put #tvar char.cast.rev.prep 10
+put #tvar char.cast.rev.prep 13
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -151,16 +151,16 @@ put #tvar char.fight.opts null
 #***** TM *****
 # Spell to use for TM
 #put #tvar char.fight.tmSpell horn
-put #tvar char.fight.tmSpell fs
+put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 #put #tvar char.fight.tmPrep 10
-put #tvar char.fight.tmPrep 5
+put #tvar char.fight.tmPrep 6
 
 # How long to pause before casting.
-put #tvar char.fight.tmPause 10
-#put #tvar char.fight.tmPause 4
+#put #tvar char.fight.tmPause 10
+put #tvar char.fight.tmPause 7
 
 
 #***** WEAPONS *****
@@ -251,8 +251,26 @@ var super.enemies null
 ###############################
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
-put #tvar char.instrument.song scales
+#put #tvar char.instrument.song scales
 put #tvar char.instrument.container thigh bag
+
+
+#if ($Performance.Ranks >= 40) then put #tvar char.instrument.song arpeggios
+#if ($Performance.Ranks >= 50) then put #tvar char.instrument.song ditty
+#if ($Performance.Ranks >= 60) then put #tvar char.instrument.song ballad
+#if ($Performance.Ranks >= 70) then put #tvar char.instrument.song waltz
+#if ($Performance.Ranks >= 80) then put #tvar char.instrument.song march
+#if ($Performance.Ranks >= 100) then put #tvar char.instrument.song lament
+#if ($Performance.Ranks >= 125) then put #tvar char.instrument.song hymn
+#if ($Performance.Ranks >= 180) then put #tvar char.instrument.song polka
+#if ($Performance.Ranks >= 220) then put #tvar char.instrument.song reel
+#if ($Performance.Ranks >= 250) then put #tvar char.instrument.song serenade
+#if ($Performance.Ranks >= 300) then put #tvar char.instrument.song psalm
+#if ($Performance.Ranks >= 350) then put #tvar char.instrument.song tango
+##if ($Performance.Ranks >= 450) then put #tvar char.instrument.song bolero
+#if ($Performance.Ranks >= 475) then put #tvar char.instrument.song nocturne
+#if ($Performance.Ranks >= 525) then put #tvar char.instrument.song requiem
+#if ($Performance.Ranks >= 550) then put #tvar char.instrument.song concerto
 
 
 ###############################

@@ -22,6 +22,11 @@ action var numBolts $1 when ^You count some.*bolts in the.*and see there are (.*
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
 
+action goto izqhhrzu.arrested when ^"Stop right there!"
+action goto izqhhrzu.arrested when ^The guardsman stares in your direction for a long moment, then charges straight for you!
+
+action goto izqhhrzu.arrested when eval contains("$roomname", "Jail Cell")
+
 gosub awake
 
 timer start
@@ -152,7 +157,7 @@ main:
         gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToPeccaries
+        gosub moveToCaracals
         put .fight
         gosub waitForMainCombat
         goto main
@@ -413,19 +418,14 @@ healWithRats:
 
 
 performance:
-	return
-
-    if ($Performance.LearningRate > 0) then return
+    if ($Performance.LearningRate > 20) then return
     put #echo >Log #cc99ff Moving to house for performance
     gosub moveToHouse
     put #echo >Log Start perform ($Performance.LearningRate/34)
 
 	if ("$roomname" = "Private Home Interior") then {
-		if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then {
-			#gosub whisper inauri teach forging
-		} else {
-		    gosub listen to inauri observe
-		}
+		#gosub whisper inauri teach sorcery
+		gosub listen to inauri observe
     }
 
     gosub stow right
@@ -444,7 +444,7 @@ performance.cont:
             gosub get my rattle
         }
         if ($monstercount > 0) then gosub retreat
-        gosub play lullaby
+        gosub play $char.instrument.song
         matchre performance.cont ^You finish playing
         matchwait 300
     }
@@ -703,6 +703,8 @@ moveToLeucros:
 moveToBurgle:
     gosub setZone
 
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
+
     if ("$roomname" = "Private Home Interior") then {
         gosub runScript house
         goto moveToBurgle
@@ -846,6 +848,8 @@ moveToBurgle:
 moveToHouse:
     put #echo >Debug #cc99ff moveToHouse (zoneid=$zoneid roomid=$roomid)
     gosub setZone
+
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
 
     if ("$roomname" = "Private Home Interior") then {
 		#if ("$roomplayers" = "Also here: Blight Bringer Inauri.") then gosub whisper inauri teach forging
@@ -991,6 +995,8 @@ moveToPeccaries:
     put #echo >Debug #cc99ff moveToPeccaries (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
+
     if ("$roomname" = "Private Home Interior") then {
 		gosub runScript house
         goto moveToPeccaries
@@ -1028,6 +1034,53 @@ moveToPeccaries:
 	}
 
 	goto moveToPeccaries
+	
+	
+
+moveToCaracals:
+    put #echo >Debug #cc99ff moveToCaracals (zoneid=$zoneid roomid=$roomid)
+    gosub setZone
+
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
+
+    if ("$roomname" = "Private Home Interior") then {
+		gosub runScript house
+        goto moveToCaracals
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        put #tvar powerwalk 0
+        gosub castSpellsForMove
+        if ($Attunement.LearningRate < 32) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go portal
+        goto moveToCaracals
+    }
+
+	# M'RISS
+	if ("%zone" = "108") then {
+		if ("$roomid" != "193") then gosub automove 193
+		gosub runScript findSpot caracal
+		return
+	}
+
+	# MER'KRESH
+	if ("%zone" = "107") then {
+		gosub castSpellsForMove
+
+		gosub runScript travel mriss
+		goto moveToCaracals
+	}
+
+	# GALLEY
+	if ("%zone" = "107a") then {
+		gosub runScript travel mriss
+		goto moveToCaracals
+	}
+
+	goto moveToCaracals	
 
 
 enterHouse:
@@ -1052,6 +1105,8 @@ enterHouseCont:
 
 moveToMagic:
     gosub setZone
+
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
 
     if ("$roomname" = "Private Home Interior") then return
 
@@ -1367,6 +1422,19 @@ moveAny:
     }
     return
 
+
+izqhhrzu.arrested:
+	echo
+	echo ****************************
+	echo ** ARRESTED
+	echo ****************************
+	echo
+	put #echo >Log #FF0000 ARRESTED!
+	put exit
+	put #script abort all except izqhhrzu
+	put exit
+    put #script abort all except izqhhrzu
+    exit
 
 
 logout:

@@ -119,8 +119,8 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|diamondwood nightstick
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Staves
 
 #put #tvar char.fight.weapons.items smokewood latchbow
 #put #tvar char.fight.weapons.skills Crossbow
