@@ -5,17 +5,18 @@ put #class arrive off
 put #class combat off
 put #class joust off
 
-# automapper.cmd version 7.3
-# last changed: Jan 23, 2021
+# automapper.cmd version 7.4
+# last changed: July 22, 2021
 
+# - Updated stow foot logic to handle prayer mats
 # - Added move_PAUSE routine for better handling of walking through areas with long RT causing automapper to trip up on itself
 # - Added support for getting ice skates from portal bag as a secondary check
-# Shroom - Updated matches for closed shops in Shard
+# Shroom - Updated matches for closed shops in Shard 
 # 1 - to work with shops in Shard that let you in at night when you ARE a citizen (was exiting out before instead of continuing)
-# 2 - to properly exit out when you get the message and are NOT a citizen
-# Added standing checks before quitting automapper
+# 2 - to properly exit out when you get the message and are NOT a citizen 
+# Added standing checks before quitting automapper 
 # Increased wait time on Ice as was going too fast in some cases
-# Added Special Support for the Stone Wall in Cragstone Vale
+# Added Special Support for the Stone Wall in Cragstone Vale 
 # Fixed a bug in the Retry Logic
 #
 # VTCifer -  Changed default debug level at the top to be more useful
@@ -24,7 +25,7 @@ put #class joust off
 # Added missing script label
 # Fixed wait time for ice
 #
-# 2019-09-25 - Shroom - Robustified Shard gate logic - should take detour if rejected by guard (requires .sharddetour script)
+# 2019-09-25 - Shroom - Robustified Shard gate logic - should take detour if rejected by guard (requires .sharddetour script) 
 # Cleaned up the ice skate logic
 # 2019-08-6 Shroom - Added several missing matches
 # Dasffion - Added in a waiteval for depth on climbing to allow the script to catch up on type aheads.
@@ -41,11 +42,11 @@ put #class joust off
 # 2018-7-28 - Added missing match for closed shop. Cleaned up some RegEx thanks to Ataeleos
 
 # 2017-11-13 - Shroom - Synced changes and updates from TF and Prime versions -  To make compatible across both instances
-# Added ICE SKATE support for Ice Road - Checks for ice skates and wears them during ice road, also checks your footwear and puts it back on after
+# Added ICE SKATE support for Ice Road - Checks for ice skates and wears them during ice road, also checks your footwear and puts it back on after 
 # Added support for Stowing foot item when you have an item stuck at your feet
 # Added missing web catch - Noobs were getting stuck on the web to Leth
 # Modified handling of dropping invisibility depending on guild
-# Added catches for getting thrown in Jail to properly abort automapper
+# Added catches for getting thrown in Jail to properly abort automapper 
 
 # 2016-12-01 - Shroom - Added updates and optimizations
 # Added more catches for stunned or tripping over roots
@@ -186,9 +187,8 @@ actions:
      action (mapper) goto move.climb.mount.fail when %climb_mount_FAIL
      action (mapper) goto move.kneel when maybe if you knelt down first\?
      action (mapper) goto move.lie when ^The passage is too small to walk that way\.  You'll have to get down and crawl\.|There's just barely enough room here to squeeze through, and no more.
-     action (mapper) goto stowfootitem when ^You notice (?:an?|some).*at your feet, and do not wish to leave it behind\.
+     action (mapper) var footitem $1;goto stowfootitem when ^You notice an?(?:(?:\s\b\w+\B)?(?:intricately|etched|polished|carved|engraved)*).*?(\S+) (?:(?=acid-etched|accented|adorned|affixed|attached|balanced|banded|bearing|bound|branded|braided|caked|carved|chased|chisled|cloaked|clutching|coated|constructed|connected|covered|crafted|crested|crowned|dangling|decorated|deformed|designed|detailed|disPlaying|draped|dyed|embedded|embellished|embroidered|enblazoned|enbossed|encrusted|engraved|enhanced|entitled|etched|fashioned|festooned|featuring|filed|filled|firestained|fitted|flecked|fletched|flaunting|forged|formed|from|gleaming|hewn|highlighted|hilted|hung|in|incised|inlaid|inscribed|inset|intricately|joined|labeled|lavishly|lined|linked|made|marked|mottled|mounted|of|ornamented|padded|painted|polished|reinforced|resembling|rimed|rivited|scattered|scarred|scorched|sealed|set|shaped|shod|spiraled|stamped|stitched|streaked|strung|studded|surmounted|swathed|tangled|tethered|that|tied|tinged|tinted|titled|that|tipped|tooled|topped|trimmed|veined|whorled|wrapped|wrought|with).*)?(?:lying )?at your feet, and do not wish to leave it behind\.
      action (skates) var wearingskates 1 when ^You slide your ice skates on your feet and tightly tie the laces\.|^Your ice skates help you traverse the frozen terrain\.|^Your movement is hindered a little by your ice skates\.
-     action (skates) var wearingskates 1 ; goto move.real when ^You stumble around a bit, nearly breaking an ankle, before realizing you are trying to walk around in ice skates on normal ground\.
      action (skates) var wearingskates 0 when ^You untie your skates and slip them off of your feet\.
      action var slow_on_ice 1; echo Ice detected! when ^You had better slow down\! The ice is|^At the speed you are traveling
      action goto jailed when a sound not unlike that of a tomb|binds you in chains|firmly off to jail|drag you off to jail|brings you to the jail|the last thing you see before you black out|your possessions have been stripped|You are a wanted criminal, $charactername
@@ -207,29 +207,29 @@ wave_do:
      delay 0.01
      var depth 0
      if_1 gosub move %1
-     if %typeahead < 1 then
-	 {
+     if %typeahead < 1 then 
+	 {	
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
      delay 0.01
      if_2 gosub move %2
-     if %typeahead < 2 then
-	 {
+     if %typeahead < 2 then 
+	 {	
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
      delay 0.01
      if_3 gosub move %3
-     if %typeahead < 3 then
-	 {
+     if %typeahead < 3 then 
+	 {	
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
      delay 0.01
      if_4 gosub move %4
-     if %typeahead < 4 then
-	 {
+     if %typeahead < 4 then 
+	 {	
           if %typeahead < %typeahead.max then math typeahead add 1
           return
 	 }
@@ -350,7 +350,7 @@ move.power:
      matchre MOVE.DONE ^\s*\[Roundtime\s*\:?
      matchre MOVE.DONE ^\s*\(Roundtime\s*\:?
      matchre MOVE.DONE ^Something in the area is interfering
-	 matchre MOVE.DONE ^You feel an extremely pervasive ward
+	 matchre MOVE.DONE ^You feel an extremely pervasive ward 
      put perceive
      matchwait
 move.room:
@@ -409,7 +409,7 @@ skate.no:
      var slow_on_ice 1
      var wearingskates 0
      action (mapper) on
-     echo **** No ice skate support for you!
+     echo **** No ice skate support for you! 
      echo **** Collecting rocks in every room like the other peasants
      return
 skate.yes:
@@ -451,7 +451,7 @@ skate.get.2:
 	match wear.skates You get
 	match footwear.stow You need a free hand
      matchre skate.no ^I could not|^What were you
-     put get my skates
+     put get my skates from my watery portal
 	matchwait 5
 footwear.stow:
 	put stow left
@@ -536,7 +536,7 @@ move.torch:
      pause 0.3
      pause 0.1
      put go wall
-     goto move.done
+     goto move.done     
 move.web:
      if ($webbed) then waiteval (!$webbed)
      pause 0.1
@@ -818,7 +818,6 @@ move.closed:
      echo
      put #parse SHOP IS CLOSED
      put #parse SHOP CLOSED
-	 put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
 jailed:
      echo
@@ -830,7 +829,6 @@ jailed:
      put #parse JAILED
      put #parse NAILED AND JAILED!
      put #parse THROWN IN JAIL
-	 put #parse AUTOMAPPER MOVEMENT FAILED!
      exit
 move.failed:
      evalmath failcounter %failcounter + 1
@@ -956,11 +954,18 @@ return:
 stowfootitem:
      #debug 10
      pause 0.001
-     pause 0.001
+     if matchre("%footitem", "(mat|rug|cloth|tapestry)") then
+          {
+               put roll %footitem
+               pause 0.5
+          }
 	if !matchre("Empty", "$lefthand|$righthand") then put stow left
      pause 0.1
      put stow feet
-     pause 0.3
+     pause 0.2
+     pause 0.1
+     put stow feet
+     pause 0.2
      pause 0.2
      goto ABSOLUTE_TOP
 STAND:
@@ -988,4 +993,4 @@ STAND:
      pause 0.1
      pause 0.1
      if ($standing = 0) then goto STAND
-     return
+     return 
