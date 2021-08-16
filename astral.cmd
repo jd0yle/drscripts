@@ -4,7 +4,8 @@
 # USAGE
 # .astral <destination>
 #
-# NOTE: This assumes you have the 100th circle ability!
+# DEFAULTS to harnessing 50 mana 3 times!
+# Set char.astral.manaPerHarness and char.astral.timesToHarness to change defaults
 ####################################################################################################
 include libmaster.cmd
 
@@ -15,6 +16,12 @@ if_1 then {
     echo .astral destination
     exit
 }
+
+var manaPerHarness $char.astral.manaPerHarness
+var timesToHarness $char.astral.timesToHarness
+
+if (!(%manaPerHarness > 0)) then var manaPerHarness 50
+if (!(%timesToHarness > 0)) then var timesToHarness 3
 
 var moveToAxis 1
 var isAtPillars 0
@@ -115,16 +122,11 @@ if (contains("$roomname", "Astral Plane")) then {
 
 top:
     gosub release
-    if ($SpellTimer.AuraSight.active != 1) then {
-        put .cast aus
-        waitforre ^CAST DONE
-    }
     gosub release cyclic
     gosub prep mg
     if (%use100thAbility = 1) then {
-	    gosub harness 50
-	    gosub harness 50
-	    gosub harness 50
+	    gosub astral.harnessLoop
+
 	    if ($charactername = "Selesthiel" && contains("$roomplayers", "Inauri")) then {
 	        pause
 	        put lick inauri
@@ -173,6 +175,14 @@ loop:
     }
 
     goto loop
+
+
+astral.harnessLoop:
+	if (%timesToHarness <= 0) then return
+	gosub harness %manaPerHarness
+	evalmath timesToHarness (%timesToHarness - 1)
+	goto astral.harnessLoop
+
 
 done:
     put #parse ASTRAL DONE

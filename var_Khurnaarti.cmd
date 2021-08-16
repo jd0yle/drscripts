@@ -12,6 +12,13 @@ put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|quilted hauberk|demonsca
 
 
 ###############################
+###      ASTRAL
+###############################
+put #tvar char.astral.manaPerHarness 50
+put #tvar char.astral.timesToHarness 3
+
+
+###############################
 ###      BURGLE
 ###############################
 # ------ ATTEMPT HANDLING ------

@@ -13,6 +13,13 @@ put #tvar char.armor moonsilk moonsilk pants|moonsilk shirt|ka'hurst gloves|ka'h
 
 
 ###############################
+###      ASTRAL
+###############################
+put #tvar char.astral.manaPerHarness 50
+put #tvar char.astral.timesToHarness 3
+
+
+###############################
 ###      BURGLE
 ###############################
 put #tvar char.burgle.cooldown null
