@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container 0
-put #tvar char.appraise.item my gem pouch
+put #tvar char.appraise.container satchel
+put #tvar char.appraise.item my chronicle
 
 
 ###############################
@@ -40,9 +40,9 @@ put #tvar char.burgle.ropeWorn NULL
 # trashAllExceptKeep:  NO/NULL, YES/ON
 # trashThisList:  NULL or array
 put #tvar char.burgle.pawnAll YES
-put #tvar char.burgle.keepThisList keepsake box|memory orb|jewelry box
+put #tvar char.burgle.keepThisList scimitar|keepsake box|arrow|memory orb|jewelry box
 put #tvar char.burgle.trashAllExceptKeep NO
-put #tvar char.burgle.trashThisList basket|kaleidoscope|sieve|stick|diary|top|rat|mouse
+put #tvar char.burgle.trashThisList basket|kaleidoscope|sieve|stick|diary|top|rat|mouse|ball|guide|manual
 
 # ------ STORAGE HANDLING ------
 # container: pack, rucksack, portal, shadows, backpack, satchel, etc.
@@ -95,7 +95,7 @@ put #tvar char.craft.workorder.item burin
 ###############################
 ###      FRIENDS
 ###############################
-put #tvar friends Asherasa|Izqhhrzu|Khurnaarti|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh
+put #tvar friends Asherasa|Enthien|Izqhhrzu|Khurnaarti|Qihhth|Qizhmur|Selesthiel|Sorhhn|Xomfor|Yraggahh
 put #tvar enemies Nideya|Psaero
 put #tvar super.enemies Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahijeck|Kaldean|Kattena|Meiline|Mitkiahn|Rarnel|Redxwrex|Rhadyn|Ruea|Shanelo|Simmish|Squabbles|Talu|Tartarean|Tenteth|Zehira|Zeteivek
 
