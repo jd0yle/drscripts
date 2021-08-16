@@ -291,6 +291,7 @@ adjust:
     var todo $0
     adjust1:
     matchre return You adjust
+    matchre return ^You cannot adjust
     put adjust %todo
     goto retry
 
@@ -1756,8 +1757,10 @@ play:
     matchre return ^You cannot
     matchre return ^You effortlessly
     matchre return ^You fumble
+    matchre return ^You notice that moisture
     matchre return ^You play
     matchre return ^You struggle
+    matchre return ^What type
     put play %todo
     goto retry
 

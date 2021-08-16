@@ -239,8 +239,6 @@ checkTeaching:
 			if (contains("$roomplayers", "Inauri") then {
 		        if ($Enchanting.LearningRate < 30) then {
 		            gosub whisper inauri teach enchanting
-		            pause 10
-		            gosub whisper inauri heal
 		        } else {
 		            gosub stop teach
 		            gosub stop listen

@@ -13,8 +13,8 @@ action (health) goto getHealedTrigger when ^GETHEALED
 
 action send $lastcommand when ^You can't move in that direction while unseen.
 
-action send listen to $1 when ^(\S+) begins to lecture
-action send listen to $2 when ^(\S+) begins to listen to (\S+)
+action send listen to $1 observe when ^(\S+) begins to lecture
+action send listen to $2 observe when ^(\S+) begins to listen to (\S+)
 
 action send load when ^But your.*isn't loaded!f
 
@@ -107,6 +107,7 @@ main:
         #gosub automove portal
         #gosub move go meeting portal
 
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		gosub automove portal
 		gosub move go meeting portal
@@ -433,22 +434,30 @@ performance:
 
 
 performance.cont:
-    if ($SpellTimer.Revelation.active != 1) then {
-        gosub release cyclic
-        gosub runScript cast rev
-    }
-    if ($Performance.LearningRate < 10) then {
-        if ("$righthandnoun" != "rattle") then {
-            gosub stow right
-            gosub stow left
-            gosub get my rattle
-        }
-        if ($monstercount > 0) then gosub retreat
-        gosub play $char.instrument.song
-        matchre performance.cont ^You finish playing
-        matchwait 300
-    }
-    goto performance.done
+	var startPerformanceTime $gametime
+	put #tvar char.isPerforming 0
+	return
+	
+	performance.cont1:
+		if (1 = 0 && %startPerformanceTime + 300 < $gametime) then {
+			put #echo >Log Performance taking too long... Skipping.
+			goto performance.done
+		}
+	    if ($SpellTimer.Revelation.active != 1) then {
+	        gosub release cyclic
+	        gosub runScript cast rev
+	    }
+	    if ($Performance.LearningRate < 10) then {
+	        if ("$righthandnoun" != "rattle") then {
+	            gosub stow right
+	            gosub stow left
+	            gosub get my rattle
+	        }
+	        if ($monstercount > 0) then gosub retreat
+	        #gosub runScript play
+	        goto performance.cont1
+	    }
+	    goto performance.done
 
 
 performance.done:
@@ -723,6 +732,8 @@ moveToBurgle:
 		gosub withdraw 1 gold
 		gosub automove excha
 		gosub exchange all dok for lirum
+		gosub automove portal
+		#gosub runScript play --noWait=1
 		gosub runScript travel kresh 299
 		put #tvar powerwalk 0
 		goto moveToBurgle
@@ -738,6 +749,7 @@ moveToBurgle:
 	}
 
 	if ("%zone" = "107a") then {
+		#gosub runScript play --noWait=1
 		gosub runScript travel kresh
 		goto moveToBurgle
 	}
@@ -884,6 +896,7 @@ moveToHouse:
 		gosub castSpellsForMove
 
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		put #tvar powerwalk 0
 		goto moveToHouse
@@ -891,6 +904,7 @@ moveToHouse:
 
 	# GALLEY
 	if ("%zone" = "107a") then {
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToHouse
 	}
@@ -1022,13 +1036,14 @@ moveToPeccaries:
 	# MER'KRESH
 	if ("%zone" = "107") then {
 		gosub castSpellsForMove
-
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToPeccaries
 	}
 
 	# GALLEY
 	if ("%zone" = "107a") then {
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToPeccaries
 	}
@@ -1069,13 +1084,14 @@ moveToCaracals:
 	# MER'KRESH
 	if ("%zone" = "107") then {
 		gosub castSpellsForMove
-
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToCaracals
 	}
 
 	# GALLEY
 	if ("%zone" = "107a") then {
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToCaracals
 	}
@@ -1132,6 +1148,7 @@ moveToMagic:
 		gosub castSpellsForMove
 
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		put #tvar powerwalk 0
 		goto moveToHouse
@@ -1139,6 +1156,7 @@ moveToMagic:
 
 	# GALLEY
 	if ("%zone" = "107a") then {
+		#gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToHouse
 	}

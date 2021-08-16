@@ -37,11 +37,13 @@ play.top:
 	if ("$righthand" != "$char.instrument.tap" && "$righthand" != "Empty") then gosub stow right
 	gosub stow left
 
-    if ($Performance.LearningRate < 34 && $char.isPerforming != 1) then {
+    if ($Performance.LearningRate < 34) then {
         if ("$righthand" != "$char.instrument.tap") then {
             gosub stow right
             gosub get my $char.instrument.noun
         }
+
+		if ("$char.instrument.song" = "\$char.instrument.song") then gosub play.setCharacterSong
 
         gosub play $char.instrument.song on my $char.instrument.noun
 
