@@ -478,6 +478,10 @@ buffs:
         gosub runScript cast mpp
         return
     }
+    if ($char.fight.useMf = 1 && $SpellTimer.MurrulasFlames.active != 1) then {
+        gosub runScript cast mf
+        return
+    }
     if ($char.fight.usePfe = 1 && ($SpellTimer.ProtectionfromEvil.active != 1 || $SpellTimer.ProtectionfromEvil.duration < 3)) then {
         gosub runScript cast pfe
         return

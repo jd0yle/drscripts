@@ -2951,7 +2951,7 @@ burgle.setNextBurgleAt:
     if (!($lib.timers.nextBurgleAt > -1)) then gosub burgle recall
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
-        if ($Stealth.LearningRate > 0 && $Thievery.LearningRate > 0 && $Athletics.LearningRate > 0 && $Locksmithing.LearningRate > 0) then {
+        if ($Stealth.LearningRate > 2 && $Thievery.LearningRate > 2 && $Athletics.LearningRate > 2 && $Locksmithing.LearningRate > 2) then {
             var lowestLearningRateNumber $Stealth.LearningRate
             if (%lowestLearningRateNumber > $Thievery.LearningRate) then var lowestLearningRateNumber $Thievery.LearningRate
             if (%lowestLearningRateNumber > $Athletics.LearningRate) then var lowestLearningRateNumber $Athletics.LearningRate
@@ -3222,6 +3222,7 @@ stow.then.move:
 
 moveRandom:
     pause .2
+	if ("$roomname" = "Private Home Interior") then gosub runScript house
     var People.Room empty
     var direction north
     random 1 8

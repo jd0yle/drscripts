@@ -57,7 +57,7 @@ if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty
 
 if ("$preparedspell" != "None") then gosub release spell
 
-if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom") then goto ritualSpell
+if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom" || "%spell" = "mf") then goto ritualSpell
 if ("%spell" = "col") then {
     gosub checkMoons
     if ($moon = null) then {
@@ -172,7 +172,7 @@ chargeLoop:
 ###      ritualSpell
 ###############################
 ritualSpell:
-    if ("$righthand" <> "Empty" && "$lefthand" <> "Empty") then {
+    if ("$righthand" != "Empty" || "$lefthand" != "Empty") then {
         gosub stow right
         gosub stow left
     }

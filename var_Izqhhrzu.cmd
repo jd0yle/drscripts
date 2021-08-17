@@ -75,8 +75,10 @@ put #tvar char.cast.mapp.charge 25
 put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
+put #tvar char.cast.mf.prep 360
+
 put #tvar char.cast.om.prep 30
-put #tvar char.cast.om.charge 20
+put #tvar char.cast.om.charge 30
 put #tvar char.cast.om.chargeTimes 1
 
 put #tvar char.cast.pom.prep 325
@@ -89,7 +91,7 @@ put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 13
+put #tvar char.cast.sol.charge 16
 put #tvar char.cast.sol.harness 0
 put #tvar char.cast.sol.chargeTimes 2
 
@@ -203,6 +205,7 @@ put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
+put #tvar char.fight.useMf 1
 put #tvar char.fight.useMpp 1
 put #tvar char.fight.useOm 1
 put #tvar char.fight.usePfe 0

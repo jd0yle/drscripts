@@ -364,6 +364,7 @@ sorceryDevour:
 
 castSpellsForMove:
     #gosub release symbiosis
+
     if ("$preparedspell" != "None") then gosub release spell
     #if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol

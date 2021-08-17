@@ -571,12 +571,7 @@ moveToWyverns:
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
         gosub runScript findSpot juvenilewyvern
-        #gosub runScript findSpot wyvern
         return
-
-        #put .findSpot wyvern
-        #waitforre ^FINDSPOT DONE$
-        #return
     }
 
     # Shard East Gate Area
@@ -756,8 +751,22 @@ waitForMainCombat:
     put .fight
     pause 1
 
+    var roomPlayerCheckCount 0
+
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29 && $Twohanded_Blunt.LearningRate > 29 && $Staves.LearningRate > 29)) then {
+	var forceEndCombat 0
+	if ("$roomplayers" != "") then {
+		math roomPlayerCheckCount add 1
+	} else {
+		var roomPlayerCheckCount 0
+	}
+
+	if (%roomPlayerCheckCount > 15) then {
+		var forceEndCombat 1
+		put #echo >Log #FF0000 ROOM OCCUPIED, FORCING MAINCOMBAT END
+	}
+
+    if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29 && $Twohanded_Blunt.LearningRate > 29 && $Staves.LearningRate > 29)) then {
         gosub resetState
         if ($bleeding = 1) then goto moveToHeal
         return

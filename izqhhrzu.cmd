@@ -143,14 +143,38 @@ main:
 
         gosub getHealed
 
+        if ($Theurgy.LearningRate < 1) then {
+	        gosub stow right
+	        gosub stow left
+	        gosub get my urrem orb
+	        if ("$righthand" != "Empty") then {
+	            put hug my urrem orb
+	            pause
+	            pause
+	            put commune truffenyi
+	            pause
+	            pause
+	            put commune truffenyi
+	            pause
+	            pause
+	        } else {
+				gosub get my scorpion bead
+		        put commune truffenyi
+		        pause
+		        pause
+		        put commune truffenyi
+		        pause
+		        pause
+	        }
+        }
+
         pause 1
         put .izqhhrzu
         put .reconnect
         put .afk
     }
 
-    if ($Performance.LearningRate < 10) then gosub performance
-
+    #if ($Performance.LearningRate < 10) then gosub performance
 
 
     startFight:
