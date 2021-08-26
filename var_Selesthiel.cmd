@@ -9,7 +9,8 @@ put #tvar char.appraise.item gem pouch
 ###      ARMOR
 ###############################
 #put #tvar char.armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
-put #tvar char.armor moonsilk moonsilk pants|moonsilk shirt|ka'hurst gloves|ka'hurst balaclava|steelsilk handwraps|steelsilk footwraps|demonscale shield|parry stick
+#put #tvar char.armor moonsilk moonsilk pants|moonsilk shirt|ka'hurst gloves|ka'hurst balaclava|steelsilk handwraps|steelsilk footwraps|demonscale shield|parry stick
+put #tvar char.armor moonsilk pants|moonsilk shirt|ka'hurst gloves|great helm|demonscale shield|parry stick
 
 
 ###############################
@@ -80,7 +81,8 @@ put #tvar char.combat.harness.Targeted_Magic 0
 ###      FIGHT
 ###############################
 #***** AMMO *****
-put #tvar char.fight.ammo.Crossbow basilisk bolt
+#put #tvar char.fight.ammo.Crossbow basilisk bolt
+put #tvar char.fight.ammo.Crossbow bolt
 put #tvar char.fight.ammo.Bow basilisk arrow
 put #tvar char.fight.ammo.Slings rock
 

@@ -59,9 +59,10 @@ commune.lightIncense:
         gosub drop my incense
         goto commune.lightIncense
     }
-    gosub get my sword
-    gosub get my flint
-    gosub light incense with my flint
+    gosub get my orichalcum phoenix
+    put point my phoenix at incense
+    pause
+    gosub stow my phoenix
     goto commune.lightIncense
 
 

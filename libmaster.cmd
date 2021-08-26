@@ -1760,6 +1760,7 @@ play:
     matchre return ^You notice that moisture
     matchre return ^You play
     matchre return ^You struggle
+    matchre return ^You're already playing a song
     matchre return ^What type
     put play %todo
     goto retry
@@ -2445,6 +2446,10 @@ stow:
     if ("$charactername" = "Qizhmur") then {
         if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material") || ("%todo" = "left" && "$lefthandnoun" = "material")) then {
             gosub put my material in my satchel
+            return
+        }
+        if (contains("%todo", "greatsword") || ("%todo" = "right" && "$righthand" = "iron greatsword") || ("%todo" = "left" && "$lefthand" = "iron greatsword")) then {
+            gosub put my iron greatsword in my hip pouch
             return
         }
     }

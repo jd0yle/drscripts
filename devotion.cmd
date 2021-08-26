@@ -39,7 +39,7 @@ gosub stow my rug
 gosub stow right
 gosub stow left
 
-if (%noCommune != 1) then gosub runScript commune --deity=meraud
+if (%noCommune != 1 && $Theurgy.LearningRate < 10) then gosub runScript commune --deity=meraud
 
 pause .2
 put #parse DEVOTION DONE

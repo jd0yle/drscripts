@@ -895,10 +895,10 @@ moveToHouse:
     # FC
     if ("%zone" = "150") then {
         if ("$roomname" = "Private Home Interior") then return
-        gosub castSpellsForMove
         if ("$roomid" = "50") then {
             gosub enterHouse
         } else {
+            gosub castSpellsForMove
             if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
             gosub automove 50
             put #tvar powerwalk 0
@@ -1126,8 +1126,10 @@ moveToCaracals:
 enterHouse:
     matchre enterHouseCont suddenly rattles
     matchre enterHouseCont suddenly opens
-    gosub peer bothy
-    matchwait 20
+    put peer bothy
+    matchwait 5
+    gosub collect rock
+    gosub kick pile
     gosub stow right
     gosub open bothy
     gosub move go bothy

@@ -5,7 +5,7 @@ put awake
 #put .var_Qizhmur
 #waitforre ^CHARVARS DONE
 
-var expectedNumBolts fifty-six
+var expectedNumBolts fourteen
 
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -208,10 +208,10 @@ main:
 		        gosub teach tm to inauri
 		    }
 		}
-echo tending
+
 		gosub runScript tend
 
-        if ($Sorcery.LearningRate < 2 || %startResearch = 1) then {
+        if (1 = 0 && $Sorcery.LearningRate < 2 || %startResearch = 1) then {
             put #echo >Log #cc99ff Starting research
             var startResearch 0
             gosub release cyclic

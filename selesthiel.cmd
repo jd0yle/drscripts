@@ -2,7 +2,7 @@ include libmaster.cmd
 
 put .afk
 
-var expectedNumBolts forty-one
+var expectedNumBolts twelve
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
@@ -570,8 +570,9 @@ moveToWyverns:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
+        if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
         gosub runScript findSpot juvenilewyvern
-        return
+        goto moveToWyverns
     }
 
     # Shard East Gate Area
@@ -652,6 +653,9 @@ retrieveArrows:
 
 var expectedNumBolts forty-four
 retrieveBolts:
+
+return
+
     var retrieveAttempts 0
 retrieveBoltsLoop:
     gosub count my basilisk bolts
@@ -721,7 +725,7 @@ waitForMagic:
 
 waitForMagicLoop:
     #if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Utility.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Arcana.LearningRate > 29)) then {
-    if ($lib.timers.nextBurgleAt < $gametime || $Warding.LearningRate > 29) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Augmentation.LearningRate > 10 && $Utility.LearningRate > 10)) then {
         put #script abort all except selesthiel
         put .reconnect
         put .afk

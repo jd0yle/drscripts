@@ -1,11 +1,13 @@
 include libmaster.cmd
 
-var trash blanket|kaleidoscope|earring|harp|cowbell|cookbook|thumb ring|book|witch ball
+var fromContainer backpack
+
+var trash blanket|kaleidoscope|earring|harp|cowbell|cookbook|thumb ring|book|witch ball|mouse|box|towel
 eval numItems count("%trash", "|")
 var index 0
 
 loop:
-	gosub get my %trash(%index) from my skull
+	gosub get my %trash(%index) from my %fromContainer
 	if ("$righthand" != "Empty") then {
 		gosub put my %trash(%index) in bucket
 		goto loop

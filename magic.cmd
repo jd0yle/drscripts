@@ -28,7 +28,7 @@ if ($char.magic.train.cyclic.Utility = 1) then {
 }
 
 if ($char.magic.train.revSorcery = 1) then {
-	var magic.skills Warding
+	#var magic.skills Warding
 }
 
 

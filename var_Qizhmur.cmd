@@ -10,7 +10,9 @@ put #tvar char.appraise.item my gem pouch
 ###############################
 #put #tvar char.armor demonscale leathers|demonscale gloves|demonscale shield|demonscale helm|demonscale mask|calcified femur
 #put #tvar char.armor demonscale leathers|ka'hurst gloves|demonscale shield|ka'hurst balaclava|calcified femur
-put #tvar char.armor demonscale leathers|chain gloves|demonscale shield|chain balaclava|calcified femur
+
+#put #tvar char.armor demonscale leathers|chain gloves|demonscale shield|chain balaclava|calcified femur
+put #tvar char.armor demonscale leathers|plate gauntlets|demonscale shield|chain balaclava|calcified femur
 
 
 ###############################
@@ -89,11 +91,11 @@ put #tvar char.fight.debil.use 1
 
 # The debilitation spell to use
 #put #tvar char.fight.debil.spell pv
-put #tvar char.fight.debil.spell df
+put #tvar char.fight.debil.spell ip
 put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 18
+put #tvar char.fight.debil.prepAt 20
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -122,8 +124,8 @@ put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged
 
 put #tvar char.fight.trainOffhand 1
 

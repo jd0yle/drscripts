@@ -86,7 +86,7 @@ put #tvar char.cast.pom.prep 325
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 
-put #tvar char.cast.rev.prep 13
+put #tvar char.cast.rev.prep 14
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
