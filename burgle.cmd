@@ -167,6 +167,7 @@ BUFF:
 	}
 	if ("$guild"="Moon Mage") then
 	{
+	    if ($SpellTimer.Shear.active = 1) then gosub RELEASE SHEAR
 		if ($SpellTimer.RefractiveField.active = 0) then gosub CAST RF
 	}
 	goto GETREADY

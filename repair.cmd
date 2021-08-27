@@ -162,6 +162,10 @@ repair.fetchItems:
         if ("$righthandnoun" = "ticket") then {
             gosub repair.getNpc
             gosub give %repair.npc
+            if ("$righthandnoun" = "ticket") then {
+                gosub repair.checkTicketTime
+                goto repair.fetchItemsLoop
+            }
             if ("$righthand" <> "large sack") then {
                 gosub wear $righthandnoun
                 gosub stow $righthandnoun
