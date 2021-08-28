@@ -96,19 +96,13 @@ main:
 
         gosub cast
 
-        put .burgle
-        waitforre ^BURGLE DONE$
-
-        put .armor wear
-        waitforre ^ARMOR DONE$
-
-        #gosub automove n gate
-        #gosub automove crossing
-        #gosub automove portal
-        #gosub move go meeting portal
+        gosub runScript burgle
+        gosub runScript armor wear
 
 		#gosub runScript play --noWait=1
-		gosub runScript travel mriss
+		#gosub runScript travel mriss
+
+		gosub automove n gate
 		gosub automove portal
 		gosub move go meeting portal
 
@@ -143,12 +137,12 @@ main:
 
         gosub getHealed
 
-        if ($Theurgy.LearningRate < 1) then {
+        if ($Theurgy.LearningRate < 17) then {
 	        gosub stow right
 	        gosub stow left
-	        gosub get my urrem orb
+	        gosub get my scorpion bead
 	        if ("$righthand" != "Empty") then {
-	            put hug my urrem orb
+	            put commune truffenyi
 	            pause
 	            pause
 	            put commune truffenyi
@@ -158,14 +152,23 @@ main:
 	            pause
 	            pause
 	        } else {
-				gosub get my scorpion bead
-		        put commune truffenyi
-		        pause
-		        pause
-		        put commune truffenyi
-		        pause
-		        pause
+	            gosub get my urrem orb
+	            put hug my urrem orb
+	            pause
+	            pause
+	            put commune truffenyi
+	            pause
+	            pause
+	            put commune truffenyi
+	            pause
+	            pause
+	            put commune truffenyi
+	            pause
+	            pause
 	        }
+			gosub stow right
+			gosub stow left
+			gosub stand
         }
 
         pause 1
@@ -182,7 +185,7 @@ main:
         gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToCaracals
+        gosub moveToYellowGremlins
         put .fight
         gosub waitForMainCombat
         goto main
@@ -803,6 +806,7 @@ moveToBurgle:
 
     if ("$roomid" = "0") then {
         gosub moveRandom
+        gosub runScript house
         goto moveToBurgle
     }
 
@@ -842,15 +846,6 @@ moveToBurgle:
         goto moveToBurgle
     }
 
-    # FC
-    if ("%zone" = "150") then {
-        if ($Attunement.LearningRate < 20) then put #tvar powerwalk 1
-        gosub automove portal
-        put #tvar powerwalk 0
-        gosub move go exit portal
-        goto moveToBurgle
-    }
-
     # Abandoned Mine
     if ("%zone" = "10") then {
         gosub automove ntr
@@ -877,6 +872,56 @@ moveToBurgle:
     }
 
     goto moveToBurgle
+
+
+
+
+moveToYellowGremlins:
+    gosub setZone
+
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToYellowGremlins
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ("$roomname" = "Private Home Interior") then {
+            gosub runScript house
+            goto moveToYellowGremlins
+        }
+        gosub runScript findSpot gremlin
+        return
+    }
+
+    # Shard S Gate
+    if ("%zone" = "68") then {
+        gosub automove e gate
+        goto moveToYellowGremlins
+    }
+
+    # Shard East Gate Area
+    if ("%zone" = "66") then {
+        gosub automove portal
+        gosub move go portal
+        goto moveToYellowGremlins
+    }
+
+    # Shard
+    if ("%zone" = "67") then {
+        gosub automove 132
+        goto moveToYellowGremlins
+    }
+
+    # Shard West Gate Area
+    if ("%zone" = "69") then {
+        gosub automove n gate
+        goto moveToYellowGremlins
+    }
+
+    goto moveToYellowGremlins
 
 
 

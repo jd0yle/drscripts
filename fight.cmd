@@ -944,14 +944,14 @@ manageCyclics:
 
 manageCyclics.cleric:
 	# HYH
-	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80 && $Debilitation.LearningRate < 27) then {
+	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80 && $Debilitation.LearningRate < 30) then {
 	#if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80) then {
 		gosub release cyclic
-		gosub runScript cast hyh male
+		gosub runScript cast hyh male off
 	} else {
 		evalmath fight.tmp.nextCastHyhGametime (300 + $char.cast.cyclic.lastCastGametime.hyh)
 		#if (%fight.tmp.nextCastHyhGametime < $gametime && $SpellTimer.HydraHex.active = 1) then gosub release hyh
-		if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 31 || $mana < 60)) then gosub release hyh
+		if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 33 || $mana < 60)) then gosub release hyh
         unvar fight.tmp.nextCastHyhGametime
 	}
 

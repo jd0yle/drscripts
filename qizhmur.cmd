@@ -607,7 +607,7 @@ moveToShardBulls:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        if ($roomid >= 597 && $roomid <= 695 && "$roomplayers" = "" && !contains("$roomobjs", "dirt construct")) then return
+        if ($roomid >= 597 && $roomid <= 605 && "$roomplayers" = "") then return
         gosub runScript findSpot shardbull
         return
     }
