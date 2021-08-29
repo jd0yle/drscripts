@@ -172,6 +172,14 @@ put #tvar super.enemies null
 
 
 ###############################
+###      INSTRUMENT
+###############################
+put #tvar char.instrument.container shadows
+put #tvar char.instrument.noun rattle
+put #tvar char.instrument.tap voodoo priest's rattle
+
+
+###############################
 ###      LOCKSMITHING
 ###############################
 put #tvar char.locks.boxTypes jewelry box|keepsake box
@@ -240,14 +248,6 @@ put #tvar char.observe.predict 1
 ###      PAWN
 ###############################
 put #tvar char.pawn.container purse
-
-
-###############################
-###      PERFORMANCE
-###############################
-put #tvar char.performance.instrument rattle
-put #tvar char.performance.song minuet
-put #tvar char.performance.mood quiet
 
 
 ###############################

@@ -249,7 +249,7 @@ checkTeaching:
 		var isInClass 0
 		put assess teach
 		pause 6
-		if (%isInClass != 1) then {
+		if ($lib.student != 1) then {
 			if (contains("$roomplayers", "Inauri") then {
 		        if ($Targeted_Magic.LearningRate < 30) then {
 		            gosub whisper inauri teach tm

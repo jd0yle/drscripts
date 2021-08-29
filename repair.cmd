@@ -13,8 +13,7 @@ action goto repair.forceNight when ^Bonk\! You smash your nose\.$
 ###############################
 ###      VARIABLES
 ###############################
-var leatherList $char.repair.leather
-var metalList $char.repair.metal
+var repairList $char.repair.list
 
 var repair.emptySack 0
 var repair.index 0
@@ -87,30 +86,17 @@ repair.checkForTicket:
 
 repair.main:
     if (%repair.forceFangCove = true) then {
-        if (%repair.forceNight = true) then {
-            var repair.forceRepairman true
-        } else {
-            if ($Time.isDay = 0) then {
-                if ("$Time.timeOfDay" <> "sunrise") then {
-                    var repair.forceRepairman true
-                }
-            }
-        }
+        var repair.forceRepairman true
         if ($zoneid <> 150) then {
             gosub repair.moveToFangCove
         }
         gosub repair.moveToFangCove
     }
     gosub repair.checkMoney
-    # Begin Metal Repair.
+    # Begin Repair
     gosub repair.moveToRepairMetal
     gosub repair.repairAll
-    gosub repair.repairSingle %metalList
-
-    # Begin Leather Repair.
-    gosub repair.moveToRepairLeather
-    gosub repair.repairAll
-    gosub repair.repairSingle %leatherList
+    gosub repair.repairSingle %repairList
 
     # Deposit left over money.
     gosub repair.moveToBank
@@ -338,33 +324,6 @@ repair.moveToBank:
         gosub automove bank
         goto repair.moveToBank
     }
-
-
-repair.moveToCraftHall:
-    # Crossing
-    if ($zoneid = 1) then {
-        if ($roomid = TODO) then return
-        gosub move to engineering
-        goto repair.moveToCraftHall
-    }
-    # Shard - East Gate
-    if ($zoneid = 66) then {
-        gosub move to east gate
-        goto repair.moveToCraftHall
-    }
-    # Shard - City
-    if ($zoneid = 67) then {
-        if ("$roomname" = "Shard Engineering Society, Bookstore") then return
-        gosub move to Engineering book
-        goto repair.moveToCraftHall
-    }
-    # Fang Cove
-    if ($zoneid = 150) then {
-        if ($roomid = TODO) then return
-        gosub move to engineering
-        goto repair.moveToCraftHall
-    }
-    goto repair.moveToCraftHall
 
 
 repair.moveToCrossing:
