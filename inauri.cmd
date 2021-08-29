@@ -28,7 +28,6 @@ if (!($inauri.heal >0)) then put #tvar inauri.heal 0
 if (!($inauri.healTarget >0)) then put #tvar inauri.healTarget 0
 if (!($inauri.subScript >0)) then put #tvar inauri.subScript 0
 if (!($lastAlmanacGametime >0)) then put #tvar lastAlmanacGametime 0
-if (!($lastAppGametime >0)) then put #tvar lastAppGametime 0
 if (!($lastCompendiumGametime >0)) then put #tvar lastCompendiumGametime 0
 if (!($lastLookGametime >0)) then put #tvar lastLookGametime 0
 if (!($lastMagicGametime >0)) then put #tvar lastMagicGametime 0
@@ -52,6 +51,7 @@ inauri.loop:
     gosub inauri.locationCheck
     gosub inauri.scriptCheck
     if ($standing = 0) then gosub stand
+    gosub store default satchel
     if ($inauri.subScript <> 0) then gosub inauri.subScriptResume
     if ($lib.magicInert <> 1) then {
         if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
@@ -85,6 +85,7 @@ inauri.burgle:
     gosub burgle.setNextBurgleAt
     if ($lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #009933 [inauri] Going to burgle
+        gosub inauri.clearHands
         put stop teach
         gosub moveToBurgle
         put #tvar inauri.subScript burgle
@@ -98,7 +99,6 @@ inauri.burgle:
         put .pawn
         waitforre ^PAWN DONE
         put #tvar inauri.subScript 0
-
         gosub automove portal
         gosub move go meeting portal
         put #tvar inauri.subScript deposit
@@ -119,6 +119,7 @@ inauri.caracal:
         return
     }
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
+        gosub inauri.clearHands
         put #echo >Log #009933 [inauri] Beginning trainer.
         put #tvar inauri.subScript caracal
         put .caracal
@@ -129,15 +130,22 @@ inauri.caracal:
     return
 
 
+inauri.clearHands:
+    if ("$righthand" <> "Empty") then {
+        gosub stow
+    }
+    if ("$lefthand" <> "Empty") then {
+            gosub stow left
+    }
+    return
+
+
 inauri.compendium:
     evalmath nextCompendiumAt $lastCompendiumGametime + 1200
     if (%nextCompendiumAt > $gametime) then {
         return
     }
-    if !(matchre("$righthand|$lefthand", "Empty")) then {
-        gosub stow
-        gosub stow left
-    }
+    gosub inauri.clearHands
     put #echo >Log Yellow [inauri] Beginning compendium.
     put #tvar inauri.subScript compendium
     put .compendium
@@ -235,6 +243,7 @@ inauri.engineerRepair:
 inauri.forage:
     if ($Outdoorsmanship.LearningRate < 10) then {
         put #echo >Log #009933 [inauri] Going to forage.
+        gosub inauri.clearHands
         put #tvar inauri.subScript forage
         put stop teach
         gosub moveToForage
@@ -350,6 +359,7 @@ inauri.magic:
     if (%nextMagic < $gametime) then {
         var inauri.magicRates ($Augmentation.LearningRate + $Warding.LearningRate + $Utility.LearningRate)
         if (%inauri.magicRates < 15 ) then {
+            gosub inauri.clearHands
             put #echo >Log Purple [inauri] Beginning magic.
             put #tvar inauri.subScript magic
             put .look

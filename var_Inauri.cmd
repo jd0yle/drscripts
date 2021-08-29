@@ -145,9 +145,7 @@ put #tvar char.pawn.container rucksack
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.leather moonsilk shirt|moonsilk pants|demonscale shield
-#put #tvar char.repair.metal jagged scythe|assassin's blade|ka'hurst hhr'ata|frying pan|chain balaclava|chain gloves|wood shaper|tapered rasp|carving knife|metal drawknife|basic stamp
-put #tvar char.repair.metal wood shaper|tapered rasp|carving knife|metal drawknife|basic stamp
+put #tvar char.repair.list demonscale shield|jagged scythe|wood shaper|tapered rasp|carving knife|metal drawknife|basic stamp
 
 
 ###############################

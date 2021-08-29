@@ -124,7 +124,7 @@ if ("$charactername" = "%CHARACTER4") then {
     var pawn NO
     var donotpawnthis scimitar|keepsake box|arrow|memory orb|jewelry box
     var trashall NO
-    var trashthings basket|kaleidoscope|sieve|stick|diary|top|rat|mouse|ball|manual|guide
+    var trashthings basket|kaleidoscope|sieve|stick|diary|top|rat|mouse|ball|guide|manual
     var skip NULL
 }
 

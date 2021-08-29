@@ -55,6 +55,11 @@ look.loop:
         pause 1
         if ($inauri.subScript > 0) then gosub look.resumeScript
     }
+    if ("$charactername" = "Khurnaarti") then {
+        if !(matchre("$scriptlist", "khurnaarti")) then {
+            put .khurnaarti
+        }
+    }
     if (%look.openDoor = 1) then gosub look.door
     pause 2
     gosub look.look
