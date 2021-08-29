@@ -115,8 +115,8 @@ loop:
         var shouldCastRoc 1
 
         if ($SpellTimer.RiteofContrition.active = 1) then var shouldCastRoc 0
-        if ($mana < 75) then var shouldCastRoc 0
-        if ($Utility.LearningRate > 32) then var shouldCastRoc 0
+        if ($mana < 80) then var shouldCastRoc 0
+        if ($Utility.LearningRate > 28) then var shouldCastRoc 0
 
         if (%shouldCastRoc = 1) then {
             gosub prep $char.magic.train.cyclic.spell.Utility $char.magic.train.cyclic.prep.Utility
@@ -130,8 +130,8 @@ loop:
 	        evalmath nextCastCyclicGametime (300 + $char.cast.cyclic.lastCastGametime.roc)
 
 	        if (%nextCastCyclicGametime < $gametime) then var shouldReleaseRoc 1
-            if ($mana < 50) then var shouldReleaseRoc 1
-            if ($Utility.LearningRate > 33) then var shouldReleaseRoc 1
+            if ($mana < 70) then var shouldReleaseRoc 1
+            if ($Utility.LearningRate > 32) then var shouldReleaseRoc 1
 
             if (%shouldReleaseRoc = 1) then gosub release roc
         }
