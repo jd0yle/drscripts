@@ -1,5 +1,5 @@
 include libmaster.cmd
-action goto box.mainLoop when ^However, a \w+ \w+ \w+ is not fully disarmed, making any chance of picking it unlikely\.
+action goto box.mainLoop when However, a (?:/w+) (?:/w+) (%boxes) is not fully disarmed, making any chance of picking it unlikely\.
 action var guild $1 when Guild\: (Barbarian|Bard|Commoner|Cleric|Empath|Moon Mage|Necromancer|Paladin|Ranger|Trader|Warrior Mage)
 action var race $1 when Race\: (Dwarf|Elothean|Gnome|Gor'Tog|Kaldar|Prydaen|Rakash)
 action var strength $1 when Strength \:  (\d+)              Reflex

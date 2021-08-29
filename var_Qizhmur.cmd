@@ -278,8 +278,7 @@ put #tvar char.pawn.container portal
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 106
-put #var char.repair.leather demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
-put #var char.repair.metal null
+put #tvar char.repair.list demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
 
 
 ###############################

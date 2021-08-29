@@ -14,8 +14,8 @@ put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|quilted hauberk|demonsca
 ###############################
 ###      ASTRAL
 ###############################
-put #tvar char.astral.manaPerHarness 50
-put #tvar char.astral.timesToHarness 3
+put #tvar char.astral.manaPerHarness 30
+put #tvar char.astral.timesToHarness 2
 
 
 ###############################
@@ -172,6 +172,14 @@ put #tvar super.enemies null
 
 
 ###############################
+###      INSTRUMENT
+###############################
+put #tvar char.instrument.container shadows
+put #tvar char.instrument.noun rattle
+put #tvar char.instrument.tap voodoo priest's rattle
+
+
+###############################
 ###      LOCKSMITHING
 ###############################
 put #tvar char.locks.boxTypes jewelry box|keepsake box
@@ -204,17 +212,17 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 7
+put #tvar char.magic.train.charge.Augmentation 10
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 7
+put #tvar char.magic.train.charge.Utility 10
 put #tvar char.magic.train.harness.Utility 0
 
-put #tvar char.magic.train.spell.Warding psy
-put #tvar char.magic.train.prep.Warding 5
-put #tvar char.magic.train.charge.Warding 7
+put #tvar char.magic.train.spell.Warding shear
+put #tvar char.magic.train.prep.Warding 30
+put #tvar char.magic.train.charge.Warding 1
 put #tvar char.magic.train.harness.Warding 0
 
 
@@ -243,20 +251,11 @@ put #tvar char.pawn.container purse
 
 
 ###############################
-###      PERFORMANCE
-###############################
-put #tvar char.performance.instrument rattle
-put #tvar char.performance.song serenade
-put #tvar char.performance.mood quiet
-
-
-###############################
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.leather demonscale armguard|demonscale shield|quilted hauberk
-put #tvar char.repair.metal diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade
+put #tvar char.repair.list demonscale armguard|demonscale shield|quilted hauberk|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade
 
 
 ###############################
