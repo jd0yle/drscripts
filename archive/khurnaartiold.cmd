@@ -187,7 +187,7 @@ khurnaarti.classSetClass:
         gosub listen $lib.instructor
         put #var lib.student 1
     }
-    goto khurnaarti.Class
+    goto khurnaarti.class
 
 
 khurnaarti.clearHands:
