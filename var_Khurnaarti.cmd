@@ -177,6 +177,7 @@ put #tvar super.enemies null
 put #tvar char.instrument.container shadows
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
+put #tvar char.instrument.song dirge
 
 
 ###############################
