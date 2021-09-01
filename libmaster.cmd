@@ -2653,7 +2653,7 @@ tdps:
     goto retry
 
 tdp:
-    var location tdp1
+    var location tdp
     matchre return ^An attendant quietly informs you
     matchre return ^You have
     put tdp
