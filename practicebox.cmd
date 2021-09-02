@@ -82,7 +82,7 @@ pb.main:
     gosub tap my bucket
     gosub get my $char.locks.boxTypes(1)
     if ("$righthand" = "Empty") then {
-        gosub get my $char.locks.boxTypes(2)
+        gosub get my $char.locks.boxType from my $char.locks.boxContainer
     }
     if ("$righthand" = "Empty") then {
         put #echo >log yellow [practicebox] No boxes found in $char.locks.boxContainer.

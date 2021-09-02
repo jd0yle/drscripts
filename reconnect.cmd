@@ -47,7 +47,7 @@ loopWait:
             put #script abort all except reconnect
             if ("$charactername" = "Inauri") then put .look
             if ("$charactername" = "Izqhhrzu") then put .izqhhrzu
-            if ("$charactername" = "Khurnaarti") then put .khurnaartinew
+            if ("$charactername" = "Khurnaarti") then put .khurnaarti
             if ("$charactername" = "Qizhmur") then put .qizhmur
             if ("$charactername" = "Selesthiel") then put .selesthiel
             var restartScripts 0
