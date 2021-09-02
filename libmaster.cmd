@@ -925,6 +925,16 @@ dismantle:
     goto retry
 
 
+dissect:
+    var location dissect1
+    var todo $0
+    dissect1:
+    matchre return ^What exactly are
+    matchre return ^You believe the
+    put dissect %todo
+    goto retry
+
+
 dodge:
     var location Dodge
     matchre return ^But you are already dodging\!
@@ -2067,10 +2077,14 @@ repair:
     var location repair1
     repair1:
     matchre return isn't in need of repair
+    matchre return not in need of repair\.$
     matchre return ^Roundtime
     matchre return SKIN
     matchre return ^The leather looks frayed
     matchre return ^With some needle and thread
+    matchre return ^You can't fix
+    matchre return ^You lack the proper
+    matchre return ^You'll have to hold it
     put repair %todo
     goto retry
 
@@ -3300,8 +3314,8 @@ retry:
     math retryAttempts add 1
     echo [ libmaster -> retry ] No match found, %retryAttempts retries
     put #tvar libmaster.retryAttempts %retryAttempts
-    if (%retryAttempts > 10) then {
-         put #echo #FF0000 RETRIED 10 TIMES, NO MATCHES! FORCING RETURN!
+    if (%retryAttempts > 5) then {
+         put #echo #FF0000 RETRIED 5 TIMES, NO MATCHES! FORCING RETURN!
          put #tvar libmaster.responseNotFound 1
          return
      }

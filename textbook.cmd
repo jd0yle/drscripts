@@ -1,6 +1,7 @@
 include libmaster.cmd
 
-var startAt Gidii
+#var startAt Gidii
+var startAt Dusk Ogre
 
 if ("$righthandnoun" != "textbook") then {
 	gosub stow right
