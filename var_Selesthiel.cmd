@@ -128,8 +128,8 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|diamondwood nightstick
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Staves
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
 
 #put #tvar char.fight.weapons.items smokewood latchbow
 #put #tvar char.fight.weapons.skills Crossbow
@@ -153,6 +153,7 @@ put #tvar char.fight.armor.items.1 ka'hurst hauberk|ka'hurst gloves|ka'hurst bal
 put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1

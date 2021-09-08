@@ -1933,9 +1933,11 @@ push:
     var location push1
     var todo $0
     push1:
+    matchre return ^Not finding a matching section
     matchre return ^You wave the loop near
     matchre return ^Roundtime
     matchre return ^You push
+    matchre return ^What are you
     put push %todo
     goto retry
 

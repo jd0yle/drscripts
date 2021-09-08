@@ -29,7 +29,7 @@ action var setEasierSong 1 when ^You (struggle|fumble)
 action var setHarderSong 0;var setEasierSong 0 when only the slightest hint of difficulty\.$
 
 action goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
-
+action goto play.cleanInstrument when ^You notice that moisture has accumulated
 
 
 ###############################
@@ -71,6 +71,19 @@ play.top:
 
 
 ###############################
+###      play.cleanInstrument
+###############################
+play.cleanInstrument:
+	gosub stop play
+	gosub stow left
+	gosub get my cloth
+	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
+	put wipe my $char.instrument.noun with my cloth
+	gosub stow my cloth
+	goto play.top
+
+
+###############################
 ###      play.repairInstrument
 ###############################
 play.repairInstrument:
@@ -78,9 +91,10 @@ play.repairInstrument:
 	gosub stow left
 	gosub get my repair kit
 	if ("$lefthand" = "Empty") then goto done.noRepairKit
-	gosub repair my $char.instrument.tap with my repair kit
+	gosub repair my $char.instrument.noun with my repair kit
 	gosub stow my repair kit
 	goto play.top
+
 
 ###############################
 ###      play.getSongIndex

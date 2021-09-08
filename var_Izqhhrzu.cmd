@@ -45,7 +45,7 @@ put #tvar char.wornFocus 1
 ###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.prep 1
+put #tvar char.cast.default.prep 25
 put #tvar char.cast.default.charge 25
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 2
@@ -54,9 +54,9 @@ put #tvar char.cast.useOm 1
 put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
 
 put #tvar char.cast.benediction.prep 15
-put #tvar char.cast.benediction.charge 30
+put #tvar char.cast.benediction.charge 15
 put #tvar char.cast.benediction.harness 0
-put #tvar char.cast.benediction.chargeTimes 1
+put #tvar char.cast.benediction.chargeTimes 2
 
 put #tvar char.cast.centering.prep 1
 put #tvar char.cast.centering.charge 20
@@ -70,15 +70,15 @@ put #tvar char.cast.hyh.prep 10
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
-put #tvar char.cast.mapp.prep 5
+put #tvar char.cast.mapp.prep 20
 put #tvar char.cast.mapp.charge 25
 put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
-put #tvar char.cast.mf.prep 360
+put #tvar char.cast.mf.prep 450
 
-put #tvar char.cast.om.prep 30
-put #tvar char.cast.om.charge 30
+put #tvar char.cast.om.prep 40
+put #tvar char.cast.om.charge 40
 put #tvar char.cast.om.chargeTimes 1
 
 put #tvar char.cast.pom.prep 325
@@ -91,12 +91,12 @@ put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 16
+put #tvar char.cast.sol.charge 20
 put #tvar char.cast.sol.harness 0
 put #tvar char.cast.sol.chargeTimes 2
 
-put #tvar char.cast.pfe.prep 5
-put #tvar char.cast.pfe.charge 15
+put #tvar char.cast.pfe.prep 10
+put #tvar char.cast.pfe.charge 25
 put #tvar char.cast.pfe.harness 0
 put #tvar char.cast.pfe.chargeTimes 2
 

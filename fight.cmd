@@ -803,9 +803,9 @@ checkDeadMob:
         }
 
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
-            #if ($Skinning.LearningRate > $First_Aid.LearningRate) then {
-            #    gosub dissect %mobName
-            #}
+            if (%useDissect = 1 && %$Skinning.LearningRate > $First_Aid.LearningRate) then {
+                gosub dissect %mobName
+            }
             if (%arrangeForPart = 1) then {
                 gosub arrange for part
             }

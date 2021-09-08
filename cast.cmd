@@ -90,7 +90,7 @@ if (!(%harness > -1)) then var harness 0
 
 if (%useCambrinth = 0 || %charge = 0 || %chargeTimes = 0) then var useCambrinth 0
 
-if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
+if ($char.cast.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
 	evalmath prepAt (%prepAt + (%charge * %chargeTimes))
 	var charge 0
 	var chargeTimes 0
