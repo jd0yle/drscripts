@@ -56,9 +56,14 @@ put #tvar char.cast.php.prep 20
 put #tvar char.cast.php.charge 20
 put #tvar char.cast.php.chargeTimes 4
 
-put #tvar char.cast.rog.prep 20
+put #tvar char.cast.roc.prep 25
+put #tvar char.cast.roc.charge 0
+put #tvar char.cast.roc.chargeTimes 0
+
+put #tvar char.cast.rog.prep 25
 put #tvar char.cast.rog.charge 0
 put #tvar char.cast.rog.chargeTimes 0
+
 
 ###############################
 ###      COMBAT
@@ -142,6 +147,7 @@ put #tvar char.fight.useArmor 0
 put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useDissect 0
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
@@ -277,7 +283,7 @@ put #tvar char.pawn.container portal
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
-put #tvar char.repair.waitRoomId 106
+put #tvar char.repair.waitRoomId 50
 put #tvar char.repair.list demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
 
 

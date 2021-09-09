@@ -144,6 +144,7 @@ put #tvar char.fight.trainOffhand 1
 put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1

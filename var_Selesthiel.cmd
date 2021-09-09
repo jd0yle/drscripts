@@ -64,20 +64,6 @@ put #tvar char.cast.rtr.prep 800
 
 
 ###############################
-###      COMBAT
-###############################
-put #tvar char.combat.spell.Debilitation 0
-put #tvar char.combat.prep.Debilitation 0
-put #tvar char.combat.charge.Debilitation 0
-put #tvar char.combat.harness.Debilitation 0
-
-put #tvar char.combat.spell.Targeted_Magic 0
-put #tvar char.combat.prep.Targeted_Magic 0
-put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 0
-
-
-###############################
 ###      FIGHT
 ###############################
 #***** AMMO *****
@@ -318,7 +304,7 @@ put #tvar char.pawn.container shadows
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
-put #tvar char.repair.waitRoomId 106
+put #tvar char.repair.waitRoomId 50
 put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
 
 

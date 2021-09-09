@@ -187,6 +187,7 @@ put #tvar char.fight.useArmor 0
 put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
@@ -402,7 +403,7 @@ put #tvar char.observe.predict 0
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
-put #tvar char.repair.waitRoomId 106
+put #tvar char.repair.waitRoomId 50
 put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
 
 
