@@ -45,7 +45,7 @@ put #tvar char.wornFocus 1
 ###############################
 put #tvar char.cast.invokeSpell 0
 
-put #tvar char.cast.default.prep 25
+put #tvar char.cast.default.prep 40
 put #tvar char.cast.default.charge 25
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 2
@@ -54,7 +54,7 @@ put #tvar char.cast.useOm 1
 put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
 
 put #tvar char.cast.benediction.prep 15
-put #tvar char.cast.benediction.charge 15
+put #tvar char.cast.benediction.charge 25
 put #tvar char.cast.benediction.harness 0
 put #tvar char.cast.benediction.chargeTimes 2
 
@@ -62,41 +62,41 @@ put #tvar char.cast.centering.prep 1
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 13
+put #tvar char.cast.ghs.prep 14
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
-put #tvar char.cast.hyh.prep 10
+put #tvar char.cast.hyh.prep 11
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
-put #tvar char.cast.mapp.prep 20
+put #tvar char.cast.mapp.prep 25
 put #tvar char.cast.mapp.charge 25
 put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
 put #tvar char.cast.mf.prep 450
 
-put #tvar char.cast.om.prep 40
-put #tvar char.cast.om.charge 40
-put #tvar char.cast.om.chargeTimes 1
+put #tvar char.cast.om.prep 50
+put #tvar char.cast.om.charge 25
+put #tvar char.cast.om.chargeTimes 2
 
-put #tvar char.cast.pom.prep 325
+put #tvar char.cast.pom.prep 425
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 
-put #tvar char.cast.rev.prep 14
+put #tvar char.cast.rev.prep 17
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
 put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 20
+put #tvar char.cast.sol.charge 25
 put #tvar char.cast.sol.harness 0
 put #tvar char.cast.sol.chargeTimes 2
 
 put #tvar char.cast.pfe.prep 10
-put #tvar char.cast.pfe.charge 25
+put #tvar char.cast.pfe.charge 30
 put #tvar char.cast.pfe.harness 0
 put #tvar char.cast.pfe.chargeTimes 2
 
@@ -158,7 +158,7 @@ put #tvar char.fight.tmSpell do
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 #put #tvar char.fight.tmPrep 10
-put #tvar char.fight.tmPrep 8
+put #tvar char.fight.tmPrep 10
 
 # How long to pause before casting.
 #put #tvar char.fight.tmPause 10
@@ -187,7 +187,7 @@ put #tvar char.fight.useArmor 0
 put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
-put #tvar char.fight.useDissect 1
+put #tvar char.fight.useDissect 0
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1

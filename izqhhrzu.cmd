@@ -1331,6 +1331,8 @@ moveToMagic:
 setZone:
     var zone $zoneid
 
+	if ($standing != 1) then gosub stand
+
     if ("$roomname" = "Belarritaco Bay, The Galley Dock") then var zone 108
     if ("$roomname" = "Mer'Kresh, The Galley Dock") then var zone 107
     if ("$roomname" = "The Galley Sanegazat") then var zone 107a
@@ -1338,7 +1340,7 @@ setZone:
     if ("$roomname" = "Mer'Kresh, The Galley Dock") then var zone 107
 
 
-    if ("%zone" = "0") then {
+    if ("%zone" = "0" && "$roomname" != "Private Home Interior") then {
         put n
         pause .2
         put sw

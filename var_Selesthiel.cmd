@@ -278,8 +278,8 @@ unvar tmp.charge.Warding
 put #tvar char.predict.tool divination bones
 put #tvar char.predict.tool.container telescope case
 
-put #tvar char.predict.preferred.skillset magic
-put #tvar char.predict.preferred.skill Sorcery
+put #tvar char.predict.preferred.skillset survival
+put #tvar char.predict.preferred.skill First Aid
 
 put #tvar char.observe.telescope clockwork telescope
 put #tvar char.observe.telescope.container telescope case

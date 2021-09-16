@@ -1278,6 +1278,7 @@ invoke:
     matchre return ^The cambrinth
     matchre return ^You are in no condition
     matchre return ^You don't have any
+    matchre return ^You focus
     matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane\.
     matchre return ^You hold
     matchre return ^You must begin preparing a ritual spell before you can focus it
@@ -2544,6 +2545,7 @@ study:
     matchre return ^Why do you need to study this chart again\?
     matchre return ^You are unable to sense additional information\.
     matchre return ^You attempt
+    matchre return ^You believe
     matchre return ^You feel it is too soon to grasp anything new in the skies above\.
     matchre return ^You review
     matchre return ^You scan
@@ -3296,6 +3298,11 @@ checkMoons:
     return
 
 
+debug:
+	put #echo [%scriptname] $0
+	return
+
+
 retry:
     matchre return ^Roundtime
     matchre return ^Please rephrase that command\.$
@@ -3384,7 +3391,7 @@ runScript:
     var location runScript1
 
     runScript1:
-        put #echo >Debug #FF9900 runScript start %todo
+        #put #echo >Debug #FF9900 runScript start %todo
 	    eval doneString toupper("%scriptName")
 		matchre runScriptDone ^%doneString DONE$
 		put .%todo
@@ -3403,7 +3410,7 @@ runScript:
 	    goto runScriptLoop
 
     runScriptDone:
-        put #echo >Debug #FF9900 runScript end %todo
+        #put #echo >Debug #FF9900 runScript end %todo
         return
 
 
