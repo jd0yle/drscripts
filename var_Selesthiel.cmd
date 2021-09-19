@@ -62,6 +62,7 @@ put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
 put #tvar char.cast.rtr.prep 800
 
+put #tvar char.cast.tattoo.spellName rev
 
 ###############################
 ###      FIGHT

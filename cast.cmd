@@ -99,7 +99,11 @@ if ($char.cast.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && matchre("%spel
 	echo USING OM, prepAt %prepAt, charge %charge, chargeTimes %chargeTimes
 }
 
-gosub prep %spell %prepAt
+if ("%spell" = "$char.cast.tattoo.spellName") then {
+	gosub invoke tattoo
+} else {
+	gosub prep %spell %prepAt
+}
 
 if (%useCambrinth = 1) then {
     if ($char.wornCambrinth != 1) then {
