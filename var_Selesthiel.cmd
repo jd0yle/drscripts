@@ -52,10 +52,10 @@ put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rs.prep 40
 put #tvar char.cast.rs.charge 80
 
-put #tvar char.cast.shw.prep 25
+put #tvar char.cast.shw.prep 31
 put #tvar char.cast.shw.charge 0
 
-put #tvar char.cast.sls.prep 30
+put #tvar char.cast.sls.prep 33
 put #tvar char.cast.sls.charge 0
 
 put #tvar char.cast.bc.prep 700

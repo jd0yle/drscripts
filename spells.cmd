@@ -544,6 +544,10 @@ var spells %spells|shocking
 var spell.shocking Shocking Infusions|shocking|Electricity Manipulation|Warrior Mage|Elemental|Y|Create elemental weapons that do electric damage.|metamagic||||||||||||1
 var spells %spells|shockwave
 var spell.shockwave Shockwave|shockwave|Air Manipulation|Warrior Mage|Elemental|N|Slice damage, Cold damage, AoE damage. May knock back engaged targets or push them out of the r|battle|targeted|area of effect|||30|100|advanced|250|1000|-1||2
+
+var spells %spells|shw
+var spell.shw Shadow Web|shw|Moonlight Manipulation|Moon Mage|Lunar|Y|+No buffs, -No debuffs, AOE webbing|cyclic|debilitation|area of effect|magic|reflexes|6|31|intermediate|80|800|999|1
+
 var spells %spells|sv
 var spell.sv Siphon Vitality|sv|Blood Magic|Necromancer|Necromantic|N|Fire damage, Cold damage, Vitality heal, Single target, restores vitality to caster|battle|targeted||||10|66|intermediate|80|800|-1||2
 var spells %spells|sks
@@ -754,10 +758,10 @@ donePrint:
 
 
 donePrintEcho:
-    echo %msg
-    exit
-
 done:
+	pause .1
+	put #parse SPELLS DONE
+	exit
     exit
 
 
@@ -810,10 +814,13 @@ parseSpellInfo:
 
 	parseSpellInfoLoop:
 		if (%index > %len) then return
-		echo SPELLINFO %fields(%index) %spell.%spellAbbr.%fields(%index)
+		#echo SPELLINFO %fields(%index) %spell.%spellAbbr.%fields(%index)
 		put #parse SPELLINFO %fields(%index) %spell.%spellAbbr.%fields(%index)
 		math index add 1
 		goto parseSpellInfoLoop
 
 
 spells.end:
+	pause .1
+	put #parse SPELLS DONE
+	exit
