@@ -197,7 +197,11 @@ repair.checkTicketTime:
         pause %repair.waitTimeSec
         put #script abort look
     }
-    return
+    if ("$roomid" = "%repair.waitRoomId") then {
+        goto repair.checkForTicket
+    } else {
+        return
+    }
 
 
 repair.forceNight:
