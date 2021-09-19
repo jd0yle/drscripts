@@ -22,6 +22,8 @@ action send release rf;send rummage my shadows when ^You feel about some dark en
 
 action (duskruinCheck) if (contains("$roomname", "Duskruin") || contains("$roomobjs", "a palisade gate")) then goto escapeDuskruin when eval $roomname
 
+action (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomname
+
 action (checkTeach) var isInClass 1 when You are in this class
 
 action put exp mods when ^Your spell.*backfire.*
@@ -54,6 +56,8 @@ action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmu
 
 
 timer start
+
+if (contains("$roomname", "A'baya")) then goto escapeTaisidon
 
 if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
@@ -253,6 +257,23 @@ checkTeaching:
 	return
 
 
+escapeTaisidon:
+	action (taisidonCheck) off
+    put #echo >Log #FF0000 ATTEMPTING TO ESCAPE TAISIDON
+	put #script abort all except %scriptname
+	if ("$roomname" = "A'baya Esplanade, Central Walkway") then {
+		gosub move go moongate
+		gosub move go meeting portal
+		gosub move west
+	} else {
+	    echo LOST IN TAISIDON! EXITING
+	    put #echo >Log #FF0000 LOST IN TAISIDON! EXITING
+	    exit
+	    put #script abort all
+	    exit
+	}
+	put #echo >Log #00FF00 Back in Fang Cove!
+	put .selesthiel
 
 escapeDuskruin:
     action (duskruinCheck) off

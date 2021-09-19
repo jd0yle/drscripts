@@ -169,6 +169,8 @@ init:
 	    var weapons.targetLearningRate $%weapons.skills(%weapons.index).LearningRate
 	    math weapons.targetLearningRate add 5
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+
+	    put #unvar stance
     goto loop
 
 
@@ -180,6 +182,10 @@ loop:
     if ($standing != 1) then gosub stand
     gosub releaseUnwantedSpells
 
+    gosub checkWeaponSkills
+    gosub checkStances
+    if (%useArmor = 1) then gosub checkArmorSkills
+
     gosub checkDeadMob
     if ($char.loot.boxes = 1) then {
         gosub runScript loot --boxes=1
@@ -187,12 +193,9 @@ loop:
         gosub runScript loot
     }
 
-    gosub checkWeaponSkills
-    gosub checkStances
-    if (%useArmor = 1) then gosub checkArmorSkills
-
-    gosub buffs
     gosub manageCyclics
+    gosub buffs
+
     gosub fight.observe
     gosub huntApp
     if ("$char.fight.usePray" = "1") then gosub pray.onTimer $char.fight.prayTarget
@@ -682,6 +685,7 @@ checkWeaponSkills:
             if ("$righthand" = "Empty") then gosub remove my %weapons.items(%weapons.index)
 
             if ($char.fight.useBless = 1) then {
+                gosub checkStances
                 gosub prep bless
                 gosub charge my $char.cambrinth 5
                 gosub invoke my $char.cambrinth 5

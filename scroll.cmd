@@ -2,7 +2,8 @@ include libmaster.cmd
 
 var spells null
 
-action var spells %spells|$1 when ^It is labeled "(.*)\."$
+action var spells %spells|$1; put #echo >Log Scroll: $1 when ^It is labeled "(.*)\."$
+action var spells %spells|$1; put #echo >Log Scroll: $1 when contains a complete description of the (.*) spell
 
 
 var scrolls tablet|vellum|ostracon|bark|roll|scroll

@@ -100,7 +100,7 @@ put #tvar char.fight.debil.spell ip
 put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 20
+put #tvar char.fight.debil.prepAt 22
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -252,7 +252,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
 unvar var.magic.Utility
 
 # WARDING
-var var.magic.Warding 34
+var var.magic.Warding 38
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 put #tvar char.magic.train.harness.Warding 0

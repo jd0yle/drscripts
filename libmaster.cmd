@@ -1886,6 +1886,7 @@ prepare:
     matchre return ^With rigid movements you prepare your body
     matchre return ^You are already
     matchre return ^You begin chanting a prayer
+    matchre return ^You can't seem to form the spell pattern
     matchre return ^You close your eyes and breathe deeply,
     matchre return ^You deftly waggle your fingers in the precise motions needed to prepare
     matchre return ^You don't seem to be able to move to do that\.
@@ -3429,7 +3430,7 @@ waitForPrep:
     waitForPrep1:
     gosub waitForMana 30
     pause .1
-    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > 30) then return
+    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > 40) then return
     goto waitForPrep1
 
 

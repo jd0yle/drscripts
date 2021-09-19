@@ -27,6 +27,10 @@ action goto izqhhrzu.arrested when ^The guardsman stares in your direction for a
 
 action goto izqhhrzu.arrested when eval contains("$roomname", "Jail Cell")
 
+action (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomnameaction (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomname
+
+if (contains("$roomname", "A'baya")) then goto escapeTaisidon
+
 gosub awake
 
 timer start
@@ -335,6 +339,25 @@ sorceryCont:
     put .reconnect
     put .afk
     goto magicCont
+
+
+escapeTaisidon:
+	action (taisidonCheck) off
+    put #echo >Log #FF0000 ATTEMPTING TO ESCAPE TAISIDON
+	put #script abort all except %scriptname
+	if ("$roomname" = "A'baya Esplanade, Central Walkway") then {
+		gosub move go moongate
+		gosub move go meeting portal
+		gosub move west
+	} else {
+	    echo LOST IN TAISIDON! EXITING
+	    put #echo >Log #FF0000 LOST IN TAISIDON! EXITING
+	    exit
+	    put #script abort all
+	    exit
+	}
+	put #echo >Log #00FF00 Back in Fang Cove!
+	put .izqhhrzu
 
 
 getHealedTrigger:

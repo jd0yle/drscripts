@@ -53,7 +53,7 @@ put #tvar char.cast.default.chargeTimes 2
 put #tvar char.cast.useOm 1
 put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
 
-put #tvar char.cast.benediction.prep 15
+put #tvar char.cast.benediction.prep 10
 put #tvar char.cast.benediction.charge 25
 put #tvar char.cast.benediction.harness 0
 put #tvar char.cast.benediction.chargeTimes 2
@@ -75,9 +75,9 @@ put #tvar char.cast.mapp.charge 25
 put #tvar char.cast.mapp.harness 0
 put #tvar char.cast.mapp.chargeTimes 2
 
-put #tvar char.cast.mf.prep 450
+put #tvar char.cast.mf.prep 425
 
-put #tvar char.cast.om.prep 50
+put #tvar char.cast.om.prep 45
 put #tvar char.cast.om.charge 25
 put #tvar char.cast.om.chargeTimes 2
 
@@ -86,7 +86,7 @@ put #tvar char.cast.pom.prep 425
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 
-put #tvar char.cast.rev.prep 17
+put #tvar char.cast.rev.prep 16
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -158,7 +158,7 @@ put #tvar char.fight.tmSpell do
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 #put #tvar char.fight.tmPrep 10
-put #tvar char.fight.tmPrep 10
+put #tvar char.fight.tmPrep 12
 
 # How long to pause before casting.
 #put #tvar char.fight.tmPause 10
@@ -169,8 +169,8 @@ put #tvar char.fight.tmPause 8
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
-#put #tvar char.fight.weapons.items diamondique hhr'ata
-#put #tvar char.fight.weapons.skills Heavy_Thrown
+#put #tvar char.fight.weapons.items blue sling
+#put #tvar char.fight.weapons.skills Slings
 
 put #tvar char.fight.trainOffhand 1
 

@@ -14,6 +14,8 @@ action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
 
+action (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomname
+
 action send $lastcommand when ^You can't move in that direction while unseen.
 
 action send listen to $1 observe when ^(\S+) begins to lecture
@@ -55,6 +57,8 @@ action var lastBoardedGalley $gametime when ^The Captain stops you and requests 
 action put #var lastSetGalleyDocked $gametime; echo new lastSetGalleyDocked is $lastSetGalleyDocked when eval $galleyDocked
 
 if (!($lastSetGalleyDocked > 0)) then put #var lastSetGalleyDocked 0
+
+if (contains("$roomname", "A'baya")) then goto escapeTaisidon
 
 put .reconnect
 
@@ -236,6 +240,25 @@ sorceryCont:
     put .afk
     goto magicCont
 
+
+
+escapeTaisidon:
+	action (taisidonCheck) off
+    put #echo >Log #FF0000 ATTEMPTING TO ESCAPE TAISIDON
+	put #script abort all except %scriptname
+	if ("$roomname" = "A'baya Esplanade, Central Walkway") then {
+		gosub move go moongate
+		gosub move go meeting portal
+		gosub move west
+	} else {
+	    echo LOST IN TAISIDON! EXITING
+	    put #echo >Log #FF0000 LOST IN TAISIDON! EXITING
+	    exit
+	    put #script abort all
+	    exit
+	}
+	put #echo >Log #00FF00 Back in Fang Cove!
+	put .qizhmur
 
 
 getHealedTrigger:
@@ -921,14 +944,14 @@ qizhmur.textbook:
     pause 1
     put #script abort all except qizhmur
     put .reconnect
-    put .afk
+    put .afkxf
     gosub burgle.setNextBurgleAt
     put .textbook
     pause 1
 
 
 qizhmur.textbook.loop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 25 && $Shield_Usage.LearningRate > 25 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 25 && $Brawling.LearningRate > 25 && $Small_Edged.LearningRate > 25 && $Heavy_Thrown.LearningRate > 25 && $Light_Thrown.LearningRate > 25 && $Crossbow.LearningRate > 25 && $Staves.LearningRate > 25 && $Twohanded_Blunt.LearningRate > 25 && $Warding.LearningRate > 25 && $Augmentation.LearningRate > 25 && $Utility.LearningRate > 25 && $Arcana.LearningRate > 25)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || $First_Aid.LearningRate > 33 || ($Parry_Ability.LearningRate < 25 && $Shield_Usage.LearningRate < 25 && $Evasion.LearningRate < -1 && $Targeted_Magic.LearningRate < 25 && $Brawling.LearningRate < 25 && $Small_Edged.LearningRate < 25 && $Heavy_Thrown.LearningRate < 25 && $Light_Thrown.LearningRate < 25 && $Crossbow.LearningRate < 25 && $Staves.LearningRate < 25 && $Twohanded_Blunt.LearningRate < 25 && $Warding.LearningRate < 25 && $Augmentation.LearningRate < 25 && $Utility.LearningRate < 25 && $Arcana.LearningRate < 25)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk
