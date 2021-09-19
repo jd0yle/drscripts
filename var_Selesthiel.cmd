@@ -62,20 +62,7 @@ put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
 put #tvar char.cast.rtr.prep 800
 
-
-###############################
-###      COMBAT
-###############################
-put #tvar char.combat.spell.Debilitation 0
-put #tvar char.combat.prep.Debilitation 0
-put #tvar char.combat.charge.Debilitation 0
-put #tvar char.combat.harness.Debilitation 0
-
-put #tvar char.combat.spell.Targeted_Magic 0
-put #tvar char.combat.prep.Targeted_Magic 0
-put #tvar char.combat.charge.Targeted_Magic 0
-put #tvar char.combat.harness.Targeted_Magic 0
-
+put #tvar char.cast.tattoo.spellName rev
 
 ###############################
 ###      FIGHT
@@ -128,8 +115,8 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|diamondwood nightstick
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Staves
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
 
 #put #tvar char.fight.weapons.items smokewood latchbow
 #put #tvar char.fight.weapons.skills Crossbow
@@ -153,6 +140,7 @@ put #tvar char.fight.armor.items.1 ka'hurst hauberk|ka'hurst gloves|ka'hurst bal
 put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
@@ -291,8 +279,8 @@ unvar tmp.charge.Warding
 put #tvar char.predict.tool divination bones
 put #tvar char.predict.tool.container telescope case
 
-put #tvar char.predict.preferred.skillset magic
-put #tvar char.predict.preferred.skill Sorcery
+put #tvar char.predict.preferred.skillset survival
+put #tvar char.predict.preferred.skill First Aid
 
 put #tvar char.observe.telescope clockwork telescope
 put #tvar char.observe.telescope.container telescope case
@@ -317,7 +305,7 @@ put #tvar char.pawn.container shadows
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
-put #tvar char.repair.waitRoomId 106
+put #tvar char.repair.waitRoomId 50
 put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
 
 

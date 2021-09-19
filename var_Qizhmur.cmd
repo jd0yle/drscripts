@@ -56,9 +56,14 @@ put #tvar char.cast.php.prep 20
 put #tvar char.cast.php.charge 20
 put #tvar char.cast.php.chargeTimes 4
 
-put #tvar char.cast.rog.prep 20
+put #tvar char.cast.roc.prep 25
+put #tvar char.cast.roc.charge 0
+put #tvar char.cast.roc.chargeTimes 0
+
+put #tvar char.cast.rog.prep 25
 put #tvar char.cast.rog.charge 0
 put #tvar char.cast.rog.chargeTimes 0
+
 
 ###############################
 ###      COMBAT
@@ -95,7 +100,7 @@ put #tvar char.fight.debil.spell ip
 put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 20
+put #tvar char.fight.debil.prepAt 22
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -142,6 +147,7 @@ put #tvar char.fight.useArmor 0
 put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
+put #tvar char.fight.useDissect 0
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
@@ -206,7 +212,7 @@ put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
 put #tvar char.magic.train.cyclic.prep.Utility 20
 
 # AUGMENTATION
-var var.magic.Augmentation 31
+var var.magic.Augmentation 34
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
 put #tvar char.magic.train.harness.Augmentation 0
@@ -246,7 +252,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
 unvar var.magic.Utility
 
 # WARDING
-var var.magic.Warding 31
+var var.magic.Warding 38
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 put #tvar char.magic.train.harness.Warding 0
@@ -277,7 +283,7 @@ put #tvar char.pawn.container portal
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
-put #tvar char.repair.waitRoomId 106
+put #tvar char.repair.waitRoomId 50
 put #tvar char.repair.list demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
 
 

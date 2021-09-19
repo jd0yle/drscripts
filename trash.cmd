@@ -2,7 +2,7 @@ include libmaster.cmd
 
 var fromContainer backpack
 
-var trash blanket|kaleidoscope|earring|harp|cowbell|cookbook|thumb ring|book|witch ball|mouse|box|towel
+var trash blanket|kaleidoscope|earring|harp|cowbell|cookbook|thumb ring|witch ball|mouse|box|towel
 eval numItems count("%trash", "|")
 var index 0
 

@@ -27,6 +27,10 @@ action goto izqhhrzu.arrested when ^The guardsman stares in your direction for a
 
 action goto izqhhrzu.arrested when eval contains("$roomname", "Jail Cell")
 
+action (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomnameaction (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomname
+
+if (contains("$roomname", "A'baya")) then goto escapeTaisidon
+
 gosub awake
 
 timer start
@@ -177,7 +181,7 @@ main:
         put .afk
     }
 
-    #if ($Performance.LearningRate < 10) then gosub performance
+    if ($Performance.LearningRate < 10) then gosub performance
 
 
     startFight:
@@ -337,6 +341,25 @@ sorceryCont:
     goto magicCont
 
 
+escapeTaisidon:
+	action (taisidonCheck) off
+    put #echo >Log #FF0000 ATTEMPTING TO ESCAPE TAISIDON
+	put #script abort all except %scriptname
+	if ("$roomname" = "A'baya Esplanade, Central Walkway") then {
+		gosub move go moongate
+		gosub move go meeting portal
+		gosub move west
+	} else {
+	    echo LOST IN TAISIDON! EXITING
+	    put #echo >Log #FF0000 LOST IN TAISIDON! EXITING
+	    exit
+	    put #script abort all
+	    exit
+	}
+	put #echo >Log #00FF00 Back in Fang Cove!
+	put .izqhhrzu
+
+
 getHealedTrigger:
     put #script abort all except izqhhrzu
     put .afk
@@ -463,7 +486,6 @@ performance:
 performance.cont:
 	var startPerformanceTime $gametime
 	put #tvar char.isPerforming 0
-	return
 	
 	performance.cont1:
 		if (1 = 0 && %startPerformanceTime + 300 < $gametime) then {
@@ -481,7 +503,7 @@ performance.cont:
 	            gosub get my rattle
 	        }
 	        if ($monstercount > 0) then gosub retreat
-	        #gosub runScript play
+	        gosub runScript play
 	        goto performance.cont1
 	    }
 	    goto performance.done
@@ -760,7 +782,7 @@ moveToBurgle:
 		gosub automove excha
 		gosub exchange all dok for lirum
 		gosub automove portal
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel kresh 299
 		put #tvar powerwalk 0
 		goto moveToBurgle
@@ -776,7 +798,7 @@ moveToBurgle:
 	}
 
 	if ("%zone" = "107a") then {
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel kresh
 		goto moveToBurgle
 	}
@@ -965,7 +987,7 @@ moveToHouse:
 		gosub castSpellsForMove
 
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		put #tvar powerwalk 0
 		goto moveToHouse
@@ -973,7 +995,7 @@ moveToHouse:
 
 	# GALLEY
 	if ("%zone" = "107a") then {
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToHouse
 	}
@@ -1105,14 +1127,14 @@ moveToPeccaries:
 	# MER'KRESH
 	if ("%zone" = "107") then {
 		gosub castSpellsForMove
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToPeccaries
 	}
 
 	# GALLEY
 	if ("%zone" = "107a") then {
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToPeccaries
 	}
@@ -1153,14 +1175,14 @@ moveToCaracals:
 	# MER'KRESH
 	if ("%zone" = "107") then {
 		gosub castSpellsForMove
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToCaracals
 	}
 
 	# GALLEY
 	if ("%zone" = "107a") then {
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToCaracals
 	}
@@ -1219,7 +1241,7 @@ moveToMagic:
 		gosub castSpellsForMove
 
 		if ($Attunement.LearningRate < 30) then put #tvar powerwalk 1
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		put #tvar powerwalk 0
 		goto moveToHouse
@@ -1227,7 +1249,7 @@ moveToMagic:
 
 	# GALLEY
 	if ("%zone" = "107a") then {
-		#gosub runScript play --noWait=1
+		gosub runScript play --noWait=1
 		gosub runScript travel mriss
 		goto moveToHouse
 	}
@@ -1332,6 +1354,8 @@ moveToMagic:
 setZone:
     var zone $zoneid
 
+	if ($standing != 1) then gosub stand
+
     if ("$roomname" = "Belarritaco Bay, The Galley Dock") then var zone 108
     if ("$roomname" = "Mer'Kresh, The Galley Dock") then var zone 107
     if ("$roomname" = "The Galley Sanegazat") then var zone 107a
@@ -1339,7 +1363,7 @@ setZone:
     if ("$roomname" = "Mer'Kresh, The Galley Dock") then var zone 107
 
 
-    if ("%zone" = "0") then {
+    if ("%zone" = "0" && "$roomname" != "Private Home Interior") then {
         put n
         pause .2
         put sw

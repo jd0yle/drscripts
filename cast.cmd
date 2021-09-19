@@ -90,7 +90,7 @@ if (!(%harness > -1)) then var harness 0
 
 if (%useCambrinth = 0 || %charge = 0 || %chargeTimes = 0) then var useCambrinth 0
 
-if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
+if ($char.cast.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
 	evalmath prepAt (%prepAt + (%charge * %chargeTimes))
 	var charge 0
 	var chargeTimes 0
@@ -99,7 +99,11 @@ if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
 	echo USING OM, prepAt %prepAt, charge %charge, chargeTimes %chargeTimes
 }
 
-gosub prep %spell %prepAt
+if ("%spell" = "$char.cast.tattoo.spellName") then {
+	gosub invoke tattoo
+} else {
+	gosub prep %spell %prepAt
+}
 
 if (%useCambrinth = 1) then {
     if ($char.wornCambrinth != 1) then {
@@ -146,7 +150,7 @@ gosub waitForPrep
 
 if ("%spell" = "devour") then gosub get my material
 
-if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
+if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)") && $SpellTimer.OsrelMeraud.active = 1) then {
 	gosub touch orb
 } else {
 	if ("%target" != "0arget") then {

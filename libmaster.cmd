@@ -925,6 +925,17 @@ dismantle:
     goto retry
 
 
+dissect:
+    var location dissect1
+    var todo $0
+    dissect1:
+    matchre return ^What exactly are
+    matchre return ^You believe the
+    matchre return ^You'll learn nothing
+    put dissect %todo
+    goto retry
+
+
 dodge:
     var location Dodge
     matchre return ^But you are already dodging\!
@@ -1267,6 +1278,7 @@ invoke:
     matchre return ^The cambrinth
     matchre return ^You are in no condition
     matchre return ^You don't have any
+    matchre return ^You focus
     matchre return ^You gesture, adjusting the pattern that binds the shadowling to this plane\.
     matchre return ^You hold
     matchre return ^You must begin preparing a ritual spell before you can focus it
@@ -1874,6 +1886,7 @@ prepare:
     matchre return ^With rigid movements you prepare your body
     matchre return ^You are already
     matchre return ^You begin chanting a prayer
+    matchre return ^You can't seem to form the spell pattern
     matchre return ^You close your eyes and breathe deeply,
     matchre return ^You deftly waggle your fingers in the precise motions needed to prepare
     matchre return ^You don't seem to be able to move to do that\.
@@ -1923,9 +1936,11 @@ push:
     var location push1
     var todo $0
     push1:
+    matchre return ^Not finding a matching section
     matchre return ^You wave the loop near
     matchre return ^Roundtime
     matchre return ^You push
+    matchre return ^What are you
     put push %todo
     goto retry
 
@@ -2067,10 +2082,14 @@ repair:
     var location repair1
     repair1:
     matchre return isn't in need of repair
+    matchre return not in need of repair\.$
     matchre return ^Roundtime
     matchre return SKIN
     matchre return ^The leather looks frayed
     matchre return ^With some needle and thread
+    matchre return ^You can't fix
+    matchre return ^You lack the proper
+    matchre return ^You'll have to hold it
     put repair %todo
     goto retry
 
@@ -2527,6 +2546,7 @@ study:
     matchre return ^Why do you need to study this chart again\?
     matchre return ^You are unable to sense additional information\.
     matchre return ^You attempt
+    matchre return ^You believe
     matchre return ^You feel it is too soon to grasp anything new in the skies above\.
     matchre return ^You review
     matchre return ^You scan
@@ -3279,6 +3299,11 @@ checkMoons:
     return
 
 
+debug:
+	put #echo [%scriptname] $0
+	return
+
+
 retry:
     matchre return ^Roundtime
     matchre return ^Please rephrase that command\.$
@@ -3300,8 +3325,8 @@ retry:
     math retryAttempts add 1
     echo [ libmaster -> retry ] No match found, %retryAttempts retries
     put #tvar libmaster.retryAttempts %retryAttempts
-    if (%retryAttempts > 10) then {
-         put #echo #FF0000 RETRIED 10 TIMES, NO MATCHES! FORCING RETURN!
+    if (%retryAttempts > 5) then {
+         put #echo #FF0000 RETRIED 5 TIMES, NO MATCHES! FORCING RETURN!
          put #tvar libmaster.responseNotFound 1
          return
      }
@@ -3367,7 +3392,7 @@ runScript:
     var location runScript1
 
     runScript1:
-        put #echo >Debug #FF9900 runScript start %todo
+        #put #echo >Debug #FF9900 runScript start %todo
 	    eval doneString toupper("%scriptName")
 		matchre runScriptDone ^%doneString DONE$
 		put .%todo
@@ -3386,7 +3411,7 @@ runScript:
 	    goto runScriptLoop
 
     runScriptDone:
-        put #echo >Debug #FF9900 runScript end %todo
+        #put #echo >Debug #FF9900 runScript end %todo
         return
 
 
@@ -3405,7 +3430,7 @@ waitForPrep:
     waitForPrep1:
     gosub waitForMana 30
     pause .1
-    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > 30) then return
+    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > 40) then return
     goto waitForPrep1
 
 

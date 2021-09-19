@@ -28,6 +28,8 @@ action var setHarderSong 1 when ^You effortlessly begin
 action var setEasierSong 1 when ^You (struggle|fumble)
 action var setHarderSong 0;var setEasierSong 0 when only the slightest hint of difficulty\.$
 
+action goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
+action goto play.cleanInstrument when ^You notice that moisture has accumulated
 
 
 ###############################
@@ -43,7 +45,11 @@ play.top:
             gosub get my $char.instrument.noun
         }
 
-		if ("$char.instrument.song" = "\$char.instrument.song") then gosub play.setCharacterSong
+		#if ("$char.instrument.song" = "\$char.instrument.song") then {
+		if (!contains("%play.songs", "$char.instrument.song")) then {
+			echo $char.instrument.song not set (=$char.instrument.song), setting to default
+			gosub play.setCharacterSong
+		}
 
         gosub play $char.instrument.song on my $char.instrument.noun
 
@@ -62,6 +68,32 @@ play.top:
     }
     if (%args.noWait != 1) then gosub play.wait
     goto play.done
+
+
+###############################
+###      play.cleanInstrument
+###############################
+play.cleanInstrument:
+	gosub stop play
+	gosub stow left
+	gosub get my cloth
+	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
+	put wipe my $char.instrument.noun with my cloth
+	gosub stow my cloth
+	goto play.top
+
+
+###############################
+###      play.repairInstrument
+###############################
+play.repairInstrument:
+	gosub stop play
+	gosub stow left
+	gosub get my repair kit
+	if ("$lefthand" = "Empty") then goto done.noRepairKit
+	gosub repair my $char.instrument.noun with my repair kit
+	gosub stow my repair kit
+	goto play.top
 
 
 ###############################
@@ -111,6 +143,7 @@ play.setHarderSong:
 
 	# Couldn't find this char's song, so set a new default song
 	if (%getSongIndex.index = -1) then {
+		echo play.setHarderSong couldn't find songIndex of char song ($char.instrument.song)
 		gosub play.setCharacterSong
 		return
 	}

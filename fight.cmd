@@ -169,6 +169,8 @@ init:
 	    var weapons.targetLearningRate $%weapons.skills(%weapons.index).LearningRate
 	    math weapons.targetLearningRate add 5
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+
+	    put #unvar stance
     goto loop
 
 
@@ -180,6 +182,10 @@ loop:
     if ($standing != 1) then gosub stand
     gosub releaseUnwantedSpells
 
+    gosub checkWeaponSkills
+    gosub checkStances
+    if (%useArmor = 1) then gosub checkArmorSkills
+
     gosub checkDeadMob
     if ($char.loot.boxes = 1) then {
         gosub runScript loot --boxes=1
@@ -187,12 +193,9 @@ loop:
         gosub runScript loot
     }
 
-    gosub checkWeaponSkills
-    gosub checkStances
-    if (%useArmor = 1) then gosub checkArmorSkills
-
-    gosub buffs
     gosub manageCyclics
+    gosub buffs
+
     gosub fight.observe
     gosub huntApp
     if ("$char.fight.usePray" = "1") then gosub pray.onTimer $char.fight.prayTarget
@@ -649,6 +652,8 @@ checkWeaponSkills:
         if (%useUsol = 1) then var useTmCyclic 1
         if (%useSls = 1 && $Time.isDay = 0) then var useTmCyclic 1
 
+        if ("$charactername" = "Selesthiel") then var useTmCyclic 1
+
         if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }
 
@@ -659,11 +664,13 @@ checkWeaponSkills:
     if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate || %timeSinceLastWeaponChange > 300) then {
         # By default, don't switch weapons faster than once every 30 seconds.
         # But if all the weapon skills are moving, wait 60 seconds before swapping
-        var timeBetweenWeaponSwaps 30
-        if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
-        evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
 
-        if ($gametime > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
+        #var timeBetweenWeaponSwaps 30
+        #if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
+        #evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
+        #if ($gametime > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
+
+        gosub checkWeaponSkills.nextWeapon
     }
 
     var handItem $righthand
@@ -678,6 +685,7 @@ checkWeaponSkills:
             if ("$righthand" = "Empty") then gosub remove my %weapons.items(%weapons.index)
 
             if ($char.fight.useBless = 1) then {
+                gosub checkStances
                 gosub prep bless
                 gosub charge my $char.cambrinth 5
                 gosub invoke my $char.cambrinth 5
@@ -718,6 +726,7 @@ checkWeaponSkills:
 
 
 checkWeaponSkills.nextWeapon:
+    var logMsg [fight.cmd] nextWeapon %weapons.skills(%weapons.index) ($%weapons.skills(%weapons.index).LearningRate/34) ->
     math weapons.index add 1
 	if (%weapons.index > %weapons.length) then {
 	    var weapons.index 0
@@ -726,6 +735,11 @@ checkWeaponSkills.nextWeapon:
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 	}
 	var weapons.lastChangeAt $gametime
+
+	if ($%weapons.skills(%weapons.index).LearningRate = 0) then var logMsg #FF0000 %logMsg
+	var logMsg %logMsg %weapons.skills(%weapons.index) ($%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate)
+	put #echo >Debug %logMsg
+
 	return
 
 
@@ -803,6 +817,9 @@ checkDeadMob:
         }
 
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
+            if ($char.fight.useDissect = 1 && $Skinning.LearningRate > $First_Aid.LearningRate && $First_Aid.LearningRate < 33) then {
+                gosub dissect %mobName
+            }
             if (%arrangeForPart = 1) then {
                 gosub arrange for part
             }

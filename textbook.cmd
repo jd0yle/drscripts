@@ -1,6 +1,9 @@
 include libmaster.cmd
 
-var startAt Gidii
+#var startAt Gidii
+var startAt Dusk Ogre
+
+var index 0
 
 if ("$righthandnoun" != "textbook") then {
 	gosub stow right
@@ -12,9 +15,10 @@ gosub stow left
 gosub turn my textbook to %startAt
 
 loop:
-	if ($First_Aid.LearningRate > 20) then goto textbook.done
+	if ($First_Aid.LearningRate >= 34 || %index > 100) then goto textbook.done
 	gosub study my textbook
 	gosub turn my textbook
+	math index add 1
 	goto loop
 
 
