@@ -3,15 +3,19 @@ include libmaster.cmd
 ###############################
 ###      VARIABLES
 ###############################
-var suspects steward|artist|deckhand|chef|director|beautician|bartender|boatswain|entertainer
-var weapons comb|cleaver|corkscrew|knife|baton|logbook|zills|bottle|paintbrush
+var suspects artist|bartender|beautician|boatswain|chef|deckhand|director|entertainer|steward
+var weapons baton|cleaver|comb|corkscrew|bottle|knife|logbook|paintbrush|zills
 
-action var weapon comb when The.*slashes marked by odd perforations of the skin
+action var weapon baton when The.*soft tissue damage and internal bleeding
+action var weapon bottle when The.*severe lacerations
 action var weapon cleaver when The.*chop marks that reveal flesh and bone
+action var weapon comb when The.*slashes marked by odd perforations of the skin
 action var weapon corkscrew when The.* oddly curved puncture wounds
 action var weapon knife when The.*ragged edges
-action var weapon baton when The.*soft tissue damage and internal bleeding
+action var weapon logbook when The.*severe blunt trauma
+action var weapon paintbrush when The.*deep and lethal puncture wounds
 action var weapon zills when The.*clean edges
+
 action var weapon glass bottle when The.*severe lacerations
 action var weapon paintbrush when The.*deep and lethal puncture wounds
 action var weapon logbook when The.*gashes and severe blunt trauma
@@ -21,6 +25,8 @@ action var murderer $1 when (\S+) says while
 action var murderer $1 when (\S+) says with
 action var murderer $1 when (\S+) says coughing
 action var murderer $1 when (\S+) says, fingers
+action var murderer $1 when (\S+) says\s
+
 action var murderer $1 when (\S+) says\s
 
 var location null
@@ -68,12 +74,7 @@ move starboard
 move up
 gosub investigateRoom
 
-
-#echo location is %location
 eval location replacere("%location", "The Morada, ", "")
-#echo location is %location
-
-#echo put accuse %murderer with %weapon in %location
 put accuse %murderer with %weapon in %location
 
 pause 1
