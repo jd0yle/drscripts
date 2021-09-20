@@ -1,7 +1,16 @@
 include libmaster.cmd
-#debug 10
+#
+# Log Colors
+# ------------
+# Combat - #FF8080
+# Core Script - Gray
+# Health - Pink
+# Lore - #ffcc00
+# Magic - #6600ff
+# Survival - #009933
+#
 ###############################
-###    IDLE ACTION VARIABLES
+###    IDLE ACTION TRIGGERS
 ###############################
 
 ###############################
@@ -11,4 +20,7 @@ include libmaster.cmd
 ###############################
 ###    MAIN
 ###############################
-exit
+
+###############################
+###    UTILITY
+###############################

@@ -50,6 +50,7 @@ loopWait:
             if ("$charactername" = "Khurnaarti") then put .khurnaarti
             if ("$charactername" = "Qizhmur") then put .qizhmur
             if ("$charactername" = "Selesthiel") then put .selesthiel
+            if ("$charactername" = "Diapsid") then put .diapsid
             var restartScripts 0
             put .reconnect
         }
