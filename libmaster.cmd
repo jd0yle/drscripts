@@ -2548,6 +2548,7 @@ study:
     matchre return ^You attempt
     matchre return ^You believe
     matchre return ^You feel it is too soon to grasp anything new in the skies above\.
+    matchre return ^You need to be holding
     matchre return ^You review
     matchre return ^You scan
     matchre return ^You set about

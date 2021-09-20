@@ -16,6 +16,10 @@ gosub turn my textbook to %startAt
 
 loop:
 	if ($First_Aid.LearningRate >= 34 || %index > 100) then goto textbook.done
+	if ("$righthandnoun" != "textbook") then {
+		gosub stow right
+		gosub get my textbook
+	}
 	gosub study my textbook
 	gosub turn my textbook
 	math index add 1
