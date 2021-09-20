@@ -11,12 +11,13 @@ action var weapon cleaver when The.*chop marks that reveal flesh and bone
 action var weapon corkscrew when The.* oddly curved puncture wounds
 action var weapon knife when The.*ragged edges
 action var weapon baton when The.*soft tissue damage and internal bleeding
-action var weapon zills when The.*slashing wounds with clean edges
+action var weapon zills when The.*clean edges
 action var weapon glass bottle when The body.* severe lacerations
 
 var murderer null
 action var murderer $1 when (\S+) says while
 action var murderer $1 when (\S+) says with
+action var murderer $1 when (\S+) says, fingers
 
 var location null
 action var location $roomname when A thorough search of the area uncovers an area of damp stickiness on the floor where a large amount of blood has partially dried
