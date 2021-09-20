@@ -8,7 +8,7 @@ put #tvar char.appraise.item my pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|quilted hauberk|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
+put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|moonsilk shirt|moonsilk pants|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
 
 
 ###############################
@@ -178,7 +178,7 @@ put #tvar super.enemies null
 put #tvar char.instrument.container shadows
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
-put #tvar char.instrument.song dirge
+put #tvar char.instrument.song tango
 
 
 ###############################
@@ -257,7 +257,7 @@ put #tvar char.pawn.container purse
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.list demonscale armguard|demonscale shield|quilted hauberk|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade
+put #tvar char.repair.list demonscale armguard|demonscale shield|moonsilk shirt|moonsilk pants|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade
 
 
 ###############################
