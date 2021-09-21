@@ -1,7 +1,7 @@
 ###############################
 ###      STORAGE
 ###############################
-put #tvar char.storage.default canvas backpack
+put #tvar char.storage.default wyvern skull
 
 put #tvar char.storage.holyWater witch jar
 put #tvar char.storage.incense $char.storage.default
@@ -18,7 +18,7 @@ put #tvar char.appraise.item diamondique hhr'ata
 ###############################
 #put #tvar char.armor ash leathers|ash gloves|ash cowl|demonscale shield|parry stick
 #put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|parry stick
-put #tvar char.armor ka'hurst hauberk|moonsilk gloves|moonsilk mask|moonsilk hood|demonscale shield|parry stick
+put #tvar char.armor ka'hurst hauberk|moonsilk gloves|great helm|demonscale shield|parry stick
 
 
 ###############################
@@ -30,7 +30,7 @@ put #tvar char.burgle.cooldown null
 ###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth aoustone muhenta
+put #tvar char.cambrinth cambrinth spiderling
 put #tvar char.focusContainer $char.storage.default
 put #tvar char.wornCambrinth 1
 
@@ -184,7 +184,7 @@ put #tvar char.fight.useArmor 0
 #***** USE *****
 # Use vars are all "Do this thing or not"
 # All default to 0
-put #tvar char.fight.useAlmanac 0
+put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useDissect 0
@@ -287,10 +287,11 @@ put #tvar char.instrument.container thigh bag
 ###############################
 ###      LOOT
 ###############################
-put #tvar char.inv.emptyGemPouchContainer canvas backpack
+put #tvar char.inv.defaultContainer wyvern skull
+put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
 put #tvar char.inv.fullGemPouchContainer thigh bag
 put #tvar char.inv.tempContainer canvas backpack
-put #tvar char.inv.defaultContainer canvas backpack
+
 put #tvar char.loot.boxes 0
 
 
@@ -298,7 +299,7 @@ put #tvar char.loot.boxes 0
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.minimumConcentration 30
-put #tvar char.magic.train.useAlmanac 0
+put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.usePom 1
 put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0

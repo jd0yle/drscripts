@@ -10,6 +10,10 @@ var armor.list $char.armor
 var armor.verbOne 0
 var armor.verbTwo 0
 
+if_2 then {
+	var armor.list $char.armor.%2
+	echo armor.list
+}
 
 ###############################
 ###      INIT
@@ -26,7 +30,9 @@ if ("%armor.act" = "wear") then {
 if ("%armor.act" = "remove") then {
    var armor.verbOne remove
    var armor.verbTwo stow
-   goto armor.loop
+   #goto armor.loop
+   gosub runScript armorremove
+   goto armor.done
 }
 
 gosub stow right
