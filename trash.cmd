@@ -1,6 +1,6 @@
 include libmaster.cmd
 
-var fromContainer backpack
+var fromContainer skull
 
 var trash blanket|kaleidoscope|earring|harp|cowbell|cookbook|thumb ring|witch ball|mouse|box|towel
 eval numItems count("%trash", "|")

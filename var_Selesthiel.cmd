@@ -10,7 +10,11 @@ put #tvar char.appraise.item gem pouch
 ###############################
 #put #tvar char.armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
 #put #tvar char.armor moonsilk moonsilk pants|moonsilk shirt|ka'hurst gloves|ka'hurst balaclava|steelsilk handwraps|steelsilk footwraps|demonscale shield|parry stick
-put #tvar char.armor moonsilk pants|moonsilk shirt|ka'hurst gloves|great helm|demonscale shield|parry stick
+#put #tvar char.armor moonsilk pants|moonsilk shirt|ka'hurst gloves|great helm|demonscale shield|parry stick
+
+put #tvar char.armor plate greaves|moonsilk shirt|ka'hurst gloves|lamellar helm|plate mask|demonscale shield|parry stick
+
+put #tvar char.armor.light moonsilk pants|moonsilk shirt|ka'hurst gloves|moonsilk hood|moonsilk mask|demonscale shield|parry stick
 
 
 ###############################
