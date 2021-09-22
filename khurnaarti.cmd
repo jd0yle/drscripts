@@ -413,9 +413,9 @@ khurnaarti.resumeScript:
 
 khurnaarti.restart:
     put #echo >log Gray [khurnaarti] Restarting script..
-    put #script abort all except stephtemp
+    put #script abort all except khurnaarti
     put .reconnect
-    put .stephtemp
+    put .khurnaarti
     exit
 
 
