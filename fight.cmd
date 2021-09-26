@@ -658,6 +658,7 @@ checkWeaponSkills:
     }
 
     if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
+    if (%noAmmo = 1 && contains("%weapons.skills(%weapons.index)", "(Crossbow|Bow|Slings)")) then gosub checkWeaponSkills.nextWeapon
 
     evalmath timeSinceLastWeaponChange ($gametime - %weapons.lastChangeAt)
 
@@ -673,9 +674,16 @@ checkWeaponSkills:
         gosub checkWeaponSkills.nextWeapon
     }
 
+    # Make sure we use shield stance for weapons we can't parry with (ex: crossbow, sling, bows)
+    if (matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)")) then {
+        gosub stance shield
+    }
+
+	# Some items have three words in the short, this is a hardcoded correction for some
     var handItem $righthand
     if ("%handItem" = "white ironwood nightstick") then var handItem white nightstick
 
+	# Switch out whatever we have for the correct weapon
     if ("%handItem" != "%weapons.items(%weapons.index)") then {
         gosub stow right
         gosub stow left
@@ -716,15 +724,13 @@ checkWeaponSkills:
 
     put #statusbar 6 Weapon: %weapons.skills(%weapons.index) $%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate
 
-    #if ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings") then gosub stance shield
-    if (matchre("%weapons.skills(%weapons.index)", "(%skillsToUseShield)")) then {
-        gosub stance shield
-    }
-
     return
 
 
 
+###############################
+###      checkWeaponSkills.nextWeapon
+###############################
 checkWeaponSkills.nextWeapon:
     var logMsg [fight.cmd] nextWeapon %weapons.skills(%weapons.index) ($%weapons.skills(%weapons.index).LearningRate/34) ->
     math weapons.index add 1
@@ -743,6 +749,9 @@ checkWeaponSkills.nextWeapon:
 	return
 
 
+###############################
+###      checkWeaponSkills.swapWeapon
+###############################
 checkWeaponSkills.swapWeapon:
     if ("%weapons.skills(%weapons.index)" = "Large_Edged" && "%weapon_hand" != "he") then {
         gosub swap my sword

@@ -381,6 +381,7 @@ appraise:
     matchre return ^Appraise what\?
     matchre return ^I could not find what you were referring to\.
     matchre return ^It's dead
+    matchre return ^It's hard to appraise
     matchre return ^Taking stock of its
     matchre return ^You cannot appraise that when you are in combat\!
     matchre return ^You can't

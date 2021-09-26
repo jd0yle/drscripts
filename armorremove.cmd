@@ -44,7 +44,9 @@ armor.remove:
 
 armor.done:
 	pause .2
-	put #parse ARMOR DONE
+	#put #parse ARMOR DONE
+	put #parse ARMORREMOVE DONE
+
 	exit
 
 #All of your armor:#

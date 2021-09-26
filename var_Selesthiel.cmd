@@ -198,6 +198,14 @@ var super.enemies null
 
 
 ###############################
+###      INSTRUMENT
+###############################
+put #tvar char.instrument.noun txistu
+put #tvar char.instrument.tap cocobolo txistu
+put #tvar char.instrument.container thigh bag
+
+
+###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer steelsilk backpack

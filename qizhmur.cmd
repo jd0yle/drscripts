@@ -224,6 +224,8 @@ main:
     if ($Parry_Ability.LearningRate > 25 && $Shield_Usage.LearningRate > 25 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 25 && $Brawling.LearningRate > 25 && $Small_Edged.LearningRate > 25 && $Heavy_Thrown.LearningRate > 25 && $Light_Thrown.LearningRate > 25 && $Crossbow.LearningRate > 25 && $Staves.LearningRate > 25 && $Twohanded_Blunt.LearningRate > 25 && $Warding.LearningRate > 25 && $Augmentation.LearningRate > 25 && $Utility.LearningRate > 25 && $Arcana.LearningRate > 25) then {
         put #echo >Log #775501 [qizhmur.cmd] Doing Textbook
         gosub qizhmur.textbook
+        put #echo >Log #775501 [qizhmur.cmd] Doing Performance
+        gosub runScript play
     }
 
     goto main

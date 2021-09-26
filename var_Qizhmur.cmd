@@ -189,6 +189,14 @@ var super.enemies null
 
 
 ###############################
+###      INSTRUMENT
+###############################
+put #tvar char.instrument.noun zills
+put #tvar char.instrument.tap thin-edged zills
+put #tvar char.instrument.container skull
+
+
+###############################
 ###      LOOT
 ###############################
 put #tvar char.inv.emptyGemPouchContainer wyvern skull

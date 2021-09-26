@@ -30,6 +30,7 @@ action var setHarderSong 0;var setEasierSong 0 when only the slightest hint of d
 
 action goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
 action goto play.cleanInstrument when ^You notice that moisture has accumulated
+action goto play.cleanInstrument when  dirtiness may affect your performance\.$
 
 
 ###############################
@@ -39,7 +40,7 @@ play.top:
 	if ("$righthand" != "$char.instrument.tap" && "$righthand" != "Empty") then gosub stow right
 	gosub stow left
 
-    if ($Performance.LearningRate < 34) then {
+    if ($Performance.LearningRate < 32) then {
         if ("$righthand" != "$char.instrument.tap") then {
             gosub stow right
             gosub get my $char.instrument.noun
@@ -80,6 +81,7 @@ play.cleanInstrument:
 	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
 	put wipe my $char.instrument.noun with my cloth
 	gosub stow my cloth
+	put clean my $char.instrument.noun with my cloth
 	goto play.top
 
 
@@ -163,6 +165,7 @@ play.setHarderSong:
 play.wait:
 	pause 2
 	if ($char.isPerforming != 1) then return
+	#gosub appraise.onTimer
 	goto play.wait
 
 
