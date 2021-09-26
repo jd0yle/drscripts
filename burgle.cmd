@@ -758,13 +758,23 @@ STORAGEERROR:
 	goto LEAVE
 
 DROP:
-	 var drophand $0
-     matchre DROP ^\.\.\.wait|^Sorry,|^Please wait\.
+    var drophand $0
+    if ($hidden = 1) then {
+        put #echo >Log #009933 [burgle] You are hidden and I am unable to EMPTY $0 to drop $0hand.
+
+        # Check spells first..
+        if ("$SpellTimer.Refractive_Field.duration > 1) then gosub release rf
+        if ("$SpellTimer.EyesoftheBlind.duration > 1) then gosub release eotb
+        if ("$SpellTimer.KhriSilence.duration > 1) then put khri stop silence
+        gosub unhide
+    }
+     matchre DROP ^\.\.\.wait|^Sorry,|^Please wait\.|^Doing that would give away your hiding place\!
      matchre return ^You drop
      matchre DROP ^\[If you still wish to drop it
      put empty %drophand
      matchwait 5
      return
+
 
 WAIT:
 #	pause .01

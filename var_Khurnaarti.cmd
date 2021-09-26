@@ -59,7 +59,7 @@ put #tvar char.burgle.container purse
 ###############################
 ###      CAMBRINTH
 ###############################
-put #tvar char.cambrinth armband
+put #tvar char.cambrinth snakelet
 put #tvar char.focusContainer shadows
 put #tvar char.ritualFocus ouroboros ring
 put #tvar char.wornCambrinth 1

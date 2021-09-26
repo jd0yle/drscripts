@@ -25,6 +25,10 @@ action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel|Izqhhrzu)'s face appe
 action var khurnaarti.openDoor 0 when ^(\S+) opens the door\.
 action put #var lib.student 0 when ^Inauri stops teaching\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
+action (health) goto getHealedTrigger when eval $health < 85
+action (health) goto getHealedTrigger when eval $bleeding = 1
+
+if ($health < 80 && "$roomname" <> "Private Home Interior") then goto getHealedTrigger
 
 
 ###############################
@@ -271,6 +275,9 @@ khurnaarti.forage:
 
 khurnaarti.healthCheck:
     if (%khurnaarti.needHeal = 1|$bleeding = 1) then {
+        if ("$roomname" <> "Private Home Interior") then {
+            gosub moveToHouse
+        }
         if (contains("$roomplayers", "Inauri")) then {
             gosub whisper inauri heal
             pause 10
@@ -413,9 +420,9 @@ khurnaarti.resumeScript:
 
 khurnaarti.restart:
     put #echo >log Gray [khurnaarti] Restarting script..
-    put #script abort all except stephtemp
+    put #script abort all except khurnaarti
     put .reconnect
-    put .stephtemp
+    put .khurnaarti
     exit
 
 
@@ -646,3 +653,109 @@ moveToPawn:
         goto moveToPawn
     }
     goto moveToPawn
+
+
+moveToHeal:
+    gosub resetState
+    gosub prep rf
+    pause 3
+    gosub cast
+    gosub moveToMagic
+    gosub getHealed
+    put #script abort all except selesthiel
+    put .reconnect
+    put .afk
+    put .selesthiel
+    exit
+
+
+
+
+
+###############################
+###    HEALTH
+###############################
+getHealedTrigger:
+    put #script abort all except khurnaarti
+    put .afk
+    put .reconnect
+
+    action (health) off
+    put #echo >Log Pink [khurnaarti] Health Trigger activated in [$roomname]. Health = $health Bleeding=$bleeding
+    if ($health < 50) then {
+        goto logout
+    }
+
+    # Leave combat.
+    gosub retreat
+    gosub stance shield
+    gosub stow right
+    gosub stow left
+    gosub release cyclic
+    gosub stow hhr'ata
+    gosub stow frying pan
+    gosub runScript loot
+
+    # Go to house
+    gosub moveToHouse
+    gosub getHealed
+
+    # Reset
+    gosub khurnaarti.restartScript
+    action (health) on
+
+
+getHealed:
+    gosub checkHealth
+    if (%injured = 1) then {
+        gosub moveToMagic
+
+        if (contains("$roomplayers", "Inauri")) then {
+            gosub whisper inauri heal
+            pause 30
+        }
+
+        if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
+        eval nextHealTime (300 + $lastHealedGametime)
+
+        if ($bleeding = 1) then {
+            gosub runScript house
+            #gosub automove portal
+            #if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+            #gosub move go meeting portal
+
+            gosub automove heal
+            put join list
+            matchre getHealedCont Yrisa crosses Khurnaarti's name from the list.
+            matchwait 120
+
+            gosub getHealedCont
+
+        }
+    }
+    return
+
+getHealedCont:
+    put #var lastHealedGametime $gametime
+    gosub automove portal
+    gosub move go exit portal
+    if ($bleeding = 1) then goto getHealed
+
+
+checkHealth:
+    var injured 1
+    matchre checkHealthInjured ^You have.*(skin|head|neck|chest|abdomen|back|tail|hand|arm|leg|eye|twitching|paralysis)
+    matchre checkHealthNotInjured ^You have no significant injuries.
+    put health
+    matchwait 5
+    return
+
+
+checkHealthInjured:
+    var injured 1
+    return
+
+
+checkHealthNotInjured:
+    var injured 0
+    return

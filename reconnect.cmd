@@ -45,7 +45,7 @@ loopWait:
         var attemptInterval 15
         if (%restartScripts = 1) then {
             put #script abort all except reconnect
-            if ("$charactername" = "Inauri") then put .look
+            if ("$charactername" = "Inauri") then put .inauriIdle
             if ("$charactername" = "Izqhhrzu") then put .izqhhrzu
             if ("$charactername" = "Khurnaarti") then put .khurnaarti
             if ("$charactername" = "Qizhmur") then put .qizhmur

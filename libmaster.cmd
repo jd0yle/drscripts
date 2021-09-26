@@ -258,10 +258,11 @@ action put #var lib.student 1 when ^.*You are (in|observing) this class\!$
 action put #var lib.student 0 ; put #var lib.instructor $1 when ^(\S+) is teaching a class on .* which is still open to new students\.$
 action put #var lib.student 0 when ^Being unconscious, you make a lousy student, so \w+ stops teaching you\.$
 action put #var lib.student 0 when ^But you aren't listening to anyone\.$
-action put #var lib.student 0 ; put #var lib.class 0 when ^No one seems to be teaching\.$
+action put #var lib.student 0 ; put #var lib.class 0 ; put #var lib.topic 0 when ^No one seems to be teaching\.$
 action put #var lib.student 0 when ^You stop listening to \w+\.$`
 action put #var lib.student 0 when ^Your teacher (has left|is not here), so you are no longer learning anything\.$
 action put #var lib.student 0 ; put #var lib.class 0 when ^You're unconscious\!$
+action put #var lib.topic $1 when ^You are teaching a class on (.+?) which.*$
 
 
 ###############################
