@@ -54,13 +54,9 @@ return
 
 
 look.teach:
-    if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $0
-        put #script abort $inauri.subScript
-    }
     if ($lib.class = 1) then {
         gosub assess teach
-        if contains("$class", "%look.topic") then {
+        if contains("$lib.classTopic", "%look.topic") then {
             put whisper %look.target I am already teaching you $class.
             var look.teach 0
             return

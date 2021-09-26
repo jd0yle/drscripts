@@ -2,26 +2,27 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-if ("$charactername" = "Inauri") then {
-    action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto look.healWound when ^($friends) whispers, "heal
-    #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
-    action var look.openDoor 1 when ^($friends)'s face appears in the
-    action goto look.houseMove when ^($friends) whispers, "inside|^($friends) whispers, "outside
-    action var inauriIdle.wounds 0 when \.\.\. no injuries to speak of\.
-    action var inauriIdle.openDoor 0 when ^(\S+) opens the door\.
-    action var inauriIdle.disease 1 when ^(Her|His) wounds are infected\.$
-    action var inauriIdle.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
-    action var inauriIdle.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
-    action var inauriIdle.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
-    action var inauriIdle.teach 1; var inauriIdle.topic $2 ; var inauriIdle.target $1 when ^($friends) whispers, \"teach (\S+)\"$
-    action var inauriIdle.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
-    action goto inauriIdle.vitalityHeal when eval $health < 30
-}
+action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto inauriIdle.healWound when ^($friends) whispers, "heal
+#action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
+action var inauriIdle.openDoor 1 when ^($friends)'s face appears in the
+action goto inauriIdle.houseMove when ^($friends) whispers, "inside|^($friends) whispers, "outside
+action var inauriIdle.wounds 0 when \.\.\. no injuries to speak of\.
+action var inauriIdle.openDoor 0 when ^(\S+) opens the door\.
+action var inauriIdle.disease 1 when ^(Her|His) wounds are infected\.$
+action var inauriIdle.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
+action var inauriIdle.poisonSelf 1 when ^You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
+action var inauriIdle.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
+action var inauriIdle.teachTrigger 1; var inauriIdle.topic $2 ; var inauriIdle.target $1 when ^($friends) whispers, \"teach (\S+)\"$
+action var inauriIdle.vitality 1 when ^(\S+) is suffering from a .+ loss of vitality.*$
+action var inauriIdle.vitality 0 when ^(\S+) has normal vitality\.$
+action var inauriIdle.wounds 0 when /./././ no injuries to speak of/.$
+action var inauriIdle.wounds 1 when Wounds to the.*$
+action goto inauriIdle.vitalityHeal when eval $health < 30
+
 
 ###############################
 ###    VARIABLES
 ###############################
-if (!($inauri.subScript >0)) then put #tvar inauri.subScript 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if ("$charactername" = "Inauri") then {
     var inauriIdle.poison 0
@@ -32,6 +33,7 @@ if ("$charactername" = "Inauri") then {
 
 var inauriIdle.target 0
 var inauriIdle.teach 0
+var inauriIdle.teachTrigger 0
 var inauriIdle.topic 0
 var inauriIdle.openDoor 0
 
@@ -43,18 +45,14 @@ if !(matchre("$scriptlist", "reconnect")) then {
 ###    MAIN
 ###############################
 inauriIdle.loop:
-    if (%inauriIdle.teach = 1) then {
+    if (%inauriIdle.teachTrigger = 1) then {
         gosub inauriIdle.teach
     }
     if ($standing = 0) then gosub stand
-    if ("$charactername" = "Inauri") then {
-        if (%inauriIdle.poison = 1 || %inauriIdle.poisonSelf = 1) then gosub inauriIdle.healPoison
-        if (%inauriIdle.disease = 1 || %inauriIdle.diseaseSelf = 1) then gosub inauriIdle.healDisease
-        if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
-        if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
-        pause 1
-        if ($inauri.subScript > 0) then gosub inauriIdle.resumeScript
-    }
+    if (%inauriIdle.poison = 1 || %inauriIdle.poisonSelf = 1) then gosub inauriIdle.healPoison
+    if (%inauriIdle.disease = 1 || %inauriIdle.diseaseSelf = 1) then gosub inauriIdle.healDisease
+    if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
+    if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
     if (%inauriIdle.openDoor = 1) then gosub inauriIdle.door
     pause 2
     gosub inauriIdle.look
@@ -95,24 +93,31 @@ inauriIdle.healWound:
         put #var inauri.heal 0
         goto inauriIdle.loop
     }
-    if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $0
-        put #script abort $inauri.subScript
-    }
-    var inauriIdle.wounds 1
     gosub redirect all to left leg
     gosub touch $inauri.healTarget
-    if (%inauriIdle.wounds = 1 || %inauriIdle.vitality = 1) then {
+    var inauriIdle.injuryCheck (%inauriIdle.wounds + %inauriIdle.vitality + %inauriIdle.disease + %inauriIdle.poison)
+    if (%inauriIdle.injuryCheck > 0) then {
         if (%inauriIdle.vitality = 1) then {
             gosub take $inauri.healTarget vitality quick
-            var inauriIdle.vitality 0
         }
-        gosub take $inauri.healTarget ever quick
-        put #var inauri.heal 0
-        var inauriIdle.wounds 0
+        if (%inauriIdle.poison) then {
+            gosub touch $inauri.healTarget
+            gosub take $inauri.healTarget poison quick
+            var inauriIdle.poison 0
+        }
+        if (%inauriIdle.disease) then {
+            gosub touch $inauri.healTarget
+            gosub take $inauri.healTarget disease quick
+            var inauriIdle.disease 0
+            var inauriIdle.diseaseSelf 1
+        }
+        if (%inauriIdle.wounds = 1) then {
+            gosub take $inauri.healTarget ever quick
+        }
     } else {
         gosub whisper $inauri.healTarget You have no wounds.
     }
+    put #var inauri.heal 0
     goto inauriIdle.loop
 
 
@@ -170,34 +175,46 @@ inauriIdle.resumeScript:
 
 
 inauriIdle.teach:
-    if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $0
-        put #script abort $inauri.subScript
-    }
-    if ($lib.class = 1) then {
+    if ("$lib.topic" <> "0") then {
         gosub assess teach
-        if ("$class" = "Enchanting") then {
-            if ("%inauriIdle.target" = "Selesthiel") then {
+        if ("%inauriIdle.target" = "Selesthiel") then {
+            if ("$lib.topic" = "Enchanting") then {
                 put kiss Selesthiel forehead
+                var inauriIdle.teachTrigger 0
+                return
             } else {
-                put stare %inauriIdle.target
-                put shake head inauri
+                if ($lib.student = 1) then {
+                    gosub stop listen
+                }
+                gosub stop teach
+                gosub teach %inauriIdle.topic to %inauriIdle.target
+                var inauriIdle.teachTrigger 0
+                return
             }
-            var inauriIdle.teach 0
-            return
+        } else {
+            if contains("$lib.topic", "%inauriIdle.topic") then {
+                put whisper %inauriIdle.target I am already teaching you $lib.topic.
+                var inauriIdle.teachTrigger 0
+                return
+            }
+            if (contains("$roomplayers", "Selesthiel" && "$lib.topic" = "Enchanting") then {
+                var inauriIdle.teachTrigger 0
+                return
+            } else {
+                gosub stop teach
+                gosub teach %inauriIdle.topic to %inauriIdle.target
+                var inauriIdle.teachTrigger 0
+                return
+            }
         }
-        if contains("$class", "%inauriIdle.topic") then {
-            put whisper %inauriIdle.target I am already teaching you $class.
-            var inauriIdle.teach 0
-            return
+    } else {
+        if ($lib.student = 1) then {
+            gosub stop listen
         }
         gosub stop teach
+        gosub teach %inauriIdle.topic to %inauriIdle.target
+        var inauriIdle.teachTrigger 0
     }
-    if ($lib.student = 1) then {
-        gosub stop listen
-    }
-    gosub teach %inauriIdle.topic to %inauriIdle.target
-    var inauriIdle.teach 0
     return
 
 
