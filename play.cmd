@@ -28,15 +28,17 @@ action var setHarderSong 1 when ^You effortlessly begin
 action var setEasierSong 1 when ^You (struggle|fumble)
 action var setHarderSong 0;var setEasierSong 0 when only the slightest hint of difficulty\.$
 
-action goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
-action goto play.cleanInstrument when ^You notice that moisture has accumulated
-action goto play.cleanInstrument when  dirtiness may affect your performance\.$
+var play.restart 0
+action var play.restart 1; goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
+action var play.restart 1; goto play.cleanInstrument when ^You notice that moisture has accumulated
+action var play.restart 1; goto play.cleanInstrument when  dirtiness may affect your performance\.$
 
 
 ###############################
 ###      play.top
 ###############################
 play.top:
+	var play.restart 0
 	if ("$righthand" != "$char.instrument.tap" && "$righthand" != "Empty") then gosub stow right
 	gosub stow left
 
@@ -71,6 +73,7 @@ play.top:
     goto play.done
 
 
+
 ###############################
 ###      play.cleanInstrument
 ###############################
@@ -79,23 +82,12 @@ play.cleanInstrument:
 	gosub stow left
 	gosub get my cloth
 	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
-	put wipe my $char.instrument.noun with my cloth
+	gosub wipe my $char.instrument.noun with my cloth
+	gosub clean my $char.instrument.noun with my cloth
 	gosub stow my cloth
-	put clean my $char.instrument.noun with my cloth
-	goto play.top
+	if (%play.restart = 1) then goto play.top
+	return
 
-
-###############################
-###      play.repairInstrument
-###############################
-play.repairInstrument:
-	gosub stop play
-	gosub stow left
-	gosub get my repair kit
-	if ("$lefthand" = "Empty") then goto done.noRepairKit
-	gosub repair my $char.instrument.noun with my repair kit
-	gosub stow my repair kit
-	goto play.top
 
 
 ###############################
@@ -114,6 +106,22 @@ play.getSongIndex:
 			return
 		}
 		goto play.getSongIndex.loop
+
+
+
+###############################
+###      play.repairInstrument
+###############################
+play.repairInstrument:
+	gosub stop play
+	gosub stow left
+	gosub get my repair kit
+	if ("$lefthand" = "Empty") then goto done.noRepairKit
+	gosub repair my $char.instrument.noun with my repair kit
+	gosub stow my repair kit
+	if (%play.restart = 1) then goto play.top
+	return
+
 
 
 ###############################
@@ -135,6 +143,7 @@ play.setEasierSong:
 	put #tvar char.instrument.song %play.songs(%getSongIndex.index)
 	echo [play] Moved to easier song: $char.instrument.song
 	return
+
 
 
 ###############################
@@ -159,14 +168,15 @@ play.setHarderSong:
 	return
 
 
+
 ###############################
 ###      play.wait
 ###############################
 play.wait:
 	pause 2
 	if ($char.isPerforming != 1) then return
-	#gosub appraise.onTimer
 	goto play.wait
+
 
 
 ###############################
@@ -196,6 +206,8 @@ play.setCharacterSong:
 ###      play.done
 ###############################
 play.done:
+	gosub play.cleanInstrument
+	gosub play.repairInstrument
 	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.instrument.container
 	pause .2
 	put #parse PLAY DONE

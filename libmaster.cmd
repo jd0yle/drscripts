@@ -709,6 +709,7 @@ clean:
     clean1:
     matchre return ^You gently buff
     matchre return ^Clean
+    matchre return  not in need of cleaning\.$
     matchre return ^You need
     matchre return ^That
     matchre return ^I think that's a personal thing
@@ -2949,6 +2950,16 @@ wield:
     matchre return ^You're already holding
     put wield %todo
     goto retry
+
+
+wipe:
+	var location wipe1
+	var todo $0
+	wipe1:
+	matchre return not in need of drying\.$
+	matchre return ^Wipe
+	put wipe %todo
+	goto retry
 
 
 withdraw:

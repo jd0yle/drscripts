@@ -208,22 +208,22 @@ loop:
     if (contains("$roomobjs", (dirt construct)) then math numMobs subtract 1
 
     var attackContinue 1
-    if (%attackContinue = 1 && %numMobs < 2) then {
-        if (%numMobs = 1) then {
-            gosub attack circle
-            gosub attack bob
+    if (%attackContinue = 1 && %numMobs = 0) then {
+        if (%useCollect != 0) then {
+            gosub collect dirt
+        } else {
+            pause 4
         }
-        if (%numMobs = 0) then {
-            if (%useCollect != 0) then {
-                gosub collect dirt
-            } else {
-                pause 4
-            }
 
-            if (contains("$roomobjs", "a pile of")) then {
-                gosub kick pile
-            }
+        if (contains("$roomobjs", "a pile of")) then {
+            gosub kick pile
         }
+        var attackContinue 0
+    }
+
+    if (%attackContinue = 1 && %numMobs = 1 && ($Evasion.LearningRate = 0 || $Parry_Ability.LearningRate = 0 || $Shield_Usage.LearningRate = 0 )) then {
+        gosub attack circle
+        gosub attack bob
         var attackContinue 0
     }
 
