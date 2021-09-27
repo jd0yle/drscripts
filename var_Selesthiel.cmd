@@ -309,7 +309,7 @@ put #tvar char.observe.predict 0
 ###############################
 ###      PAWN
 ###############################
-put #tvar char.pawn.container shadows
+put #tvar char.pawn.container watersilk bag
 
 
 ###############################

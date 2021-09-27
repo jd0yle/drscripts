@@ -713,6 +713,7 @@ clean:
     matchre return ^You need
     matchre return ^That
     matchre return ^I think that's a personal thing
+    matchre return sopping wet
     put clean %todo
     goto retry
 

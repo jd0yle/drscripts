@@ -84,6 +84,8 @@ play.cleanInstrument:
 	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
 	gosub wipe my $char.instrument.noun with my cloth
 	gosub clean my $char.instrument.noun with my cloth
+	pause
+	put wring my cloth
 	gosub stow my cloth
 	if (%play.restart = 1) then goto play.top
 	return

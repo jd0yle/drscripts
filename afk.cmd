@@ -16,6 +16,14 @@ var logoutReason 0
 ###    MAIN
 ###############################
 afk.loop:
+	if ($health < 50) then {
+		var logoutReason health
+		goto afk.logout
+	}
+	if ($dead = 1) then {
+        var logoutReason dead
+        goto afk.logout
+    }
     pause 2
     pause 2
     goto afk.loop

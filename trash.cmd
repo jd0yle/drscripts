@@ -2,6 +2,8 @@ include libmaster.cmd
 
 var fromContainer skull
 
+if ("$charactername" = "Selesthiel") then var fromContainer backpack
+
 var trash blanket|kaleidoscope|earring|harp|cowbell|cookbook|thumb ring|witch ball|mouse|box|towel
 eval numItems count("%trash", "|")
 var index 0

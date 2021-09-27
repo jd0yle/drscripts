@@ -170,19 +170,25 @@ main:
         put .magic
         gosub waitForMagic
         put #echo >Log #00ffff Magic End - Warding: $Warding.LearningRate/34
+
+        if ($Performance.LearningRate < 10) then {
+	        put #echo >Log #009999 Play start - Performance $Performance.LearningRate/34
+	        gosub release cyclic
+	        gosub runScript cast rev
+	        gosub runScript play
+	        put #echo >Log #009999 Play end   - Performance: $Performance.LearningRate/34
+        }
         goto main
     }
 
 	# Main Combat
     startFight:
-    #if ($Evasion.LearningRate < 30 || $Shield_Usage.LearningRate < 30 || $Parry_Ability.LearningRate < 30 || Targeted_Magic.LearningRate < 30 || $Light_Thrown.LearningRate < 30 || $Brawling.LearningRate < 30 || $Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30) then {
 	    put #echo >Log #cc99ff Moving to combat
 	    gosub moveToWyverns
 	    put #tvar char.fight.backtrain 0
 	    put .fight
 	    gosub waitForMainCombat
 	    goto main
-   # }
 
 
     # Backtrain

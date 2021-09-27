@@ -69,7 +69,7 @@ if ("$charactername" = "%CHARACTER1") then {
 # Selesthiel
 if ("$charactername" = "%CHARACTER2") then {
     var eddy NULL
-    var pack shadows
+    var pack watersilk bag
     if ($Athletics.LearningRate > 2 && $Athletics.LearningRate > $Locksmithing.LearningRate) then {
         var method LOCKPICK
     } else {
@@ -82,8 +82,8 @@ if ("$charactername" = "%CHARACTER2") then {
     var maxgrabs 5
     var hideme NO
     var pawn NO
-    var donotpawnthis book|keepsake box|jewelry box|memory orb
-    var trashall NO
+    var donotpawnthis book|memory orb
+    var trashall YES
     var trashthings blanket|kaleidoscope|earring|ring
     var skip NULL
 }
