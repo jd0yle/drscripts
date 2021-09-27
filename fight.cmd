@@ -333,6 +333,9 @@ attackCrossbow:
 
     if %crossbowRetreat = 1 then gosub retreat
     gosub load my %weapons.items(%weapons.index) with my %ammo
+
+    if (%noAmmo = 1) then return
+
     if %crossbowRetreat = 1 then gosub retreat
     gosub aim
     gosub debil force
@@ -657,8 +660,12 @@ checkWeaponSkills:
         if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }
 
-    if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
-    if (%noAmmo = 1 && contains("%weapons.skills(%weapons.index)", "(Crossbow|Bow|Slings)")) then gosub checkWeaponSkills.nextWeapon
+    #if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
+    if (%noAmmo = 1 && ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings")) then {
+        put #echo >Debug #DD6601 NO AMMO FOR %weapons.skills(%weapons.index)
+        gosub checkWeaponSkills.nextWeapon
+        var noAmmo 0
+    }
 
     evalmath timeSinceLastWeaponChange ($gametime - %weapons.lastChangeAt)
 

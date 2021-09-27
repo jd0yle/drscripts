@@ -41,6 +41,12 @@ if ("%mob" = "caracal") then {
     var waitroomid 163
 }
 
+if ("%mob" = "cloudrat") then {
+    #var minRoomId 606
+    var minRoomId 611
+    var maxRoomId 612
+    var waitroomid 435
+}
 
 if ("%mob" = "eel") then {
     var minRoomId 234

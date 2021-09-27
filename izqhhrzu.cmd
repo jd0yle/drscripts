@@ -189,7 +189,8 @@ main:
         gosub getHealed
         #gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        gosub moveToYellowGremlins
+        #gosub moveToYellowGremlins
+        gosub moveToCloudRats
         put .fight
         gosub waitForMainCombat
         goto main
@@ -540,6 +541,47 @@ castSpellsForMove:
         }
     }
     return
+
+
+
+moveToCloudRats:
+	gosub setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToCloudRats
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 606 && $roomid <= 612 && "$roomplayers" = "") then return
+        gosub runScript findSpot cloudrat
+        return
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToCloudRats
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToCloudRats
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go exit portal
+        goto moveToCloudRats
+    }
+
+    goto moveToCloudRats
+
 
 
 

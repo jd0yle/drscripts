@@ -130,10 +130,10 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debilPauseTime 5
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell ps
+put #tvar char.fight.debil.spell sick
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 13
+put #tvar char.fight.debil.prepAt 10
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -202,7 +202,7 @@ put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
 put #tvar char.fight.useBenediction 1
-put #tvar char.fight.useBless 1
+put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1

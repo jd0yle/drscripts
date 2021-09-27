@@ -292,8 +292,8 @@ put #tvar char.pawn.container portal
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 50
-put #tvar char.repair.list demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
-
+#put #tvar char.repair.list demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
+put #tvar char.repair.list $char.armor|$char.fight.weapons.items|$char.armor.light
 
 ###############################
 ###      RESEARCH
