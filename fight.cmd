@@ -131,6 +131,9 @@ action var useCollect 0 when any collecting efforts would be futile\.$
 
 action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
+action var dissectFail 1 when You'll gain no insights from this attempt\.$
+
+
 put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime \$gametime;#var stance \$1} {stance}
 put #trigger {e/\$stance/} {#statusbar 7 Stance: \$stance} {stance}
 
@@ -209,6 +212,14 @@ loop:
 
     var attackContinue 1
     if (%attackContinue = 1 && %numMobs = 0) then {
+        #if ( 1 = 0 && (%useCollect != 0 && %$Outdoorsmanship.LearningRate < 34) || $Performance.LearningRate < 34) then {
+		#	if ($Outdoorsmanship.LearningRate <= $Performance.LearningRate) then {
+		#		gosub collect dirt
+		#	} else {
+		#		gosub fight.playIdle
+		#	}
+        #}
+
         if (%useCollect != 0) then {
             gosub collect dirt
         } else {
@@ -660,7 +671,6 @@ checkWeaponSkills:
         if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }
 
-    #if (%noAmmo = 1 && "%weapons.skills(%weapons.index)" = "Crossbow") then gosub checkWeaponSkills.nextWeapon
     if (%noAmmo = 1 && ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings")) then {
         put #echo >Debug #DD6601 NO AMMO FOR %weapons.skills(%weapons.index)
         gosub checkWeaponSkills.nextWeapon
@@ -834,7 +844,11 @@ checkDeadMob:
 
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
             if ($char.fight.useDissect = 1 && $Skinning.LearningRate > $First_Aid.LearningRate && $First_Aid.LearningRate < 33) then {
+                var dissectFail 0
                 gosub dissect %mobName
+                if (%dissectFail = 1) then {
+                    echo DISSECT FAILED!
+                }
             }
             if (%arrangeForPart = 1) then {
                 gosub arrange for part
@@ -1123,8 +1137,18 @@ performRitual:
         gosub stow right
         gosub stow left
         if (%avoidDivineOutrage != 1) then {
+            if ("%ritualTarget" = "young wyvern") then var ritualTarget wyvern
             gosub perform preserve on %ritualTarget
-            gosub perform butchery on %ritualTarget leg
+            #gosub perform butchery on %ritualTarget leg
+
+            gosub perform butchery on %ritualTarget
+
+            if (matchre("$righthandnoun", "\b(arm|leg|head|wing|torso|eyes|brain)\b")) then {
+                var bodyPart $1
+                echo BUTCHERED A %bodyPart
+                gosub drop my $righthandnoun
+            }
+
             gosub drop my leg
             gosub stow right
         }
@@ -1143,6 +1167,25 @@ performRitual:
     }
     return
 
+
+###############################
+###      fight.playIdle
+###############################
+fight.playIdle:
+	put .play
+	pause 5
+
+fight.playIdle.loop:
+    # Use numMobs so that we can subtract non-combat "pets" (ex: dirt construct, shadow servant, etc.)
+    var numMobs $monstercount
+    if (contains("$roomobjs", (dirt construct)) then math numMobs subtract 1
+    if (%numMobs > 0 || $char.isPerforming != 1) then {
+        gosub stop play
+        return
+    }
+    pause 1
+    pause 1
+    goto fight.playIdle.loop
 
 ###############################
 ###      releaseUnwantedSpells

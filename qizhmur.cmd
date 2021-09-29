@@ -122,9 +122,7 @@ main:
 
         #gosub automove crossing
         if ($SpellTimer.RiteofGrace.active != 1) then {
-            gosub prep rog 20
-            gosub waitForPrep
-            gosub cast
+            gosub runScript cast rog
         }
         #gosub automove leth
         #gosub automove portal
@@ -182,8 +180,8 @@ main:
 		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        #gosub moveToBulls
-        gosub moveToShardBulls
+        #gosub moveToShardBulls
+        gosub moveToWyvern
         gosub runScript tend
         put .fight
         gosub waitForMainCombat
@@ -373,10 +371,8 @@ castSpellsForMove:
     #if ($SpellTimer.RiteofGrace.active = 1) then gosub release rog
     if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
     if ($SpellTimer.RiteofGrace.active != 1) then {
-        gosub prep rog 20
-        gosub waitForPrep
         gosub release cyclic
-        gosub cast
+        gosub runScript cast rog
     }
 
     if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then {
@@ -938,6 +934,44 @@ moveToWarklin:
     goto moveToWarklin
 
 
+moveToWyvern:
+    if ("$roomname" = "Private Home Interior") then {
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        gosub runScript house
+        goto moveToWyvern
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 567 && $roomid <= 572 && "$roomplayers" = "") then return
+        if ($roomid >= 480 && $roomid <= 487 && "$roomplayers" = "") then return
+        #if ( (($roomid >= 480 && $roomid <= 487) || ($roomid >= 567 && $roomid <= 572)) && "$roomplayers" = "") then return
+        gosub runScript findSpot wyvern
+        goto moveToWyvern
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToWyvern
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToWyvern
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToWyvern
+    }
+
+    goto moveToWyvern
+
+
 qizhmur.textbook:
     pause 2
     put #script abort all except qizhmur
@@ -1074,6 +1108,9 @@ waitForMainCombatLoop:
 
 
 retrieveBolts:
+
+	return
+
     var retrieveAttempts 0
 retrieveBoltsLoop:
     gosub count my basilisk bolts

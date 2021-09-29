@@ -204,6 +204,8 @@ put #tvar char.instrument.noun txistu
 put #tvar char.instrument.tap cocobolo txistu
 put #tvar char.instrument.container thigh bag
 
+put #tvar char.play.useAlmanac 1
+
 
 ###############################
 ###      LOOT

@@ -64,6 +64,10 @@ put #tvar char.cast.rog.prep 25
 put #tvar char.cast.rog.charge 0
 put #tvar char.cast.rog.chargeTimes 0
 
+put #tvar char.cast.usol.prep 12
+put #tvar char.cast.usol.charge 0
+put #tvar char.cast.usol.chargeTimes 0
+
 
 ###############################
 ###      COMBAT
@@ -100,7 +104,7 @@ put #tvar char.fight.debil.spell ip
 put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 22
+put #tvar char.fight.debil.prepAt 24
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -171,7 +175,7 @@ put #tvar char.fight.useSls 0
 # (Will still use harvest when low on material, consume for devour, etc.)
 put #tvar char.fight.necroRitual dissection
 
-put #tvar char.fight.avoidDivineOutrage 1
+put #tvar char.fight.avoidDivineOutrage 0
 
 put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0

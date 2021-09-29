@@ -38,7 +38,7 @@ if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then
 
 if (%skillset = null) then gosub findSkillSet
 
-if ("$char.predict.preferred.skill" != "") then {
+if ("%skillset" = "null" && "$char.predict.preferred.skill" != "") then {
 	if ("$predictPool.$char.predict.preferred.skillset" = "complete") then var skillset $char.predict.preferred.skill
 }
 

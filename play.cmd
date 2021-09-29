@@ -10,10 +10,12 @@
 # char.instrument.container
 #
 # USAGE
-# .play [--noWait=1]   #By default, the script will wait until you are done playing to exit
+# .play [--noWait=1]  #By default, the script will wait until you are done playing to exit
+# .play [--loop=1]    #By default, the script will play a song once, then exit
 #
 # .play
 # .play --noWait=1
+# .play --loop=1
 ####################################################################################################
 include libmaster.cmd
 include args.cmd
@@ -70,6 +72,7 @@ play.top:
         if ("$char.instrument.song" != "%play.songAtStart") then put #echo >Log [play] Changed songs from %play.songAtStart to $char.instrument.song
     }
     if (%args.noWait != 1) then gosub play.wait
+    if (%args.loop = 1 && $Performance.LearningRate < 34) then put .play --loop=1
     goto play.done
 
 
@@ -82,6 +85,7 @@ play.cleanInstrument:
 	gosub stow left
 	gosub get my cloth
 	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
+	gosub wring my cloth
 	gosub wipe my $char.instrument.noun with my cloth
 	gosub clean my $char.instrument.noun with my cloth
 	pause
@@ -177,6 +181,7 @@ play.setHarderSong:
 play.wait:
 	pause 2
 	if ($char.isPerforming != 1) then return
+	if ($char.play.useAlmanac = 1) then gosub almanac.onTimer
 	goto play.wait
 
 

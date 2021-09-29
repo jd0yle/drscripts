@@ -171,7 +171,7 @@ main:
         gosub waitForMagic
         put #echo >Log #00ffff Magic End - Warding: $Warding.LearningRate/34
 
-        if ($Performance.LearningRate < 10) then {
+        if (1 = 0 && $Performance.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
 	        put #echo >Log #009999 Play start - Performance $Performance.LearningRate/34
 	        gosub release cyclic
 	        gosub runScript cast rev

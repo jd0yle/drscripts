@@ -2087,6 +2087,7 @@ repair:
     repair1:
     matchre return isn't in need of repair
     matchre return not in need of repair\.$
+    matchre return ^As you finish your task
     matchre return ^Roundtime
     matchre return SKIN
     matchre return ^The leather looks frayed
@@ -2972,6 +2973,18 @@ withdraw:
     put withdraw %todo
     goto retry
 
+
+wring:
+	var location wring1
+	var todo $0
+	wring1:
+	matchre return ^You can't wring
+	matchre return ^You wring
+	put wring %todo
+	goto retry
+
+
+
 ########################################################################
 #                            Timer Verbs
 ########################################################################
@@ -3320,6 +3333,7 @@ debug:
 
 
 retry:
+    matchre return ^\[Roundtime
     matchre return ^Roundtime
     matchre return ^Please rephrase that command\.$
     matchre location ^\.\.\.wait
