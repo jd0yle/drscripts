@@ -86,6 +86,9 @@ put #tvar char.common.container shadows
 put #tvar char.common.container.extra purse
 put #tvar char.common.scripts deposit|pawn|burgle|caracal|compendium|deposit|forage|magic|pawn|repair|research
 
+# Moon Mage Servant
+put #tvar char.common.servant.bags pack|saddlebag|pouch
+
 
 ###############################
 ###      FIGHT
@@ -94,6 +97,11 @@ put #tvar char.common.scripts deposit|pawn|burgle|caracal|compendium|deposit|for
 put #tvar char.fight.ammo.Crossbow bolt
 put #tvar char.fight.ammo.Bow 0
 put #tvar char.fight.ammo.Slings 0
+
+# ------ ARMOR ------
+put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
+put #tvar char.fight.armor.items 0
+put #tvar char.fight.useArmor 0
 
 # ------ ARRANGE ------
 put #tvar char.fight.arrangeForPart 0
@@ -113,29 +121,17 @@ put #tvar char.fight.forceShield 0
 # all|treasure|gems whatever the loot options are
 put #tvar char.fight.lootType treasure
 
+# ------ STANCE ------
+# Force always using stance shield, never stance parry
+put #tvar char.fight.forceShield 0
+
 # DEPRECATED Script-specific options (ex: 'backtrain')
 put #tvar char.fight.opts null
-
 
 # ------ TM ------
 put #tvar char.fight.tmSpell do
 put #tvar char.fight.tmPrep 7
 put #tvar char.fight.tmPause 7
-
-
-# ------ WEAPONS ------
-#Slings
-#blue sling
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
-put #tvar char.fight.wornCrossbow 0
-
-# ------ ARMOR ------
-put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
-put #tvar char.fight.armor.items 0
-put #tvar char.fight.useArmor 0
 
 # ------ USE ------
 # Use vars are all "Do this thing or not"
@@ -146,17 +142,25 @@ put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
+put #tvar char.fight.useMaf 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
-# ------ GENERAL ------
-put #tvar char.fight.useMaf 1
+# ------ WEAPONS ------
+#Slings
+#blue sling
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
 put #tvar char.fight.useCol 1
 put #tvar char.fight.useObserve 0
+put #tvar char.fight.useRevSorcery 1
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0

@@ -104,7 +104,7 @@ if ("$charactername" = "%CHARACTER3") then {
     var maxgrabs 5
     var hideme NO
     var pawn NO
-    var donotpawnthis scimitar|keepsake box|arrow|memory orb|jewelry box
+    var donotpawnthis keepsake box|memory orb|jewelry box
     var trashall NO
     var trashthings basket|kaleidoscope|sieve|stick|diary|top|rat|mouse|ball|guide|manual
     var skip NULL
@@ -122,7 +122,7 @@ if ("$charactername" = "%CHARACTER4") then {
     var maxgrabs 5
     var hideme NO
     var pawn NO
-    var donotpawnthis scimitar|keepsake box|arrow|memory orb|jewelry box
+    var donotpawnthis keepsake box|memory orb|jewelry box
     var trashall NO
     var trashthings basket|kaleidoscope|sieve|stick|diary|top|rat|mouse|ball|guide|manual
     var skip NULL

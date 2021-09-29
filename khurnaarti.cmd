@@ -39,7 +39,7 @@ if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastCompendiumGametime >0)) then put #var lastCompendiumGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
-if (!($lastPracticeBoxGametime >0)) then put #var lastPracticeBoxGametime 0
+if (!($lastLocksGametime >0)) then put #var lastLocksGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 var khurnaarti.class debil
@@ -320,19 +320,20 @@ khurnaarti.locationCheck:
 
 khurnaarti.lock:
     # Limit how often we're looking for locksmithing practice boxes.
-    if ($practicebox.haveBox = 1) then
-        evalmath nextPracticeBoxAt $lastPracticeBoxGametime + 3600
+    if ($lastLocksGametime > 0) then
+        evalmath nextPracticeBoxAt $lastLocksGametime + 3600
         if (%nextPracticeBoxAt > $gametime) then {
             return
         }
     }
     if ($Locksmithing.LearningRate < 10) then {
-        put #echo >Log #009933 [khurnaarti] Beginning locksmithing.\
+        put #echo >Log #009933 [khurnaarti] Beginning locksmithing.
         put #tvar khurnaarti.subScript practicebox
         put .practicebox
         waitforre ^LOCKS DONE
         put #tvar khurnaarti.subScript 0
         put #echo >Log #009933 [khurnaarti] Locksmithing done Lock:($Locksmithing.LearningRate/34).
+        put #var lastLocksGametime $gametime
     }
     return
 
