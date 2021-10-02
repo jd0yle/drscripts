@@ -42,7 +42,14 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastLocksGametime >0)) then put #var lastLocksGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
-var khurnaarti.class debil
+if ($Targeted_Magic.Ranks = $Debilitation.Ranks) then {
+    var khurnaarti.class sorcery
+}
+if ($Targeted_Magic.Ranks > $Debilitation.Ranks) then {
+    var khurnaarti.class tm
+} else {
+    var khurnaarti.class debil
+}
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
 var khurnaarti.houseType 0
