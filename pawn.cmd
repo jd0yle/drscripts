@@ -8,8 +8,10 @@ var dryRun false
 if_1 then {
     var dryRun true
 }
-
-var sellables bathrobe|canvas tote|sphere|cylinder|bangles|towel|cufflinks|bottoms|top|lunchbox|razor|bowl|amulet|skillet|stove|handkerchief|sieve|stick|pillow|mortar|pestle|brush|bear|earrings|choker|haircomb|sieve|knife|broom|cube|dagger|helm|nightgown|comb|cloak|fabric|bank|bowl|nightcap|fan|scissors|paperweight|yardstick|diary|kaleidoscope|hauberk|pajamas|shaper|leaflet|arrows|lamp|slippers|apron|prism|blanket|quill|locket|rod|shield|lens|cylinder|bracer|rasp|ring|charts|distaff|sipar|case|cowbell|hammer|pins|mirror|gloves|crossbow|scroll|leathers|telescope case|telescope|scimitar|statuette|plate|cudgel|slate|briquet|blossom|oil|napkin|cookbook|twine|tankard|snare|bottoms|opener|shakers|jug|amulet|vase|knives
+put .BurgleVariables
+var donotsell $BURGLE.KEEP
+var trashItems $BURGLE.TRASHITEMS
+var sellables amulet|apron|bangles|bank|bathrobe|bear|blanket|blossom|bottoms|bowl|bracer|briquet|broom|brush|canvas tote|charts|choker|cloak|comb|cookbook|cowbell|cube|cudgel|cufflinks|cylinder|diary|distaff|earrings|fan|hammer|handkerchief|haircomb|jug|kaleidoscope|knife|knives|lamp|leaflet|lens|locket|lunchbox|mirror|mortar|napkin|nightcap|nightgown|oil|opener|pajamas|paperweight|pestle|pillow|pins|plate|pot helm|prism|quill|rasp|razor|ring|rod|scissors|scroll|shakers|shaper|sieve|sipar|skillet|slate|slippers|snare|sphere|statuette|stick|stove|tankard|towel|top|twine|vase|yardstick
 var soldItems null
 
 action var items $1 when ^You rummage through.*and see (.*)\.$
@@ -25,6 +27,14 @@ var index 0
 
 loop:
     var item %itemArr(%index)
+    if (matchre ("%item", "\b(%donotsell)\b") then {
+        put #echo >Log [pawn] Keeping %item.
+    }
+    if (matchre ("%item", "\b(%trashItems)\b") then {
+        gosub get my %item from my %container
+        gosub put my %item in bucket
+        put #echo >Log [pawn] Trashing %item.
+    }
     if (matchre("%item", "\b(%sellables)\b") then {
         var sellItem $1
 
@@ -35,7 +45,7 @@ loop:
             if ("$righthand" != "Empty") then gosub drop my %sellItem
             if ("$righthand" != "Empty") then gosub put my %sellItem in my %container
         } else {
-            echo Selling %sellItem -- %item
+            put #echo >Log [pawn] Selling %sellItem -- %item
         }
 
         if ("%soldItems" = "null") then {
@@ -51,7 +61,11 @@ loop:
 
 
 done:
-    put #echo >Log [pawn]: Sold %soldItems
+    if (%soldItems <> null) then {
+        put #echo >Log [pawn] Sold %soldItems
+    } else {
+        put #echo >Log [pawn] Nothing sold.
+    }
     put #parse PAWN DONE
     exit
 

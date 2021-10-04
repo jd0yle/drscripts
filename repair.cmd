@@ -66,22 +66,31 @@ goto repair.checkForTicket
 ###      MAIN
 ###############################
 repair.checkForTicket:
-    gosub get my ticket
-    if ("$righthandnoun" = "ticket") then {
-        gosub look my ticket
-        if (%repair.waitTimeMin > 2) then {
-            # Wait time is too long, skip and check for other repairs.
-            gosub stow ticket
-            goto repair.main
-        } else {
-            # Wait the two minutes and pick up everything.
-            gosub repair.checkTicketTime
-            gosub repair.fetchItems
+    eval repair.tTypesLength count("%repair.npcs", "|")
+    var repair.tTypesIndex 0
+
+
+    repair.checkForTicketLoop:
+        if (%repair.tTypesIndex < %repair.tTypesLength) then {
+            gosub get my %repair.npcs(%repair.tTypesIndex) ticket
+            if (matchre("$righthand", "repair")) then {
+                gosub look at my ticket
+                if (%repair.waitTimeMin > 2) then {
+                    put #echo >Log Blue [repair] Found repair ticket with wait time of %repair.waitTimeMin min.  Checking for other repairs.
+                    gosub stow ticket
+                    goto repair.main
+                } else {
+                    put #echo >Log Blue [repair] Found repair ticket with wait time of %repair.waitTimeMin min.  Proceeding.
+                    gosub repair.checkTicketTime
+                    gosub repair.fetchItems
+                }
+            } else {
+                math repair.tTypesIndex add 1
+                goto repair.checkForTicketLoop
+            }
         }
-    } else {
-        # No tickets, begin repair.
+        put #echo >Log Blue [repair] Did not find any repair tickets for known npc types.  Checking for needed repairs.
         goto repair.main
-    }
 
 
 repair.main:
@@ -109,7 +118,7 @@ repair.main:
 repair.fetchItems:
     gosub get my ticket
     if ("$righthandnoun" <> "ticket") then {
-        put #echo Blue >Log Blue [repair] Repairs complete.
+        put #echo Blue >Log [repair] Repairs complete.
         goto repair.exit
     }
     if (matchre("$righthand", "(%repair.npcs)")) then {
