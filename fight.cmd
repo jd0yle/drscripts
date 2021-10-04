@@ -666,7 +666,7 @@ checkWeaponSkills:
         if (%useUsol = 1) then var useTmCyclic 1
         if (%useSls = 1 && $Time.isDay = 0) then var useTmCyclic 1
 
-        if ("$charactername" = "Selesthiel") then var useTmCyclic 1
+        #if ("$charactername" = "Selesthiel") then var useTmCyclic 1
 
         if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }

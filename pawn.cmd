@@ -1,5 +1,7 @@
 include libmaster.cmd
 
+exit
+
 var container $char.pawn.container
 
 var dryRun false

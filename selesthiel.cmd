@@ -93,12 +93,12 @@ main:
 
         gosub automove n gate
         gosub automove portal
-        gosub move go gate
-        gosub automove pawn
+        #gosub move go gate
+        #gosub automove pawn
 
-        gosub runScript pawn
+        #gosub runScript pawn
         gosub prep rf
-        gosub automove portal
+        #gosub automove portal
 
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         gosub move go meeting portal
@@ -184,7 +184,9 @@ main:
 	# Main Combat
     startFight:
 	    put #echo >Log #cc99ff Moving to combat
-	    gosub moveToWyverns
+	    #gosub moveToWyverns
+	    gosub moveToTelgas
+	    if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict
 	    put #tvar char.fight.backtrain 0
 	    put .fight
 	    gosub waitForMainCombat
@@ -622,6 +624,51 @@ moveToWyverns:
     }
 
     goto moveToWyverns
+    
+    
+
+moveToTelgas:
+    if ("$roomname" = "Private Home Interior") then {
+        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        gosub runScript house
+        goto moveToTelgas
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 515 && $roomid <= 525 && "$roomplayers" = "") then return
+        gosub runScript findSpot telga
+        goto moveToTelgas
+    }
+
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToTelgas
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToTelgas
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToTelgas
+    }
+
+    goto moveToTelgas
 
 
 moveToHeal:

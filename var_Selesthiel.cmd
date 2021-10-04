@@ -90,7 +90,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debil.spell mb
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 30
+put #tvar char.fight.debil.prepAt 35
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -144,7 +144,7 @@ put #tvar char.fight.armor.items.1 ka'hurst hauberk|ka'hurst gloves|ka'hurst bal
 put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
-put #tvar char.fight.useDissect 1
+put #tvar char.fight.useDissect 0
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1

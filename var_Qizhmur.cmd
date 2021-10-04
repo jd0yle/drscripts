@@ -104,7 +104,7 @@ put #tvar char.fight.debil.spell ip
 put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 24
+put #tvar char.fight.debil.prepAt 25
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)

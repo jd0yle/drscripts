@@ -137,7 +137,11 @@ main:
 
         gosub performance
 
+
+
         if ($First_Aid.LearningRate < 10) then gosub runScript caracal
+
+        if ($First_Aid.LearningRate < 20) then gosub runScript textbook
 
         gosub getHealed
 

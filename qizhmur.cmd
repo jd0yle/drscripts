@@ -220,8 +220,8 @@ main:
     #}
 
     if ($Parry_Ability.LearningRate > 25 && $Shield_Usage.LearningRate > 25 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 25 && $Brawling.LearningRate > 25 && $Small_Edged.LearningRate > 25 && $Heavy_Thrown.LearningRate > 25 && $Light_Thrown.LearningRate > 25 && $Crossbow.LearningRate > 25 && $Staves.LearningRate > 25 && $Twohanded_Blunt.LearningRate > 25 && $Warding.LearningRate > 25 && $Augmentation.LearningRate > 25 && $Utility.LearningRate > 25 && $Arcana.LearningRate > 25) then {
-        put #echo >Log #775501 [qizhmur.cmd] Doing Textbook
-        gosub qizhmur.textbook
+        #put #echo >Log #775501 [qizhmur.cmd] Doing Textbook
+        #gosub qizhmur.textbook
         put #echo >Log #775501 [qizhmur.cmd] Doing Performance
         gosub runScript play
     }
@@ -1079,9 +1079,23 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
+	var forceEndCombat 0
+	if ("$roomplayers" != "") then {
+		math roomPlayerCheckCount add 1
+	} else {
+		#var roomPlayerCheckCount 0
+		math roomPlayerCheckCount subtract 1
+		if (%roomPlayerCheckCount < 0) then var roomPlayerCheckCount 0
+	}
+
+	if (%roomPlayerCheckCount > 15) then {
+		var forceEndCombat 1
+		put #echo >Log #FF0000 ROOM OCCUPIED, FORCING MAINCOMBAT END
+	}
+
     #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 0 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
     #var skills $char.fight.weapons.skills|Parry_Ability|Shield_Usage|Evasion
-	 if ($lib.timers.nextBurgleAt < $gametime || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Staves.LearningRate > 30 && $Twohanded_Blunt.LearningRate > 30)) then {
+	 if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Staves.LearningRate > 30 && $Twohanded_Blunt.LearningRate > 30)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk
