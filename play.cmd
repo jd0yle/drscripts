@@ -20,7 +20,9 @@
 include libmaster.cmd
 include args.cmd
 
-var play.songs arpeggios|ditty|ballad|waltz|march|lament|hymn|polka|reel|serenade|psalm|tango|bolero|nocturne|requiem|concerto
+#var play.songs arpeggios|ditty|ballad|waltz|march|lament|hymn|polka|reel|serenade|psalm|tango|bolero|nocturne|requiem|concerto
+
+var play.songs arpeggios|ditty|folk|ballad|waltz|lullaby|march|jig|lament|wedding|hymn|rumba|polka|battle|reel|elegy|serenade|minuet|psalm|dirge|gavotte|tango|tarantella|bolero|nocturne|requiem|fantasia|rondo|aria|sonata|concerto
 
 var play.songAtStart $char.instrument.song
 
@@ -52,7 +54,7 @@ play.top:
 
 		#if ("$char.instrument.song" = "\$char.instrument.song") then {
 		if (!contains("%play.songs", "$char.instrument.song")) then {
-			echo $char.instrument.song not set (=$char.instrument.song), setting to default
+			echo char.instrument.song not set (=$char.instrument.song), setting to default
 			gosub play.setCharacterSong
 		}
 
@@ -165,8 +167,11 @@ play.setHarderSong:
 		return
 	}
 
-	# Can't make it any harder than 15 (concerto), so just return
-	if (%getSongIndex.index = 15) then return
+	# Can't make it any harder than it currently is, so return
+	if (%getSongIndex.index > count("%play.songs", "|")) then {
+		echo Trying to set harder song, already at hardest song index %getSongIndex.index: $char.instrument.song
+		return
+	}
 
 	evalmath getSongIndex.index (%getSongIndex.index + 1)
 	put #tvar char.instrument.song %play.songs(%getSongIndex.index)
@@ -207,6 +212,7 @@ play.setCharacterSong:
 	if ($Performance.Ranks >= 475) then put #tvar char.instrument.song nocturne
 	if ($Performance.Ranks >= 525) then put #tvar char.instrument.song requiem
 	if ($Performance.Ranks >= 550) then put #tvar char.instrument.song concerto
+	echo Set default song to $char.instrument.song
 	return
 
 
