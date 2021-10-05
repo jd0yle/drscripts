@@ -115,11 +115,11 @@ main:
         gosub sell my bundle
         gosub stow right
         gosub stow left
-        gosub get bundle from my backpack
+        gosub get bundle from my skull
         gosub sell my bundle
         gosub stow right
         gosub stow left
-        gosub get bundle from my backpack
+        gosub get bundle from my skull
         gosub sell my bundle
         gosub stow right
         gosub stow left
@@ -139,7 +139,7 @@ main:
 
 
 
-        if ($First_Aid.LearningRate < 10) then gosub runScript caracal
+        #if ($First_Aid.LearningRate < 10) then gosub runScript caracal
 
         if ($First_Aid.LearningRate < 20) then gosub runScript textbook
 
@@ -405,7 +405,6 @@ getHealedTrigger:
 getHealed:
     gosub checkHealth
     if (%injured = 1) then {
-        put #echo >Log Moving to get healed (moveToHouse)
         gosub moveToHouse
 
         if (contains("$roomplayers", "Inauri")) then {
@@ -590,7 +589,6 @@ moveToCloudRats:
 
 
 moveToGargoyles:
-    put #echo >Debug #cc99ff moveToGargoyles (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
     if ("$roomname" = "Private Home Interior") then {
@@ -995,7 +993,6 @@ moveToYellowGremlins:
 
 
 moveToHouse:
-    put #echo >Debug #cc99ff moveToHouse (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
 	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
@@ -1143,7 +1140,6 @@ moveToHouse:
 
 
 moveToPeccaries:
-    put #echo >Debug #cc99ff moveToPeccaries (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
 	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
@@ -1190,7 +1186,6 @@ moveToPeccaries:
 	
 
 moveToCaracals:
-    put #echo >Debug #cc99ff moveToCaracals (zoneid=$zoneid roomid=$roomid)
     gosub setZone
 
 	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh

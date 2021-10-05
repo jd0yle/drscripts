@@ -202,6 +202,7 @@ play.setCharacterSong:
 	if ($Performance.Ranks >= 250) then put #tvar char.instrument.song serenade
 	if ($Performance.Ranks >= 300) then put #tvar char.instrument.song psalm
 	if ($Performance.Ranks >= 350) then put #tvar char.instrument.song tango
+	if ($Performance.Ranks >= 400) then put #tvar char.instrument.song tarantella
 	if ($Performance.Ranks >= 450) then put #tvar char.instrument.song bolero
 	if ($Performance.Ranks >= 475) then put #tvar char.instrument.song nocturne
 	if ($Performance.Ranks >= 525) then put #tvar char.instrument.song requiem

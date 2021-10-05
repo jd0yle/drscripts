@@ -1278,6 +1278,7 @@ invoke:
     matchre return By directing your focus, you ensure that energy drawn only when spells are cast\.
     matchre return ^Closing your eyes
     matchre return ^Invoke what?
+    matchre return ^Magical rituals are exceedingly obvious.  You cannot do it while remaining hidden\.$
     matchre return ^Roundtime
     matchre return ^The cambrinth
     matchre return ^You are in no condition

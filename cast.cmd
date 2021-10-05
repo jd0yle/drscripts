@@ -176,6 +176,9 @@ chargeLoop:
 ###      ritualSpell
 ###############################
 ritualSpell:
+	if ($hidden = 1) then gosub shiver
+	if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+
     if ("$righthand" != "Empty" || "$lefthand" != "Empty") then {
         gosub stow right
         gosub stow left

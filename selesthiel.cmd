@@ -57,6 +57,8 @@ action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmu
 
 timer start
 
+if ($standing != 1) then gosub stand
+
 if (contains("$roomname", "A'baya")) then goto escapeTaisidon
 
 if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
@@ -153,18 +155,24 @@ main:
 
         gosub runScript fixInventory
 
-        if ($Sorcery.LearningRate < 2) then {
-            gosub remove my flame
-            gosub clean my flame
-            gosub wear my flame
+        gosub remove my flame
+        gosub clean my flame
+        gosub wear my flame
 
-            if ($char.magic.train.revSorcery != 1) then {
-	            gosub runScript research sorcery
-	            gosub getHealed
-            }
+        if ($char.magic.train.revSorcery != 1) then {
+            gosub runScript research sorcery
+            gosub getHealed
         }
 
-        #if ($First_Aid.LearningRate < 10) then gosub runScript textbook
+
+        if ($First_Aid.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
+            put #echo >Log #00ffff First Aid start - First Aid: $First_Aid.LearningRate/34
+            gosub release cyclic
+            gosub runScript cast rev
+            gosub runScript caracal
+            put #echo >Log #00ffff First Aid end - First Aid: $First_Aid.LearningRate/34
+        }
+
 
         put #echo >Log #00ffff Magic start - Warding: $Warding.LearningRate/34
         put .magic

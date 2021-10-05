@@ -12,10 +12,10 @@ include libmaster.cmd
 action goto caracal.done when ^The leather looks frayed, as if worked too often recently, so you stop your attempt to skin it\.$
 action goto caracal.done when ^A small fuzzy caracal with tufted ears and double-stitched seams isn't in need of repair\.$
 
-var loopsRemaining 18
+var loopsRemaining 30
 
 caracal.main:
-	if ($First_Aid.LearningRate > 32) then goto caracal.done
+	if ($First_Aid.LearningRate > 32 && $Skinning.LearningRate > 32) then goto caracal.done
 
     if ("$righthand" != "fuzzy caracal") then {
         gosub stow right
