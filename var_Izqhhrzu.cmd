@@ -16,8 +16,6 @@ put #tvar char.appraise.item diamondique hhr'ata
 ###############################
 ###      ARMOR
 ###############################
-#put #tvar char.armor ash leathers|ash gloves|ash cowl|demonscale shield|parry stick
-#put #tvar char.armor chain balaclava|chain gloves|moonsilk shirt|moonsilk pants|demonscale shield|parry stick
 put #tvar char.armor ka'hurst hauberk|moonsilk gloves|great helm|demonscale shield|parry stick
 
 
@@ -34,8 +32,6 @@ put #tvar char.cambrinth cambrinth spiderling
 put #tvar char.focusContainer $char.storage.default
 put #tvar char.wornCambrinth 1
 
-#put #tvar char.ritualFocus dove totem
-#put #tvar char.wornFocus 1
 put #tvar char.ritualFocus ouroboros ring
 put #tvar char.wornFocus 1
 
@@ -43,7 +39,7 @@ put #tvar char.wornFocus 1
 ###############################
 ###      CAST
 ###############################
-put #tvar char.cast.invokeSpell 0
+put #tvar char.cast.invokeSpell 1
 
 put #tvar char.cast.default.prep 40
 put #tvar char.cast.default.charge 25
@@ -112,6 +108,13 @@ put #tvar char.craft.workorder.item burin
 
 
 ###############################
+###      COMPENDIUM
+###############################
+put #tvar char.compendiums black compendium|bloodstained compendium|pale compendium
+put #tvar char.compendium.forceTurn 1
+
+
+###############################
 ###      FIGHT
 ###############################
 #***** AMMO *****
@@ -152,25 +155,19 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-#put #tvar char.fight.tmSpell horn
 put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-#put #tvar char.fight.tmPrep 10
-put #tvar char.fight.tmPrep 17
+put #tvar char.fight.tmPrep 16
 
 # How long to pause before casting.
-#put #tvar char.fight.tmPause 10
 put #tvar char.fight.tmPause 8
 
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
-
-#put #tvar char.fight.weapons.items blue sling
-#put #tvar char.fight.weapons.skills Slings
 
 put #tvar char.fight.trainOffhand 1
 
@@ -256,24 +253,6 @@ var super.enemies null
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
 put #tvar char.instrument.container thigh bag
-
-
-#if ($Performance.Ranks >= 40) then put #tvar char.instrument.song arpeggios
-#if ($Performance.Ranks >= 50) then put #tvar char.instrument.song ditty
-#if ($Performance.Ranks >= 60) then put #tvar char.instrument.song ballad
-#if ($Performance.Ranks >= 70) then put #tvar char.instrument.song waltz
-#if ($Performance.Ranks >= 80) then put #tvar char.instrument.song march
-#if ($Performance.Ranks >= 100) then put #tvar char.instrument.song lament
-#if ($Performance.Ranks >= 125) then put #tvar char.instrument.song hymn
-#if ($Performance.Ranks >= 180) then put #tvar char.instrument.song polka
-#if ($Performance.Ranks >= 220) then put #tvar char.instrument.song reel
-#if ($Performance.Ranks >= 250) then put #tvar char.instrument.song serenade
-#if ($Performance.Ranks >= 300) then put #tvar char.instrument.song psalm
-#if ($Performance.Ranks >= 350) then put #tvar char.instrument.song tango
-##if ($Performance.Ranks >= 450) then put #tvar char.instrument.song bolero
-#if ($Performance.Ranks >= 475) then put #tvar char.instrument.song nocturne
-#if ($Performance.Ranks >= 525) then put #tvar char.instrument.song requiem
-#if ($Performance.Ranks >= 550) then put #tvar char.instrument.song concerto
 
 
 ###############################
@@ -383,19 +362,19 @@ unvar var.magic.Warding
 ###############################
 ###      OBSERVE & PREDICT
 ###############################
-put #tvar char.predict.tool divination bones
-put #tvar char.predict.tool.container telescope case
+#put #tvar char.predict.tool divination bones
+#put #tvar char.predict.tool.container telescope case
 
-put #tvar char.observe.telescope clockwork telescope
-put #tvar char.observe.telescope.container telescope case
+#put #tvar char.observe.telescope clockwork telescope
+#put #tvar char.observe.telescope.container telescope case
 
-put #tvar char.observe.defense Merewalda|Dawgolesh|Penhetia|Giant|Katamba
-put #tvar char.observe.lore forge|Amlothi|Verena|Phoenix|Xibar
-put #tvar char.observe.magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
-put #tvar char.observe.offense Estrilda|Szeldia|forge|Spider
-put #tvar char.observe.survival Morleena|Yoakena|Er'qutra|Ram
+#put #tvar char.observe.defense Merewalda|Dawgolesh|Penhetia|Giant|Katamba
+#put #tvar char.observe.lore forge|Amlothi|Verena|Phoenix|Xibar
+#put #tvar char.observe.magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
+#put #tvar char.observe.offense Estrilda|Szeldia|forge|Spider
+#put #tvar char.observe.survival Morleena|Yoakena|Er'qutra|Ram
 
-put #tvar char.observe.predict 0
+#put #tvar char.observe.predict 0
 
 
 ###############################
@@ -404,13 +383,12 @@ put #tvar char.observe.predict 0
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 50
-put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
-
+#put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
+put #tvar char.repair.list $char.armor|$char.fight.weapons.items
 
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendium third compendium
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1

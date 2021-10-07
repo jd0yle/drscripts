@@ -170,6 +170,9 @@ main:
             gosub release cyclic
             gosub runScript cast rev
             gosub runScript caracal
+            if ($First_Aid.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
+                gosub runScript textbook
+            }
             put #echo >Log #00ffff First Aid end - First Aid: $First_Aid.LearningRate/34
         }
 

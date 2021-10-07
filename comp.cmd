@@ -1,9 +1,7 @@
 include libmaster.cmd
 
-action put #echo >Log Almanac: $1 when You believe you've learned something significant about (.*)!$
-
 var numberOfCompendiums third
-var container thigh bag
+var container wyvern skull
 
 var timeStudied 0
 
@@ -22,16 +20,6 @@ loop:
 
 
 studyPages:
-    evalmath nextStudyAt $lastAlmanacGametime + 600
-
-    if (%nextStudyAt < $gametime) then {
-        if ("$lefthandnoun" != "almanac" && "$righthandnoun" != "almanac") then {
-            gosub get my almanac
-        }
-        gosub study my almanac
-        gosub put my almanac in my thigh bag
-        put #var lastAlmanacGametime $gametime
-    }
     gosub turn my compendium
     gosub study my compendium
     math timeStudied add 1
