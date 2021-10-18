@@ -3134,6 +3134,7 @@ automove:
 	automove1:
 
     if ("$roomname" = "Private Home Interior") then return
+    if ($hidden = 1) then gosub shiver
 
     if ("$roomid" = "0") then {
         gosub moveRandom

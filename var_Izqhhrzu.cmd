@@ -41,7 +41,7 @@ put #tvar char.wornFocus 1
 ###############################
 put #tvar char.cast.invokeSpell 1
 
-put #tvar char.cast.default.prep 20
+put #tvar char.cast.default.prep 30
 put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 3
@@ -156,14 +156,14 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell do
+put #tvar char.fight.tmSpell horn
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
 put #tvar char.fight.tmPrep 18
 
 # How long to pause before casting.
-put #tvar char.fight.tmPause 9
+put #tvar char.fight.tmPause 5
 
 
 #***** WEAPONS *****

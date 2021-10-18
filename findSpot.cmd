@@ -42,7 +42,6 @@ if ("%mob" = "caracal") then {
 }
 
 if ("%mob" = "cloudrat") then {
-    #var minRoomId 606
     var minRoomId 611
     var maxRoomId 612
     var waitroomid 435
@@ -123,6 +122,7 @@ if ("%mob" = "warklin") then {
     var minRoomId 117
     var maxRoomId 121
     var waitroomid 38
+    var preferredRoomId 119
 }
 
 if ("%mob" = "wyvern") then {
@@ -150,46 +150,48 @@ if ("%mob" = "wyvern" || "%mob" = "wyvern2" && "$roomplayers" = "") then {
     }
 }
 
-
-findRoom:
-    if ($roomid = 0) then {
-        gosub moveRandom
-        goto findRoom
-    }
-    if ($roomid != %minRoomId) then {
-        gosub automove %minRoomId
-        gosub checkThisRoom
-    }
-    goto findRoom
+evalmath numRooms (%maxRoomId - %minRoomId)
+var currentRoomId %minRoomId
+if (%preferredRoomId > 0) then var currentRoomId %preferredRoomId
 
 
 checkThisRoom:
-    if (("$roomplayers" != "" || $monstercount >= 2 || contains("$roomobjs", "dirt construct")) && !matchre("$roomplayers", "Maori")) then {
-        math minRoomId add 1
-        if (%minRoomId > %maxRoomId) then {
-            if ("%mob" = "wyvern") then {
-                put .findSpot wyvern2
-                exit
-            }
-            gosub automove %waitroomid
-            gosub hide
-            put #echo >Log #FFCC01 [findSpot] No open %mob room
-            echo ******************************
-            echo * COULD NOT FIND OPEN ROOM
-            echo * WAITING 120 SECONDS
-            echo ******************************
-            pause 120
-            gosub shiver
-            if ("%mob" = "wyvern2") then {
-                put .findSpot wyvern
-                exit
-            }
-            goto init
-        }
-        return
-    } else {
-        goto done
-    }
+	put #echo >Debug Checking room %currentRoomId
+	if ("$roomid" != "%currentRoomId") then {
+		if ($roomid = 0) then gosub moveRandom
+		gosub automove %currentRoomId
+		goto checkThisRoom
+	}
+
+	if ("$roomplayers" = "" && $monstercount < 2 && !contains("$roomobjs", "dirt construct") ) then {
+
+		goto done
+	}
+
+	if ("$roomplayers" != "") then put #echo >Debug Room $roomid full: $roomplayers
+
+    math currentRoomId add 1
+    math numRooms subtract 1
+    if (%numRooms <= 0) then goto waitForRoom
+
+    if (%currentRoomId > %maxRoomId) then var currentRoomId %minRoomId
+	goto checkThisRoom
+
+
+waitForRoom:
+	if ("%mob" = "wyvern") then put .findSpot wyvern2
+    gosub automove %waitroomid
+    gosub hide
+    put #echo >Log #FFCC01 [findSpot] No open %mob room
+    echo ******************************
+    echo * COULD NOT FIND OPEN ROOM
+    echo * WAITING 120 SECONDS
+    echo ******************************
+    pause 120
+    gosub shiver
+    if ("%mob" = "wyvern2") then put .findSpot wyvern
+
+    goto init
 
 
 done:
