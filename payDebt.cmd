@@ -24,6 +24,9 @@ debt.payDebt:
     var currency $3
     gosub automove teller
     echo DOING bank debt %province %amount %currency
+
+    if ("$zoneid" = "1") then put #var currency Kronars
+
     if ("%currency" != "$currency") then {
         evalmath withdrawAmount (%amount + 10000)
         gosub withdraw %withdrawAmount copper

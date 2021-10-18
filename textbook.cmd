@@ -15,7 +15,7 @@ gosub stow left
 gosub turn my textbook to %startAt
 
 loop:
-	if ($First_Aid.LearningRate >= 34 || %index > 100) then goto textbook.done
+	if ($First_Aid.LearningRate >= 20 || %index > 100) then goto textbook.done
 	if ("$righthandnoun" != "textbook") then {
 		gosub stow right
 		gosub get my textbook

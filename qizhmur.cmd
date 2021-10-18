@@ -175,12 +175,9 @@ main:
 
     startFight:        
     #if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
-    if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 0 || $Targeted_Magic.LearningRate < 29 || $Brawling.LearningRate < 29 || $Small_Edged.LearningRate < 29 || $Heavy_Thrown.LearningRate < 29 || $Light_Thrown.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Staves.LearningRate < 29 || $Twohanded_Blunt.LearningRate < 29) then {
-		echo GONNA GO FIGHT
-		echo $Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 0 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29
+    if ($Parry_Ability.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Evasion.LearningRate < 25 || $Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Staves.LearningRate < 25 || $Twohanded_Blunt.LearningRate < 25) then {
         gosub waitForRepair
         put #echo >Log #cc99ff Going to main combat
-        #gosub moveToShardBulls
         gosub moveToWyvern
         gosub runScript tend
         put .fight
@@ -201,12 +198,12 @@ main:
 		if (contains("$roomplayers", "Selesthiel") && contains("$roomplayers", "Inauri")) then {
 		    gosub listen to Selesthiel
 		    gosub listen to Inauri observe
-		    gosub teach tm to Inauri
-		    gosub teach tm to Selesthiel
+		    #gosub teach tm to Inauri
+		    #gosub teach tm to Selesthiel
 		} else {
 		    if (contains("$roomplayers", "Inauri")) then {
 		        gosub listen to inauri observe
-		        gosub teach tm to inauri
+		        #gosub teach tm to inauri
 		    }
 		}
 		gosub runScript tend

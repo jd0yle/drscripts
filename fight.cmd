@@ -133,6 +133,9 @@ action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
 action var dissectFail 1 when You'll gain no insights from this attempt\.$
 
+var communeMeraudActive 0
+action var communeMeraudActive 1 when ^Meraud's power still holds your attention\.$
+
 
 put #trigger {^You are now set to use your (\S+) stance} {#var lastStanceGametime \$gametime;#var stance \$1} {stance}
 put #trigger {e/\$stance/} {#statusbar 7 Stance: \$stance} {stance}
@@ -205,6 +208,17 @@ loop:
 
     if (%useAlmanac = 1) then gosub almanac.onTimer
     if (%useSanowret = 1 && $Arcana.LearningRate < 31 && $concentration = 100) then gosub gaze my sanowret crystal
+
+	if ($char.fight.useCommuneMeraud = 1) then {
+		if (!(%lastCommuneMeraudGametime > -1)) then var lastCommuneMeraudGametime 1
+		evalmath timeSinceLastCommune ($gametime - %lastCommuneMeraudGametime)
+		if ($Theurgy.LearningRate < 2 && %timeSinceLastCommune > 300) then {
+			gosub commune sense
+			if (%communeMeraudActive != 1) then gosub runScript commune --deity=meraud
+			var lastCommuneMeraudGametime $gametime
+		}
+	}
+
 
     # Use numMobs so that we can subtract non-combat "pets" (ex: dirt construct, shadow servant, etc.)
     var numMobs $monstercount

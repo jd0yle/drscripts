@@ -171,6 +171,7 @@ main:
             gosub runScript cast rev
             gosub runScript caracal
             if ($First_Aid.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
+                #gosub waitForTextbook
                 gosub runScript textbook
             }
             put #echo >Log #00ffff First Aid end - First Aid: $First_Aid.LearningRate/34
@@ -182,13 +183,24 @@ main:
         gosub waitForMagic
         put #echo >Log #00ffff Magic End - Warding: $Warding.LearningRate/34
 
-        if (1 = 0 && $Performance.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
+        if ($Performance.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
 	        put #echo >Log #009999 Play start - Performance $Performance.LearningRate/34
 	        gosub release cyclic
 	        gosub runScript cast rev
 	        gosub runScript play
 	        put #echo >Log #009999 Play end   - Performance: $Performance.LearningRate/34
         }
+        #if ($Outdoorsmanship.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
+	    #    put #echo >Log #009999 Outdoorsmanship $Outdoorsmanship.LearningRate/34
+	    #    gosub release cyclic
+	    #    gosub runScript cast rev
+	    #    if ($roomid != 50) then {
+	    #        gosub moveToHouse
+	    #        gosub runScript house
+	    #    }
+	    #    gosub waitForOutdoorsmanship
+	    #    put #echo >Log #009999 Outdoorsmanship $Outdoorsmanship.LearningRate/34
+        #}
         goto main
     }
 
@@ -864,6 +876,59 @@ waitForMainCombatLoop:
     if (!contains("$scriptlist", "fight.cmd")) then put .fight
     pause 2
     goto waitForMainCombatLoop
+
+
+waitForTextbook:
+    pause 2
+    if ($lib.timers.nextBurgleAt > $gametime) then {
+        put #script abort all except selesthiel
+        put .reconnect
+        put .afk
+        gosub stow right
+        gosub stow left
+        gosub burgle.setNextBurgleAt
+        put .textbook
+        pause 1
+    }
+
+waitForTextbookLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || $First_Aid.LearningRate > 29) then {
+        put #script abort all except selesthiel
+        put .reconnect
+        put .afk
+        gosub resetState
+        return
+    }
+    pause 2
+    if (!contains("$scriptlist", "textbook.cmd")) then put .textbook
+    goto waitForTextbookLoop
+
+
+waitForOutdoorsmanship:
+    pause 2
+    if ($lib.timers.nextBurgleAt > $gametime) then {
+        put #script abort all except selesthiel
+        put .reconnect
+        put .afk
+        gosub stow right
+        gosub stow left
+        gosub burgle.setNextBurgleAt
+        put .collect
+        pause 1
+    }
+
+waitForOutdoorsmanshipLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || $Outdoorsmanship.LearningRate > 10) then {
+        put #script abort all except selesthiel
+        put .reconnect
+        put .afk
+        gosub resetState
+        return
+    }
+    pause 2
+    if (!contains("$scriptlist", "collect.cmd")) then put .collect
+    goto waitForOutdoorsmanshipLoop
+
 
 
 selesthiel.arrested:

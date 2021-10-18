@@ -17,6 +17,21 @@ var loopsRemaining 30
 caracal.main:
 	if ($First_Aid.LearningRate > 32 && $Skinning.LearningRate > 32) then goto caracal.done
 
+    gosub almanac.onTimer
+    if ($char.magic.train.usePray = 1) then gosub pray.onTimer $char.magic.train.prayTarget
+    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 31) then gosub observe.onTimer
+    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+
+    if ($Arcana.LearningRate < 33 && $concentration = 100) then {
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+        if ($hidden = 1) then gosub shiver
+        gosub gaze my sanowret crystal
+    }
+
     if ("$righthand" != "fuzzy caracal") then {
         gosub stow right
         gosub stow left
