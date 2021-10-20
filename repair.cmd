@@ -1,4 +1,5 @@
 include libmaster.cmd
+include args.cmd
 action var repair.emptySack 0 when ^There is nothing in there\.$
 action var repair.emptySack 1 ; var repair.sackItems $1 when ^In the large sack you see (.*)\.$
 action var repair.waitTimeMin $1 ;evalmath repair.waitTimeSec %repair.waitTimeMin * 60 + 60 when ^.*be ready for another (\d+) roisaen\.$
@@ -30,6 +31,11 @@ var repair.wornArmor 0
 var repair.wornItem 0
 
 if ($char.repair.waitRoomId > 0) then var repair.waitRoomId $char.repair.waitRoomId
+
+var repair.noWait 0
+if (%args.noWait = 1) then {
+	var repair.noWait 1
+}
 
 # Note:  No support for Ylono Leather Repair in Shard because of no NPC and broken automapper.
 ###############################
@@ -111,8 +117,7 @@ repair.main:
 
     # Deposit left over money.
     gosub repair.moveToBank
-    put .deposit
-    waitforre ^DEPOSIT DONE$
+    gosub runScript deposit
     gosub repair.checkTicketTime
     goto repair.fetchItems
 
@@ -192,8 +197,7 @@ repair.checkMoney:
         if (%repair.currencyDokoras >= %repair.currencyTotal) then return
     }
     gosub repair.moveToBank
-    put .deposit
-    waitforre ^DEPOSIT DONE$
+    gosub runScript deposit
     put withdraw $char.repair.money plat
     return
 
@@ -204,6 +208,7 @@ repair.checkTicketTime:
         if ("%repair.waitRoomId" != "null" && "$roomid" != "%repair.waitRoomId") then gosub automove %repair.waitRoomId
         evalmath repair.waitTimeMin %repair.waitTimeMin + 1
         put #echo >Log Blue [repair] Waiting %repair.waitTimeMin min to pick up.
+        if (%repair.noWait = 1) then goto repair.exit
         put .look
         pause %repair.waitTimeSec
         put #script abort look
