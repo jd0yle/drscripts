@@ -29,6 +29,9 @@ action goto houseDelay when ^\.\.\.All this activity is beginning to make you ti
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
 
+
+action if (contains("$roomname", "Kirm Morzindu")) then put .qizhmur when eval $roomname
+
 timer start
 
 var useBurgle 1
@@ -97,6 +100,8 @@ if_1 then {
 }
 
 gosub burgle.setNextBurgleAt
+
+if ($Warding.LearningRate < 10) then goto startMagic
 
 main:
     if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
@@ -1042,7 +1047,7 @@ waitForMagic:
     pause 1
 
 waitForMagicLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 31 && $Augmentation.LearningRate > 31 && $Utility.LearningRate > 31 && $Arcana.LearningRate > 31)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || ($Warding.LearningRate > 29 && $Augmentation.LearningRate > 29 && $Utility.LearningRate > 29 && $Arcana.LearningRate > 31)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk

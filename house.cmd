@@ -7,6 +7,7 @@ include libmaster.cmd
 ###    IDLE ACTION ITEMS
 ###############################
 action goto closeDoor when ^You must wait a few hours before entering this home again\.
+action put .house when ^The door is closed\.$
 
 
 ###############################

@@ -98,9 +98,9 @@ train.burgle:
 		gosub train.getHealed
 
         pause 1
-        put .%scriptname
-        put .reconnect
-        put .afk
+        #put .%scriptname
+        #put .reconnect
+        #put .afk
     }
     return
 

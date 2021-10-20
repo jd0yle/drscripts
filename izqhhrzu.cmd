@@ -47,6 +47,11 @@ main:
         put .afk
     }
 
+    if ($SpellTimer.PersistenceofMana.active != 1) then {
+        gosub train.moveToHouse
+        gosub clericRituals
+    }
+
     if ($Performance.LearningRate < 10) then gosub train.performance
 
 
