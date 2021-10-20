@@ -71,6 +71,8 @@ repair.checkForTicket:
 
 
     repair.checkForTicketLoop:
+        gosub stow right
+        gosub stow left
         if (%repair.tTypesIndex < %repair.tTypesLength) then {
             gosub get my %repair.npcs(%repair.tTypesIndex) ticket
             if (matchre("$righthand", "repair")) then {
@@ -200,12 +202,15 @@ repair.checkTicketTime:
     gosub look my ticket
     if (%repair.waitTimeSec <> 0) then {
         if ("%repair.waitRoomId" != "null" && "$roomid" != "%repair.waitRoomId") then gosub automove %repair.waitRoomId
-        evalmath %repair.waitTimeMin %repair.waitTimeMin + 1
+        evalmath repair.waitTimeMin %repair.waitTimeMin + 1
         put #echo >Log Blue [repair] Waiting %repair.waitTimeMin min to pick up.
         put .look
         pause %repair.waitTimeSec
         put #script abort look
     }
+
+    return
+    # JD 2021-10-20: Not sure why this if statement is even here. Added return above to ignore this.
     if ("$roomid" = "%repair.waitRoomId") then {
         goto repair.checkForTicket
     } else {
