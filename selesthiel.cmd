@@ -69,6 +69,8 @@ if ("%startAt" = "magic") then
 	goto startMagic
 }
 
+gosub burgle recall
+
 main:
     gosub abortScripts
     gosub resetState

@@ -173,6 +173,7 @@ NODESTINATION:
   Echo ## Aesy Surlaenis'a | Ratha | M'riss     ##
   Echo ## Mer'Kresh | Hara'jaal (TF only)       ##
   Echo -------------------------------------------
+  put #parse TRAVEL DONE
   exit
 INIT:
 # debug 5
@@ -313,6 +314,7 @@ if (("$zoneid" = "0") || ("$roomid" = "0")) then gosub MOVERANDOM
 if ("$zoneid" = "0") then
      {
           ECHO ### You are in a spot not recognized by Genie, please start somewhere else! ###
+          put #parse TRAVEL DONE
           exit
      }
 pause 0.0001
@@ -2672,6 +2674,7 @@ ARRIVED:
   echo ## WOW! YOU ARRIVED AT YOUR DESTINATION: %destination in %t seconds!  That's FAST! ##
   put #echo >Log #9cd6a3 * Travel Arrival: $zonename (map $zoneid: room $roomid)
   put #class arrive off
+  put #parse TRAVEL DONE
   exit
 ######################################################################################
 SEGOLTHA_NORTH:
@@ -3328,6 +3331,7 @@ NOCOIN:
     if ("$zoneid" = "108") then
         {
             ECHO ## YOU ARE ON MRISS WITH NO COINS!  YOU NEED TO FIND A FRIEND, OR KILL STUFF TO SELL HIDES OR GEMS!
+            put #parse TRAVEL DONE
             exit
         }
     gosub INFO_CHECK
@@ -3354,6 +3358,7 @@ COINQUIT:
     echo EITHER GET MORE ATHLETICS, OR MORE MONEY, FKING NOOB!
     put #echo >Log Red Travel Script Aborted! No money in bank to ride ferry in $zonename!
     put #parse OUT OF MONEY!
+    put #parse TRAVEL DONE
     exit
 LIRUMS:
      var Target.Currency LIRUMS

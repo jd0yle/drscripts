@@ -59,6 +59,9 @@ action var lastBoardedGalley $gametime when ^The Captain stops you and requests 
 
 action put #var lastSetGalleyDocked $gametime; echo new lastSetGalleyDocked is $lastSetGalleyDocked when eval $galleyDocked
 
+action goto qizhmur.arrested when ^"Stop right there!"
+
+
 if (!($lastSetGalleyDocked > 0)) then put #var lastSetGalleyDocked 0
 
 if (contains("$roomname", "A'baya")) then goto escapeTaisidon
@@ -119,11 +122,9 @@ main:
 
         gosub cast
 
-        put .burgle
-        waitforre ^BURGLE DONE$
+        gosub runScript burgle
 
-        put .armor wear
-        waitforre ^ARMOR DONE$
+        gosub runScript armor wear
 
         #gosub automove crossing
         if ($SpellTimer.RiteofGrace.active != 1) then {
@@ -164,8 +165,7 @@ main:
         gosub stow right
         gosub stow left
 
-        put .dep
-        waitforre ^DEP DONE$
+        gosub runScript deposit
 
         #gosub runScript repair
         #gosub waitForRepair
@@ -1212,6 +1212,20 @@ moveAny:
         goto moveToLeucro
     }
     return
+
+
+qizhmur.arrested:
+	echo
+	echo ****************************
+	echo ** ARRESTED
+	echo ****************************
+	echo
+	put #echo >Log #FF0000 ARRESTED!
+	put exit
+	put #script abort all except qizhmur
+	put exit
+    put #script abort all except qizhmur
+    exit
 
 
 
