@@ -179,10 +179,10 @@ put #tvar super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.song tango
 put #tvar char.instrument.container shadows
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
-put #tvar char.instrument.song tango
 
 
 ###############################
@@ -208,10 +208,10 @@ put #tvar char.loot.boxes 1
 ###      MAGIC
 ###############################
 put #tvar guild Moon Mage
-put #tvar char.magic.train.almanacItem 0
-put #tvar char.magic.train.almanacContainer 0
+put #tvar char.magic.train.almanacItem almanac
+put #tvar char.magic.train.almanacContainer shadows
 put #tvar char.magic.train.minimumConcentration 50
-put #tvar char.magic.train.useAlmanac 0
+put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
@@ -238,7 +238,7 @@ put #tvar char.magic.train.harness.Warding 0
 put #tvar char.predict.tool chalky demonbones
 put #tvar char.predict.tool.container shadows
 
-put #tvar char.observe.telescope powdery telescope
+put #tvar char.observe.telescope baby telescope
 put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh|forge
@@ -267,7 +267,8 @@ put #tvar char.repair.list demonscale armguard|demonscale shield|moonsilk shirt|
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendium compendium
+put #tvar char.compendiums black compendium|crimson-scaled compendium|pale compendium
+put #tvar char.compendium.forceTurn 1
 put #tvar char.research.interrupt.cast 0
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1

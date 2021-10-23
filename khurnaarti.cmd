@@ -42,10 +42,11 @@ if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastLocksGametime >0)) then put #var lastLocksGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
+put exp magic all
 if ($Targeted_Magic.Ranks = $Debilitation.Ranks) then {
     var khurnaarti.class sorcery
 }
-if ($Targeted_Magic.Ranks > $Debilitation.Ranks) then {
+if ($Targeted_Magic.Ranks < $Debilitation.Ranks) then {
     var khurnaarti.class tm
 } else {
     var khurnaarti.class debil
@@ -69,6 +70,7 @@ khurnaarti.loop:
     gosub khurnaarti.healthCheck
     pause 1
     gosub khurnaarti.scriptCheck
+    gosub almanac.onTimer
     gosub khurnaarti.burgle
     gosub khurnaarti.forage
     gosub khurnaarti.class
@@ -164,6 +166,7 @@ khurnaarti.caracal:
         put .caracal
         waitforre ^CARACAL DONE
     	put #echo >Log #009933 [khurnaarti] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
+    	put #var lastTrainerGametime $gametime
     	put #tvar khurnaarti.subScript 0
     }
     return
@@ -375,15 +378,10 @@ khurnaarti.play:
     }
     put #echo >Log #ffcc00 [khurnaarti] Beginning performance.
     gosub khurnaarti.clearHands
-    gosub get my $char.instrument.noun
-    gosub play $char.instrument.song on my $char.instrument.noun
-    if (%khurnaarti.needHeal = 1) then {
-        put #echo >Log #ffcc00 [khurnaarti] Performance interrupted to be healed.
-        gosub stow $char.instrument.noun
-        goto khurnaarti.loop
-    }
-    waitforre ^You finish playing
-    gosub stow my $char.instrument.noun
+    #put .play
+    #waitfor ^PLAY DONE
+    gosub runScript play
+    gosub khurnaarti.clearHands
     put #echo >Log #ffcc00 [khurnaarti] Performance complete. Perf:($Performance.LearningRate/34)
     return
 
@@ -403,6 +401,7 @@ khurnaarti.research:
         put #echo >Log #6600ff [khurnaarti] Beginning research.
         put .research sorcery
         waitforre ^RESEARCH DONE
+        put #script abort look
         put #echo >Log #6600ff [khurnaarti] Research complete. Sorc:($Sorcery.LearningRate/34)
     }
     return
@@ -544,8 +543,8 @@ moveToForage:
     }
     # Fang Cove
     if ($zoneid = 150) then return
-        if ($roomid = 49) then return
-        gosub automove 49
+        if ($roomid = 44) then return
+        gosub automove 44
     goto moveToForage
 
 
@@ -670,10 +669,10 @@ moveToHeal:
     gosub cast
     gosub moveToMagic
     gosub getHealed
-    put #script abort all except selesthiel
+    put #script abort all except khurnaarti
     put .reconnect
     put .afk
-    put .selesthiel
+    put .khurnaarti
     exit
 
 
@@ -728,10 +727,6 @@ getHealed:
 
         if ($bleeding = 1) then {
             gosub runScript house
-            #gosub automove portal
-            #if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
-            #gosub move go meeting portal
-
             gosub automove heal
             put join list
             matchre getHealedCont Yrisa crosses Khurnaarti's name from the list.
@@ -745,7 +740,7 @@ getHealed:
 
 getHealedCont:
     put #var lastHealedGametime $gametime
-    gosub automove portal
+    gosub automove meeting portal
     gosub move go exit portal
     if ($bleeding = 1) then goto getHealed
 
