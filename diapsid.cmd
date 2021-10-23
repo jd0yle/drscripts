@@ -109,6 +109,7 @@ givePrize:
 
     if ($diapsid.prizeMoney = 1) then {
         pause 2
+        matchre errorFoundFunds ^You don't have that many platinum Kronars to give\.$
         matchre errorFound ^\[You have exceeded your coin handoff limit of once every 30 minutes\.
         matchre giveCongrats ^You give
         matchre requestCoinFix ^$diapsid.winner is not interested in taking coins from you.
@@ -148,6 +149,12 @@ errorFound:
     evalMath nextCoin (lastCoinGametime + 3600)
     put #echo >log Coin Hand Off Timer not ready.
     put ooc $diapsid.winner [DR Discord Giveaways] I'm incredibly sorry for this, but I am still under a F2P Coin Handoff Timer.  Please check back anywhere from 15 to 30 minutes.
+    goto botWait
+
+
+errorFoundFunds:
+    put #echo >Log We do not have $diapsid.prize platinums.
+    put ooc $diapsid.winner [DR Discord Giveaways] I'm incredibly sorry for this, but I seem to have encountered a funding error.  I have logged the error for now.  Please check back later or notify SpicyDiapsid in Discord, thank you!
     goto botWait
 
 
