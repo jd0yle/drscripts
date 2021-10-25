@@ -24,27 +24,30 @@ action goto inauriIdle.vitalityHeal when eval $health < 30
 ###    VARIABLES
 ###############################
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
-if ("$charactername" = "Inauri") then {
-    var inauriIdle.poison 0
-    var inauriIdle.poisonSelf 0
-    var inauriIdle.disease 0
-    var inauriIdle.diseaseSelf 0
-}
+if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
+var inauriIdle.disease 0
+var inauriIdle.diseaseSelf 0
+var inauriIdle.openDoor 0
+var inauriIdle.poison 0
+var inauriIdle.poisonSelf 0
 var inauriIdle.target 0
 var inauriIdle.teach 0
 var inauriIdle.teachTrigger 0
 var inauriIdle.topic 0
-var inauriIdle.openDoor 0
 
 
 if !(matchre("$scriptlist", "reconnect")) then {
     put .reconnect
 }
+if !(matchre("$scriptlist", "afk")) then {
+put .afk
+}
 ###############################
 ###    MAIN
 ###############################
 inauriIdle.loop:
+    gosub inauriIdle.locationCheck
     if (%inauriIdle.teachTrigger = 1) then {
         gosub inauriIdle.teach
     }
@@ -54,6 +57,7 @@ inauriIdle.loop:
     if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
     if (%inauriIdle.openDoor = 1) then gosub inauriIdle.door
+    gosub almanac.onTimer
     pause 2
     gosub inauriIdle.look
     goto inauriIdle.loop
@@ -62,6 +66,32 @@ inauriIdle.loop:
 ###############################
 ###    METHODS
 ###############################
+inauriIdle.caracal:
+    evalmath nextTrainerAt $lastTrainerGametime + 3600
+    if (%nextTrainerAt > $gametime) then {
+        return
+    }
+    gosub inauriIdle.clearHands
+    if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
+        put #echo >Log #009933 [inauriIdle] Beginning trainer.
+        put .caracal
+        waitforre ^CARACAL DONE
+    	put #echo >Log #009933 [inauriIdle] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
+    	put #var lastTrainerGametime $gametime
+    }
+    return
+
+
+inauriIdle.clearHands:
+    if ("$righthand" <> "Empty") then {
+        gosub stow
+    }
+    if ("$lefthand" <> "Empty") then {
+        gosub stow left
+    }
+    return
+
+
 inauriIdle.door:
     if (matchre("$scriptlist", "($char.common.scripts)")) then {
         put #tvar inauri.subScript $0
@@ -72,6 +102,21 @@ inauriIdle.door:
     gosub open door
     var inauriIdle.openDoor 0
     goto inauriIdle.loop
+
+
+inauriIdle.forage:
+    if ($Outdoorsmanship.LearningRate < 10) then {
+        put #echo >Log #009933 [inauriIdle] Going to forage.
+        gosub moveToForage
+        gosub automove 49
+        put .forage
+        waitforre ^FORAGE DONE
+        put #echo >Log #009933 [inauriIdle] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
+        gosub runScript house
+        gosub inauriIdle.restart
+    }
+    return
+
 
 
 inauriIdle.healDisease:
@@ -140,6 +185,15 @@ inauriIdle.houseMove:
     goto inauriIdle.loop
 
 
+inauriIdle.locationCheck:
+    if ("$roomname" = "Private Home Interior") then {
+        return
+    } else {
+        gosub runScript house
+    }
+    return
+
+
 inauriIdle.look:
   evalmath nextLookAt $lastLookGametime + 240
   if (%nextLookAt < $gametime) then {
@@ -147,6 +201,11 @@ inauriIdle.look:
     put #var lastLookGametime $gametime
   }
 return
+
+
+inauriIdle.restart:
+    put #echo >log Gray [inauriIdle] Restarting script..
+    goto inauriIdle.loop
 
 
 inauriIdle.resumeScript:
@@ -164,10 +223,10 @@ inauriIdle.resumeScript:
             put .engbolt 2
         }
     }
-    if ("$inauri.subScript|$khurnaarti.subScript" = "magic") then {
+    if ("$inauri.subScript" = "magic") then {
         put .magic noLoop
     }
-    if ("$inauri.subScript|$khurnaarti.subScript" = "research") then {
+    if ("$inauri.subScript" = "research") then {
         put .research sorcery
     }
     put #tvar inauri.subScript 0
@@ -188,6 +247,7 @@ inauriIdle.teach:
                 }
                 gosub stop teach
                 gosub teach %inauriIdle.topic to %inauriIdle.target
+                put #echo >Log2 [inauriidle] Swapping to %inauriIdle.topic class.
                 var inauriIdle.teachTrigger 0
                 return
             }
@@ -197,12 +257,13 @@ inauriIdle.teach:
                 var inauriIdle.teachTrigger 0
                 return
             }
-            if (contains("$roomplayers", "Selesthiel" && "$lib.topic" = "Enchanting") then {
+            if (contains("$roomplayers", "Selesthiel") && "$lib.topic" = "Enchanting") then {
                 var inauriIdle.teachTrigger 0
                 return
             } else {
                 gosub stop teach
                 gosub teach %inauriIdle.topic to %inauriIdle.target
+                put #echo >Log2 [inauriidle] Swapping to %inauriIdle.topic class.
                 var inauriIdle.teachTrigger 0
                 return
             }
@@ -239,3 +300,40 @@ inauriIdle.vitalityHeal:
             goto inauriIdle.vitalityHealLoop
         }
         goto inauriIdle.loop
+
+
+###############################
+###    MOVE TO
+###############################
+moveToForage:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE
+        goto moveToForage
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        gosub automove 258
+        goto moveToForage
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        gosub automove crossing
+        goto moveToForage
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        if ($roomid = 555) then return
+        gosub automove 555
+    }
+    # Fang Cove
+    if ($zoneid = 150) then return
+        if ($roomid = 49) then return
+        gosub automove 49
+    goto moveToForage
+
+
+moveToHouse:
+    gosub runScript house
+    return
