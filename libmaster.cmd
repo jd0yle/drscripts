@@ -1828,6 +1828,7 @@ pray:
     matchre return ^You kneel down and begin to pray\.
     matchre return ^You narrow your eyes
     matchre return ^You pray fervently\.
+    matchre return ^You should be holding your
     matchre return ^You want to pray here\?
     matchre return ^Your fervent prayers are met with a sense of peace and security\.
     put pray %todo

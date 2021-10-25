@@ -25,6 +25,7 @@ goto getClericTools.done
 
 
 getClericTools.getIncense:
+	if ("$roomname" = "Private Home Interior") then gosub runScript house
 	#if ("$zoneid" != "67") then gosub runScript travel shard teller
 	if ("$zoneid" != "1") then gosub runScript travel crossing teller
 	gosub runScript deposit
@@ -50,6 +51,7 @@ getClericTools.buyIncense:
 getClericTools.getWater:
 	#if ("$zoneid" != "66") then gosub runScript travel steel 11
 	#if ("$roomid" != "11") then gosub automove 11
+	if ("$roomname" = "Private Home Interior") then gosub runScript house
 	if ("$zoneid" != "2a") then {
 		gosub runScript travel crossing 43
 		gosub automove temple

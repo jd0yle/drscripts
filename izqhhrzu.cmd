@@ -7,6 +7,8 @@ put #tvar powerwalk 0
 put .reconnect
 put .afk
 
+if ($standing != 1) then gosub stand
+
 if ($health < 80 && "$roomname" != "Private Home Interior") then goto train.getHealedTrigger
 
 if_1 then {
@@ -23,6 +25,8 @@ if_1 then {
 
 gosub burgle.setNextBurgleAt
 
+#gosub train.waitForRepair
+
 if (%startPerform = 1) then {
     gosub moveToHouse
     gosub performance
@@ -35,6 +39,9 @@ main:
         put #echo >Debug BURGLE TIMER, GOING BURGLE
 		gosub train.burgle
 		gosub train.getHealed
+		gosub runScript house
+		#gosub runScript repair --noWait=1
+		gosub runScript getClericTools
         gosub clericRituals
         gosub train.moveToHouse
         gosub train.performance
@@ -58,6 +65,14 @@ main:
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
         gosub train.getHealed
+        if ("$roomname" = "Private Home Interior" || $zoneid = 150) then {
+			if ($SpellTimer.MurrulasFlames.active != 1 || $SpellTimer.MurrulasFlames.duration < 45) then gosub runScript cast mf
+			if ($SpellTimer.OsrelMeraud.active = 1 && $SpellTimer.OsrelMeraud.duration < 90) then gosub runScript cast om orb
+			if ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 30) then gosub runScript cast mapp
+			if ($SpellTimer.Benediction.active != 1 || $SpellTimer.Benediction.duration < 30) then gosub runScript cast benediction
+			if ($SpellTimer.ShieldofLight.active != 1 || $SpellTimer.ShieldofLight.duration < 30) then gosub runScript cast sol
+			if ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 30) then gosub runScript cast mpp
+        }
         put #echo >Log #cc99ff Going to main combat
         gosub train.moveToWarklin
         put .fight

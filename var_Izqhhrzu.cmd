@@ -92,6 +92,11 @@ put #tvar char.cast.sol.charge 30
 put #tvar char.cast.sol.harness 0
 put #tvar char.cast.sol.chargeTimes 2
 
+put #tvar char.cast.sl.prep 20
+put #tvar char.cast.sl.charge 15
+put #tvar char.cast.sl.harness 0
+put #tvar char.cast.sl.chargeTimes 2
+
 put #tvar char.cast.pfe.prep 10
 put #tvar char.cast.pfe.charge 30
 put #tvar char.cast.pfe.harness 0

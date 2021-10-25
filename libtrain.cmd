@@ -1296,6 +1296,46 @@ train.setZone:
 
 
 ###############################
+###    train.waitForRepair
+###############################
+train.waitForRepair:
+    matchre train.waitForRepairLoop won't be ready for another (\d+) roisaen.
+    matchre train.waitForRepairLoop any moment
+    matchre train.repairDone ready by now
+    matchre return ^I could not find
+    put look at my ticket
+    matchwait 3
+    goto train.waitForRepair
+
+
+###############################
+###    train.waitForRepairLoop
+###############################
+train.waitForRepairLoop:
+    var minutesToWait $1
+    if (!(%minutesToWait > 0)) then var minutesToWait 1
+    evalmath nextCheckTicketGametime (%minutesToWait * 60 + $gametime)
+
+    train.waitForRepairLoop1:
+    if (%nextCheckTicketGametime < $gametime) then goto train.waitForRepair
+    echo Waiting to check ticket again
+    gosub collect dirt
+    gosub kick pile
+    pause
+    goto train.waitForRepairLoop1
+
+
+###############################
+###    train.repairDone
+###############################
+train.repairDone:
+    gosub train.moveToMagic
+    gosub runScript repair --noWait=1
+    gosub automove 50
+    put .%scriptname
+
+
+###############################
 ###    train.logout
 ###############################
 train.logout:

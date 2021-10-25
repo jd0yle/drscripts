@@ -10,6 +10,8 @@ var expectedNumBolts fourteen
 action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
 
+action goto logout when eval $zoneid = 67
+
 action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
@@ -63,6 +65,8 @@ action goto qizhmur.arrested when ^"Stop right there!"
 
 
 if (!($lastSetGalleyDocked > 0)) then put #var lastSetGalleyDocked 0
+
+if ($standing != 1) then gosub stand
 
 if (contains("$roomname", "A'baya")) then goto escapeTaisidon
 
