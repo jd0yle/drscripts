@@ -47,9 +47,9 @@ if ($Targeted_Magic.Ranks = $Debilitation.Ranks) then {
     var khurnaarti.class sorcery
 }
 if ($Targeted_Magic.Ranks < $Debilitation.Ranks) then {
-    var khurnaarti.class tm
+    var khurnaarti.class target
 } else {
-    var khurnaarti.class debil
+    var khurnaarti.class debilitation
 }
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
@@ -319,6 +319,7 @@ khurnaarti.locationCheck:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then {
+            put #echo >log locationCheck using peer bothy
             gosub peer bothy
             pause 10
         }
@@ -583,6 +584,7 @@ moveToHouse:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then {
+            put #echo >log movetohouse using peer bothy
             gosub peer bothy
             pause 20
             if (%khurnaarti.houseOpen = 0) then {
