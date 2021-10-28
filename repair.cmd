@@ -58,6 +58,11 @@ if ("$guild" = "Necromancer") then {
 ###############################
 ###      SUPPORTED ZONES
 ###############################
+if ("$roomname" = "Private Home Interior") then {
+    put .house
+    waitforre ^HOUSE DONE$
+}
+
 if ($zoneid <> 1 && $zoneid <> 150 && $zoneid <> 66 && $zoneid <> 67) then {
     put #echo >Log Blue [repair] Not in a supported zone.  Must be in Crossing, Fang Cove, or Shard.
     goto repair.exit
