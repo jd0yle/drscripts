@@ -12,7 +12,7 @@ put #tvar char.appraise.item my gem pouch
 #put #tvar char.armor demonscale leathers|ka'hurst gloves|demonscale shield|ka'hurst balaclava|calcified femur
 
 #put #tvar char.armor demonscale leathers|chain gloves|demonscale shield|chain balaclava|calcified femur
-put #tvar char.armor demonscale leathers|plate gauntlets|demonscale shield|chain balaclava|calcified femur
+put #tvar char.armor demonscale leathers|plate gauntlets|demonscale shield|scale helm|ring mask|calcified femur
 
 
 ###############################
@@ -224,7 +224,7 @@ put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
 put #tvar char.magic.train.cyclic.prep.Utility 20
 
 # AUGMENTATION
-var var.magic.Augmentation 34
+var var.magic.Augmentation 37
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
 put #tvar char.magic.train.harness.Augmentation 0
@@ -264,7 +264,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
 unvar var.magic.Utility
 
 # WARDING
-var var.magic.Warding 38
+var var.magic.Warding 41
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 put #tvar char.magic.train.harness.Warding 0

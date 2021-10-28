@@ -12,6 +12,8 @@ action goto logout when eval $dead = 1
 
 action goto logout when eval $zoneid = 67
 
+action put #script abort all except qizhmur;goto logout when eval contains("$roomname", "The Great Tower, Cell")
+
 action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
@@ -32,7 +34,9 @@ action goto houseDelay when ^\.\.\.All this activity is beginning to make you ti
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
 
 
-action if (contains("$roomname", "Kirm Morzindu")) then put .qizhmur when eval $roomname
+action put #script abort all except qizhmur;put .qizhmur when eval contains("$roomname", "Kirm Morzindu")
+
+
 
 timer start
 
@@ -137,13 +141,15 @@ main:
         #gosub automove leth
         #gosub automove portal
 
-        put #tvar powerwalk 0
-        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
-        gosub automove n gate
-        gosub automove portal
+        #put #tvar powerwalk 0
+        #if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        #gosub automove n gate
+        #gosub automove portal
 
-        gosub release eotb
-        gosub move go meeting portal
+        #gosub release eotb
+        #gosub move go meeting portal
+        gosub moveToHouse
+        if ("$roomname" = "Private Home Interior") then gosub runScript .house
 
         gosub runScript tend
 

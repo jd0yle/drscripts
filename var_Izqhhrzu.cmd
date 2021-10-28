@@ -16,7 +16,8 @@ put #tvar char.appraise.item diamondique hhr'ata
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor ka'hurst hauberk|moonsilk gloves|great helm|demonscale shield|parry stick
+#put #tvar char.armor ka'hurst hauberk|moonsilk gloves|great helm|demonscale shield|parry stick
+put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|moonsilk gloves|scale helm|plate mask
 
 
 ###############################
@@ -173,7 +174,8 @@ put #tvar char.fight.tmPause 8
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
-put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+#put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 put #tvar char.fight.trainOffhand 1
 
@@ -393,7 +395,7 @@ put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 50
 #put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
-put #tvar char.repair.list $char.armor|$char.fight.weapons.items
+put #tvar char.repair.list $char.armor|$char.fight.weapons.items|great helm|moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps
 
 ###############################
 ###      RESEARCH

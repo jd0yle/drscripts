@@ -107,7 +107,6 @@ var skillsToUseShield Crossbow|Slings|Bow|Twohanded_Blunt|Twohanded_Edged
 
 var debilConditions sleeping|immobilized|writhing|webbed|stunned
 
-#action send adv when ^You must be closer to use tactical abilities on your opponent.
 action var doAnalyze 1 when ^Utilizing \S+ tactics
 action var doAnalyze 0; var attacks $2 when ^(Balance reduction|Armor reduction|A chance for a stun) can be inflicted.* by landing (.*)
 action var doAnalyze 1 when ^You can no longer see openings
@@ -226,14 +225,6 @@ loop:
 
     var attackContinue 1
     if (%attackContinue = 1 && %numMobs = 0) then {
-        #if ( 1 = 0 && (%useCollect != 0 && %$Outdoorsmanship.LearningRate < 34) || $Performance.LearningRate < 34) then {
-		#	if ($Outdoorsmanship.LearningRate <= $Performance.LearningRate) then {
-		#		gosub collect dirt
-		#	} else {
-		#		gosub fight.playIdle
-		#	}
-        #}
-
         if (%useCollect != 0) then {
             gosub collect dirt
         } else {
@@ -254,7 +245,7 @@ loop:
 
     if (%attackContinue = 1 && %numMobs > 0) then {
         var continue = 1
-        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
+        if (%continue = 1 && ("%weapons.skills(%weapons.index)" = "Targeted_Magic" || "%weapons.skills(%weapons.index)" = "Sorcery")) then {
             gosub attackTm
             var continue 0
         }
@@ -526,7 +517,6 @@ buffs:
         return
     }
 
-
     # MOON MAGE
     if ($char.fight.useSeer = 1 && ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3)) then {
         gosub runScript cast seer
@@ -718,7 +708,7 @@ checkWeaponSkills:
     if ("%handItem" != "%weapons.items(%weapons.index)") then {
         gosub stow right
         gosub stow left
-        if ("%weapons.items(%weapons.index)" != "Empty" && "%weapons.skills(%weapons.index)" != "Targeted_Magic") then {
+        if ("%weapons.items(%weapons.index)" != "Empty" && "%weapons.skills(%weapons.index)" != "Targeted_Magic" && "%weapons.skills(%weapons.index)" != "Sorcery") then {
             gosub get my %weapons.items(%weapons.index)
 
             if ("$righthand" = "Empty") then gosub remove my %weapons.items(%weapons.index)
@@ -1071,12 +1061,12 @@ manageCyclics.moonMage:
 		put exp mods
 		pause 2
 		action (expMods) off
-		if (!matchre("%debuffSkills", "(Sorcery)")) then {
+		#if (!matchre("%debuffSkills", "(Sorcery)")) then {
 			gosub release cyclic
 			gosub invoke my tattoo
 			gosub waitForPrep
 			gosub cast
-		}
+		#}
 	} else {
 		if ($SpellTimer.Revelation.active = 1 && $mana < 60) then gosub release rev
 	}

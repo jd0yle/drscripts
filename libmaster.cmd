@@ -271,6 +271,8 @@ action put #var lib.topic $1 when ^You are teaching a class on (.+?) which.*$
 action var isFullyPrepped 1 when ^Your concentration lapses for a moment, and your spell is lost.$
 action var isFullyPrepped 1 when ^Your concentration slips for a moment, and your spell is lost.$
 action var isFullyPrepped 1 when ^You feel fully prepared to cast your spell.
+action var isFullyPrepped 0 when eval $preparedspell = None
+
 action var observeOffCooldown true when ^Although you were nearly overwhelmed by some aspects of your observation
 action var observeOffCooldown true when ^You feel you have sufficiently pondered your latest observation\.$
 action var observeOffCooldown false when ^While the sighting wasn't quite what you were hoping for, you still learned from your observation\.$
