@@ -44,8 +44,9 @@ main:
 		gosub runScript getClericTools
         gosub clericRituals
         gosub train.moveToHouse
-        gosub train.performance
-        if ($First_Aid.LearningRate < 20) then gosub runScript compendium
+        gosub train.performance 5
+        if ($First_Aid.LearningRate < 10) then gosub runScript compendium
+        #gosub train.compendium 30
         gosub train.getHealed
 
         pause 1
@@ -66,6 +67,7 @@ main:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
         gosub train.getHealed
         if ("$roomname" = "Private Home Interior" || $zoneid = 150) then {
+            gosub release cyclic
 			if ($SpellTimer.MurrulasFlames.active != 1 || $SpellTimer.MurrulasFlames.duration < 45) then gosub runScript cast mf
 			if ($SpellTimer.OsrelMeraud.active = 1 && $SpellTimer.OsrelMeraud.duration < 90) then gosub runScript cast om orb
 			if ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 30) then gosub runScript cast mapp

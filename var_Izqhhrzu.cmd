@@ -9,8 +9,10 @@ put #tvar char.storage.incense $char.storage.default
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container $char.storage.default
-put #tvar char.appraise.item diamondique hhr'ata
+#put #tvar char.appraise.container $char.storage.default
+#put #tvar char.appraise.item diamondique hhr'ata
+put #tvar char.appraise.container portal
+put #tvar char.appraise.item gem pouch
 
 
 ###############################
@@ -143,7 +145,7 @@ put #tvar char.fight.debilPauseTime 5
 put #tvar char.fight.debil.spell sick
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 10
+put #tvar char.fight.debil.prepAt 12
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -174,8 +176,10 @@ put #tvar char.fight.tmPause 8
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
-#put #tvar char.fight.weapons.skills Polearms|Targeted_Magic|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+
+#put #tvar char.fight.weapons.items Empty
+#put #tvar char.fight.weapons.skills Sorcery
 
 put #tvar char.fight.trainOffhand 1
 

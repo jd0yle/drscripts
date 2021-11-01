@@ -153,6 +153,56 @@ train.checkHealthNotInjured:
     return
 
 
+
+###############################
+###    train.compendium
+###############################
+train.compendium:
+	var train.tmp.targetCompendiumLearningRate $0
+	if (!(%train.tmp.targetCompendiumLearningRate > 0)) then var train.tmp.targetCompendiumLearningRate 10
+    if ($First_Aid.LearningRate > %train.tmp.targetCompendiumLearningRate) then {
+        unvar train.tmp.targetCompendiumLearningRate
+        goto train.compendium.done
+    }
+    put #echo >Log #cc99ff Moving to house for compendium
+    gosub train.moveToHouse
+    put #echo >Log Start compendium ($First_Aid.LearningRate/34)
+
+	if ("$roomname" = "Private Home Interior") then {
+		#gosub whisper inauri teach sorcery
+		gosub listen to inauri observe
+    }
+
+    gosub stow right
+    gosub stow left
+
+
+###############################
+###    train.compendium.cont
+###############################
+train.compendium.cont:
+	var startCompendiumTime $gametime
+	put .compendium
+	
+	train.compendium.cont1:
+	    if ($First_Aid.LearningRate >= %train.tmp.targetCompendiumLearningRate) then goto train.compendium.done
+        pause 2
+        goto train.compendium.cont1
+
+
+###############################
+###    train.compendium.done
+###############################
+train.compendium.done:
+	put #script abort compendium
+	unvar train.tmp.targetCompendiumLearningRate
+    put #echo >Log End compendium ($First_Aid.LearningRate/34)
+    gosub stow right
+    gosub stow left
+    return
+
+
+
 ###############################
 ###    train.enterHouse
 ###############################
@@ -1208,7 +1258,12 @@ train.moveToWarklin:
 ###    train.performance
 ###############################
 train.performance:
-    if ($Performance.LearningRate > 20) then return
+	var train.tmp.targetPerformanceLearningRate $0
+	if (!(%train.tmp.targetPerformanceLearningRate > 0)) then var train.tmp.targetPerformanceLearningRate 10
+    if ($Performance.LearningRate > %train.tmp.targetPerformanceLearningRate) then {
+        unvar train.tmp.targetPerformanceLearningRate
+        return
+    }
     put #echo >Log #cc99ff Moving to house for performance
     gosub train.moveToHouse
     put #echo >Log Start perform ($Performance.LearningRate/34)
@@ -1234,7 +1289,7 @@ train.performance.cont:
 	        gosub release cyclic
 	        gosub runScript cast rev
 	    }
-	    if ($Performance.LearningRate < 10) then {
+	    if ($Performance.LearningRate < %train.tmp.targetPerformanceLearningRate) then {
 	        if ($monstercount > 0) then gosub retreat
 	        gosub runScript play
 	        goto train.performance.cont1
@@ -1246,6 +1301,7 @@ train.performance.cont:
 ###    train.performance.done
 ###############################
 train.performance.done:
+	unvar train.tmp.targetPerformanceLearningRate
     put #echo >Log End perform ($Performance.LearningRate/34)
     gosub stow right
     gosub stow left
