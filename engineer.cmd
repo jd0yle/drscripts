@@ -2,8 +2,8 @@ include libmaster.cmd
 include var_engineer.cmd
 ##############################
 ### Engineering
-### USAGE: .eng <number> <item> [design]
-###    EX: .eng 3 bead weasel
+### USAGE: .engineer <number> <item> [design]
+###    EX: .engineer 3 bead weasel
 ###############################
 ###############################
 ###    IDLE ACTION VARIABLES
@@ -66,9 +66,9 @@ eng.setNextTool:
 
 
 eng.checkLumber:
-    matchre eng.lumberCount ^In the.*\b(lumber)\b.*$
-    matchre eng.needLumberExit ^In the.*?you see (.*)\.$
-    gosub look in my $char.craft.container
+    matchre eng.lumberCount ^.*\b(lumber)\b.*$
+    matchre eng.needLumberExit ^\[Use INVENTORY HELP for more options\.\]$
+    gosub inventory $char.craft.container
     matchwait 5
 
 
