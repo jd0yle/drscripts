@@ -1263,6 +1263,7 @@ infuse:
 
 
 inv:
+inven:
 inventory:
     var location inventory1
     var todo $0
