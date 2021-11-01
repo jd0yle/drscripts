@@ -194,6 +194,11 @@ khurnaarti.classNewClass:
 
 khurnaarti.classSetClass:
     var classTopic $1
+    if !(contains("$roomplayers", "Selesthiel")) then {
+        if ("%classTopic" = "Enchanting") then {
+            goto khurnaarti.classNewClass
+        }
+    }
     if ("$lib.instructor" = "Inauri") then {
         gosub listen $lib.instructor observe
         put #var lib.student 1
