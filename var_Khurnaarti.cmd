@@ -96,7 +96,7 @@ put #tvar char.common.servant.bags pack|saddlebag|pouch
 # ------ AMMO ------
 put #tvar char.fight.ammo.Crossbow bolt
 put #tvar char.fight.ammo.Bow 0
-put #tvar char.fight.ammo.Slings 0
+put #tvar char.fight.ammo.Slings rock
 
 # ------ ARMOR ------
 put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
@@ -149,12 +149,12 @@ put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
 # ------ WEAPONS ------
-#Slings
-#blue sling
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves
+# Everything
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste|blue sling
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt|Slings
+# No Targeted Magic
+put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste|blue sling
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt|Slings
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
