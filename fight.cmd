@@ -464,6 +464,7 @@ attackTm:
 	    pause %tmPause
 	    gosub cast
     } else {
+        gosub attack circle
         pause 2
     }
     return
@@ -489,7 +490,12 @@ buffs:
         return
     }
     if ($char.fight.useBenediction = 1 && ($SpellTimer.Benediction.active != 1 || $SpellTimer.Benediction.duration < 2)) then {
-        gosub runScript cast benediction
+        if (%buffCheckAgain = 1) then {
+            gosub runScript cast benediction
+            var buffCheckAgain 0
+        } else {
+            var buffCheckAgain 1
+        }
         return
     }
     if ($char.fight.useMapp = 1 && ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 3)) then {
@@ -513,7 +519,12 @@ buffs:
         return
     }
     if ($char.fight.useSol = 1 && ($SpellTimer.ShieldofLight.active != 1 || $SpellTimer.ShieldofLight.duration < 2)) then {
-        gosub runScript cast sol
+        if (%buffCheckAgain = 1) then {
+            gosub runScript cast sol
+            var buffCheckAgain 0
+        } else {
+            var buffCheckAgain 1
+        }
         return
     }
 
@@ -995,29 +1006,28 @@ manageCyclics:
 
 manageCyclics.cleric:
 	# HYH
-	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80 && $Debilitation.LearningRate < 30) then {
-	#if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 80) then {
+	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 85 && $Debilitation.LearningRate < 28) then {
 		gosub release cyclic
 		gosub runScript cast hyh male off
 	} else {
 		evalmath fight.tmp.nextCastHyhGametime (300 + $char.cast.cyclic.lastCastGametime.hyh)
 		#if (%fight.tmp.nextCastHyhGametime < $gametime && $SpellTimer.HydraHex.active = 1) then gosub release hyh
-		if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 33 || $mana < 60)) then gosub release hyh
+		if ($SpellTimer.HydraHex.active = 1 && (%fight.tmp.nextCastHyhGametime < $gametime || $Debilitation.LearningRate > 33 || $mana < 70)) then gosub release hyh
         unvar fight.tmp.nextCastHyhGametime
 	}
 
 	#return
 
-    if ($char.fight.useRev = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
+    if ($char.fight.useRev = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 85 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
         if ($SpellTimer.GhostShroud.active = 1 || $SpellTimer.HydraHex.active = 1) then gosub release cyclic
         gosub release cyclic
         gosub runScript cast rev
     } else {
         evalmath timeSinceLastRev ($gametime - $lastCastRev)
-        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 60 || ($Utility.LearningRate > 20 && $Warding.LearningRate < 30) )) then gosub release rev
+        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 70 || ($Utility.LearningRate > 20 && $Warding.LearningRate < 20) )) then gosub release rev
     }
 
-    if ($char.fight.useGhs = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 80) then {
+    if ($char.fight.useGhs = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 85 && $Warding.LearningRate < 28) then {
         gosub release cyclic
         gosub runScript cast ghs
     } else {

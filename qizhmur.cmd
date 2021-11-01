@@ -149,9 +149,8 @@ main:
         #gosub release eotb
         #gosub move go meeting portal
         gosub moveToHouse
-        if ("$roomname" = "Private Home Interior") then gosub runScript .house
-
         gosub runScript tend
+        if ("$roomname" = "Private Home Interior") then gosub runScript house
 
         gosub automove bundle
         gosub remove my bundle
@@ -1107,7 +1106,7 @@ waitForMainCombatLoop:
 
     #if ($lib.timers.nextBurgleAt < $gametime || ($Thanatology.LearningRate > 3 && $Evasion.LearningRate > 0 && $Shield_Usage.LearningRate > 32 && $Parry_Ability.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Staves.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Brawling.LearningRate > 31 && $Twohanded_Blunt.LearningRate > 30 && $Light_Thrown.LearningRate > 30)) then {
     #var skills $char.fight.weapons.skills|Parry_Ability|Shield_Usage|Evasion
-	 if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > -1 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Staves.LearningRate > 30 && $Twohanded_Blunt.LearningRate > 30)) then {
+	 if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || ($Parry_Ability.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Evasion.LearningRate > 30 && $Targeted_Magic.LearningRate > 30 && $Brawling.LearningRate > 30 && $Small_Edged.LearningRate > 30 && $Heavy_Thrown.LearningRate > 32 && $Light_Thrown.LearningRate > 32 && $Crossbow.LearningRate > 32 && $Staves.LearningRate > 32 && $Twohanded_Blunt.LearningRate > 32)) then {
         put #script abort all except qizhmur
         put .reconnect
         put .afk
