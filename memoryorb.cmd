@@ -8,8 +8,7 @@ action var orbSkill $1 when for a little enlightment on (.*)\.$
 gosub stow right
 gosub stow left
 
-gosub moveOrbsToContainer backpack
-gosub moveOrbsToContainer portal
+gosub moveOrbsToContainer %orbContainer
 
 gosub doOrb
 
