@@ -98,11 +98,23 @@ repair.checkForTicket:
                     gosub repair.fetchItems
                 }
             } else {
+                if (matchre("$righthand", "Lakyan ticket")) then {
+                    gosub look at my ticket
+                    if (%repair.waitTimeMin > 2) then {
+                        put #echo >Log Blue [repair] Found repair ticket with wait time of %repair.waitTimeMin min.  Checking for other repairs.
+                        gosub stow ticket
+                        goto repair.main
+                    } else {
+                        put #echo >Log Blue [repair] Found repair ticket with wait time of %repair.waitTimeMin min.  Proceeding.
+                        gosub repair.checkTicketTime
+                        gosub repair.fetchItems
+                    }
+                }
                 math repair.tTypesIndex add 1
                 goto repair.checkForTicketLoop
             }
         }
-        put #echo >Log Blue [repair] Did not find any repair tickets for known npc types.  Checking for needed repairs.
+        put #echo >Log Blue [repair] Did not find any repair tickets for known npcs.  Checking for needed repairs.
         goto repair.main
 
 

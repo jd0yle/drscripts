@@ -69,7 +69,7 @@ engbolt.boltheads:
             put #echo >Log [engbolt] Rasp missing, exiting.
             goto engbolt.exit
         }
-        gosub shape %engbolt.boltheadMaterial into bolthead
+        gosub shape my %engbolt.boltheadMaterial into bolthead
         gosub stow my rasp
         gosub swap
         gosub get my bolts
