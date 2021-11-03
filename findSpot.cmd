@@ -156,17 +156,13 @@ if (%preferredRoomId > 0) then var currentRoomId %preferredRoomId
 
 
 checkThisRoom:
-	put #echo >Debug Checking room %currentRoomId
 	if ("$roomid" != "%currentRoomId") then {
 		if ($roomid = 0) then gosub moveRandom
 		gosub automove %currentRoomId
 		goto checkThisRoom
 	}
 
-	if ("$roomplayers" = "" && $monstercount < 2 && !contains("$roomobjs", "dirt construct") ) then {
-
-		goto done
-	}
+	if ("$roomplayers" = "" && $monstercount < 2 && !contains("$roomobjs", "dirt construct") ) then goto done
 
 	if ("$roomplayers" != "") then put #echo >Debug Room $roomid full: $roomplayers
 

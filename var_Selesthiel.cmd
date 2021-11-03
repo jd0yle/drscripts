@@ -199,8 +199,8 @@ var super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
-put #tvar char.instrument.noun txistu
-put #tvar char.instrument.tap cocobolo txistu
+put #tvar char.instrument.noun ocarina
+put #tvar char.instrument.tap indurium ocarina
 put #tvar char.instrument.container thigh bag
 
 put #tvar char.play.useAlmanac 1
