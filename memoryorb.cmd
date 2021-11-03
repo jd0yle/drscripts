@@ -1,7 +1,7 @@
 include libmaster.cmd
 
-var orbContainer shadows
-var storeContainer portal
+var orbContainer $char.inv.memoryOrbContainer
+var tempContainer $char.inv.tempContainer
 
 action var orbSkill $1 when for a little enlightment on (.*)\.$
 
@@ -19,13 +19,13 @@ exit
 
 
 doOrb:
-	gosub get my memory orb from my %orbContainer
+	gosub get my memory orb from my %tempContainer
 	if ("$righthand" = "Empty") then return
 	gosub study my memory orb
 	eval orbSkill replacere("%orbSkill", " ", "_")
 	echo %orbSkill $%orbSkill.LearningRate
 	if ($%orbSkill.LearningRate > 0) then gosub invoke my memory orb
-	if ("$righthand" != "Empty") then gosub put my memory orb in my %storeContainer
+	if ("$righthand" != "Empty") then gosub put my memory orb in my %orbContainer
 	goto doOrb
 
 
@@ -35,5 +35,5 @@ moveOrbsToContainer:
 	var moveFromContainer $0
 	gosub get my memory orb from my %moveFromContainer
 	if ("$righthand" = "Empty") then return
-	gosub put my memory orb in my %orbContainer
+	gosub put my memory orb in my %tempContainer
 	goto moveOrbsToContainer

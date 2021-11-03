@@ -10,7 +10,8 @@ gosub stow left
 
 gosub stand
 
-gosub remove my badge
+gosub remove my pilgrim badge
+if ("$righthand" = "Empty") then gosub get my pilgrim badge
 gosub pray my badge
 gosub wear my badge
 

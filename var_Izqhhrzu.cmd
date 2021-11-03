@@ -6,19 +6,17 @@ put #tvar char.storage.default wyvern skull
 put #tvar char.storage.holyWater witch jar
 put #tvar char.storage.incense $char.storage.default
 
+
 ###############################
 ###      APPRAISE
 ###############################
-#put #tvar char.appraise.container $char.storage.default
-#put #tvar char.appraise.item diamondique hhr'ata
-put #tvar char.appraise.container portal
+put #tvar char.appraise.container thigh bag
 put #tvar char.appraise.item gem pouch
 
 
 ###############################
 ###      ARMOR
 ###############################
-#put #tvar char.armor ka'hurst hauberk|moonsilk gloves|great helm|demonscale shield|parry stick
 put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|moonsilk gloves|scale helm|plate mask
 
 
@@ -61,7 +59,7 @@ put #tvar char.cast.centering.prep 1
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 17
+put #tvar char.cast.ghs.prep 19
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -86,7 +84,7 @@ put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 put #tvar char.cast.rejuv.chargeTimes 2
 
-put #tvar char.cast.rev.prep 20
+put #tvar char.cast.rev.prep 21
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -104,6 +102,7 @@ put #tvar char.cast.pfe.prep 10
 put #tvar char.cast.pfe.charge 30
 put #tvar char.cast.pfe.harness 0
 put #tvar char.cast.pfe.chargeTimes 2
+
 
 ###############################
 ###      CRAFTING
@@ -168,18 +167,14 @@ put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 18
+put #tvar char.fight.tmPrep 21
 
 # How long to pause before casting.
-put #tvar char.fight.tmPause 8
-
+put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
 put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
-
-#put #tvar char.fight.weapons.items Empty
-#put #tvar char.fight.weapons.skills Sorcery
 
 put #tvar char.fight.trainOffhand 1
 
@@ -239,7 +234,7 @@ put #tvar char.fight.useSls 0
 # The necro ritual to use for training
 # (Will still use harvest when low on material, consume for devour, etc.)
 put #tvar char.fight.necroRitual null
-
+put #tvar char.fight.necroButchery 0
 put #tvar char.fight.avoidDivineOutrage 0
 
 put #tvar char.fight.useCh 0
@@ -398,7 +393,6 @@ unvar var.magic.Warding
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 50
-#put #tvar char.repair.list moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|$char.fight.weapons.items|parry stick|greaves
 put #tvar char.repair.list $char.armor|$char.fight.weapons.items|great helm|moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps
 
 ###############################

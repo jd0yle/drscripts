@@ -7,6 +7,7 @@
 # Args:
 #    --item  The short tap of the compendium to use (overrides $char.compendium and $char.compendiums)
 #    --forceTurn 1|0  Force turning the compendium page after every STUDY (overrides $char.compendium.forceTurn)
+#    --target   1-34  Target learning rate to stop at
 #
 # Character Variables
 #    $char.compendium The compendium item to use
@@ -53,6 +54,9 @@ if ("%args.item" != ".item") then {
 	}
 }
 
+var targetLearningRate 34
+if (%args.targetLearningRate > 0) then var targetLearningRate %args.targetLearningRate
+
 var compendiumForceTurn 0
 if (%args.forceTurn = 1 || $char.compendium.forceTurn = 1) then var compendiumForceTurn 1
 
@@ -73,7 +77,7 @@ compendium:
     compendiumLoop:
         var compendiumStage -1
         gosub study my %compendiumItem
-		if ($Scholarship.LearningRate > 32 && $First_Aid.LearningRate > 32) then goto compendiumDone
+		if ($Scholarship.LearningRate > %targetLearningRate && $First_Aid.LearningRate > %targetLearningRate) then goto compendiumDone
         if (%compendiumStage = 1 || %compendiumForceTurn = 1) then {
             gosub turn my compendium
             math compendiumTurns add 1

@@ -215,6 +215,8 @@ put #tvar char.inv.tempContainer shadows
 put #tvar char.inv.defaultContainer steelsilk backpack
 put #tvar char.loot.boxes 0
 
+put #tvar char.inv.memoryOrbContainer portal
+
 
 ###############################
 ###      MAGIC

@@ -45,7 +45,7 @@ main:
         gosub clericRituals
         gosub train.moveToHouse
         gosub train.performance 5
-        if ($First_Aid.LearningRate < 10) then gosub runScript compendium
+        if ($First_Aid.LearningRate < 10) then gosub runScript compendium --target=10
         #gosub train.compendium 30
         gosub train.getHealed
 

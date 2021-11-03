@@ -1018,7 +1018,7 @@ manageCyclics.cleric:
 
 	#return
 
-    if ($char.fight.useRev = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 85 && ($Utility.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
+    if ($char.fight.useRev = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 85 && ($Utility.LearningRate < 10 || $Augmentation.LearningRate < 10 || ($Utility.LearningRate < 30 && $Warding.LearningRate > 30)) ) then {
         if ($SpellTimer.GhostShroud.active = 1 || $SpellTimer.HydraHex.active = 1) then gosub release cyclic
         gosub release cyclic
         gosub runScript cast rev
@@ -1153,9 +1153,8 @@ performRitual:
         if (%avoidDivineOutrage != 1) then {
             if ("%ritualTarget" = "young wyvern") then var ritualTarget wyvern
             gosub perform preserve on %ritualTarget
-            #gosub perform butchery on %ritualTarget leg
 
-            gosub perform butchery on %ritualTarget
+            if ($char.fight.necroButchery = 1) then gosub perform butchery on %ritualTarget
 
             if (matchre("$righthandnoun", "\b(arm|leg|head|wing|torso|eyes|brain)\b")) then {
                 var bodyPart $1
@@ -1171,7 +1170,7 @@ performRitual:
         # Otherwise level up that butchery hidden number!
         gosub stow right
         gosub stow left
-        if (%avoidDivineOutrage != 1) then {
+        if (%avoidDivineOutrage != 1 && $char.fight.necroButchery = 1) then {
             gosub perform butchery on %ritualTarget leg
         }
         if ("$righthand" != "Empty") then {

@@ -115,10 +115,11 @@ loop:
         var shouldCastRoc 1
 
         if ($SpellTimer.RiteofContrition.active = 1) then var shouldCastRoc 0
-        if ($mana < 80) then var shouldCastRoc 0
+        if ($mana < 85) then var shouldCastRoc 0
         if ($Utility.LearningRate > 28) then var shouldCastRoc 0
 
         if (%shouldCastRoc = 1) then {
+            if ($char.magic.train.cyclic.useSymbiosis = 1) then gosub prep symbiosis
             gosub prep $char.magic.train.cyclic.spell.Utility $char.magic.train.cyclic.prep.Utility
             gosub waitForPrep
             gosub cast

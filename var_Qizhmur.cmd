@@ -222,9 +222,10 @@ put #tvar char.magic.train.cyclic.Utility 1
 put #tvar char.magic.train.cyclic.spell.Utility roc
 put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
 put #tvar char.magic.train.cyclic.prep.Utility 20
+put #tvar char.magic.train.cyclic.useSymbiosis 1
 
 # AUGMENTATION
-var var.magic.Augmentation 37
+var var.magic.Augmentation 69
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 1
 put #tvar char.magic.train.harness.Augmentation 0
@@ -233,7 +234,7 @@ if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.tra
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Augmentation > -1)) then put #tvar char.magic.train.lastBackfireGametime.Augmentation 1
 if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 3600) then {
-    if (%var.magic.Augmentation > $char.magic.train.charge.Augmentation) then {
+    if (%var.magic.Augmentation >= $char.magic.train.charge.Augmentation) then {
         evalmath tmp ($char.magic.train.charge.Augmentation + 1)
         put #tvar char.magic.train.charge.Augmentation %tmp
         put #tvar char.magic.train.lastBackfireGametime.Augmentation $gametime
@@ -244,7 +245,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 
 unvar var.magic.Augmentation
 
 # UTILITY
-var var.magic.Utility 30
+var var.magic.Utility 65
 put #tvar char.magic.train.spell.Utility gaf
 put #tvar char.magic.train.prep.Utility 1
 put #tvar char.magic.train.harness.Utility 0
@@ -253,7 +254,7 @@ if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.ch
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Utility > -1)) then put #tvar char.magic.train.lastBackfireGametime.Utility 1
 if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600) then {
-    if (%var.magic.Utility > $char.magic.train.charge.Utility) then {
+    if (%var.magic.Utility >= $char.magic.train.charge.Utility) then {
         evalmath tmp ($char.magic.train.charge.Utility + 1)
         put #tvar char.magic.train.charge.Utility %tmp
         put #tvar char.magic.train.lastBackfireGametime.Utility $gametime
@@ -264,7 +265,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
 unvar var.magic.Utility
 
 # WARDING
-var var.magic.Warding 41
+var var.magic.Warding 69
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 1
 put #tvar char.magic.train.harness.Warding 0
@@ -273,7 +274,7 @@ if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.ch
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Warding > -1)) then put #tvar char.magic.train.lastBackfireGametime.Warding 1
 if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600) then {
-    if (%var.magic.Warding > $char.magic.train.charge.Warding) then {
+    if (%var.magic.Warding >= $char.magic.train.charge.Warding) then {
         evalmath tmp ($char.magic.train.charge.Warding + 1)
         put #tvar char.magic.train.charge.Warding %tmp
         put #tvar char.magic.train.lastBackfireGametime.Warding $gametime
