@@ -14,12 +14,45 @@
 # .hitTracker
 ####################################################################################################
 var debug 0
+var logToFile 1
 
 var counts.misses 0
 var counts.hits 0
 var counts.hitSum 0
 
 
+gosub hitTracker.init
+goto hitTracker.waitForHit
+
+
+###############################
+###    hitTracker.init
+###############################
+hitTracker.init:
+	gosub hitTracker.logToFile datetime,hitNumber,vitality,elapsedSeconds
+	var index 0
+	gosub hitTracker.init.loop
+	timer start
+	return
+
+
+###############################
+###    hitTracker.init.loop
+###############################
+hitTracker.init.loop:
+		# Ensure %index is initialized...
+	if (!(%index > -1)) then var index 0
+
+	var counts.hitArray.%index 0
+	evalmath index (%index + 1)
+	if (%index > 23) then return
+	goto hitTracker.init.loop
+
+
+
+###############################
+###    hitTracker.waitForHit
+###############################
 hitTracker.waitForHit:
 	# There may be strings for missed attacks absent from this list!
 	matchre hitTracker.parseHit ^(.*lands a.*)$
@@ -27,6 +60,10 @@ hitTracker.waitForHit:
 	matchwait
 
 
+
+###############################
+###    hitTracker.parseHit
+###############################
 hitTracker.parseHit:
 	var hitString $0
 	var hitNumber null
@@ -66,25 +103,70 @@ hitTracker.parseHit:
 	if ("%hitNumber" > -1) then {
 		evalmath counts.hits (%counts.hits + 1)
 		evalmath counts.hitSum (%counts.hitSum + %hitNumber)
+		evalmath counts.hitArray.%hitNumber (%counts.hitArray.%hitNumber + 1)
+		gosub logToFile %hitNumber
 	} else {
 		evalmath counts.misses (%counts.misses + 1)
+		gosub logToFile -1
 	}
 
 	gosub hitTracker.logStatus
 	goto hitTracker.waitForHit
 
 
+
+###############################
+###    hitTracker.parseMiss
+###############################
 hitTracker.parseMiss:
 	evalmath counts.misses (%counts.misses + 1)
 	gosub hitTracker.logStatus
 	goto hitTracker.waitForHit
 
 
-hitTracker.logStatus:
-	echo Misses: %counts.misses  Hits: %counts.hits  HitSum: %counts.hitSum
-	return
 
-
+###############################
+###    hitTracker.logDebug
+###############################
 hitTracker.logDebug:
 	if (%debug = 1) then echo $0
 	return
+
+
+
+###############################
+###    hitTracker.logToFile
+###############################
+hitTracker.logToFile:
+	var hitNumber $0
+	if (%hitTracker.logToFile = 1) then {
+		if (!("%hitNumber" > -2)) then {
+			put #log >hitTracker.csv %hitNumber
+		} else {
+			var elapsedSeconds %t
+			put #log >hitTracker.csv $datetime,%hitNumber,$vitality,%elapsedSeconds
+		}
+	}
+	return
+
+
+
+###############################
+###    hitTracker.logStatus
+###############################
+hitTracker.logStatus:
+	echo Misses: %counts.misses  Hits: %counts.hits  HitSum: %counts.hitSum
+	var msg Discrete Hits:
+	var index 0
+	gosub hitTracker.logStatus.loop
+	echo %msg
+	return
+
+hitTracker.logStatus.loop:
+	var msg %msg  %index: %counts.hitArray.%index
+	evalmath index (%index + 1)
+	if (%index > 23) then return
+	goto hitTracker.logStatus.loop
+
+
+
