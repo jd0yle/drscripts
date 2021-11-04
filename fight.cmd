@@ -764,7 +764,7 @@ checkWeaponSkills:
 ###      checkWeaponSkills.nextWeapon
 ###############################
 checkWeaponSkills.nextWeapon:
-    var logMsg [fight.cmd] nextWeapon %weapons.skills(%weapons.index) ($%weapons.skills(%weapons.index).LearningRate/34) ->
+    var logMsg [fight] %weapons.skills(%weapons.index) ($%weapons.skills(%weapons.index).LearningRate/%weapons.targetLearningRate) ->
     math weapons.index add 1
 	if (%weapons.index > %weapons.length) then {
 	    var weapons.index 0
@@ -1024,7 +1024,7 @@ manageCyclics.cleric:
         gosub runScript cast rev
     } else {
         evalmath timeSinceLastRev ($gametime - $lastCastRev)
-        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 70 || ($Utility.LearningRate > 20 && $Warding.LearningRate < 20) )) then gosub release rev
+        if ($SpellTimer.Revelation.active = 1 && (%timeSinceLastRev > 300 || $mana < 70 || ($Augmentation.LearningRate > 20 && $Utility.LearningRate > 20 && $Warding.LearningRate < 20) )) then gosub release rev
     }
 
     if ($char.fight.useGhs = 1 && $SpellTimer.HydraHex.active != 1 && $SpellTimer.GhostShroud.active != 1 && $SpellTimer.Revelation.active != 1 && $mana > 85 && $Warding.LearningRate < 28) then {
@@ -1154,16 +1154,18 @@ performRitual:
             if ("%ritualTarget" = "young wyvern") then var ritualTarget wyvern
             gosub perform preserve on %ritualTarget
 
-            if ($char.fight.necroButchery = 1) then gosub perform butchery on %ritualTarget
+            if ($char.fight.necroButchery = 1) then {
+	            gosub perform butchery on %ritualTarget
 
-            if (matchre("$righthandnoun", "\b(arm|leg|head|wing|torso|eyes|brain)\b")) then {
-                var bodyPart $1
-                echo BUTCHERED A %bodyPart
-                gosub drop my $righthandnoun
+	            if (matchre("$righthandnoun", "\b(arm|leg|head|wing|torso|eyes|brain)\b")) then {
+	                var bodyPart $1
+	                echo BUTCHERED A %bodyPart
+	                gosub drop my $righthandnoun
+	            }
+
+	            gosub drop my leg
+	            gosub stow right
             }
-
-            gosub drop my leg
-            gosub stow right
         }
         gosub perform dissection on %ritualTarget
     } else {

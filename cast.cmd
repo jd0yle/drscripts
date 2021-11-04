@@ -206,6 +206,7 @@ ritualSpell:
 ###      done
 ###############################
 done:
+	if ("%spell" = "rev" || "%spell" = "ghs" || "%spell" = "hyh") then put #echo >Debug [cast] Cast %spell
     if ("%spell" = "shadowling") then gosub invoke shadowling
 
     if ("%spell" = "qe" && ("$lefthandnoun" = "dirt" || "$righthandnoun" = "dirt")) then gosub put my dirt in my vial

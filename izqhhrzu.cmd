@@ -36,7 +36,6 @@ main:
     if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
-        put #echo >Debug BURGLE TIMER, GOING BURGLE
 		gosub train.burgle
 		gosub train.getHealed
 		gosub runScript house

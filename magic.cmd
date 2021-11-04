@@ -55,11 +55,8 @@ loop:
 
     if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
 
-
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 31) then gosub observe.onTimer
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
-    if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
-
 
     if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling = 1) then {
         if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {
@@ -115,8 +112,8 @@ loop:
         var shouldCastRoc 1
 
         if ($SpellTimer.RiteofContrition.active = 1) then var shouldCastRoc 0
-        if ($mana < 85) then var shouldCastRoc 0
-        if ($Utility.LearningRate > 28) then var shouldCastRoc 0
+        if ($mana < 90) then var shouldCastRoc 0
+        if ($Utility.LearningRate > 20) then var shouldCastRoc 0
 
         if (%shouldCastRoc = 1) then {
             if ($char.magic.train.cyclic.useSymbiosis = 1) then gosub prep symbiosis
@@ -132,7 +129,7 @@ loop:
 
 	        if (%nextCastCyclicGametime < $gametime) then var shouldReleaseRoc 1
             if ($mana < 70) then var shouldReleaseRoc 1
-            if ($Utility.LearningRate > 32) then var shouldReleaseRoc 1
+            if ($Utility.LearningRate > 29) then var shouldReleaseRoc 1
 
             if (%shouldReleaseRoc = 1) then gosub release roc
         }
@@ -167,6 +164,7 @@ loop:
         }
         gosub waitForPrep
         gosub waitForConcentration $char.magic.train.minimumConcentration
+        if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
         if ("$char.magic.train.spell.%skill" = "col") then {
             gosub checkMoons
             if ($moon = null) then {
@@ -182,7 +180,6 @@ loop:
             put #tvar char.magic.train.charge.%skill %tmp
             put #tvar char.magic.train.lastBackfireGametime.%skill $gametime
         }
-        #if ("$char.magic.train.spell.%skill" = "shear") then gosub release shear
         if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
     }
 

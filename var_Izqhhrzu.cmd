@@ -59,7 +59,7 @@ put #tvar char.cast.centering.prep 1
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 19
+put #tvar char.cast.ghs.prep 18
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -84,7 +84,7 @@ put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 put #tvar char.cast.rejuv.chargeTimes 2
 
-put #tvar char.cast.rev.prep 21
+put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 

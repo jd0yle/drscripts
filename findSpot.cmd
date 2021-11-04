@@ -99,6 +99,7 @@ if ("%mob" = "juvenilewyvern") then {
     var minRoomId 454
     var maxRoomId 463
     var waitroomid 388
+    var preferredRoomId 454
 }
 
 if ("%mob" = "leucro") then {
