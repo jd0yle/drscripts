@@ -149,7 +149,14 @@ init:
 
     #gosub runScript armor wear
 
-    gosub sortWeaponRanks
+	put #echo >Debug [fight] Char Skill order: %weapons.skills
+
+    gosub sortWeaponSkillsByRank
+    put #echo >Debug [fight] Skill Rank order: %weapons.skills
+
+    gosub sortWeaponSkillsByLearningRate
+    put #echo >Debug [fight] LearningRate ord: %weapons.skills
+
     gosub sortArmorRanks
 
     var weapons.lowestLearningRateIndex 0
@@ -382,7 +389,6 @@ attackCrossbow:
 
 attackCrossbow.aimPause:
 	var tmpAimPause $1
-	echo AIMING FOR %tmpAimPause
 	matchre return ^You think you have your best shot possible now\.$
 	matchwait %tmpAimPause
 	return
@@ -681,8 +687,6 @@ checkWeaponSkills:
         if (%useUsol = 1) then var useTmCyclic 1
         if (%useSls = 1 && $Time.isDay = 0) then var useTmCyclic 1
 
-        #if ("$charactername" = "Selesthiel") then var useTmCyclic 1
-
         if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }
 
@@ -759,7 +763,6 @@ checkWeaponSkills:
     return
 
 
-
 ###############################
 ###      checkWeaponSkills.nextWeapon
 ###############################
@@ -768,9 +771,10 @@ checkWeaponSkills.nextWeapon:
     math weapons.index add 1
 	if (%weapons.index > %weapons.length) then {
 	    var weapons.index 0
-	    #evalmath weapons.targetLearningRate (5 + $%weapons.skills(%weapons.index).LearningRate)
-	    evalmath weapons.targetLearningRate (5 + %weapons.targetLearningRate)
+	    gosub checkWeaponSkills.findLowestLearningRate
+	    evalmath weapons.targetLearningRate (5 + %findLowestLearningRate.result)
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
+	    put #echo >Debug #cc99ff [fight] findLowestLearningRate %findLowestLearningRate.result  -- weapons.targetLearningRate %weapons.targetLearningRate
 	}
 	var weapons.lastChangeAt $gametime
 
@@ -779,6 +783,20 @@ checkWeaponSkills.nextWeapon:
 	put #echo >Debug %logMsg
 
 	return
+
+
+###############################
+###      checkWeaponSkills.findLowestLearningRate
+###############################
+checkWeaponSkills.findLowestLearningRate:
+	var findLowestLearningRate.result 9999
+	var index 0
+
+    checkWeaponSkills.findLowestLearningRate.loop:
+        if ($%weapons.skills(%index).LearningRate < %findLowestLearningRate.result) then var findLowestLearningRate.result $%weapons.skills(%index).LearningRate
+        math index add 1
+        if (%index > %weapons.length) then return
+        goto checkWeaponSkills.findLowestLearningRate.loop
 
 
 ###############################
@@ -900,15 +918,27 @@ checkHide:
 debil:
     var force 0
     if ("$1" = "force") then var force 1
+
+    var tmpCastDebil 1
+
+    if (%debil.use != 1) then var tmpCastDebil 0
+    if ($mana < 80 ) then var tmpCastDebil 0
+    if ($char.fight.useHyh = 1) then var tmpCastDebil 0
+    if ($char.fight.useShw = 1) then var tmpCastDebil 0
+    if (matchre("$monsterlist", "(%debilConditions)")) then var tmpCastDebil 0
+    if ($Debilitation.LearningRate > 32) then var tmpCastDebil 0
+
     #if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)")) then {
-    if (%debil.use = 1 && $mana > 80 && !matchre("$monsterlist", "(%debilConditions)")) then {
-        if ($Debilitation.LearningRate < 32 || %force = 1) then {
-            gosub prep %debil.spell %debil.prepAt
-            if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
-            pause $char.fight.debilPauseTime
-            gosub cast
-        }
+
+    if (%tmpCastDebil = 1 || %force = 1) then {
+        gosub prep %debil.spell %debil.prepAt
+        if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
+        pause $char.fight.debilPauseTime
+        gosub cast
     }
+
+    unvar force
+    unvar tmpCastDebil
     return
 
 
@@ -917,6 +947,7 @@ debil:
 ###      fight.observe
 ###############################
 fight.observe:
+	# monstercount is here so that we don't retreat and potentially lose ammunition to a creature leaving the room
     if (%useObserve = 1 && $Astrology.LearningRate < 30 && $monstercount < 4) then gosub runScript observe
     if (%useObserve = 1 && $Astrology.LearningRate < 22 && $monstercount < 4) then gosub runScript predict
     return
@@ -931,6 +962,8 @@ huntApp:
        gosub hunt.onTimer
        return
     }
+    # 2021/11/04 JD - Not sure why $monstercount < 4 is here. Commenting to ensure it doesn't break before removing it.
+    # monstercount is here so that we don't retreat and potentially lose ammunition to a creature leaving the room
     if (%useAppraise = 1 && $Appraisal.LearningRate < 30 && $monstercount < 4) then {
         gosub appraise.onTimer
         return
@@ -1111,6 +1144,8 @@ manageCyclics.necromancer:
         if ($SpellTimer.UniversalSolvent.active = 1) then gosub release usol
     }
 
+	unvar shouldCastUsol
+	unvar shouldReleaseUsol
     return
 
 
@@ -1202,6 +1237,7 @@ fight.playIdle.loop:
     pause 1
     goto fight.playIdle.loop
 
+
 ###############################
 ###      releaseUnwantedSpells
 ###############################
@@ -1236,22 +1272,30 @@ sortArmorRanks:
 
 
 ###############################
-###      sortWeaponRanks
+###      sortWeaponSkillsByRank
 ###############################
-sortWeaponRanks:
+sortWeaponSkillsByRank:
     var newWeapons.skills null
     var newWeapons.items null
-    sortNext:
+    var tmpForceTmFirst 0
+    if (%useUsol = 1 || (%useSls = 1 && $Time.isDay = 0)) then var tmpForceTmFirst 1
+
+    sortWeaponSkillsByRank.sortNext:
         var lowestSkillIndex null
         var currIndex 0
-        sortLoop:
+
+        sortWeaponSkillsByRank.sortLoop:
             if (!contains("%newWeapons.skills", "%weapons.skills(%currIndex)")) then {
-                if (%lowestSkillIndex = null || $%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks) then {
-                    var lowestSkillIndex %currIndex
-                }
+				if (%lowestSkillIndex = null) then var lowestSkillIndex %currIndex
+				if ($%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks) then var lowestSkillIndex %currIndex
+				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then var lowestSkillIndex %currIndex
+
+	                #if (%lowestSkillIndex = null || $%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks || (%tmpForceTmFirst = 1 && %weapons.skills(%currIndex) = Targeted_Magic) ) then {
+	                #    var lowestSkillIndex %currIndex
+	                #}
             }
             math currIndex add 1
-            if (%currIndex <= %weapons.length) then goto sortLoop
+            if (%currIndex <= %weapons.length) then goto sortWeaponSkillsByRank.sortLoop
             if (%newWeapons.skills = null) then {
                 var newWeapons.skills %weapons.skills(%lowestSkillIndex)
                 var newWeapons.items %weapons.items(%lowestSkillIndex)
@@ -1260,10 +1304,61 @@ sortWeaponRanks:
                 var newWeapons.items %newWeapons.items|%weapons.items(%lowestSkillIndex)
             }
             if (count("%newWeapons.skills", "|") < %weapons.length) then {
-                goto sortNext
+                goto sortWeaponSkillsByRank.sortNext
             }
             var weapons.skills %newWeapons.skills
             var weapons.items %newWeapons.items
+
+            unvar newWeapons.skills
+            unvar newWeapons.items
+            unvar lowestSkillIndex
+            unvar currIndex
+            unvar lowestSkillIndex
+            return
+
+
+
+###############################
+###      sortWeaponSkillsByLearningRate
+###############################
+sortWeaponSkillsByLearningRate:
+    var newWeapons.skills null
+    var newWeapons.items null
+
+    sortWeaponSkillsByLearningRate.sortNext:
+        var lowestSkillIndex null
+        var currIndex 0
+
+        sortWeaponSkillsByLearningRate.sortLoop:
+            if (!contains("%newWeapons.skills", "%weapons.skills(%currIndex)")) then {
+				if (%lowestSkillIndex = null) then var lowestSkillIndex %currIndex
+				if ($%weapons.skills(%currIndex).LearningRate < $%weapons.skills(%lowestSkillIndex).LearningRate) then var lowestSkillIndex %currIndex
+				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then var lowestSkillIndex %currIndex
+
+	                #if (%lowestSkillIndex = null || $%weapons.skills(%currIndex).LearningRate < $%weapons.skills(%lowestSkillIndex).LearningRate) then {
+	                #    var lowestSkillIndex %currIndex
+	                #}
+            }
+            math currIndex add 1
+            if (%currIndex <= %weapons.length) then goto sortWeaponSkillsByLearningRate.sortLoop
+            if (%newWeapons.skills = null) then {
+                var newWeapons.skills %weapons.skills(%lowestSkillIndex)
+                var newWeapons.items %weapons.items(%lowestSkillIndex)
+            } else {
+                var newWeapons.skills %newWeapons.skills|%weapons.skills(%lowestSkillIndex)
+                var newWeapons.items %newWeapons.items|%weapons.items(%lowestSkillIndex)
+            }
+            if (count("%newWeapons.skills", "|") < %weapons.length) then {
+                goto sortWeaponSkillsByLearningRate.sortNext
+            }
+            var weapons.skills %newWeapons.skills
+            var weapons.items %newWeapons.items
+
+            unvar newWeapons.skills
+            unvar newWeapons.items
+            unvar lowestSkillIndex
+            unvar currIndex
+            unvar lowestSkillIndex
             return
 
 

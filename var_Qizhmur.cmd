@@ -180,7 +180,7 @@ put #tvar char.fight.avoidDivineOutrage 0
 
 put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0
-put #tvar char.fight.usePhp 1
+put #tvar char.fight.usePhp 0
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 1
 
@@ -219,7 +219,7 @@ put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 1
 
 # CYCLIC
-put #tvar char.magic.train.cyclic.Utility 1
+put #tvar char.magic.train.cyclic.Utility 0
 put #tvar char.magic.train.cyclic.spell.Utility roc
 put #tvar char.magic.train.cyclic.spell.fullName RiteofContrition
 put #tvar char.magic.train.cyclic.prep.Utility 20
@@ -246,7 +246,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 
 unvar var.magic.Augmentation
 
 # UTILITY
-var var.magic.Utility 65
+var var.magic.Utility 60
 put #tvar char.magic.train.spell.Utility gaf
 put #tvar char.magic.train.prep.Utility 1
 put #tvar char.magic.train.harness.Utility 0
