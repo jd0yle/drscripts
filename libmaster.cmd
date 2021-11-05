@@ -1372,13 +1372,13 @@ khri.stop:
 kick:
     var location kick
     if ($standing = 0) then put stand
-    matchre kick Bringing your foot
     matchre kick ^Loosing your footing at the last moment
     matchre kick ^You can't do that from your position\.
     matchre kick ^You can't quite manage
-    matchre kick ^You take a step back and run up to the
     matchre kick ^You throw a glorious temper tantrum\!
+    matchre return Bringing your foot
     matchre return ^I could not find what you were referring to\.
+    matchre return ^You take a step back and run up to the
     put kick pile
     goto retry
 
