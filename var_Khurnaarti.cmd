@@ -78,6 +78,7 @@ put #tvar char.cast.default.prep 10
 put #tvar char.cast.bc.prep 150
 put #tvar char.cast.dc.prep 50
 
+put #tvar char.cast.tattoo.spellName rev
 
 ###############################
 ###      COMMON
@@ -150,17 +151,18 @@ put #tvar char.fight.useStealth 0
 
 # ------ WEAPONS ------
 # Everything
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste|blue sling
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt|Slings
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings
+
 # No Targeted Magic
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|assassin's blade|flamewood riste|blue sling
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Small_Edged|Twohanded_Blunt|Slings
+put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
 put #tvar char.fight.useCol 1
 put #tvar char.fight.useObserve 0
-put #tvar char.fight.useRevSorcery 1
+put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
@@ -203,6 +205,8 @@ put #tvar char.inv.tempContainer purse
 put #tvar char.inv.defaultContainer shadows
 put #tvar char.loot.boxes 1
 
+put #tvar char.inv.memoryOrbContainer shadows
+
 
 ###############################
 ###      MAGIC
@@ -230,6 +234,8 @@ put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 30
 put #tvar char.magic.train.charge.Warding 1
 put #tvar char.magic.train.harness.Warding 0
+
+put #tvar char.magic.train.revSorcery 1
 
 
 ###############################
