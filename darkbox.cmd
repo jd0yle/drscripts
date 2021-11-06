@@ -18,8 +18,8 @@ goto darkbox.loop
 
 
 darkbox.loop:
-	if ("$righthand" != "Empty") then gosub put my $righthandnoun in my shadows
-	if ("$lefthand" != "Empty") then gosub put my $lefthandnoun in my shadows
+	if ("$righthand" != "Empty") then gosub put my $righthandnoun in my water bag
+	if ("$lefthand" != "Empty") then gosub put my $lefthandnoun in my water bag
 	put play darkbox
 	pause
 	goto darkbox.loop
@@ -88,16 +88,20 @@ darkbox.moveToDarkbox:
 	}
 
 	if ($zoneid = 1) then {
-		gosub automove dock
 		if ($zoneid != 1) then goto darkbox.moveToDarkbox
+		if (contains("$roomname", "Andreshlew")) then goto darkbox.moveToDarkbox
+		gosub automove dock
+
 		put whistle for dolphin transport
 		pause 10
 		goto darkbox.moveToDarkbox
 	}
 
 	if ($zoneid = 150) then {
-		gosub automove portal
-		gosub move go portal
+		if ($zoneid != 150) then goto darkbox.moveToDarkbox
+		if ($roomid != 2) then gosub automove 2
+		put whistle for dolphin transport
+		pause 10
 		goto darkbox.moveToDarkbox
 	}
 
@@ -108,6 +112,7 @@ darkbox.moveToHouse:
 	if ("$roomname" = "Private Home Interior") then return
 
 	if ($zoneid = 0) then {
+		if (contains("$roomname", "Fang Cove")) then goto darkbox.moveToHouse
 		gosub automove dolphin
 		put go corral
 		pause 10

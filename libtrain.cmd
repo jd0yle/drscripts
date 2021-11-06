@@ -57,7 +57,7 @@ train.arrested:
 ###    train.burgle
 ###############################
 train.burgle:
-    if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
+    #if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
@@ -364,6 +364,7 @@ train.moveToBurgle:
 	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
 
     if ("$roomname" = "Private Home Interior") then {
+        echo MOVING TO BURGLE, LEAVING HOUSE
         gosub runScript house
         goto train.moveToBurgle
     }

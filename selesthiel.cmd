@@ -57,6 +57,8 @@ action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmu
 
 timer start
 
+gosub burgle recall
+
 if ($standing != 1) then gosub stand
 
 if (contains("$roomname", "A'baya")) then goto escapeTaisidon
@@ -74,12 +76,11 @@ if ("%startAt" = "magic") then
 main:
     gosub abortScripts
     gosub resetState
-    gosub burgle.setNextBurgleAt
-    pause 2
 
     gosub burgle recall
-
-    pause 2
+    pause .5
+    gosub burgle.setNextBurgleAt
+    pause .5
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
