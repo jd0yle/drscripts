@@ -6,7 +6,8 @@ if (%args.boxes = 1) then var lootBoxes 1
 var scrolls scroll|ostracon|\broll|leaf|vellum|tablet|(?<!of )parchment|bark|papyrus
 var treasuremaps \bmap\b
 var gems1 agate|alexandrite|amber|amethyst|andalusite|aquamarine|bead|beryl|bloodgem|bloodstone|carnelian|chrysoberyl|carnelian|chalcedony
-var gems2 chrysoberyl|chrysoprase|citrine|coral|crystal|diamond\b|diopside|emerald|egg\b|eggcase|garnet|gem|goldstone|glossy malachite
+#var gems2 chrysoberyl|chrysoprase|citrine|coral|crystal|diamond\b|diopside|emerald|egg\b|eggcase|garnet|gem|goldstone|glossy malachite
+var gems2 chrysoberyl|chrysoprase|citrine|coral|crystal|diamond|diopside|emerald|egg\b|eggcase|garnet|gem|goldstone|glossy malachite
 var gems3 hematite|iolite|ivory(?!\s)|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
 #var gems3 hematite|iolite|jade|jasper|kunzite|lapis lazuli|malachite stone|minerals|moonstone|morganite|onyx
 

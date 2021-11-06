@@ -25,6 +25,12 @@ if_1 then {
 
 gosub burgle.setNextBurgleAt
 
+gosub burgle recall
+
+pause 2
+
+gosub awake
+
 #gosub train.waitForRepair
 
 if (%startPerform = 1) then {
@@ -33,7 +39,7 @@ if (%startPerform = 1) then {
 }
 
 main:
-    if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
+    #if (%useBurgle = 1 && $lib.timers.nextBurgleAt < $gametime) then gosub burgle.setNextBurgleAt
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
 		gosub train.burgle
