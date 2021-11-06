@@ -1,9 +1,11 @@
 include libmaster.cmd
 action put stand when eval $standing = 0
+action goto forageError when You survey the area and realize that any collecting efforts would be futile\.$
 
-###############
-# Variable Inits
-###############
+
+###############################
+###    INIT
+###############################
 var noLoop false
 if_1 then {
     if ("%1" = "noLoop") then var noLoop true
@@ -17,9 +19,11 @@ if !matchre("$righthand|$lefthand", "Empty") then {
         goto forageExit
     }
 }
-###############
-# Main
-###############
+
+
+###############################
+###    MAIN
+###############################
 forageCollect:
     if ($monstercount > 0) then goto forageExit
     gosub collect rock
@@ -29,18 +33,20 @@ forageCollect:
     if (%noLoop = true) then {
         goto forageExit
     } else {
-        goto forageExpCheck
+        if ($Outdoorsmanship.LearningRate < 30) then {
+            goto forageCollect
+        } else {
+            goto forageExit
+        }
     }
+
+
+forageError:
+    put #echo >Log [forage] $roomname (r$roomid) is not forageable.  Correct whatever script tried to use this room.
+    goto forageExit
 
 
 forageExit:
     pause .2
     put #parse FORAGE DONE
     exit
-
-
-forageExpCheck:
-    if ($Outdoorsmanship.LearningRate < 30) then {
-        goto forageCollect
-    }
-    goto forageExit

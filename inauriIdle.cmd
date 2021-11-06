@@ -56,6 +56,7 @@ inauriIdle.loop:
     if (%inauriIdle.disease = 1 || %inauriIdle.diseaseSelf = 1) then gosub inauriIdle.healDisease
     if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
+    if ($Attunement.LearningRate < 33 && $lib.magicInert <> 1) then gosub perc.onTimer
     if (%inauriIdle.openDoor = 1) then gosub inauriIdle.door
     gosub almanac.onTimer
     pause 2

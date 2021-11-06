@@ -12,10 +12,6 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-action goto khurnaarti.houseEnter when ^(.*)suddenly opens\!$
-action var khurnaarti.houseOpen 1 when ^(.*)suddenly rattles\!$
-#action var khurnaarti.houseOpen 1 when ^(.*)suddenly slams shut\!
-#action #send peer bothy when ^The door to a little fieldstone bothy suddenly closes\!
 action var khurnaarti.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var khurnaarti.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
@@ -30,7 +26,19 @@ action (health) goto getHealedTrigger when eval $bleeding = 1
 
 if ($health < 80 && "$roomname" <> "Private Home Interior") then goto getHealedTrigger
 
-
+var khurnaarti.mode normal
+if_1 then {
+    if ("%1" = "fight") then {
+        var khurnaarti.mode fight
+        put .fight
+        put .afk
+        goto khurnaarti.combatLoop
+    }
+    if ("%1" = "idle") then {
+        var khurnaarti.mode idle
+        goto khurnaarti.idle
+    }
+}
 ###############################
 ###    VARIABLES
 ###############################
@@ -51,6 +59,7 @@ if ($Targeted_Magic.Ranks < $Debilitation.Ranks) then {
 } else {
     var khurnaarti.class debilitation
 }
+var khurnaarti.forageRoom 44
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
 var khurnaarti.houseType 0
@@ -68,13 +77,18 @@ khurnaarti.loop:
     pause 1
     gosub khurnaarti.locationCheck
     gosub khurnaarti.healthCheck
-    pause 1
     gosub khurnaarti.scriptCheck
+    if ("%khurnaarti.mode" = "fight") then {
+        gosub moveToCombat
+        gosub khurnaarti.combatLoop
+    }
+    if ("%khurnaarti.mode" = "idle") then {
+        goto khurnaarti.idle
+    }
     gosub almanac.onTimer
     gosub khurnaarti.burgle
     gosub khurnaarti.forage
     gosub khurnaarti.class
-    if ($khurnaarti.subScript > 0) then goto khurnaarti.resumeScript
     pause 1
     if ($Astrology.LearningRate < 30) then gosub khurnaarti.astrology
     pause 1
@@ -91,10 +105,17 @@ khurnaarti.loop:
     gosub khurnaarti.compendium
     gosub khurnaarti.play
     gosub khurnaarti.lock
-    #gosub khurnaarti.combatCheck
+    gosub khurnaarti.combatCheck
     pause 1
     gosub khurnaarti.idle
     goto khurnaarti.loop
+
+
+khurnaarti.idleLoop:
+    pause 5
+    gosub khurnaarti.healthCheck
+    gosub tdp
+    goto khurnaarti.idleLoop
 
 
 ###############################
@@ -133,23 +154,15 @@ khurnaarti.burgle:
         put #echo >Log #009933 [khurnaarti] Going to burgle
         put #var lib.student 0
         gosub moveToBurgle
-        put #tvar khurnaarti.subScript burgle
-        put .burgle
-        waitforre ^BURGLE DONE
+        gosub runScript burgle
         put #echo >Log #009933 [khurnaarti] Burgle complete. ATH:($Athletics.LearningRate/34) Locks:($Locksmithing.LearningRate/34) Stealth:($Stealth.LearningRate/34)
-        put #tvar khurnaarti.subScript 0
         gosub release rf
         gosub moveToPawn
-        put #tvar khurnaarti.subScript pawn
-        put .pawn
-        waitforre ^PAWN DONE
-        put #tvar khurnaarti.subScript 0
-        put #tvar khurnaarti.subScript deposit
-        put .deposit
-        waitforre ^DEPOSIT DONE
-        put #tvar khurnaarti.subScript 0
+        gosub runScript pawn
+        gosub runScript deposit
         pause 1
         gosub moveToHouse
+        #gosub moveToFangCove
         gosub khurnaarti.restart
     }
 
@@ -162,12 +175,9 @@ khurnaarti.caracal:
     gosub khurnaarti.clearHands
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
         put #echo >Log #009933 [khurnaarti] Beginning trainer.
-        put #tvar khurnaarti.subScript caracal
-        put .caracal
-        waitforre ^CARACAL DONE
+        gosub runScript caracal
     	put #echo >Log #009933 [khurnaarti] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
     	put #var lastTrainerGametime $gametime
-    	put #tvar khurnaarti.subScript 0
     }
     return
 
@@ -220,11 +230,9 @@ khurnaarti.clearHands:
 
 
 khurnaarti.combatCheck:
-    if ($Brawling.LearningRate < 10 && $Warding.LearningRate > 20) then {
+    if ($Brawling.LearningRate < 10) then {
         put #echo >Log #FF8080 [khurnaarti] Going to combat.
-        put #var lib.student 0
-        gosub moveToHunt
-        put #tvar khurnaarti.subScript fight
+        gosub moveToCombat
         put .fight
         put .afk
         goto khurnaarti.combatLoop
@@ -233,25 +241,16 @@ khurnaarti.combatCheck:
 
 
 khurnaarti.combatLoop:
-    pause 15
+    pause 5
     if ($bleeding = 1) then {
         put #script abort fight
-        put #tvar khurnaarti.subScript 0
+        gosub stance shield
         put #echo >Log Pink [khurnaarti] Leaving combat to be healed.
         gosub khurnaarti.clearHands
         gosub moveToHouse
         var khurnaarti.needHeal 1
         gosub khurnaarti.loop
     }
-    var khurnaarti.magicRates ($Augmentation.LearningRate + $Warding.LearningRate + $Utility.LearningRate)
-    if (%khurnaarti.magicRates < 15) then {
-        put #script abort fight
-        put #tvar khurnaarti.subScript 0
-        put #echo >Log #FF8080 [khurnaarti] Combat complete. Brawl:($Brawling.LearningRate/34)
-        gosub khurnaarti.clearHands
-        gosub moveToHouse
-        gosub khurnaarti.restart
-   }
    goto khurnaarti.combatLoop
 
 
@@ -262,10 +261,7 @@ khurnaarti.compendium:
     }
     gosub khurnaarti.clearHands
     put #echo >Log #ffcc00 [khurnaarti] Beginning compendium.
-    put #tvar khurnaarti.subScript compendium
-    put .compendium
-    waitforre ^COMPENDIUM DONE
-    put #tvar khurnaarti.subScript 0
+    gosub runScript compendium
     put #var lastCompendiumGametime $gametime
     put #echo >Log #ffcc00 [khurnaarti] Compendium complete.  FA: ($First_Aid.LearningRate/34) SCH: ($Scholarship.LearningRate/34)
     return
@@ -276,11 +272,7 @@ khurnaarti.forage:
         put #echo >Log #009933 [khurnaarti] Going to forage.
         put #var lib.student 0
         gosub moveToForage
-        put #tvar khurnaarti.subScript forage
-        put .forage
-        waitforre ^FORAGE DONE
-        put #tvar khurnaarti.subScript 0
-        put #script abort look
+        gosub runScript forage
         put #echo >Log #009933 [khurnaarti] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
         gosub moveToHouse
         gosub khurnaarti.restart
@@ -315,6 +307,12 @@ khurnaarti.locationCheck:
     if ("$roomname" = "Private Home Interior") then {
         return
     }
+    # Crossing
+    if ($zoneid = 1) then {
+        gosub automove portal
+        gosub move go meeting portal
+        gosub move 50
+    }
     # Shard
     if ($zoneid = 66 || $zoneid = 67) then {
         gosub automove portal
@@ -324,9 +322,7 @@ khurnaarti.locationCheck:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then {
-            put #echo >log locationCheck using peer bothy
-            gosub peer bothy
-            pause 10
+            return
         }
         gosub automove portal
         gosub automove 50
@@ -344,10 +340,7 @@ khurnaarti.lock:
     }
     if ($Locksmithing.LearningRate < 10) then {
         put #echo >Log #009933 [khurnaarti] Beginning locksmithing.
-        put #tvar khurnaarti.subScript practicebox
-        put .practicebox
-        waitforre ^LOCKS DONE
-        put #tvar khurnaarti.subScript 0
+        gosub runScript practicebox
         put #echo >Log #009933 [khurnaarti] Locksmithing done Lock:($Locksmithing.LearningRate/34).
         put #var lastLocksGametime $gametime
     }
@@ -360,6 +353,10 @@ khurnaarti.idle:
         gosub tdp
         put #var lastLookGametime $gametime
     }
+    if ("%khurnaarti.mode" = "idle") then {
+        pause 240
+        goto khurnaarti.idle
+    }
     return
 
 
@@ -367,13 +364,10 @@ khurnaarti.magic:
     var khurnaarti.magicRates ($Augmentation.LearningRate + $Warding.LearningRate + $Utility.LearningRate)
     if (%khurnaarti.magicRates < 15) then {
         put #echo >Log #6600ff [khurnaarti] Beginning magic.
-        put #tvar khurnaarti.subScript magic
-        put .magic noLoop
-        waitforre ^MAGIC DONE
-        put #tvar khurnaarti.subScript 0
+        gosub runScript magic noLoop
         put #echo >Log #6600ff [khurnaarti] Magic complete. Aug:($AugmentationWarding.LearningRate/34)
         put #echo >Log #6600ff [khurnaarti] Magic complete. Utility:($Utility.LearningRate/34)
-        put #echo >Log #6600ff [khurnaarti] Magic complete Ward:($Warding.LearningRate/34).
+        put #echo >Log #6600ff [khurnaarti] Magic complete. Ward:($Warding.LearningRate/34)
     }
     return
 
@@ -384,8 +378,6 @@ khurnaarti.play:
     }
     put #echo >Log #ffcc00 [khurnaarti] Beginning performance.
     gosub khurnaarti.clearHands
-    #put .play
-    #waitfor ^PLAY DONE
     gosub runScript play
     gosub khurnaarti.clearHands
     put #echo >Log #ffcc00 [khurnaarti] Performance complete. Perf:($Performance.LearningRate/34)
@@ -398,36 +390,15 @@ khurnaarti.research:
         return
     }
     if ($Sorcery.LearningRate < 5) then {
-        put justice
-        if (%khurnaarti.justice = 1) then {
+        gosub justice
+        if ($lib.justice <> 0) then {
             put #echo >Log #6600ff [khurnaarti] Skipping research due to justice.
             return
         }
-        put .look
         put #echo >Log #6600ff [khurnaarti] Beginning research.
-        put .research sorcery
-        waitforre ^RESEARCH DONE
-        put #script abort look
+        gosub runScript research sorcery
         put #echo >Log #6600ff [khurnaarti] Research complete. Sorc:($Sorcery.LearningRate/34)
     }
-    return
-
-
-khurnaarti.resumeScript:
-    if ("$khurnaarti.subScript" = "magic") then {
-        put .magic noLoop
-    }
-    if ("$khurnaarti.subScript" = "research") then {
-        put .research sorcery
-    }
-    if ("$khurnaarti.subScript" = "compendium") then {
-        if ("$righthandnoun" <> "$char.compendium") then {
-            gosub khurnaarti.clearHands
-            gosub get my $char.compendium
-            put .compendium
-        }
-    }
-    put #tvar khurnaarti.subScript 0
     return
 
 
@@ -455,8 +426,7 @@ khurnaarti.scriptCheck:
 ###############################
 moveToBurgle:
     if ("$roomname" = "Private Home Interior") then {
-        put .house
-        waitforre ^HOUSE DONE
+        gosub runScript house
         goto moveToBurgle
     }
     # Crossing - City
@@ -496,6 +466,50 @@ moveToBurgle:
     goto moveToBurgle
 
 
+moveToCombat:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToCombat
+    }
+    # Crossing - City
+    if ($zoneid = 1) then {
+        if ($roomid = 258) then return
+        put #echo >log red [khurnaarti] Trying to move to combat in the wrong zone.
+        var khurnaarti.mode normal
+        goto khurnaarti.loop
+    }
+    # Crossing - North Gate
+    if ($zoneid = 6) then {
+        put #echo >log red [khurnaarti] Trying to move to combat in the wrong zone.
+        var khurnaarti.mode normal
+        goto khurnaarti.loop
+    }
+    # Shard - East Gate
+    if ($zoneid = 66) then {
+        if ($roomid = 635) then return
+        gosub automove 635
+        goto moveToCombat
+    }
+    # Shard - City
+    if ($zoneid = 67) then {
+        gosub automove portal
+        goto moveToCombat
+    }
+    # Shard - South of City
+    if ($zoneid = 68) then {
+        gosub automove 3
+        gosub move go path
+        goto moveToCombat
+    }
+    # Fang Cove
+    if ($zoneid = 150) then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToCombat
+    }
+    goto moveToCombat
+
+
 moveToFangCove:
     # Crossing - City
     if ($zoneid = 1) then {
@@ -527,9 +541,9 @@ moveToFangCove:
 
 moveToForage:
     if ("$roomname" = "Private Home Interior") then {
-        put .house
-        waitforre ^HOUSE DONE
-        goto moveToForage
+        gosub runScript house
+        gosub automove %khurnaarti.forageRoom
+        return
     }
     # Crossing - City
     if ($zoneid = 1) then {
@@ -549,8 +563,8 @@ moveToForage:
     }
     # Fang Cove
     if ($zoneid = 150) then return
-        if ($roomid = 44) then return
-        gosub automove 44
+        if ($roomid = %khurnaarti.forageRoom) then return
+        gosub automove %khurnaarti.forageRoom
     goto moveToForage
 
 
@@ -589,62 +603,13 @@ moveToHouse:
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then {
-            put #echo >log movetohouse using peer bothy
-            gosub peer bothy
-            pause 20
-            if (%khurnaarti.houseOpen = 0) then {
-                goto moveToFangCove
-            }
+            gosub runScript house
+            return
         }
         gosub automove 50
         goto moveToHouse
     }
     goto moveToHouse
-
-
-khurnaarti.houseEnter:
-    put .house
-    waitforre ^HOUSE DONE$
-    var khurnaarti.houseOpen 0
-    goto khurnaarti.restart
-
-
-moveToHunt:
-    if ("$roomname" = "Private Home Interior") then {
-        put .house
-        waitforre ^HOUSE DONE
-        goto moveToHunt
-    }
-    # Crossing - City
-    if ($zoneid = 1) then {
-        gosub automove portal
-        gosub move go meeting portal
-        goto moveToHunt
-    }
-    # Crossing - North Gate
-    if ($zoneid = 6) then {
-        gosub automove crossing
-        goto moveToHunt
-    }
-    #Shard - East Gate
-    if ($zoneid = 66) then {
-        gosub automove portal
-        gosub move go meeting portal
-        goto moveToHunt
-    }
-    # Shard - South of City
-    if ($zoneid = 68) then {
-        if ($roomid = 36) then return
-        gosub automove 36
-        goto moveToHunt
-    }
-    # Fang Cove
-    if ($zoneid = 150) then {
-        if ($roomid = 93) then return
-        gosub automove 93
-        goto moveToHunt
-    }
-    goto moveToHunt
 
 
 moveToPawn:
@@ -681,8 +646,6 @@ moveToHeal:
     put .afk
     put .khurnaarti
     exit
-
-
 
 
 
@@ -744,6 +707,7 @@ getHealed:
         }
     }
     return
+
 
 getHealedCont:
     put #var lastHealedGametime $gametime
