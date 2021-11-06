@@ -113,7 +113,10 @@ action var doAnalyze 1 when ^You can no longer see openings
 action var doAnalyze 1 when You fail to find any
 action var doAnalyze 1 when ^ then lies still\.$
 
-action put get my scimitar;put get my assassin blade;put get my sword when ^Wouldn't it be better if you used a melee weapon
+#action put get my scimitar;put get my assassin blade;put get my sword when ^Wouldn't it be better if you used a melee weapon
+
+var forceNextWeaponTactics 0
+action var forceNextWeaponTactics 1 when ^Wouldn't it be better if you used a melee weapon
 
 action send circle when ^Analyze what
 
@@ -361,7 +364,7 @@ attackCrossbow:
 
     if %crossbowRetreat = 1 then gosub retreat
     gosub aim
-    gosub debil force
+    gosub debil
     if (%crossbowRetreat = 1) then {
         gosub retreat
         pause 2
@@ -680,6 +683,10 @@ checkArmorSkills.wearArmor:
 ###      checkWeaponSkills
 ###############################
 checkWeaponSkills:
+	if (%forceNextWeaponTactics = 1) then {
+		gosub checkWeaponSkills.nextWeapon
+		var forceNextWeaponTactics 0
+	}
     # TM CYCLICS
     if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
         # Figure out if we're using a cyclic for TM, and if so, skip over TM
@@ -698,15 +705,8 @@ checkWeaponSkills:
 
     evalmath timeSinceLastWeaponChange ($gametime - %weapons.lastChangeAt)
 
-    if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate || %timeSinceLastWeaponChange > 300) then {
-        # By default, don't switch weapons faster than once every 30 seconds.
-        # But if all the weapon skills are moving, wait 60 seconds before swapping
-
-        #var timeBetweenWeaponSwaps 30
-        #if (%weapons.targetLearningRate > 10) then var timeBetweenWeaponSwaps 60
-        #evalmath changeWeaponAt %weapons.lastChangeAt + %timeBetweenWeaponSwaps
-        #if ($gametime > %changeWeaponAt) then gosub checkWeaponSkills.nextWeapon
-
+    #if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate || %timeSinceLastWeaponChange > 300) then {
+    if ($%weapons.skills(%weapons.index).LearningRate >= %weapons.targetLearningRate || %timeSinceLastWeaponChange > 240) then {
         gosub checkWeaponSkills.nextWeapon
     }
 
@@ -1039,7 +1039,7 @@ manageCyclics:
 
 manageCyclics.cleric:
 	# HYH
-	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 85 && $Debilitation.LearningRate < 28) then {
+	if ($char.fight.useHyh = 1 && $SpellTimer.HydraHex.active != 1 && $mana > 85 && $Debilitation.LearningRate < 25) then {
 		gosub release cyclic
 		gosub runScript cast hyh male off
 	} else {

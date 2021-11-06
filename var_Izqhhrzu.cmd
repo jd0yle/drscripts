@@ -173,8 +173,11 @@ put #tvar char.fight.tmPrep 21
 put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
-put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+#put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
+#put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+
+put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
+put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 put #tvar char.fight.trainOffhand 1
 

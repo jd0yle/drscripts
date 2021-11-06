@@ -69,12 +69,16 @@ if ("%startAt" = "magic") then
 	goto startMagic
 }
 
-gosub burgle recall
+
 
 main:
     gosub abortScripts
     gosub resetState
     gosub burgle.setNextBurgleAt
+    pause 2
+
+    gosub burgle recall
+
     pause 2
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
