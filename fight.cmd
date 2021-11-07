@@ -771,8 +771,12 @@ checkWeaponSkills.nextWeapon:
     math weapons.index add 1
 	if (%weapons.index > %weapons.length) then {
 	    var weapons.index 0
-	    gosub checkWeaponSkills.findLowestLearningRate
-	    evalmath weapons.targetLearningRate (5 + %findLowestLearningRate.result)
+	    # Use findLowestLearningRate to always do lowest + 5
+	    #gosub checkWeaponSkills.findLowestLearningRate
+	    #evalmath weapons.targetLearningRate (5 + %findLowestLearningRate.result)
+
+	    evalmath weapons.targetLearningRate (%weapons.targetLearningRate + 5)
+
 	    if (%weapons.targetLearningRate > 34) then var weapons.targetLearningRate 34
 	    put #echo >Debug #cc99ff [fight] findLowestLearningRate %findLowestLearningRate.result  -- weapons.targetLearningRate %weapons.targetLearningRate
 	}
@@ -923,14 +927,13 @@ debil:
 
     if (%debil.use != 1) then var tmpCastDebil 0
     if ($mana < 80 ) then var tmpCastDebil 0
-    if ($char.fight.useHyh = 1) then var tmpCastDebil 0
-    if ($char.fight.useShw = 1) then var tmpCastDebil 0
+    #if ($char.fight.useHyh = 1) then var tmpCastDebil 0
+    #if ($char.fight.useShw = 1) then var tmpCastDebil 0
     if (matchre("$monsterlist", "(%debilConditions)")) then var tmpCastDebil 0
     if ($Debilitation.LearningRate > 32) then var tmpCastDebil 0
 
-    #if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)")) then {
-
-    if (%tmpCastDebil = 1 || %force = 1) then {
+    #if (%tmpCastDebil = 1 || %force = 1) then {
+    if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)")) then {
         gosub prep %debil.spell %debil.prepAt
         if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
         pause $char.fight.debilPauseTime
@@ -1084,7 +1087,8 @@ manageCyclics.moonMage:
 	}
 
 	# SHW (if SLS is not active)
-	if (%useShw = 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Debilitation.LearningRate < 27 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29) then {
+	#if (%useShw = 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Debilitation.LearningRate < 27 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Evasion.LearningRate > 29) then {
+	if (%useShw = 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Debilitation.LearningRate < 27) then {
 		gosub release cyclic
 		gosub runScript cast shw
 	} else {

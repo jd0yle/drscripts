@@ -134,20 +134,8 @@ main:
 
         gosub runScript armor wear
 
-        #gosub automove crossing
-        if ($SpellTimer.RiteofGrace.active != 1) then {
-            gosub runScript cast rog
-        }
-        #gosub automove leth
-        #gosub automove portal
+        if ($SpellTimer.RiteofGrace.active != 1) then gosub runScript cast rog
 
-        #put #tvar powerwalk 0
-        #if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
-        #gosub automove n gate
-        #gosub automove portal
-
-        #gosub release eotb
-        #gosub move go meeting portal
         gosub moveToHouse
         gosub runScript tend
         if ("$roomname" = "Private Home Interior") then gosub runScript house
@@ -648,6 +636,7 @@ moveToShardBulls:
 
 
 moveToHouse:
+	pause
     gosub setZone
 
     if ("$roomname" = "Private Home Interior") then return
