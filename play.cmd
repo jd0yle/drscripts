@@ -85,7 +85,7 @@ play.top:
 play.cleanInstrument:
 	gosub stop play
 	gosub stow left
-	gosub get my cloth
+	gosub get my chamois cloth
 	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
 	gosub wring my cloth
 	gosub wipe my $char.instrument.noun with my cloth
