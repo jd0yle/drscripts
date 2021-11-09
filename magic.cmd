@@ -51,9 +51,32 @@ loop:
 
     if ($char.magic.train.usePray = 1) then gosub pray.onTimer $char.magic.train.prayTarget
 
-    if ($char.magic.train.usePom = 1 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 3)) then gosub runScript cast pom
-
     if ("$guild" = "Empath" && $Empathy.LearningRate < 30) then gosub percHealth.onTimer
+
+    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+
+    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
+
+    if ($lib.magicInert = 1) then {
+        if (%messageInert != 1) then {
+            put #echo >Log [magic] Inert! Waiting for it to recover
+            var messageInert 1
+        }
+        pause 5
+        goto loop
+    } else {
+        var messageInert 0
+    }
+
+
+    if ($Arcana.LearningRate < 33 && $concentration = 100) then {
+        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+        if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+        if ($hidden = 1) then gosub shiver
+        gosub gaze my sanowret crystal
+    }
+
+	if ($char.magic.train.usePom = 1 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 3)) then gosub runScript cast pom
 
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 31) then gosub observe.onTimer
     if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
@@ -63,17 +86,6 @@ loop:
             gosub release shadowling
             gosub runScript cast shadowling
         }
-    }
-
-    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
-
-    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
-
-    if ($Arcana.LearningRate < 33 && $concentration = 100) then {
-        if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
-        if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
-        if ($hidden = 1) then gosub shiver
-        gosub gaze my sanowret crystal
     }
 
     if ($char.magic.train.revSorcery = 1) then {
@@ -100,7 +112,7 @@ loop:
             var shouldReleaseRev 0
             if ($mana < 60) then var shouldReleaseRev 1
             if ($Sorcery.LearningRate > 33 && $Augmentation.LearningRate > 33 && $Utility.LearningRate > 33) then var shouldReleaseRev 1
-
+			if (!($char.cast.cyclic.lastCastGametime.rev > -1)) then put #tvar char.cast.cyclic.lastCastGametime.rev 1
             evalmath nextCastRevGametime (300 + $char.cast.cyclic.lastCastGametime.rev)
             if (%nextCastRevGametime < $gametime) then var shouldReleaseRev 1
 

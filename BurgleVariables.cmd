@@ -57,7 +57,7 @@ if ("$charactername" = "%CHARACTER1") then {
     # pawn YES will try to pawn your stolen goods NOTE - PUT NO IF PAWNING THROUGH UBERCOMBAT
     var pawn NO
     # put loot you DO NOT wish to sell here if you use pawning within .BURGLE.  The full lootpool variable is in .burgle. Separate with |
-    var donotpawnthis memory orb
+    var donotpawnthis keepsake box|memory orb|jewelry box
     # if you want to drop everything EXCEPT the "donotpawnthis" items, put YES here
     var trashall YES
     # if you want to drop SOME things, put them here
@@ -82,7 +82,7 @@ if ("$charactername" = "%CHARACTER2") then {
     var maxgrabs 5
     var hideme NO
     var pawn NO
-    var donotpawnthis book|memory orb
+    var donotpawnthis keepsake box|memory orb|jewelry box
     var trashall YES
     var trashthings blanket|kaleidoscope|earring|ring
     var skip NULL
@@ -145,7 +145,7 @@ if ("$charactername" = "%CHARACTER5") then {
     var maxgrabs 5
     var hideme NO
     var pawn NO
-    var donotpawnthis book|memory orb
+    var donotpawnthis keepsake box|memory orb|jewelry box
     var trashall YES
     var trashthings NULL
     var skip NULL

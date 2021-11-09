@@ -207,6 +207,7 @@ SEARCH:
     match RETURN Sadly, you don't find anything.
     matchre BADSEARCH I could not find what you were referring to.|You find nothing of special interest about it.
     matchre LOOTSORT You manage to find
+    matchre RETURN You've
     put search %searchtarget
     matchwait
   }
@@ -414,6 +415,7 @@ SEARCHGRASSP:
 SEARCHGRASS:
   matchre SEARCHGRASSP \.\.\.wait|type ahead|stunned|while entangled in a web\.|You don't seem to be able to move
   matchre RETURN You notice a grasshopper jumping around in between the corn stalks!  You chase after it and manage to scoop it up in your hands, then stash it away in the little bag the Halfling gave you.|You've already tried to catch grasshoppers around here.  You should move to a different area.
+  matchre RETURN You've already tried
   put search
   matchwait
 
@@ -565,6 +567,7 @@ TOUCHLAND:
   if matchre ("$roomobjs", "(altar|weathered basket|small boulder|large boulder|burrow|broken fencepost|yellow hay|wooden hut|red pail|large rake|large spiderweb|dragon statue|Halfling statue|smooth stones|straw|wagon|broken wheelbarrow|stack of wood)") then var touchtarget $1
   if matchre ("$roomobjs", "hut") then var touchtarget hut
   matchre RETURN You're pretty sure that counted toward the total number.|You reach out and touch|Touch what?
+  matchre RETURN You've already
   put touch %touchtarget
   matchwait
 
