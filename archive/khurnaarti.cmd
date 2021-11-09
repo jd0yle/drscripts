@@ -676,7 +676,7 @@ resetState:
     #put #script abort all except khurnaarti
     #put .reconnect
     #put .afk
-    if ("$righthandnoun" = "compendium" || "$lefthandnoun" = "compendium") then gosub put my compendium in my $char.common.container
+    if ("$righthandnoun" = "compendium" || "$lefthandnoun" = "compendium") then gosub put my compendium in my $char.inv.defaultContainer
     if ("$righthandnoun" = "telescope" || "$lefthandnoun" = "telescope") then gosub put my telescope in my $char.observe.telescope.container
     gosub stow right
     gosub stow left

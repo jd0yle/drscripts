@@ -92,7 +92,7 @@ if ("$charactername" = "%CHARACTER2") then {
 if ("$charactername" = "%CHARACTER3") then {
     var eddy NULL
     var pack purse
-    if ($Athletics.LearningRate >= $Locksmithing.LearningRate) then {
+    if ($Athletics.LearningRate > 2 && $Athletics.LearningRate > $Locksmithing.LearningRate) then {
         var method RING
     } else {
         else var method ROPE
