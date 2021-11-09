@@ -2268,6 +2268,16 @@ shiver:
     goto retry
 
 
+shop:
+    var location shop
+    matchre return ^On the .*, you see\:
+    matchre return ^The following items contain goods for sale
+    matchre return ^There is nothing to buy here\.
+    matchre return ^\[Type SHOP \[GOOD\] or click an item to see some details about it\.\]
+    put shop
+    goto retry
+
+
 skin:
 skinning:
     var location skin1

@@ -77,8 +77,6 @@ put #tvar char.cast.pop.harness 0
 ###############################
 ###      COMMON
 ###############################
-put #tvar char.common.container satchel
-put #tvar char.common.container.extra workbag
 put #tvar char.common.scripts burgle|caracal|compendium|deposit|engbolt|engineer|forage|magic|pawn|repair|research|workorder
 
 
@@ -101,12 +99,18 @@ put #tvar super.enemies Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahije
 
 
 ###############################
-###      LOOT
+###      INVENTORY
 ###############################
-put #tvar char.inv.emptyGemPouchContainer backpack
-put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.tempContainer shadows
-put #tvar char.inv.defaultContainer backpack
+put #tvar char.inv.defaultContainer satchel
+put #tvar char.inv.emptyGemPouchContainer 0
+put #tvar char.inv.fullGemPouchContainer satchel
+put #tvar char.inv.memoryOrbContainer satchel
+put #tvar char.inv.secondaryContainer rucksack
+put #tvar char.inv.tempContainer rucksack
+put #tvar char.inv.tertiaryContainer poke
+
+# Loot
+put #tvar char.loot.boxes 1
 
 
 ###############################
