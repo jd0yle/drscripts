@@ -8,7 +8,8 @@ include libmaster.cmd
 ###    IDLE ACTIONS
 ###############################
 action var pb.newBox 1 when ^The lock looks weak
-action put close my $char.locks.boxType when ^Maybe you should close the (.*) first\.$
+action put close my %pb.box when ^Maybe you should close the (.*) first\.$
+action put lock my %pb.box when ^But the (.*) isn't locked\!$
 action goto pb.errorLockpick when ^Pick the .+ box with what\?$
 action var pb.boxUses $2 when You believe the (.*) could be picked (\d+) more times before the wear would risk breaking the lock\.
 
@@ -33,9 +34,13 @@ pb.findBox:
 
 
 pb.getBox:
-    var box %1
-    gosub get my %box from my $char.inv.boxContainer
-    if (matchre("$righthand|$lefthand", "($pb.boxTypes)")) then {
+    gosub get my %pb.box from my $char.inv.boxContainer
+    if (matchre("$righthand|$lefthand", "(%pb.boxTypes)")) then {
+            var pb.box $0
+            if ("$righthand" != "%pb.box") then {
+                gosub swap
+            }
+        }
         goto pb.study
     } else {
         if ((matchre("$righthand", "Empty")) && (matchre("$lefthand", "Empty"))) then {
@@ -49,21 +54,21 @@ pb.getBox:
 
 
 pb.study:
-    gosub study my %box
+    gosub study my %pb.box
     if (%pb.boxUses > 0) then {
         goto pb.main
     } else {
         if ("$char.locks.bucket" <> "0") then {
-            gosub put my %box in my $char.locks.bucket
+            gosub put my %pb.box in my $char.locks.bucket
             gosub tap my $char.locks.bucket
             gosub tap my $char.locks.bucket
             goto pb.findBox
         } else {
-            if (contains("$roomobjs", "bin|statue|bucket")) then {
-                put my %box in %1
+            if (matchre("$roomobjs", "bin|statue|bucket")) then {
+                put my %pb.box in $0
                 goto pb.findBox
             } else {
-                gosub stow %box
+                gosub stow my %pb.box
                 goto pb.findBox
             }
         }
@@ -75,6 +80,9 @@ pb.study:
 ###############################
 pb.main:
     if ("$char.locks.lockpickType" <> "ring") then {
+        if ("$lefthand" = "Empty") then {
+            gosub stow left
+        }
         if ("$lefthandnoun" <> "lockpick") then {
             gosub get my lockpick
             if ("$lefthandnoun" <> "lockpick" then {
@@ -85,10 +93,10 @@ pb.main:
 
 
     pb.mainLoop:
-        gosub lock my $char.locks.boxType
-        gosub pick my $char.locks.boxType
+        gosub lock my %pb.box
+        gosub pick my %pb.box
         if (%pb.newBox = 1) then goto pb.main
-        if ($Locksmithing.LearningRate < 30) then goto pb.loop
+        if ($Locksmithing.LearningRate < 30) then goto pb.mainLoop
         goto pb.exit
 
 
