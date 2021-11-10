@@ -8,7 +8,7 @@ action evalmath numIncense (%numIncense + 1) when a stick of fragrant incense
 action evalmath numHolyWater (%numHolyWater + 1) when Your holy water is in a
 action var numHolyWaterParts $1 when ^There are (.*) parts left of the holy water\.$
 
-gosub runScript count --item=incense --container=$char.inv.defaultContainer
+gosub runScript count --item=incense --container=$char.inv.container.incense
 var numIncense $char.countResult
 put #echo >Log Incense: %numIncense
 

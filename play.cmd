@@ -20,10 +20,7 @@
 include libmaster.cmd
 include args.cmd
 
-#var play.songs arpeggios|ditty|ballad|waltz|march|lament|hymn|polka|reel|serenade|psalm|tango|bolero|nocturne|requiem|concerto
-
 var play.songs arpeggios|ditty|folk|ballad|waltz|lullaby|march|jig|lament|wedding|hymn|rumba|polka|battle|reel|elegy|serenade|minuet|psalm|dirge|gavotte|tango|tarantella|bolero|nocturne|requiem|fantasia|rondo|aria|sonata|concerto
-
 var play.songAtStart $char.instrument.song
 
 # By default, we want to try a harder song every time to see if we can play it
@@ -37,6 +34,7 @@ action var play.restart 1; goto play.repairInstrument when ^The damage to your i
 action var play.restart 1; goto play.cleanInstrument when ^You notice that moisture has accumulated
 action var play.restart 1; goto play.cleanInstrument when  dirtiness may affect your performance\.$
 
+action var play.refillRepairKit 1 when ^There are not enough.*in your repair kit
 
 ###############################
 ###      play.top
@@ -126,6 +124,18 @@ play.repairInstrument:
 	gosub get my repair kit
 	if ("$lefthand" = "Empty") then goto done.noRepairKit
 	gosub repair my $char.instrument.noun with my repair kit
+	if (%play.refillRepairKit = 1) then {
+		gosub put my $char.instrument.noun in my $char.instrument.container
+		gosub get my refill
+
+		if ("$righthand" = "Empty") then goto play.done.noRepairKitRefill
+
+		gosub put my refill in my repair kit
+		gosub stow my refill
+		gosub get my $char.instrument.noun
+		var play.refillRepairKit 0
+		goto play.repairInstrument
+	}
 	gosub stow my repair kit
 	if (%play.restart = 1) then goto play.top
 	return
@@ -214,6 +224,20 @@ play.setCharacterSong:
 	if ($Performance.Ranks >= 550) then put #tvar char.instrument.song concerto
 	echo Set default song to $char.instrument.song
 	return
+
+
+
+###############################
+###      play.done.noRepairKitRefill
+###############################
+play.done.noRepairKitRefill:
+	echo [play] REPAIR KIT NEEDS REFILL, NO REFILL FOUND
+	put #echo >Log [play] No refill for repair kit
+	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.instrument.container
+	gosub stow right
+	gosub stow left
+	put #parse PLAY DONE
+	exit
 
 
 ###############################

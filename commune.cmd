@@ -54,7 +54,7 @@ commune.lightIncense:
         return
     }
     if (!contains("$roomobjs", "incense")) then {
-        gosub get my incense from my $char.storage.incense
+        gosub get my incense from my $char.inv.container.incense
         if ("$righthandnoun" != "incense") then gosub commune.doneNoIncense
         gosub drop my incense
         goto commune.lightIncense

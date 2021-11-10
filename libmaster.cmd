@@ -577,6 +577,15 @@ braid:
     goto retry
 
 
+build:
+	var location build1
+	var todo $0
+	build1:
+	matchre return ^You slowly
+	put build %todo
+	goto retry
+
+
 bundle:
     var location bundle
     var todo $0
@@ -690,6 +699,7 @@ center:
     matchre return ^What did you want
     matchre return ^You are unable to hold
     matchre return ^You put your eye to the
+    matchre return ^You would probably need a periscope to do that.
     put center %todo
     goto retry
 
@@ -872,6 +882,7 @@ disarm:
     put #tvar lib.disarmArgs 0
     disarm1:
     matchre return ^You guess it is already disarmed\.$|indicating the trap is no longer a danger\.
+    matchre return ^You attempt to disarm the trap
     matchre disarmCareful A pitiful snowball encased in the Flames of Ushnish would fare better than you\.$
     matchre disarmCareful Prayer would be a good start for any attempt of yours at disarming the
     matchre disarmCareful should not take long with your skills\.$
@@ -1038,6 +1049,8 @@ EXP:
     EXP1:
     matchre return ^EXP HELP for more information
     matchre return ^Overall state of mind:
+    matchre return ^The bonus
+    matchre return ^You do not have
     put EXP %todo
     goto retry
 
@@ -1108,6 +1121,7 @@ forage:
     var todo $0
 forage2:
     matchre return ^Roundtime
+    matchre return ^You forage
     matchre return ^The room is too cluttered to find anything here\!
     matchre return ^You cannot forage while in combat\!
     matchre return ^You really need to have at least one hand free to forage properly\.
@@ -1799,6 +1813,7 @@ poke:
     matchre return ^You poke a piece of
     matchre return ^You tear up the empty envelope and toss it away\.
     matchre return ^You toss a piece of
+    matchre return ^You track down
     put poke %todo
     goto retry
 
@@ -2164,11 +2179,14 @@ rub:
     var todo $0
     rub1:
     matchre rub1 ^You rub Mythos gently, trying to massage any sore muscles\.
+    matchre return ^But you currently
     matchre return ^As you rub the orb, it glows slightly more intensely and you feel a strange tugging, as if something has been moved from you to the orb\.
+    matchre return ^The spider comes alive
     matchre return The strange tugging sensation is gone, leading you to believe that your sacrifice is properly prepared\.
     matchre return ^You reach out and rub
     matchre return ^You rub the orb and feel a strange tugging, but nothing really seems to happen\.
     matchre return ^You run your fingers over the bones\.
+    matchre return ^You try
     matchre return ^Rub what\?
     put rub %todo
     goto retry
@@ -2193,6 +2211,14 @@ scrape:
     put scrape %todo
     goto retry
 
+
+scream:
+    var location scream1
+    var todo $0
+    scream1:
+	matchre return ^You lift your head
+	put scream %todo
+	goto retry
 
 scribe:
     var location scribe1
@@ -2766,6 +2792,7 @@ touch:
     matchre return ^You lightly touch
     matchre return ^You reluctantly touch
     matchre return ^You rest your hand
+    matchre return ^You rush around
     matchre return ^You touch
     put touch %todo
     goto retry
@@ -2792,8 +2819,10 @@ turn:
     matchre return ^Turn what\?
     matchre return ^You attempt
     matchre return ^You carefully
+    matchre return ^You fiddle with
     matchre return ^You turn to the section
     matchre return ^You turn
+    matchre return ^What skill
     put turn %todo
     goto retry
 
@@ -3462,11 +3491,14 @@ waitForConcentration:
 
 
 waitForPrep:
+	var waitForPrep.minSpellTime $1
+	if (!(%waitForPrep.minSpellTime > -1)) then var waitForPrep.minSpellTime 40
     var isFullyPrepped 0
+    echo waitForPrep: Waiting for minspell time: %waitForPrep.minSpellTime
     waitForPrep1:
     gosub waitForMana 30
     pause .1
-    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > 40) then return
+    if (%isFullyPrepped = 1 || "$preparedspell" = "None" || $spelltime > %waitForPrep.minSpellTime) then return
     goto waitForPrep1
 
 

@@ -154,7 +154,7 @@ main:
     # Magic
     startMagic:
     #if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
-    if ($bleeding = 1 || $Warding.LearningRate < 25 || $Utility.LearningRate < 0 || $Augmentation.LearningRate < 0 || %startMagic = 1) then {
+    if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 0 || $Augmentation.LearningRate < 0 || %startMagic = 1) then {
         var startMagic 0
         put #echo >Log #0099ff Moving to magic
         gosub moveToMagic
@@ -165,6 +165,11 @@ main:
         gosub remove my flame
         gosub clean my flame
         gosub wear my flame
+
+		if ($Astrology.LearningRate < 28) then gosub runScript predict
+		gosub runScript observe
+		gosub runScript spider --skill=astrology
+		gosub runScript spider --skill=locksmithing
 
         if ($char.magic.train.revSorcery != 1) then {
             gosub runScript research sorcery

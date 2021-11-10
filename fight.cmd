@@ -125,7 +125,7 @@ action goto newBundle when ^Where did you intend to put that\?  You don't have a
 timer start
 
 # Sometimes fails to get crossbow? Not sure, hack fix for now. - JD, 4/1/21
-action send get %weapons.items(%weapons.index); send load when ^You need to hold the.*in your right hand to load it.
+action send get %weapons.items(%weapons.index); send remove %weapons.items(%weapons.index); send load when ^You need to hold the.*in your right hand to load it.
 
 action var useHunt 0 when ^You find yourself unable to hunt in this area.
 
@@ -152,11 +152,7 @@ init:
 
     #gosub runScript armor wear
 
-	put #echo >Debug [fight] Char Skill order: %weapons.skills
-
     gosub sortWeaponSkillsByRank
-    put #echo >Debug [fight] Skill Rank order: %weapons.skills
-
     gosub sortWeaponSkillsByLearningRate
     put #echo >Debug [fight] LearningRate ord: %weapons.skills
 
@@ -226,6 +222,12 @@ loop:
 			if (%communeMeraudActive != 1) then gosub runScript commune --deity=meraud
 			var lastCommuneMeraudGametime $gametime
 		}
+	}
+
+	if (!($lib.timers.nextSpiderAt > -1)) then put #tvar lib.timers.nextSpiderAt 1
+	if ($char.fight.useTarantula = 1 && $lib.timers.nextSpiderAt < $gametime) then {
+		if ($Missile_Mastery.LearningRate > 30) then gosub runScript spider --skill=missile
+		if ($lib.timers.nextSpiderAt < $gametime) then gosub runScript spider --skill=defending
 	}
 
 
@@ -388,6 +390,7 @@ attackCrossbow:
     gosub cast
     gosub checkHide
     gosub fire
+    if ("%ammo" = "matte sphere") then gosub stow matte sphere
     return
 
 attackCrossbow.aimPause:
@@ -1292,11 +1295,10 @@ sortWeaponSkillsByRank:
             if (!contains("%newWeapons.skills", "%weapons.skills(%currIndex)")) then {
 				if (%lowestSkillIndex = null) then var lowestSkillIndex %currIndex
 				if ($%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks) then var lowestSkillIndex %currIndex
-				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then var lowestSkillIndex %currIndex
-
-	                #if (%lowestSkillIndex = null || $%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks || (%tmpForceTmFirst = 1 && %weapons.skills(%currIndex) = Targeted_Magic) ) then {
-	                #    var lowestSkillIndex %currIndex
-	                #}
+				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then {
+					var lowestSkillIndex %currIndex
+					put #echo >Debug [fight] Forcing TM first useUsol = %useUsol = 1  useSls=%useSls Time.isDay=$Time.isDay
+                }
             }
             math currIndex add 1
             if (%currIndex <= %weapons.length) then goto sortWeaponSkillsByRank.sortLoop
@@ -1337,11 +1339,10 @@ sortWeaponSkillsByLearningRate:
             if (!contains("%newWeapons.skills", "%weapons.skills(%currIndex)")) then {
 				if (%lowestSkillIndex = null) then var lowestSkillIndex %currIndex
 				if ($%weapons.skills(%currIndex).LearningRate < $%weapons.skills(%lowestSkillIndex).LearningRate) then var lowestSkillIndex %currIndex
-				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then var lowestSkillIndex %currIndex
-
-	                #if (%lowestSkillIndex = null || $%weapons.skills(%currIndex).LearningRate < $%weapons.skills(%lowestSkillIndex).LearningRate) then {
-	                #    var lowestSkillIndex %currIndex
-	                #}
+				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then {
+				    var lowestSkillIndex %currIndex
+				    put #echo >Debug [fight] Forcing TM first useUsol = %useUsol = 1  useSls=%useSls Time.isDay=$Time.isDay
+				}
             }
             math currIndex add 1
             if (%currIndex <= %weapons.length) then goto sortWeaponSkillsByLearningRate.sortLoop

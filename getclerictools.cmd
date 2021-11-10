@@ -40,7 +40,7 @@ getClericTools.buyIncense:
     if ("$roomid" != "407") then gosub automove 407
     put order incense
     put offer 62
-    gosub stow my incense
+    gosub put my incense in my $char.inv.container.incense
     pause .1
     math i add 1
     if (%i > 100) then return

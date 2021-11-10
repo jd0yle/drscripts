@@ -50,6 +50,21 @@ put #tvar char.cast.default.charge 70
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 1
 
+put #tvar char.cast.art.minPrepTime 10
+put #tvar char.cast.aus.minPrepTime 10
+put #tvar char.cast.col.minPrepTime 12
+put #tvar char.cast.cv.minPrepTime 10
+put #tvar char.cast.fm.minPrepTime 10
+put #tvar char.cast.maf.minPrepTime 5
+put #tvar char.cast.moonblade.minPrepTime 5
+put #tvar char.cast.mt.minPrepTime 8
+put #tvar char.cast.pg.minPrepTime 10
+put #tvar char.cast.psy.minPrepTime 5
+put #tvar char.cast.seer.minPrepTime 15
+put #tvar char.cast.shadowling.minPrepTime 15
+put #tvar char.cast.shadows.minPrepTime 5
+put #tvar char.cast.shear.minPrepTime 5
+
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
 
@@ -58,9 +73,11 @@ put #tvar char.cast.rs.charge 80
 
 put #tvar char.cast.shw.prep 31
 put #tvar char.cast.shw.charge 0
+put #tvar char.cast.shw.minPrepTime 8
 
 put #tvar char.cast.sls.prep 33
 put #tvar char.cast.sls.charge 0
+put #tvar char.cast.sls.minPrepTime 10
 
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
@@ -118,11 +135,11 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-#put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
 
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|competition shortbow
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Bow
+#put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|competition shortbow
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Bow
 
 #put #tvar char.fight.weapons.items smokewood latchbow
 #put #tvar char.fight.weapons.skills Crossbow
@@ -152,6 +169,8 @@ put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
+
+put #tvar char.fight.useTarantula 0
 
 #***** MOON MAGE *****
 put #tvar char.fight.useCol 1
@@ -335,6 +354,17 @@ put #tvar char.compendium third compendium
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
+
+###############################
+###      TARANTULA
+###############################
+put #tvar char.tarantula.item harvester spider
+put #tvar char.inv.container.tarantula steelsilk backpack
+
+put #tvar char.tarantula.skillsetOrder Magic|Survival|Weapons|Armor|Lore
+put #tvar char.tarantula.skills.Magic Arcana|Primary_Magic|Utility
+put #tvar char.tarantula.skills.Survival Evasion|Thievery
 
 
 ###############################

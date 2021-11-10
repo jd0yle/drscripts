@@ -54,6 +54,9 @@ main:
         #gosub train.compendium 30
         gosub train.getHealed
 
+		gosub train.moveToHouse
+		if ($Performance.LearningRate < 10) then gosub train.performance
+
         pause 1
         put .izqhhrzu
         put .reconnect
@@ -65,7 +68,7 @@ main:
         gosub clericRituals
     }
 
-    if ($Performance.LearningRate < 10) then gosub train.performance
+
 
 
     startFight:
@@ -185,6 +188,7 @@ waitForMagicLoop:
         gosub stow left
         gosub stow hhr'ata
         gosub stow bola
+        gosub stow matte sphere
         gosub stow right
         gosub stow left
         return
@@ -225,6 +229,7 @@ waitForMainCombatLoop:
         gosub stow left
         gosub stow hhr'ata
         gosub stow bola
+        gosub stow matte sphere
         gosub stow right
         gosub stow left
         return

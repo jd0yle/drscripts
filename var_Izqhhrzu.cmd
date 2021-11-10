@@ -19,6 +19,8 @@ put #tvar char.appraise.item gem pouch
 ###############################
 put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|moonsilk gloves|scale helm|plate mask
 
+put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|chain gloves|ka'hurst balaclava
+
 
 ###############################
 ###      BURGLE
@@ -111,6 +113,8 @@ put #tvar char.craft.container $char.inv.defaultContainer
 put #tvar char.craft.default.container $char.inv.defaultContainer
 put #tvar char.craft.tool.container $char.inv.defaultContainer
 
+
+
 put #tvar char.craft.workorder.item burin
 #put #tvar char.craft.item burin
 
@@ -176,8 +180,13 @@ put #tvar char.fight.tmPause 7
 #put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 #put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
+#put #tvar char.fight.weapons.items smokewood pelletbow|blue sling
+#put #tvar char.fight.weapons.skills Crossbow|Slings
+
 put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+
+
 
 put #tvar char.fight.trainOffhand 1
 
@@ -200,6 +209,8 @@ put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
+
+put #tvar char.fight.useTarantula 0
 
 #***** AP *****
 put #tvar char.fight.useMaf 0
@@ -273,6 +284,8 @@ put #tvar char.instrument.container thigh bag
 ###############################
 # char.inventory.numIncense
 # char.inventory.numHolyWater
+
+put #tvar char.inv.container.incense alchemist's kit
 
 
 ###############################
@@ -396,7 +409,8 @@ unvar var.magic.Warding
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.waitRoomId 50
-put #tvar char.repair.list $char.armor|$char.fight.weapons.items|great helm|moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps
+put #tvar char.repair.list $char.armor|$char.armor.chain|$char.fight.weapons.items|great helm|moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps
+
 
 ###############################
 ###      RESEARCH
@@ -404,6 +418,17 @@ put #tvar char.repair.list $char.armor|$char.fight.weapons.items|great helm|moon
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
+
+###############################
+###      TARANTULA
+###############################
+put #tvar char.tarantula.item harvester spider
+put #tvar char.inv.container.tarantula wyvern skull
+
+put #tvar char.tarantula.skillsetOrder Magic|Survival|Weapons|Armor|Lore
+put #tvar char.tarantula.skills.Magic Arcana|Primary_Magic|Utility
+put #tvar char.tarantula.skills.Survival Evasion|Thievery
 
 
 ###############################
