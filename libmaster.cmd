@@ -290,6 +290,18 @@ action send 2 #parse MOVE FAILED;echo [libmaster] parsed for failed move when DE
 #Skip to the end of the file, don't execute this because this is just an include
 goto end.of.file
 
+accept:
+    var location accept1
+    var todo $0
+    accept1:
+    matchre return ^Both of your hands are full\.
+    matchre return ^You accept (.*)'s offer and are now holding
+    matchre return ^You accept (.*)'s tip and slip it away\.
+    matchre return ^You have no offers to accept\.
+    put accept %todo
+    goto retry
+
+
 adjust:
     var location adjust1
     var todo $0
@@ -853,6 +865,17 @@ dance:
     matchre return ^You slowly relax, letting the power of the dance fade from your core\.
     matchre return ^Your mind and body are focused on a Dance\.
     put dance %todo
+    goto retry
+
+
+decline:
+    var location decline1
+    var todo $0
+    decline1:
+    matchre return ^You decline (.*)'s offer\.
+    matchre return ^You have no outstanding offers to decline\.
+    matchre return ^Offer declined\.
+    put decline %todo
     goto retry
 
 
@@ -1595,6 +1618,17 @@ observe:
     goto retry
 
 
+ooc:
+    var location ooc1
+    var todo $0
+    ooc1:
+    matchre return ^Whisper what
+    matchre return ^Who are
+    matchre return ^You whisper
+    put OOC %todo
+    goto retry
+
+
 open:
     var todo $0
     open1:
@@ -2270,11 +2304,12 @@ shiver:
 
 shop:
     var location shop
+    var todo $0
     matchre return ^On the .*, you see\:
     matchre return ^The following items contain goods for sale
     matchre return ^There is nothing to buy here\.
     matchre return ^\[Type SHOP \[GOOD\] or click an item to see some details about it\.\]
-    put shop
+    put shop $0
     goto retry
 
 

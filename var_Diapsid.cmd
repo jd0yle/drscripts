@@ -16,6 +16,17 @@ put #tvar diapsid.fortuneTarget 0
 
 
 ###############################
+###     ITEM PICK UP
+###############################
+# Keyword for item pickup
+    put #tvar diapsid.keyword 0
+# Name of person to pickup
+    put #tvar diapsid.name 0
+# Item being picked up
+    put #tvar diapsid.item 0
+
+
+###############################
 ###     PRIZE DISTRIBUTION
 ###############################
 # Use to identify the amount of platinums or the adjective and noun of the prize.
@@ -24,6 +35,7 @@ put #tvar diapsid.fortuneTarget 0
     put #tvar diapsid.prizeMoney 0
 # Name of the winner that can be given a prize.
     put #tvar diapsid.winner 0
+
 
 pause .2
 put #parse CHARVARS DONE
