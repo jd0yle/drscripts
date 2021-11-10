@@ -72,32 +72,39 @@ put #tvar char.wornFocus 1
 put #tvar char.cast.invokeSpell 0
 
 put #tvar char.cast.default.charge 20
+put #tvar char.cast.default.chargeTimes 1
 put #tvar char.cast.default.harness 0
-put #tvar char.cast.default.prep 10
+put #tvar char.cast.default.prep 30
 
 put #tvar char.cast.bc.prep 150
 put #tvar char.cast.dc.prep 50
 
+# Buffs
+put #tvar char.cast.col.prep 30
+put #tvar char.cast.col.charge 20
+put #tvar char.cast.iots.prep 300
+put #tvar char.cast.iots.charge 0
+put #tvar char.cast.maf.prep 30
+put #tvar char.cast.maf.charge 40
+put #tvar char.cast.sco.prep 30
+put #tvar char.cast.sco.charge 20
+put #tvar char.cast.seer.prep 30
+put #tvar char.cast.seer.charge 10
+put #tvar char.cast.shadowling.prep 30
+put #tvar char.cast.shadowling.charge 10
+put #tvar char.cast.sls.prep 15
+put #tvar char.cast.sls.charge 0
+
 put #tvar char.cast.tattoo.spellName rev
-
-###############################
-###      COMMON
-###############################
-put #tvar char.common.container shadows
-put #tvar char.common.container.extra purse
-put #tvar char.common.scripts deposit|pawn|burgle|caracal|compendium|deposit|forage|magic|pawn|repair|research
-
-# Moon Mage Servant
-put #tvar char.common.servant.bags pack|saddlebag|pouch
 
 
 ###############################
 ###      FIGHT
 ###############################
 # ------ AMMO ------
-put #tvar char.fight.ammo.Crossbow bolt
+put #tvar char.fight.ammo.Crossbow crossbow bolt
 put #tvar char.fight.ammo.Bow 0
-put #tvar char.fight.ammo.Slings rock
+put #tvar char.fight.ammo.Slings metal button
 
 # ------ ARMOR ------
 put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
@@ -145,18 +152,18 @@ put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.useMaf 1
 put #tvar char.fight.usePerc 1
-put #tvar char.fight.useSanowret 1
+put #tvar char.fight.useSanowret 1R
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
 # ------ WEAPONS ------
 # Everything
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged
 
 # No Targeted Magic
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings
+put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
@@ -183,29 +190,33 @@ put #tvar super.enemies null
 ###############################
 put #tvar char.instrument.song tango
 put #tvar char.instrument.container shadows
-put #tvar char.instrument.noun rattle
-put #tvar char.instrument.tap voodoo priest's rattle
+put #tvar char.instrument.noun triangle
+put #tvar char.instrument.tap asini-wrapped electrum triangle
+
+
+###############################
+###      INVENTORY
+###############################
+put #tvar char.inv.boxContainer shadows
+put #tvar char.inv.defaultContainer shadows
+put #tvar char.inv.emptyGemPouchContainer bag
+put #tvar char.inv.fullGemPouchContainer shadows
+put #tvar char.inv.memoryOrbContainer shadows
+put #tvar char.inv.secondaryContainer purse
+put #tvar char.inv.servant.bags pack|saddlebag|pouch|rucksack|poke|bag
+put #tvar char.inv.servant.description cantankerous Shadow Servant
+put #tvar char.inv.tempContainer purse
+put #tvar char.inv.tertiaryContainer bag
+
+# Loot
+put #tvar char.loot.boxes 1
 
 
 ###############################
 ###      LOCKSMITHING
 ###############################
-put #tvar char.locks.boxTypes jewelry box|keepsake box
-put #tvar char.locks.boxType box
+put #tvar char.locks.bucket bucket
 put #tvar char.locks.lockpickType ring
-put #tvar char.locks.boxContainer shadows
-
-
-###############################
-###      LOOT
-###############################
-put #tvar char.inv.emptyGemPouchContainer purse
-put #tvar char.inv.fullGemPouchContainer shadows
-put #tvar char.inv.tempContainer purse
-put #tvar char.inv.defaultContainer shadows
-put #tvar char.loot.boxes 1
-
-put #tvar char.inv.memoryOrbContainer shadows
 
 
 ###############################
@@ -267,7 +278,7 @@ put #tvar char.pawn.container purse
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.list demonscale armguard|demonscale shield|moonsilk shirt|moonsilk pants|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade
+put #tvar char.repair.list kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade|executioner's broad-axe
 
 
 ###############################

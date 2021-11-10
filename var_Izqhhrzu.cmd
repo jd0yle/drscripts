@@ -294,8 +294,12 @@ put #tvar char.inv.container.incense alchemist's kit
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
 put #tvar char.inv.fullGemPouchContainer thigh bag
+put #tvar char.inv.memoryOrbContainer 0
+put #tvar char.inv.secondaryContainer canvas backpack
 put #tvar char.inv.tempContainer canvas backpack
+put #tvar char.inv.tertiaryContainer 0
 
+# Loot
 put #tvar char.loot.boxes 0
 
 

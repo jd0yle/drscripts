@@ -134,6 +134,7 @@ house.findLocalHouse:
     if ($zoneid = 1) then {
         gosub house.releaseInvis
         gosub automove portal
+        gosub move go meeting portal
         goto house.findLocalHouse
     }
     # Crossing - West Gate

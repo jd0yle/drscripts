@@ -15,6 +15,7 @@ include libmaster.cmd
 action var khurnaarti.justice 0 when ^You're fairly certain this area is lawless and unsafe\.$
 action var khurnaarti.justice 1 when ^After assessing the area, you think local law enforcement keeps an eye on what's going on here\.$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
+action var khurnaarti.needHeal 1 when ^You have.*(blank stare|bleeding|bloated|bruises|bruising|chunks|clouded|cracked|cuts|death pallor|difficulty|emaciated|eye socket|gashes|horrendous|mangled|numbness|open|painful|paralysis|paralyzed|rash|severe|severely|slashes|stump|swelling|swollen|twitch|twitching)
 action var khurnaarti.needHeal 1 when ^The pain is too much\.$|^You are unable to hold the .* telescope steady, and give up\.$|You cannot play the voodoo priest's rattle in your current physical condition\.$
 action var khurnaarti.needHeal 1 ; goto khurnaarti.loop when eval $bleeding = 1
 action var khurnaarti.openDoor 1 when ^(Qizhmur|Selesthiel|Izqhhrzu)'s face appears in the
@@ -242,7 +243,16 @@ khurnaarti.combatCheck:
 
 khurnaarti.combatLoop:
     pause 5
-    if ($bleeding = 1) then {
+    gosub health
+    gosub burgle.setNextBurgleAt
+    if ($lib.timers.nextBurgleAt < $gametime) then {
+        put #echo >Log #009933 [khurnaarti] Leaving combat to burgle.
+        put #script abort fight
+        gosub stance shield
+        gosub khurnaarti.clearHands
+        goto khurnaarti.burgle
+    }
+    if (%khurnaarti.needHeal = 1 || $bleeding =1) then {
         put #script abort fight
         gosub stance shield
         put #echo >Log Pink [khurnaarti] Leaving combat to be healed.
@@ -281,6 +291,7 @@ khurnaarti.forage:
 
 
 khurnaarti.healthCheck:
+    gosub health
     if (%khurnaarti.needHeal = 1|$bleeding = 1) then {
         if ("$roomname" <> "Private Home Interior") then {
             gosub moveToHouse
@@ -685,7 +696,7 @@ getHealedTrigger:
 getHealed:
     gosub checkHealth
     if (%injured = 1) then {
-        gosub moveToMagic
+        gosub runScript house
 
         if (contains("$roomplayers", "Inauri")) then {
             gosub whisper inauri heal

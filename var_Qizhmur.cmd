@@ -202,13 +202,19 @@ put #tvar char.instrument.container skull
 
 
 ###############################
-###      LOOT
+###      INVENTORY
 ###############################
-put #tvar char.inv.emptyGemPouchContainer wyvern skull
-put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.tempContainer shadows
 put #tvar char.inv.defaultContainer wyvern skull
+put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
+put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.memoryOrbContainer 0
+put #tvar char.inv.secondaryContainer shadows
+put #tvar char.inv.tempContainer shadows
+put #tvar char.inv.tertiaryContainer 0
+
+# Loot
 put #tvar char.loot.boxes 0
+
 
 ###############################
 ###      MAGIC
