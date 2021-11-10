@@ -224,10 +224,10 @@ loop:
 		}
 	}
 
-	if (!($lib.timers.nextSpiderAt > -1)) then put #tvar lib.timers.nextSpiderAt 1
-	if ($char.fight.useTarantula = 1 && $lib.timers.nextSpiderAt < $gametime) then {
-		if ($Missile_Mastery.LearningRate > 30) then gosub runScript spider --skill=missile
-		if ($lib.timers.nextSpiderAt < $gametime) then gosub runScript spider --skill=defending
+	if (!($lib.timers.nextTarantulaAt > -1)) then put #tvar lib.timers.nextTarantulaAt 1
+	if ($char.fight.useTarantula = 1 && $lib.timers.nextTarantulaAt < $gametime) then {
+		if ($Missile_Mastery.LearningRate > 30) then gosub runScript tarantula --skill=missile
+		if ($lib.timers.nextTarantulaAt < $gametime) then gosub runScript tarantula --skill=defending
 	}
 
 

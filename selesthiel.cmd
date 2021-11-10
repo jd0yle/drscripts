@@ -168,8 +168,8 @@ main:
 
 		if ($Astrology.LearningRate < 28) then gosub runScript predict
 		gosub runScript observe
-		gosub runScript spider --skill=astrology
-		gosub runScript spider --skill=locksmithing
+		gosub runScript tarantula --skill=astrology
+		gosub runScript tarantula --skill=locksmithing
 
         if ($char.magic.train.revSorcery != 1) then {
             gosub runScript research sorcery
