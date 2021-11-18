@@ -2,9 +2,9 @@ include libmaster.cmd
 
 ####### CONFIG #######
 
-var ritualFocus inauri plush
-var isFocusWorn 0
-var defaultMana 800
+var ritualFocus $char.ritualFocus
+var isFocusWorn $char.wornFocus
+var defaultMana $char.cast.iots.prep
 
 ######################
 
