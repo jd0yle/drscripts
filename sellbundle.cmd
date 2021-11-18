@@ -1,132 +1,106 @@
 include libmaster.cmd
-
-var numbers first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth
-var index 0
-
-gosub stow right
-gosub stow left
+###############################
+###      SELL BUNDLES
+###############################
 
 
-gosub summonServant
-gosub sellAllBundles
-#gosub checkForAvailableHaversack
-goto done
+###############################
+###      IDLE ACTION TRIGGERS
+###############################
+action var sb.haveBundle 1 when (a tight bundle|a lumpy bundle)
+
+###############################
+###      VARIABLES
+###############################
+var sb.haveBundle 0
 
 
-gosub remove my bundle
-gosub sell my bundle
-if ($righthandnoun = rope) then gosub stow my rope
+###############################
+###      MAIN
+###############################
+sb.main:
+    gosub sb.checkLocation
+    gosub sb.clearHands
 
-#gosub sellHaversackBundles
-
-var contBackback 1
-var contShadows 1
-var contPortal 1
-
-sellAllBundles:
-    if (%index = 0) then {
-        gosub get bundle from my backpack
-        if ("$righthand" != "Empty") then {
-            gosub sell my bundle
-            gosub drop my rope
-        } else {
-            var contBackback 0
+    sb.loop:
+        gosub sb.getBundle
+        if (%sb.haveBundle = 1) then {
+            gosub sb.sellBundle
+            goto sb.loop
         }
+        gosub sb.deposit
+        gosub sb.exit
 
-        gosub get bundle from my shadows
-        if ("$righthand" != "Empty") then {
-            gosub sell my bundle
-            gosub drop my rope
-        } else {
-            var contShadows 0
-        }
 
-        gosub get bundle from my portal
-        if ("$righthand" != "Empty") then {
-            gosub sell my bundle
-            gosub drop my rope
-        } else {
-            var contPortal 0
-        }
+###############################
+###      UTILITY
+###############################
+sb.checkLocation:
+    if ("$roomname" = "Private Home Interior") then {
+        put .house
+        waitforre ^HOUSE DONE$
+    }
 
-        gosub ask servant for haversack
+    if ("$zoneid" <> "150") then {
+        put #echo >Log [sellbundle] Not in Fang Cove, existing.
+        goto sb.exit
     } else {
-        gosub ask servant for %numbers(%index) haversack
+        if ("$roomid" <> "139") then {
+            gosub automove bundle
+        }
+        return
     }
-    if ("$righthand" = "Empty") then var index 10
-    gosub open my haversack
-    gosub sellHaversack
-    gosub close my haversack
-    gosub give servant
 
-    if (%contBackback = 1) then {
-        gosub get bundle from my backpack
-        if ("$righthand" != "Empty") then {
-            gosub sell my bundle
-            gosub drop my rope
+sb.clearHands:
+    if ("$righthand" <> "Empty") then {
+        gosub stow
+    }
+    if ("$lefthand" <> "Empty") then {
+            gosub stow left
+    }
+    return
+
+
+sb.deposit:
+    gosub runScript deposit
+    return
+
+
+sb.getBundle:
+    gosub remove my bundle
+    if (matchre("$righthandnoun|$lefthandnoun", "bundle")) then {
+        var sb.haveBundle 1
+        return
+    } else {
+        gosub get my bundle
+        if (matchre("$righthandnoun|$lefthandnoun", "bundle")) then {
+            var sb.haveBundle 1
+            return
         } else {
-            var contBackback 0
+            put #echo >Log [sellbundle] No more bundles found.
+            var sb.haveBundle 0
+            return
         }
     }
-    if (%contShadows = 1) then {
-        gosub get bundle from my shadows
-        if ("$righthand" != "Empty") then {
-            gosub sell my bundle
-            gosub drop my rope
-        } else {
-            var contShadows 0
-        }
-    }
-    if (%contPortal = 1) then {
-        gosub get bundle from my portal
-        if ("$righthand" != "Empty") then {
-            gosub sell my bundle
-            gosub drop my rope
-        } else {
-            var contPortal 0
-        }
-    }
-
-    math index add 1
-    if (%index > 10) then return
-    goto sellAllBundles
 
 
-sellHaversack:
-    var haverIndex 0
-
-    sellHaversack1:
-    var cont 0
-    gosub get bundle from my haversack
-    if ("$lefthand" != "Empty") then {
+sb.sellBundle:
+    if (matchre("$righthandnoun|$lefthandnoun", "bundle")) then {
         gosub sell my bundle
-        gosub stow left
-        var cont 1
     }
-    math haverIndex add 1
-    if (%cont = 0 || %haverIndex > 4) then return
-    goto sellHaversack1
-
-
-sellBundle:
-    gosub sell my bundle
-    gosub stow my rope
-    return
-
-
-summonServant:
-    if (!matchre("$roomobjs", "a mischievous Shadow Servant composed of fractured shadows")) then {
-        echo No servant!
-        gosub prep ss
-        pause 10
-        gosub cast
-        goto summonServant
+    if (matchre("$righthandnoun|$lefthandnoun", "bundle")) then {
+        put #echo >Log [sellbundle] Unable to sell this bundle.  rh: $righthand lh:$lefthand
+        gosub sb.clearHands
+        goto sb.exit
+    }
+    if (matchre("$righthandnoun|$lefthandnoun", "rope")) then {
+        gosub sb.clearHands
     }
     return
 
 
-done:
-    gosub release servant
-    pause .2
+
+sb.exit:
+    pause .001
     put #parse SELLBUNDLE DONE
     exit
