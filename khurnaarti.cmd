@@ -60,6 +60,7 @@ if ($Targeted_Magic.Ranks < $Debilitation.Ranks) then {
 } else {
     var khurnaarti.class debilitation
 }
+var khurnaarti.combatReturn 0
 var khurnaarti.forageRoom 44
 var khurnaarti.houseOpen 0
 var khurnaarti.houseRetry 0
@@ -162,9 +163,14 @@ khurnaarti.burgle:
         gosub runScript pawn
         gosub runScript deposit
         pause 1
-        gosub moveToHouse
-        #gosub moveToFangCove
-        gosub khurnaarti.restart
+        if (%khurnaarti.combatReturn = 1) then {
+            gosub moveToCombat
+            var khurnaarti.combatReturn 0
+            goto khurnaarti.fight
+        } else {
+            gosub moveToHouse
+            gosub khurnaarti.restart
+        }
     }
 
 
@@ -250,9 +256,16 @@ khurnaarti.combatLoop:
         put #script abort fight
         gosub stance shield
         gosub khurnaarti.clearHands
+        if ("$preparedspell" <> "None") then {
+            gosub release
+        }
+        if ($SpellTimer.ShadowWeb.duration <> 0) then {
+            gosub release shadow web
+        }
+        var khurnaarti.combatReturn 1
         goto khurnaarti.burgle
     }
-    if (%khurnaarti.needHeal = 1 || $bleeding =1) then {
+    if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
         put #script abort fight
         gosub stance shield
         put #echo >Log Pink [khurnaarti] Leaving combat to be healed.
@@ -265,15 +278,17 @@ khurnaarti.combatLoop:
 
 
 khurnaarti.compendium:
-    evalmath nextCompendiumAt $lastCompendiumGametime + 1200
-    if (%nextCompendiumAt > $gametime) then {
-        return
+    if ($First_Aid.LearningRate < 10) then {
+        evalmath nextCompendiumAt $lastCompendiumGametime + 1200
+        if (%nextCompendiumAt > $gametime) then {
+            return
+        }
+        gosub khurnaarti.clearHands
+        put #echo >Log #ffcc00 [khurnaarti] Beginning compendium.
+        gosub runScript compendium
+        put #var lastCompendiumGametime $gametime
+        put #echo >Log #ffcc00 [khurnaarti] Compendium complete.  FA: ($First_Aid.LearningRate/34) SCH: ($Scholarship.LearningRate/34)
     }
-    gosub khurnaarti.clearHands
-    put #echo >Log #ffcc00 [khurnaarti] Beginning compendium.
-    gosub runScript compendium
-    put #var lastCompendiumGametime $gametime
-    put #echo >Log #ffcc00 [khurnaarti] Compendium complete.  FA: ($First_Aid.LearningRate/34) SCH: ($Scholarship.LearningRate/34)
     return
 
 
@@ -372,8 +387,7 @@ khurnaarti.idle:
 
 
 khurnaarti.magic:
-    var khurnaarti.magicRates ($Augmentation.LearningRate + $Warding.LearningRate + $Utility.LearningRate)
-    if (%khurnaarti.magicRates < 15) then {
+    if ($Augmentation.LearningRate < 10 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10) then {
         put #echo >Log #6600ff [khurnaarti] Beginning magic.
         gosub runScript magic noLoop
         put #echo >Log #6600ff [khurnaarti] Magic complete. Aug:($AugmentationWarding.LearningRate/34)
