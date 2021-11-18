@@ -1078,6 +1078,17 @@ EXP:
     goto retry
 
 
+face:
+    var location face1
+    var todo $0
+    face1:
+    matchre return Face what\?
+    matchre return There is nothing else to face\!
+    matchre return You turn to face
+    put face %todo
+    goto retry
+
+
 fill:
     var todo $0
     fill1:
@@ -1732,6 +1743,7 @@ power:
     matchre return ^You are too distracted
     matchre return ^You lost track of your surroundings
     matchre return ^You stop for a moment
+    matchre return ^You're not ready to do that again, yet\.
     matchre return ^Your focus expires
     matchre return ^Your resolve collapses
     put PERCEIVE %todo
@@ -2400,6 +2412,19 @@ sneak:
     goto retry
 
 
+sort:
+    var location sort1
+    var todo $0
+    sort1:
+    matchre return has been moved (down|up) in your inventory\.
+    matchre return ^Usage
+    matchre return ^Your inventory has been reversed\.
+    matchre return ^Your inventory is now arranged in head-to-toe order\.
+    put sort %todo
+    goto retry
+
+
+
 sprinkle:
     var location sprinkle1
     var todo $0
@@ -2745,6 +2770,12 @@ target2:
     put face next
     goto target1
 
+
+task:
+    var location task
+    matchre return You recall
+    put task
+    goto retry
 
 tdps:
     var location tdps1
