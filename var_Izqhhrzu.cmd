@@ -274,6 +274,7 @@ var super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
 put #tvar char.instrument.container thigh bag

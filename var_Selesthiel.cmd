@@ -222,6 +222,7 @@ var super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun ocarina
 put #tvar char.instrument.tap indurium ocarina
 put #tvar char.instrument.container thigh bag

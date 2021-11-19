@@ -173,27 +173,27 @@ put #tvar char.fight.useStealth 0
 
 # ------ WEAPONS ------
 # Everything
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm
 
 # No Targeted Magic
-# put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
-# put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
+#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm
 
 # Main Weapons Only
 put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
 
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
 put #tvar char.fight.useCol 1
-put #tvar char.fight.useObserve 0
+put #tvar char.fight.useObserve 1
 put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
-put #tvar char.fight.useShw 0
+put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
 
 
@@ -208,6 +208,7 @@ put #tvar super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth colored cloth
 put #tvar char.instrument.song tango
 put #tvar char.instrument.container shadows
 put #tvar char.instrument.noun triangle
