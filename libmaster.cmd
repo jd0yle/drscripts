@@ -589,6 +589,15 @@ braid:
     goto retry
 
 
+break:
+    var location break1
+    var todo $0
+    break1:
+    matchre return ^You thrust your
+    put break %todo
+    goto retry
+
+
 build:
 	var location build1
 	var todo $0
