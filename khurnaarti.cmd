@@ -166,7 +166,7 @@ khurnaarti.burgle:
         if (%khurnaarti.combatReturn = 1) then {
             gosub moveToCombat
             var khurnaarti.combatReturn 0
-            goto khurnaarti.fight
+            goto khurnaarti.combatLoop
         } else {
             gosub moveToHouse
             gosub khurnaarti.restart

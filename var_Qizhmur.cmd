@@ -205,6 +205,7 @@ put #tvar char.instrument.container skull
 ###############################
 ###      INVENTORY
 ###############################
+put #tvar char.inv.anythingContainer hip pouch
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
 put #tvar char.inv.fullGemPouchContainer portal

@@ -62,6 +62,7 @@ put #tvar char.burgle.container purse
 put #tvar char.cambrinth snakelet
 put #tvar char.focusContainer shadows
 put #tvar char.ritualFocus puzzle rings
+put #tvar char.tmFocus lightning bolt
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
 
@@ -100,6 +101,9 @@ put #tvar char.cast.iots.charge 0
 put #tvar char.cast.maf.prep 30
 put #tvar char.cast.maf.charge 40
 put #tvar char.cast.maf.chargeTimes 1
+put #tvar char.cast.moonblade.prep 15
+put #tvar char.cast.moonblade.charge 0
+put #tvar char.cast.moonblade.chargeTimes 0
 put #tvar char.cast.seer.prep 30
 put #tvar char.cast.seer.charge 20
 put #tvar char.cast.seer.chargeTimes 2
@@ -110,16 +114,20 @@ put #tvar char.cast.sls.prep 15
 put #tvar char.cast.sls.charge 0
 put #tvar char.cast.sls.chargeTimes 1
 put #tvar char.cast.sls.constellation spider
+put #tvar char.cast.tksh.prep 30
+put #tvar char.cast.tksh.charge 20
+put #tvar char.cast.tksh.chargeTimes 2
 
 
 ###############################
 ###      FIGHT
 ###############################
 # ------ AMMO ------
-put #tvar char.fight.ammo.Crossbow bolt
+put #tvar char.fight.ammo.Crossbow matte sphere
 put #tvar char.fight.ammo.Bow 0
-put #tvar char.fight.ammo.Slings button
-#put #tvar char.fight.ammo.Slings sphere
+put #tvar char.fight.ammo.Slings matte sphere
+#put #tvar char.fight.ammo.Slings button
+
 
 # ------ ARMOR ------
 put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
@@ -173,15 +181,15 @@ put #tvar char.fight.useStealth 0
 
 # ------ WEAPONS ------
 # Everything
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # No Targeted Magic
-#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne
-#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm
+#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # Main Weapons Only
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade
+put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
 put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
 
 put #tvar char.fight.wornCrossbow 0
@@ -218,6 +226,7 @@ put #tvar char.instrument.tap asini-wrapped electrum triangle
 ###############################
 ###      INVENTORY
 ###############################
+put #tvar char.inv.anythingContainer poke
 put #tvar char.inv.boxContainer shadows
 put #tvar char.inv.defaultContainer shadows
 put #tvar char.inv.emptyGemPouchContainer watersilk bag
@@ -300,7 +309,11 @@ put #tvar char.pawn.container purse
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.list kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade|executioner's broad-axe|duraka skefne
+put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves|
+put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|
+put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade|
+put #tvar char.repair weapon2 executioner's broad-axe|duraka skefne|haralun broadsword|blue sling
+put #tvar char.repair.list $char.repair.armor + $char.repair.brawl + $char.repair.armor.weapon + $char.repair.weapon2
 
 
 ###############################
