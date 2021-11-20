@@ -22,10 +22,10 @@ action put #echo >%logWindow Yellow Spider appears!;put #play NewRank when A his
 if (!($lastHuntGametime >0)) then put #var lastHuntGametime 0
 var targetCreature 0
 var taskProgress 0
-var targetSpell burn
+var targetSpell pd
 var targetMana 30
 var targetLocation chest
-var targetFocus adder
+var targetFocus lightning bolt
 
 if_1 then {
     if ("%1" <> "") then {
@@ -36,9 +36,9 @@ if_1 then {
     }
 }
 
-if !(matchre("$righthandnoun|$lefthandnoun", "%targetFocus")) then {
+if !(matchre("$righthand|$lefthand", "%targetFocus")) then {
     gosub get my %targetFocus
-    gosub invoke adder
+    gosub invoke my %targetFocus
 }
 ###############################
 ###    MAIN
@@ -80,7 +80,7 @@ targetCast:
 
 
 targetFaceNext:
-    put face next
+    gosub face next
     gosub target
     goto targetLoop
 
