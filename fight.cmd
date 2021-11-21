@@ -66,6 +66,7 @@ var useShadowling $char.fight.useShadowling
 var useShadows $char.fight.useShadows
 var useShw $char.fight.useShw
 var useSls $char.fight.useSls
+var useTksh $char.fight.useTksh
 
 var useCh $char.fight.useCh
 var useIvm $char.fight.useIvm
@@ -555,6 +556,10 @@ buffs:
     }
     if ($char.fight.useShadows = 1 && ($SpellTimer.Shadows.active = 0 || $SpellTimer.Shadows.duration < 2)) then {
         gosub runScript cast shadows
+        return
+    }
+    if ($char.fight.useTksh = 1 && ($SpellTimer.TelekineticShield.active = 0 || $SpellTimer.TelekineticShield.duration < 2)) then {
+        gosub runScript cast tksh
         return
     }
 

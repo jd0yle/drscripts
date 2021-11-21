@@ -150,7 +150,7 @@ put #tvar char.fight.forceShield 0
 
 # ------ LOOT ------
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType treasure
+put #tvar char.fight.lootType goods
 
 # ------ STANCE ------
 # Force always using stance shield, never stance parry
@@ -195,7 +195,7 @@ put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
-put #tvar char.fight.useCol 1
+put #tvar char.fight.useCol 0
 put #tvar char.fight.useObserve 1
 put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
@@ -203,6 +203,7 @@ put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
+put #tvar char.fight.useTksh 1
 
 
 ###############################

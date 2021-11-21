@@ -183,6 +183,7 @@ put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 1
+put #tvar char.fight.useTksh 0
 
 #***** NECRO *****
 # The necro ritual to use for training

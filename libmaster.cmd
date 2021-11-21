@@ -2093,6 +2093,7 @@ release:
     matchre return ^Release what
     matchre return sphere suddenly flares with a cold light and vaporizes\!$
     matchre return ^That would be a neat trick.  Try finding a shadowling first\.$
+    matchre return ^That's probably not a good idea\.
     matchre return ^The deadening murk around you subsides\.$
     matchre return ^The greenish hues
     matchre return ^The heightened sense of spiritual awareness leaves you\.$

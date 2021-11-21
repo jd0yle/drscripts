@@ -260,7 +260,7 @@ khurnaarti.combatLoop:
             gosub release
         }
         if ($SpellTimer.ShadowWeb.duration <> 0) then {
-            gosub release shadow web
+            gosub release shw
         }
         var khurnaarti.combatReturn 1
         goto khurnaarti.burgle
@@ -273,6 +273,12 @@ khurnaarti.combatLoop:
         gosub moveToHouse
         var khurnaarti.needHeal 1
         gosub khurnaarti.loop
+    }
+    if !(matchre("$scriptlist", "fight")) then {
+        put .fight
+    }
+    if !(matchre("$scriptlist", "afk")) then {
+        put .afk
     }
    goto khurnaarti.combatLoop
 
