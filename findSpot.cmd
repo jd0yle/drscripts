@@ -19,7 +19,7 @@ if ("%mob" = "adanf") then {
 
 if ("%mob" = "adultwyvern") then {
     var minRoomId 468
-    var maxRoomId 475
+    var maxRoomId 479
     var waitroomid 388
     var preferredRoomId 468
 }
@@ -192,13 +192,14 @@ checkThisRoom:
 waitForRoom:
 	if ("%mob" = "wyvern") then put .findSpot wyvern2
     gosub automove %waitroomid
-    gosub hide
+    #gosub hide
     put #echo >Log #FFCC01 [findSpot] No open %mob room
     echo ******************************
     echo * COULD NOT FIND OPEN ROOM
     echo * WAITING 120 SECONDS
     echo ******************************
-    pause 120
+    #pause 120
+    gosub runScript play
     gosub shiver
     if ("%mob" = "wyvern2") then put .findSpot wyvern
 

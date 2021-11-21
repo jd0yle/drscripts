@@ -591,6 +591,12 @@ buffs:
         return
     }
 
+    # TRADER
+    if ($char.fight.useLgv = 1 && ($SpellTimer.LastGiftofVithwokIV.active = 0 || $SpellTimer.LastGiftofVithwokIV.duration < 3)) then {
+        gosub runScript cast lgv
+        return
+    }
+
     return
 
 
@@ -1376,17 +1382,18 @@ fight.tarantula:
 	}
 	evalmath tarantula.timeRemaining ($lib.timers.nextTarantulaAt - $gametime)
     if ($char.fight.useTarantula = 1 && %tarantula.timeRemaining < 0) then {
-		if ("$char.tarantula.lastSkillset" != "Magic" && "$char.tarantula.lastSkillset" != "Magics") then {
-			gosub runScript tarantula --skill=arcana
-			return
-		}
-		if ($Melee_Mastery.LearningRate < 10 && $Missile_Mastery.LearningRate < 10) then return
-		if ($Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then {
-			gosub runScript tarantula --skill=melee
-		} else {
-			gosub runScript tarantula --skill=missile
-		}
+		var fight.tmp.tarantulaSkill null
+
+		if ("$char.tarantula.lastSkillset" != "Magic" && "$char.tarantula.lastSkillset" != "Magics") then var fight.tmp.tarantulaSkill arcana
+
+		if ("%fight.tmp.tarantulaSkill" = "null" && $Melee_Mastery.LearningRate > 10 && $Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then var fight.tmp.tarantulaSkill melee
+		if ("%fight.tmp.tarantulaSkill" = "null" && $Missile_Mastery.LearningRate > 10 && $Missile_Mastery.LearningRate > $Melee_Mastery.LearningRate) then var fight.tmp.tarantulaSkill missile
+        if ("%fight.tmp.tarantulaSkill" = "null" && $Defending.LearningRate > 10) then var fight.tmp.tarantulaSkill defending
+
+        if ("%fight.tmp.tarantulaSkill" != "null") then gosub runScript tarantula --skill=%fight.tmp.tarantulaSkill
+        unvar fight.tmp.tarantulaSkill
     }
+    unvar tarantula.timeRemaining
 	return
 
 ###############################

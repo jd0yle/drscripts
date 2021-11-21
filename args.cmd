@@ -12,6 +12,9 @@
 #
 ####################################################################################################
 
+# Check for valid parameter arguments.
+if (!matchre("%0", "--\S+=")) then goto argsDone
+
 gosub parseArgs
 goto argsDone
 

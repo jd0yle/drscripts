@@ -60,10 +60,9 @@ if ("$preparedspell" != "None") then gosub release spell
 if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom" || "%spell" = "mf") then goto ritualSpell
 if ("%spell" = "col") then {
     gosub checkMoons
-    if ($moon = null) then {
-        put #echo #FF0000 [cast] NO MOON AVAILABLE for Cage of Light!
-        goto done
-    }
+    if ("%target" = "$charactername") then var target $moon
+    if ("$moon" = "null") then var target ambient
+
 }
 
 if ("%spell" = "om") then {

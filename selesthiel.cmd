@@ -569,8 +569,9 @@ moveToMagic:
 moveToShardBulls:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
-        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
-        #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        #if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        if ($char.fight.useCol = 1 && ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10)) then gosub runScript cast col
+        if ($char.fight.useTksh = 1 && ($SpellTimer.TelekineticShield.active = 0 || $SpellTimer.TelekineticShield.duration < 10)) then gosub runScript cast tksh
         gosub runScript house
         goto moveToShardBulls
     }
@@ -629,7 +630,7 @@ moveToAdultWyverns:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        if ($roomid >= 468 && $roomid <= 475 && "$roomplayers" = "") then return
+        if ($roomid >= 468 && $roomid <= 479 && "$roomplayers" = "") then return
         gosub runScript findSpot adultwyvern
         goto moveToAdultWyverns
     }

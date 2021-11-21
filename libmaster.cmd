@@ -170,7 +170,7 @@ if ("$charactername" = "Inauri") then {
 }
 action put #var lib.magicInert 1 when ^The spell pattern resists the influx of unstable mana, overloading your arcane senses and rendering you magically inert\.
 action put #var lib.magicInert 0 when ^Awareness enfolds you like the embrace of a loving parent as your attunement to (Life|Lunar|Arcane|Elemental|Holy) mana returns\.
-
+action (checkForBacklashDebuff) var lib.debuffedSkills %lib.debuffedSkills|$1 when ^--.* (Lunar Magic|Augmentation|Debilitation|Utility|Warding|Sorcery)
 
 ###############################
 ###    ROOM OCCUPIED
@@ -1082,6 +1082,7 @@ EXP:
     matchre return ^EXP HELP for more information
     matchre return ^Overall state of mind:
     matchre return ^The bonus
+    matchre return ^The following skills
     matchre return ^You do not have
     put EXP %todo
     goto retry
@@ -3437,8 +3438,21 @@ libmastertest:
 #                            UTIL
 ########################################################################
 
+checkForBacklashDebuff:
+    var lib.debuffedSkills null
+    put #tvar lib.backlashDebuff 0
+
+    gosub exp mods
+    eval lib.debuffedSkills replace("%lib.debuffedSkills", "null|", "")
+
+	if (contains("%lib.debuffedSkills", "Augmentation") && contains("%lib.debuffedSkills", "Utility") && contains("%lib.debuffedSkills", "Warding")) then {
+	    put #tvar lib.backlashDebuff 1
+	}
+	put #tvar lib.timers.lastCheckForBacklashDebuff $gametime
+	unvar lib.debuffedSkills
+    return
+
 checkMoons:
-    if (!($moon >0)) then put #var moon null
     put #var moon null
     if ($Time.isYavashUp = 1) then {
         put #var moon yavash

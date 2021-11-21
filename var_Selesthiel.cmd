@@ -48,10 +48,11 @@ put #tvar char.cast.default.chargeTimes 1
 
 put #tvar char.cast.art.minPrepTime 12
 put #tvar char.cast.aus.minPrepTime 12
-put #tvar char.cast.col.minPrepTime 12
+put #tvar char.cast.col.minPrepTime 15
 put #tvar char.cast.cv.minPrepTime 12
 put #tvar char.cast.fm.minPrepTime 12
 put #tvar char.cast.imbue.minPrepTime 12
+put #tvar char.cast.lgv.minPrepTime 15
 put #tvar char.cast.maf.minPrepTime 8
 put #tvar char.cast.moonblade.minPrepTime 8
 put #tvar char.cast.mt.minPrepTime 8
@@ -172,8 +173,8 @@ put #tvar char.fight.useStealth 0
 put #tvar char.fight.useTarantula 1
 
 #***** MOON MAGE *****
-put #tvar char.fight.useCol 0
-put #tvar char.fight.useMaf 1
+put #tvar char.fight.useCol 1
+put #tvar char.fight.useMaf 0
 put #tvar char.fight.useObserve 1
 put #tvar char.fight.useRevSorcery 1
 put #tvar char.fight.useSeer 1
@@ -195,6 +196,9 @@ put #tvar char.fight.useIvm 0
 put #tvar char.fight.usePhp 0
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 0
+
+#***** TRADER *****
+put #tvar char.fight.useLgv 1
 
 
 if ($char.fight.backtrain = 1) then {
@@ -301,7 +305,7 @@ unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 55
+var tmp.charge.Warding 48
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding
