@@ -10,16 +10,16 @@ put #tvar char.storage.incense $char.storage.default
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container thigh bag
+put #tvar char.appraise.container portal
 put #tvar char.appraise.item gem pouch
 
 
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|moonsilk gloves|scale helm|plate mask
+put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|scale helm|plate mask
 
-put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|chain gloves|ka'hurst balaclava
+put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|ka'hurst gloves|ka'hurst balaclava
 
 
 ###############################
@@ -130,9 +130,13 @@ put #tvar char.compendium.forceTurn 1
 ###      FIGHT
 ###############################
 #***** AMMO *****
-put #tvar char.fight.ammo.Crossbow bolt
+#put #tvar char.fight.ammo.Crossbow bolt
+#put #tvar char.fight.ammo.Bow arrow
+#put #tvar char.fight.ammo.Slings rock
+
+put #tvar char.fight.ammo.Crossbow matte sphere
 put #tvar char.fight.ammo.Bow arrow
-put #tvar char.fight.ammo.Slings rock
+put #tvar char.fight.ammo.Slings matte sphere
 
 put #tvar char.fight.wornCrossbow 0
 
@@ -171,22 +175,23 @@ put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 21
+put #tvar char.fight.tmPrep 20
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
-#put #tvar char.fight.weapons.items blood-red scythe|Empty|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
-#put #tvar char.fight.weapons.skills Polearms|Sorcery|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
-
-#put #tvar char.fight.weapons.items smokewood pelletbow|blue sling
-#put #tvar char.fight.weapons.skills Crossbow|Slings
-
+# dragonwood crossbow
 put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
+# smokewood pelletbow
+put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
+put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
+
+#put #tvar char.fight.weapons.items smokewood pelletbow|blue sling
+#put #tvar char.fight.weapons.skills Crossbow|Slings
 
 put #tvar char.fight.trainOffhand 1
 
@@ -210,7 +215,7 @@ put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
-put #tvar char.fight.useTarantula 0
+put #tvar char.fight.useTarantula 1
 
 #***** AP *****
 put #tvar char.fight.useMaf 0
@@ -223,9 +228,9 @@ put #tvar char.fight.prayTarget Huldah
 
 
 put #tvar char.fight.useBenediction 1
-put #tvar char.fight.useBless 0
+put #tvar char.fight.useBless 1
 put #tvar char.fight.useGhs 1
-put #tvar char.fight.useHyh 1
+put #tvar char.fight.useHyh 0
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMf 1
 put #tvar char.fight.useMpp 1
@@ -293,10 +298,10 @@ put #tvar char.inv.container.incense alchemist's kit
 ###############################
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
-put #tvar char.inv.fullGemPouchContainer thigh bag
+put #tvar char.inv.fullGemPouchContainer portal
 put #tvar char.inv.memoryOrbContainer 0
 put #tvar char.inv.secondaryContainer canvas backpack
-put #tvar char.inv.tempContainer canvas backpack
+put #tvar char.inv.tempContainer alchemist's kit
 put #tvar char.inv.tertiaryContainer 0
 
 # Loot

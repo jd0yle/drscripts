@@ -54,8 +54,7 @@ main:
         #gosub train.compendium 30
         gosub train.getHealed
 
-		gosub train.moveToHouse
-		if ($Performance.LearningRate < 10) then gosub train.performance
+		#gosub train.moveToHouse
 
         pause 1
         put .izqhhrzu
@@ -84,7 +83,8 @@ main:
 			if ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 30) then gosub runScript cast mpp
         }
         put #echo >Log #cc99ff Going to main combat
-        gosub train.moveToWarklin
+        #gosub train.moveToWarklin
+        gosub train.moveToBlackGargoyles
         put .fight
         gosub waitForMainCombat
         goto main

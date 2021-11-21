@@ -98,16 +98,11 @@ main:
         gosub cast
 
         gosub runScript burgle
-        gosub runScript armor wear
+        gosub runScript armor wear wyvern
 
         gosub automove n gate
         gosub automove portal
-        #gosub move go gate
-        #gosub automove pawn
-
-        #gosub runScript pawn
         gosub prep rf
-        #gosub automove portal
 
         if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
         gosub move go meeting portal
@@ -140,11 +135,12 @@ main:
         gosub stow right
         gosub stow left
 
-        put .dep
-        waitforre ^DEP DONE$
+        gosub runScript deposit
         gosub move up
         gosub move out
         gosub cast
+        gosub moveToMagic
+        gosub runScript fixInventory
     }
 
 
@@ -160,16 +156,14 @@ main:
         gosub moveToMagic
         gosub getHealed
 
-        gosub runScript fixInventory
-
         gosub remove my flame
         gosub clean my flame
         gosub wear my flame
 
-		if ($Astrology.LearningRate < 28) then gosub runScript predict
-		gosub runScript observe
-		gosub runScript tarantula --skill=astrology
-		gosub runScript tarantula --skill=locksmithing
+		#if ($Astrology.LearningRate < 28) then gosub runScript predict
+		#gosub runScript observe
+		#gosub runScript tarantula --skill=astrology
+		#gosub runScript tarantula --skill=locksmithing
 
         if ($char.magic.train.revSorcery != 1) then {
             gosub runScript research sorcery
@@ -220,7 +214,8 @@ main:
     startFight:
 	    put #echo >Log #cc99ff Moving to combat
 	    #gosub moveToWyverns
-	    gosub moveToTelgas
+	    #gosub moveToTelgas
+	    gosub moveToAdultWyverns
 	    if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict
 	    put #tvar char.fight.backtrain 0
 	    put .fight
@@ -575,7 +570,7 @@ moveToShardBulls:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
-        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
         gosub runScript house
         goto moveToShardBulls
     }
@@ -616,11 +611,58 @@ moveToShardBulls:
 
 
 
+moveToAdultWyverns:
+    if ("$roomname" = "Private Home Interior") then {
+        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
+        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        gosub runScript house
+        goto moveToAdultWyverns
+    }
+
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub prep rf
+        pause 3
+        gosub cast
+    }
+
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 468 && $roomid <= 475 && "$roomplayers" = "") then return
+        gosub runScript findSpot adultwyvern
+        goto moveToAdultWyverns
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToAdultWyverns
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToAdultWyverns
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToAdultWyverns
+    }
+
+    goto moveToAdultWyverns
+
+
+
+
 moveToWyverns:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
-        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
         gosub runScript house
         goto moveToWyverns
     }
@@ -666,7 +708,7 @@ moveToTelgas:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
         if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
-        if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
         gosub runScript house
         goto moveToTelgas
     }

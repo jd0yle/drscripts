@@ -224,12 +224,8 @@ loop:
 		}
 	}
 
-	if (!($lib.timers.nextTarantulaAt > -1)) then put #tvar lib.timers.nextTarantulaAt 1
-	if ($char.fight.useTarantula = 1 && $lib.timers.nextTarantulaAt < $gametime) then {
-		if ($Missile_Mastery.LearningRate > 30) then gosub runScript tarantula --skill=missile
-		if ($lib.timers.nextTarantulaAt < $gametime) then gosub runScript tarantula --skill=defending
-	}
 
+	if ($char.fight.useTarantula = 1) then gosub fight.tarantula
 
     # Use numMobs so that we can subtract non-combat "pets" (ex: dirt construct, shadow servant, etc.)
     var numMobs $monstercount
@@ -734,8 +730,6 @@ checkWeaponSkills:
             if ($char.fight.useBless = 1) then {
                 gosub checkStances
                 gosub prep bless
-                gosub charge my $char.cambrinth 5
-                gosub invoke my $char.cambrinth 5
 
                 # For ranged weapons, bless the ammo, not the weapon
                 var blessTarget none
@@ -1366,6 +1360,29 @@ sortWeaponSkillsByLearningRate:
             unvar lowestSkillIndex
             return
 
+
+###############################
+###      fight.tarantula
+###############################
+fight.tarantula:
+	if (!($lib.timers.nextTarantulaAt > -1)) then {
+		put #echo >Debug [fight] Setting next tarantula!
+		put #tvar lib.timers.nextTarantulaAt 1
+	}
+	evalmath tarantula.timeRemaining ($lib.timers.nextTarantulaAt - $gametime)
+    if ($char.fight.useTarantula = 1 && %tarantula.timeRemaining < 0) then {
+		if ("$char.tarantula.lastSkillset" != "Magic" && "$char.tarantula.lastSkillset" != "Magics") then {
+			gosub runScript tarantula --skill=arcana
+			return
+		}
+		if ($Melee_Mastery.LearningRate < 10 && $Missile_Mastery.LearningRate < 10) then return
+		if ($Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then {
+			gosub runScript tarantula --skill=melee
+		} else {
+			gosub runScript tarantula --skill=missile
+		}
+    }
+	return
 
 ###############################
 ###      DONE

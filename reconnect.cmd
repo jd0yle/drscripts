@@ -1,4 +1,11 @@
-#debug 5
+####################################################################################################
+# reconnect.cmd
+# Selesthiel - justin@jmdoyle.com
+#
+# USAGE
+# .reconnect
+#
+####################################################################################################
 
 var cancelReconnect 0
 var forceReconnect 0
@@ -64,7 +71,6 @@ loopWait:
 
 	evalmath nextCompareGametimeAt (%lastCompareGametimeAt + 30)
     if (%nextCompareGametimeAt < $gametime) then {
-	    #echo [reconnect] $time Stored gametime is %storedGameTime actual gametime is $gametime
 	    if (%storedGameTime = $gametime) then {
 	        put #echo >Log #FF0000 [reconnect] GAMETIME NOT UPDATED (%storedGameTime vs $gametime), FORCING connected=0
 	        put #var connected 0

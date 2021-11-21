@@ -10,6 +10,9 @@ if_1 then {
     if (%1 = force) then {
         var force true
     }
+    if (%1 = nobuffs) then {
+        var noBuffs 1
+    }
 }
 ###############################
 ###      INIT
@@ -56,10 +59,10 @@ main:
     var objects %%skillset
     eval objlength count("%objects", "|")
 
-    if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then {
+    if (%noBuffs != 1 && (%$SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2)) then {
         gosub runScript cast aus
     }
-    if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
+    if (%noBuffs != 1 && ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2)) then {
         gosub runScript cast pg
     }
 

@@ -17,10 +17,24 @@ if ("%mob" = "adanf") then {
     var waitroomid 31
 }
 
+if ("%mob" = "adultwyvern") then {
+    var minRoomId 468
+    var maxRoomId 475
+    var waitroomid 388
+    var preferredRoomId 468
+}
+
 if ("%mob" = "beisswurms") then {
     var minRoomId 31
     var maxRoomId 37
     var waitroomid 1
+}
+
+if ("%mob" = "blackgargoyle") then {
+    var minRoomId 380
+    var maxRoomId 418
+    var waitroomid 370
+    var preferredRoomId 415
 }
 
 if ("%mob" = "bobcat") then {

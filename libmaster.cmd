@@ -1996,6 +1996,7 @@ push:
     var todo $0
     push1:
     matchre return ^Not finding a matching section
+    matchre return ^Flipping through
     matchre return ^You wave the loop near
     matchre return ^Roundtime
     matchre return ^You push
@@ -2123,6 +2124,7 @@ remove:
     matchre return ^Remove what\?
     matchre return ^Roundtime
     matchre return ^What were you referring to\?
+    matchre return ^Wiggling your fingers
     matchre return ^You aren't wearing that\.
     matchre return ^You count out
     matchre return ^You loosen the straps securing
@@ -3004,6 +3006,7 @@ wear:
     matchre return ^You sling
     matchre return ^You slip
     matchre return ^You strap
+    matchre return ^You tug
     matchre return ^You work your way into
     matchre location.unload1 ^You need to unload the
     matchre location.unload1 ^You should unload the

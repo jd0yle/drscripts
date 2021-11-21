@@ -76,6 +76,8 @@ train.burgle:
 		gosub train.moveToHouse
 
 		if ("$roomname" = "Private Home Interior") then gosub runScript house
+		pause
+		if ("$roomname" = "Private Home Interior") then gosub runScript house
 
         gosub automove bundle
         gosub remove my bundle
@@ -355,6 +357,52 @@ train.healWithRats:
     return    
 
 
+
+###############################
+###    train.moveToBlackGargoyles
+###############################
+train.moveToBlackGargoyles:
+    gosub train.setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToBlackGargoyles
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto train.moveToBlackGargoyles
+    }
+
+	# Hawstkaal Road
+	if ("%zone" = "126") then {
+		gosub runScript travel boar
+		goto train.moveToBlackGargoyles
+	}
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" ) then {
+        if ($roomid >= 380 && $roomid <= 418 && "$roomplayers" = "") then return
+        gosub runScript findSpot blackgargoyle
+        goto train.moveToBlackGargoyles
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        gosub runScript travel boar
+        put #tvar powerwalk 0
+        goto train.moveToBlackGargoyles
+    }
+
+    echo No move target found, zoneid = $zoneid  zone = %zone
+    goto train.moveToBlackGargoyles
+
+
+
 ###############################
 ###    train.moveToBurgle
 ###############################
@@ -492,6 +540,25 @@ train.moveToBurgle:
     if ("$zoneid" = "67") then {
         gosub automove 132
         goto train.moveToBurgle
+    }
+
+	# Hawstkaal Road
+	if ("%zone" = "126") then {
+		gosub runScript travel boar
+		goto train.moveToBurgle
+	}
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" ) then {
+        if ($roomid = 29) then return
+        gosub automove 29
+        goto train.moveToBurgle
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+		gosub runScript travel boar
+		goto train.moveToBurgle
     }
 
     goto train.moveToBurgle
@@ -881,6 +948,22 @@ train.moveToHouse:
     # Shard West Gate Area
     if ("%zone" = "69") then {
         gosub automove n gate
+        goto train.moveToHouse
+    }
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" || "%zone" = "126") then {
+        gosub runScript travel hib portal
+        goto train.moveToHouse
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        if ("$roomid" != "96") then gosub automove portal
+        gosub move go meeting portal
+        put #tvar powerwalk 0
         goto train.moveToHouse
     }
 
@@ -1318,7 +1401,9 @@ train.resetState:
 	gosub stow right
 	gosub stow left
 	gosub release symbiosis
+	if ("$preparedspell" != "None") then gosub release spell
 	gosub stow hhr'ata
+	gosub stow sphere
 	gosub stow bola
 	gosub stow frying pan
 	gosub stow right

@@ -3,7 +3,8 @@ include args.cmd
 
 var tarantula.skill %args.skill
 
-action evalmath timeRemaining ($1 * 60 + 60 + $gametime); put #var lib.timers.nextTarantulaAt %timeRemaining; echo $lib.timers.nextTarantulaAt when It needs approximately (\d+) roisaen to generate enough venom again\.$
+#action evalmath timeRemaining ($1 * 60 + 60 + $gametime); put #var lib.timers.nextTarantulaAt %timeRemaining; echo $lib.timers.nextTarantulaAt when It needs approximately (\d+) roisaen to generate enough venom again\.$
+#action put #tvar char.tarantula.lastSkillset $1 when last used gave unbidden knowledge of (\S+) techniques\.$
 
 var usedSkillset null
 action var usedSkillset $1 when ^\[You need to vary which skillset you select with every use.  (\S+) was your last used skillset
@@ -16,10 +17,8 @@ if ($lib.timers.nextTarantulaAt < $gametime) then {
 	put #echo >Debug #00dd00 Using tarantula on %tarantula.skill
 	gosub stow right
     gosub stow left
-	if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 30) then gosub runScript predict
 	gosub get my $char.tarantula.item
 	gosub turn my $char.tarantula.item to %tarantula.skill
-	#if ("%usedSkillset" = "Magic") then gosub turn my $char.tarantula.item to thievery
 	gosub retreat
 	gosub rub my $char.tarantula.item
 	gosub stow right

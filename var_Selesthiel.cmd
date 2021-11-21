@@ -8,13 +8,9 @@ put #tvar char.appraise.item gem pouch
 ###############################
 ###      ARMOR
 ###############################
-#put #tvar char.armor moonsilk pants|moonsilk hood|moonsilk mask|moonsilk shirt|moonsilk gloves|steelsilk handwraps|steelsilk footwraps|demonscale shield|stick|greaves
-#put #tvar char.armor moonsilk moonsilk pants|moonsilk shirt|ka'hurst gloves|ka'hurst balaclava|steelsilk handwraps|steelsilk footwraps|demonscale shield|parry stick
-#put #tvar char.armor moonsilk pants|moonsilk shirt|ka'hurst gloves|great helm|demonscale shield|parry stick
-
-put #tvar char.armor demonscale shield|parry stick|moonsilk pants|moonsilk shirt|ka'hurst gloves|lamellar helm|plate mask
-
-put #tvar char.armor.light moonsilk pants|moonsilk shirt|ka'hurst gloves|moonsilk hood|moonsilk mask|demonscale shield|parry stick
+put #tvar char.armor demonscale shield|parry stick|moonsilk pants|moonsilk shirt|chain gloves|lamellar helm|plate mask
+put #tvar char.armor.light demonscale shield|parry stick|moonsilk pants|moonsilk shirt|moonsilk gloves|moonsilk hood|moonsilk mask
+put #tvar char.armor.wyvern demonscale shield|parry stick|moonsilk pants|moonsilk shirt|chain gloves|moonsilk hood|moonsilk mask
 
 
 ###############################
@@ -50,20 +46,22 @@ put #tvar char.cast.default.charge 70
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 1
 
-put #tvar char.cast.art.minPrepTime 10
-put #tvar char.cast.aus.minPrepTime 10
+put #tvar char.cast.art.minPrepTime 12
+put #tvar char.cast.aus.minPrepTime 12
 put #tvar char.cast.col.minPrepTime 12
-put #tvar char.cast.cv.minPrepTime 10
-put #tvar char.cast.fm.minPrepTime 10
-put #tvar char.cast.maf.minPrepTime 5
-put #tvar char.cast.moonblade.minPrepTime 5
+put #tvar char.cast.cv.minPrepTime 12
+put #tvar char.cast.fm.minPrepTime 12
+put #tvar char.cast.imbue.minPrepTime 12
+put #tvar char.cast.maf.minPrepTime 8
+put #tvar char.cast.moonblade.minPrepTime 8
 put #tvar char.cast.mt.minPrepTime 8
-put #tvar char.cast.pg.minPrepTime 10
-put #tvar char.cast.psy.minPrepTime 5
+put #tvar char.cast.pg.minPrepTime 12
+put #tvar char.cast.psy.minPrepTime 8
 put #tvar char.cast.seer.minPrepTime 15
 put #tvar char.cast.shadowling.minPrepTime 15
-put #tvar char.cast.shadows.minPrepTime 5
+put #tvar char.cast.shadows.minPrepTime 8
 put #tvar char.cast.shear.minPrepTime 5
+put #tvar char.cast.tksh.minPrepTime 15
 
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
@@ -171,10 +169,10 @@ put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
-put #tvar char.fight.useTarantula 0
+put #tvar char.fight.useTarantula 1
 
 #***** MOON MAGE *****
-put #tvar char.fight.useCol 1
+put #tvar char.fight.useCol 0
 put #tvar char.fight.useMaf 1
 put #tvar char.fight.useObserve 1
 put #tvar char.fight.useRevSorcery 1
@@ -183,6 +181,7 @@ put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 1
+put #tvar char.fight.useTksh 1
 
 #***** NECRO *****
 # The necro ritual to use for training
@@ -256,14 +255,15 @@ put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.revSorcery 1
 
-var tmp.charge.Augmentation 68
+var tmp.charge.Augmentation 70
 put #tvar char.magic.train.spell.Augmentation cv
-put #tvar char.magic.train.prep.Augmentation 10
+put #tvar char.magic.train.prep.Augmentation 30
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %tmp.charge.Augmentation
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Augmentation > -1)) then put #tvar char.magic.train.lastBackfireGametime.Augmentation 1
-if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 3600) then {
+evalmath tmp.timeSinceLastBackfire ($gametime - $char.magic.train.lastBackfireGametime.Augmentation)
+if (%tmp.timeSinceLastBackfire > 600) then {
     if (%tmp.charge.Augmentation > $char.magic.train.charge.Augmentation) then {
         evalmath tmp ($char.magic.train.charge.Augmentation + 1)
         put #tvar char.magic.train.charge.Augmentation %tmp
@@ -272,18 +272,20 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Augmentation) > 
         unvar tmp
     }
 }
+unvar tmp.timeSinceLastBackfire
 unvar tmp.charge.Augmentation
 
 
 
-var tmp.charge.Utility 47
+var tmp.charge.Utility 80
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %tmp.charge.Utility
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Utility > -1)) then put #tvar char.magic.train.lastBackfireGametime.Utility 1
-if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600) then {
+evalmath tmp.timeSinceLastBackfire ($gametime - $char.magic.train.lastBackfireGametime.Utility)
+if (%tmp.timeSinceLastBackfire > 600) then {
     if (%tmp.charge.Utility > $char.magic.train.charge.Utility) then {
         evalmath tmp ($char.magic.train.charge.Utility + 1)
         put #tvar char.magic.train.charge.Utility %tmp
@@ -292,18 +294,20 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Utility) > 3600)
         unvar tmp
     }
 }
+unvar tmp.timeSinceLastBackfire
 unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 34
+var tmp.charge.Warding 55
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
 if (!($char.magic.train.lastBackfireGametime.Warding > -1)) then put #tvar char.magic.train.lastBackfireGametime.Warding 1
-if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600) then {
+evalmath tmp.timeSinceLastBackfire ($gametime - $char.magic.train.lastBackfireGametime.Warding)
+if (%tmp.timeSinceLastBackfire > 300) then {
     if (%tmp.charge.Warding > $char.magic.train.charge.Warding) then {
         evalmath tmp ($char.magic.train.charge.Warding + 1)
         put #tvar char.magic.train.charge.Warding %tmp
@@ -312,6 +316,7 @@ if (evalmath($gametime - $char.magic.train.lastBackfireGametime.Warding) > 3600)
         unvar tmp
     }
 }
+unvar tmp.timeSinceLastBackfire
 unvar tmp.charge.Warding
 
 

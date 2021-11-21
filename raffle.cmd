@@ -30,6 +30,8 @@ raffle.collectPrize:
 		echo
 		pause 2
 		echo put ticket in bucket
+		put put ticket on counter
+		gosub stow my ticket
 		var nextIsFinalPrize 0
 	}
 	goto raffle.loop
