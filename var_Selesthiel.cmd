@@ -221,6 +221,7 @@ var super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun ocarina
 put #tvar char.instrument.tap indurium ocarina
 put #tvar char.instrument.container thigh bag
@@ -231,6 +232,7 @@ put #tvar char.play.useAlmanac 1
 ###############################
 ###      INVENTORY
 ###############################
+put #tvar char.inv.anythingContainer hip pouch
 put #tvar char.inv.defaultContainer steelsilk backpack
 put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
 put #tvar char.inv.fullGemPouchContainer portal

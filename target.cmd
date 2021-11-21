@@ -1,152 +1,98 @@
 include libmaster.cmd
 include var_mobs.cmd
-action put #tvar noObserveRoom $roomid when (can|can't|cannot) see the sky\.$
+###############################
+###    IDLE ACTION TRIGGERS
+###############################
+action goto targetExit when ^You think that you've killed enough (.*) and should|You've completed 10 of the 10 things you were asked to do.
+action goto targetCast when Your formation of a targeting pattern around
 action goto targetLoop when ^Your concentration slips for a moment|^Your concentration lapses
 action goto targetFaceNext when ^Target what|^Your pattern dissipates with the loss of your target\.
+action put target when It is already dead\.
+action var taskProgress 10 when The Scarecrow collapses to the ground, its tattered robe fluttering as it falls, and the burlap sack that comprises its head splits open, revealing nothing but straw inside\.|Harawep's Spider collapses to the ground on its back with its legs flailing wildly, looking defeated but not quite dead\.
+action put target %targetCreature when But you're already preparing a spell\!
+action var taskProgress $1 when You've completed (.*) of the 10 things you were asked to do\.
+action goto targetCheck when ^You think that the (.*)'s death counts toward your (.*) kill total\.
+action put #echo >%logWindow Yellow Scarecrow appears!;goto corn.scarecrow;put #play NewRank when You hear sinister laughter as the Scarecrow invades the Corn Maze!
+action put #echo >%logWindow Yellow Spider appears!;put #play NewRank when A hissing sound echoes through the Corn Maze as Harawep's Spider makes its appearance!
 
-#####################
-# Variables
-#####################
+
+###############################
+###    VARIABLES
+###############################
 if (!($lastHuntGametime >0)) then put #var lastHuntGametime 0
-if (!($lastCyclicGametime >0)) then put #var lastCyclicGametime 0
+var targetCreature 0
+var taskProgress 0
+var targetSpell pd
+var targetMana 30
+var targetLocation chest
+var targetFocus lightning bolt
 
-var useApp 0
-var useDebil 1
-var useHunt 1
-var usePerc 1
-var useAstrology 0
-var useSano 1
-var useShadowWeb 0
-var useSkin 1
-
-
-var opts %1
-if ("%opts" = "backtrain") then {
-    var useApp 1
-    var useDebil 0
-    var useForage 0
-    var useHunt 1
-    var usePerc 1
-    var useSano 1
-    var useShadowWeb 1
-    var useSkin 0
-}
-#####################
-# Main
-#####################
-targetSkillCheck:
-    gosub targetCheckDeadMob
-    if ("%opts" = "backtrain") then {
-        if ($Debilitation.LearningRate < 30) then goto targetLoop
+if_1 then {
+    if ("%1" <> "") then {
+        var targetCreature %1
     } else {
-        if ($Targeted_Magic.LearningRate < 30) then goto targetLoop
+        put #echo >Log [target] Proper syntax is .target (creature)  Additional options:  spider, scarecrow
+        exit
     }
-    goto targetExit
+}
 
-    targetLoop:
-    if ($mana < 80) then {
-        pause 10
+if !(matchre("$righthand|$lefthand", "%targetFocus")) then {
+    gosub get my %targetFocus
+    gosub invoke my %targetFocus
+}
+###############################
+###    MAIN
+###############################
+targetCheck:
+    gosub loot
+    gosub runScript loot
+    gosub task
+    put #echo >log [target] Task Progress - %taskProgress/10
+    if (%taskProgress = 10) then {
+        gosub targetExit
+    } else {
+        gosub targetLoop
     }
-    if (%useApp = 1) then gosub targetApp
-    if (%useHunt = 1) then gosub targetHunt
-    if (%usePerc = 1) then gosub targetPerc
-    if (%useAstrology = 1) then gosub targetAstrology
-    if (%useSano = 1 && $Arcana.LearningRate < 15 && $concentration > 99) then {
-        gosub gaze my sano crystal
-    }
+
+
+targetLoop:
+    #gosub targetHunt
     if ($monstercount = 0) then {
-        gosub targetForage
-    }
-    if ($monstercount = 0) then {
-        pause 5
+        put #echo >Log [target] No mobs.
         goto targetLoop
     }
-    if ($Debilitation.LearningRate < 30 && %useDebil = 1) then {
-        if (%useShadowWeb = 1) then {
-            if ($SpellTimer.ShadowWeb.active = 1) then {
-                eval nextCyclicAt $lastCyclicGametime + 300
-                if (%nextCyclicAt < $gametime) then {
-                    gosub release cyclic
-                }
-            }
-            gosub prep shw
-            waitforre ^You feel fully prepared
-            gosub cast
-            put #var lastCyclicGametime $gametime
-        } else {
-            gosub prep $char.fight.debil.spell $char.fight.debil.prepAt
-            waitforre ^You feel fully prepared
-            gosub cast
-        }
+    if ("%targetSpell" <> "burn") then {
+        gosub target %targetSpell %targetMana %targetCreature %targetLocation
+    } else {
+        gosub target %targetSpell %targetMana %targetCreature
     }
-    gosub target $char.fight.tmSpell $char.fight.tmPrep
-    pause $char.fight.tmPause
-    gosub cast
-    goto targetSkillCheck
-
-
-#####################
-# Utilities
-#####################
-targetAstrology:
-    if ($Astrology.LearningRate < 33) then gosub observe.onTimer
-    return
-
-
-targetApp:
-    if ($Appraisal.LearningRate < 33) then gosub appraise.onTimer
-    return
-
-
-targetCheckDeadMob:
-    if (matchre ("$roomobjs", "(%critters) ((which|that) appears dead|(dead))")) then {
-        var mobName $1
-        if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
-            if (%arrangeForPart = 1) then gosub arrange for part
-            if (%arrangeFull = 1) then gosub arrange full
-            gosub skin
-        } else gosub skin
-        gosub loot
-        put .loot
-        waitforre ^LOOT DONE
-    }
-    return
-
-
-targetFaceNext:
-    put face next
+    waitforre ^Your formation of a targeting pattern
+    goto targetCast
     goto targetLoop
 
 
-targetForage:
-    if (%monstercount <> 0) then return
-    if ($Outdoorsmanship.LearningRate < 30) then {
-        gosub collect dirt
-        gosub kick pile
-    }
-    return
+###############################
+###    UTILITY
+###############################
+targetCast:
+    gosub cast
+    goto targetLoop
+
+
+targetFaceNext:
+    gosub face next
+    gosub target
+    goto targetLoop
 
 
 targetHunt:
-    if ($Perception.LearningRate > 15) then {
-        return
-    }
-    evalmath nextHuntAt $gametime + 75
-    if (%nextHuntAt < $gametime) then {
-        return
-    }
-    gosub hunt
-    put #var lastHuntGametime $gametime
-    return
-
-
-targetPerc:
-    if ($Attunement.LearningRate < 33) then gosub perc.onTimer
+    gosub hunt.onTimer
     return
 
 
 targetExit:
-    if ("$charactername" = "Khurnaarti") then {
-        put .khurcombat
-    }
+    gosub stow
+    gosub stow left
+    pause .001
+    put #parse TARGET DONE
     exit

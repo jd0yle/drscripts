@@ -7,7 +7,7 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTIONS
 ###############################
-action var pb.newBox 1 when ^The lock looks weak
+action var pb.newBox 1 when ^The lock looks weak, and rather than risk breaking it, you stop your attempt to pick it\.
 action put close my %pb.box when ^Maybe you should close the (.*) first\.$
 action put lock my %pb.box when ^But the (.*) isn't locked\!$
 action goto pb.errorLockpick when ^Pick the .+ box with what\?$
@@ -95,7 +95,7 @@ pb.main:
     pb.mainLoop:
         gosub lock my %pb.box
         gosub pick my %pb.box
-        if (%pb.newBox = 1) then goto pb.main
+        if (%pb.newBox = 1) then goto pb.study
         if ($Locksmithing.LearningRate < 30) then goto pb.mainLoop
         goto pb.exit
 

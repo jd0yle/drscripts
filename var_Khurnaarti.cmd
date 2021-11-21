@@ -8,7 +8,7 @@ put #tvar char.appraise.item my pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|moonsilk shirt|moonsilk pants|demonscale shield|demonscale armguard|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps
+put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|moonsilk shirt|moonsilk pants|demonscale shield|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps|kelp wrap
 
 
 ###############################
@@ -61,7 +61,8 @@ put #tvar char.burgle.container purse
 ###############################
 put #tvar char.cambrinth snakelet
 put #tvar char.focusContainer shadows
-put #tvar char.ritualFocus ouroboros ring
+put #tvar char.ritualFocus puzzle rings
+put #tvar char.tmFocus lightning bolt
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
 
@@ -70,41 +71,63 @@ put #tvar char.wornFocus 1
 ###      CAST
 ###############################
 put #tvar char.cast.invokeSpell 0
+put #tvar char.cast.tattoo.spellName rev
 
+# Defaults
 put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.chargeTimes 1
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.prep 30
+put #tvar char.cast.default.minPrepTime 30
 
+# Predictions and Observation
 put #tvar char.cast.bc.prep 150
 put #tvar char.cast.dc.prep 50
+
+# Debilitation
+put #tvar char.cast.calm.prep 5
+put #tvar char.cast.calm.charge 0
+put #tvar char.cast.calm.chargeTimes 0
+put #tvar char.cast.shw.prep 5
+put #tvar char.cast.shw.charge 10
+put #tvar char.cast.shw.chargeTimes 1
 
 # Buffs
 put #tvar char.cast.col.prep 30
 put #tvar char.cast.col.charge 20
+put #tvar char.cast.col.chargeTimes 2
 put #tvar char.cast.iots.prep 300
 put #tvar char.cast.iots.charge 0
 put #tvar char.cast.maf.prep 30
 put #tvar char.cast.maf.charge 40
-put #tvar char.cast.sco.prep 30
-put #tvar char.cast.sco.charge 20
+put #tvar char.cast.maf.chargeTimes 1
+put #tvar char.cast.moonblade.prep 15
+put #tvar char.cast.moonblade.charge 0
+put #tvar char.cast.moonblade.chargeTimes 0
 put #tvar char.cast.seer.prep 30
-put #tvar char.cast.seer.charge 10
+put #tvar char.cast.seer.charge 20
+put #tvar char.cast.seer.chargeTimes 2
 put #tvar char.cast.shadowling.prep 30
-put #tvar char.cast.shadowling.charge 10
+put #tvar char.cast.shadowling.charge 20
+put #tvar char.cast.shadowling.chargeTimes 1
 put #tvar char.cast.sls.prep 15
 put #tvar char.cast.sls.charge 0
-
-put #tvar char.cast.tattoo.spellName rev
+put #tvar char.cast.sls.chargeTimes 1
+put #tvar char.cast.sls.constellation spider
+put #tvar char.cast.tksh.prep 30
+put #tvar char.cast.tksh.charge 20
+put #tvar char.cast.tksh.chargeTimes 2
 
 
 ###############################
 ###      FIGHT
 ###############################
 # ------ AMMO ------
-put #tvar char.fight.ammo.Crossbow crossbow bolt
+put #tvar char.fight.ammo.Crossbow matte sphere
 put #tvar char.fight.ammo.Bow 0
-put #tvar char.fight.ammo.Slings metal button
+put #tvar char.fight.ammo.Slings matte sphere
+#put #tvar char.fight.ammo.Slings button
+
 
 # ------ ARMOR ------
 put #tvar char.fight.armor.skills Chain_Armor|Light_Armor
@@ -127,7 +150,7 @@ put #tvar char.fight.forceShield 0
 
 # ------ LOOT ------
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType treasure
+put #tvar char.fight.lootType goods
 
 # ------ STANCE ------
 # Force always using stance shield, never stance parry
@@ -152,29 +175,35 @@ put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
 put #tvar char.fight.useMaf 1
 put #tvar char.fight.usePerc 1
-put #tvar char.fight.useSanowret 1R
+put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
 
 # ------ WEAPONS ------
 # Everything
-#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # No Targeted Magic
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood latchbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged
+#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
+
+# Main Weapons Only
+put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
+
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
-put #tvar char.fight.useCol 1
-put #tvar char.fight.useObserve 0
+put #tvar char.fight.useCol 0
+put #tvar char.fight.useObserve 1
 put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
+put #tvar char.fight.useTksh 1
 
 
 ###############################
@@ -188,6 +217,7 @@ put #tvar super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth colored cloth
 put #tvar char.instrument.song tango
 put #tvar char.instrument.container shadows
 put #tvar char.instrument.noun triangle
@@ -197,16 +227,18 @@ put #tvar char.instrument.tap asini-wrapped electrum triangle
 ###############################
 ###      INVENTORY
 ###############################
+put #tvar char.inv.anythingContainer poke
 put #tvar char.inv.boxContainer shadows
 put #tvar char.inv.defaultContainer shadows
-put #tvar char.inv.emptyGemPouchContainer bag
+put #tvar char.inv.emptyGemPouchContainer watersilk bag
 put #tvar char.inv.fullGemPouchContainer shadows
 put #tvar char.inv.memoryOrbContainer shadows
-put #tvar char.inv.secondaryContainer purse
-put #tvar char.inv.servant.bags pack|saddlebag|pouch|rucksack|poke|bag
+put #tvar char.inv.secondaryContainer leather purse
+put #tvar char.inv.servant.bags pack|saddlebag|pouch|rucksack|backpack|poke
 put #tvar char.inv.servant.description cantankerous Shadow Servant
-put #tvar char.inv.tempContainer purse
-put #tvar char.inv.tertiaryContainer bag
+put #tvar char.inv.tempContainer leather purse
+put #tvar char.inv.tertiaryContainer indigo backpack
+put #tvar char.inv.eddyContainer writhing eddy
 
 # Loot
 put #tvar char.loot.boxes 1
@@ -233,20 +265,20 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 10
+put #tvar char.magic.train.charge.Augmentation 15
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 10
+put #tvar char.magic.train.charge.Utility 15
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 30
-put #tvar char.magic.train.charge.Warding 1
+put #tvar char.magic.train.charge.Warding 5
 put #tvar char.magic.train.harness.Warding 0
 
-put #tvar char.magic.train.revSorcery 1
+put #tvar char.magic.train.revSorcery 0
 
 
 ###############################
@@ -255,7 +287,7 @@ put #tvar char.magic.train.revSorcery 1
 put #tvar char.predict.tool chalky demonbones
 put #tvar char.predict.tool.container shadows
 
-put #tvar char.observe.telescope baby telescope
+put #tvar char.observe.telescope midnight-blue telescope
 put #tvar char.observe.telescope.container khor'vela case
 
 put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh|forge
@@ -278,7 +310,11 @@ put #tvar char.pawn.container purse
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
-put #tvar char.repair.list kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|diamondwood nightstick|smokewood latchbow|frying pan|ka'hurst hhr'ata|demonbone armguard|elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|ka'hurst balaclava|ka'hurst gloves|flamewood riste|assassin's blade|executioner's broad-axe
+put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves|
+put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|
+put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade|
+put #tvar char.repair weapon2 executioner's broad-axe|duraka skefne|haralun broadsword|blue sling
+put #tvar char.repair.list $char.repair.armor + $char.repair.brawl + $char.repair.armor.weapon + $char.repair.weapon2
 
 
 ###############################

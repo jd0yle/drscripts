@@ -199,6 +199,7 @@ ritualSpell:
     if ($char.wornFocus = 1) then {
         gosub wear my $char.ritualFocus
         gosub wear my $char.ritualFocus
+        gosub sort auto head
     } else {
         gosub put my $char.ritualFocus in my $char.focusContainer
     }

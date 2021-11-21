@@ -589,6 +589,15 @@ braid:
     goto retry
 
 
+break:
+    var location break1
+    var todo $0
+    break1:
+    matchre return ^You thrust your
+    put break %todo
+    goto retry
+
+
 build:
 	var location build1
 	var todo $0
@@ -1075,6 +1084,17 @@ EXP:
     matchre return ^The bonus
     matchre return ^You do not have
     put EXP %todo
+    goto retry
+
+
+face:
+    var location face1
+    var todo $0
+    face1:
+    matchre return Face what\?
+    matchre return There is nothing else to face\!
+    matchre return You turn to face
+    put face %todo
     goto retry
 
 
@@ -1732,6 +1752,7 @@ power:
     matchre return ^You are too distracted
     matchre return ^You lost track of your surroundings
     matchre return ^You stop for a moment
+    matchre return ^You're not ready to do that again, yet\.
     matchre return ^Your focus expires
     matchre return ^Your resolve collapses
     put PERCEIVE %todo
@@ -2073,6 +2094,7 @@ release:
     matchre return ^Release what
     matchre return sphere suddenly flares with a cold light and vaporizes\!$
     matchre return ^That would be a neat trick.  Try finding a shadowling first\.$
+    matchre return ^That's probably not a good idea\.
     matchre return ^The deadening murk around you subsides\.$
     matchre return ^The greenish hues
     matchre return ^The heightened sense of spiritual awareness leaves you\.$
@@ -2400,6 +2422,19 @@ sneak:
     matchre return You prepare yourself to sneak
     put sneak %todo
     goto retry
+
+
+sort:
+    var location sort1
+    var todo $0
+    sort1:
+    matchre return has been moved (down|up) in your inventory\.
+    matchre return ^Usage
+    matchre return ^Your inventory has been reversed\.
+    matchre return ^Your inventory is now arranged in head-to-toe order\.
+    put sort %todo
+    goto retry
+
 
 
 sprinkle:
@@ -2747,6 +2782,12 @@ target2:
     put face next
     goto target1
 
+
+task:
+    var location task
+    matchre return You recall
+    put task
+    goto retry
 
 tdps:
     var location tdps1

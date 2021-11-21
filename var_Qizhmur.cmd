@@ -196,6 +196,7 @@ var super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun zills
 put #tvar char.instrument.tap thin-edged zills
 put #tvar char.instrument.container skull
@@ -204,6 +205,7 @@ put #tvar char.instrument.container skull
 ###############################
 ###      INVENTORY
 ###############################
+put #tvar char.inv.anythingContainer hip pouch
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
 put #tvar char.inv.fullGemPouchContainer portal

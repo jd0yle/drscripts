@@ -279,6 +279,7 @@ var super.enemies null
 ###############################
 ###      INSTRUMENT
 ###############################
+put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
 put #tvar char.instrument.container thigh bag
@@ -296,6 +297,7 @@ put #tvar char.inv.container.incense alchemist's kit
 ###############################
 ###      LOOT
 ###############################
+put #tvar char.inv.anythingContainer hip pouch
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
 put #tvar char.inv.fullGemPouchContainer portal
