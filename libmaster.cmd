@@ -510,8 +510,9 @@ attack:
     matchre return ^Wouldn't it be better
     matchre return ^You can not slam with that
     matchre return ^You don't have a weapon to draw with\!
-    matchre return ^You must have both hands free to use the
     matchre return ^You must be hidden or invisible to ambush\!
+    matchre return ^You must have both hands free to use the
+    matchre return ^You must hold
     matchre return ^You need two hands to wield this weapon\!
     put %todo
     goto retry
@@ -2868,6 +2869,7 @@ throw:
     throw1:
     matchre return Roundtime
     matchre return ^There is nothing
+    matchre return ^You must hold
     put throw %todo
     goto retry
 

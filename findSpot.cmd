@@ -198,12 +198,30 @@ waitForRoom:
     echo * COULD NOT FIND OPEN ROOM
     echo * WAITING 120 SECONDS
     echo ******************************
-    #pause 120
-    gosub runScript play
+    evalmath waitForRoomUntilTime ($gametime + 120)
+    gosub waitForRoomLoop
     gosub shiver
     if ("%mob" = "wyvern2") then put .findSpot wyvern
 
     goto init
+
+
+waitForRoomLoop:
+	if ($gametime > %waitForRoomUntilTime) then {
+		put #script abort play
+		gosub stow right
+		gosub stow left
+		return
+	}
+
+	if ($Performance.LearningRate < $Outdoorsmanship.LearningRate) then {
+		gosub runScript play
+	} else {
+		gosub collect dirt
+		gosub kick pile
+	}
+
+	goto waitForRoomLoop
 
 
 done:

@@ -136,6 +136,8 @@ action var noAmmo 1 when ^You don't have the proper ammunition readily available
 
 action var dissectFail 1 when You'll gain no insights from this attempt\.$
 
+action send swap when ^You must hold the.*in order to throw it\.$
+
 var communeMeraudActive 0
 action var communeMeraudActive 1 when ^Meraud's power still holds your attention\.$
 

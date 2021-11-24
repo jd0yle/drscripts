@@ -287,6 +287,8 @@ put #tvar char.magic.train.revSorcery 0
 put #tvar char.predict.tool chalky demonbones
 put #tvar char.predict.tool.container shadows
 
+put #tvar char.predict.useDc 1
+
 put #tvar char.observe.telescope midnight-blue telescope
 put #tvar char.observe.telescope.container khor'vela case
 

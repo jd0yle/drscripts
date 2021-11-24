@@ -79,7 +79,7 @@ main:
 
     gosub burgle recall
     pause .5
-    gosub burgle.setNextBurgleAt
+    #gosub burgle.setNextBurgleAt
     pause .5
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
@@ -99,6 +99,7 @@ main:
 
         gosub runScript burgle
         gosub runScript armor wear wyvern
+        #gosub runScript armor wear
 
         gosub automove n gate
         gosub automove portal
@@ -569,7 +570,6 @@ moveToMagic:
 moveToShardBulls:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
-        #if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
         if ($char.fight.useCol = 1 && ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10)) then gosub runScript cast col
         if ($char.fight.useTksh = 1 && ($SpellTimer.TelekineticShield.active = 0 || $SpellTimer.TelekineticShield.duration < 10)) then gosub runScript cast tksh
         gosub runScript house
@@ -615,15 +615,20 @@ moveToShardBulls:
 moveToAdultWyverns:
     if ("$roomname" = "Private Home Interior") then {
         if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
-        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
-        #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
+        if ($char.fight.useCol = 1 && ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10)) then gosub runScript cast col
+        if ($char.fight.useTksh = 1 && ($SpellTimer.TelekineticShield.active = 0 || $SpellTimer.TelekineticShield.duration < 10)) then gosub runScript cast tksh
+        if ($char.fight.useLgv = 1 && ($SpellTimer.LastGiveofVithwokIV.active = 0 || $SpellTimer.LastGiveofVithwokIV.duration < 10)) then gosub runScript cast lgv
         gosub runScript house
+        if ($SpellTimer.InvocationoftheSpheres.active != 1 || $SpellTimer.InvocationoftheSpheres.duration < 20) then {
+            gosub release iots
+            gosub runScript iots ref
+        }
         goto moveToAdultWyverns
     }
 
     if ($SpellTimer.RefractiveField.duration < 2) then {
         gosub prep rf
-        pause 3
+        pause 1
         gosub cast
     }
 

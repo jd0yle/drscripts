@@ -19,7 +19,7 @@ if_2 then {
 ###############################
 ###      Main
 ###############################
-if ($monstercount = 0 && ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2)) then {
+if ($monstercount = 0 && $char.predict.useDc = 1 && ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2)) then {
       if ($monstercount > 0) then {
           gosub stance shield
           gosub stow right
@@ -28,13 +28,10 @@ if ($monstercount = 0 && ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.De
       gosub runScript cast dc
 }
 
-if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then {
-    gosub runScript cast pg
-}
+# Pretty sure PG doesn't need to be up for predictions...
+#if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then gosub runScript cast pg
 
-if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then {
-    gosub runScript cast aus
-}
+if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then gosub runScript cast aus
 
 if (%skillset = null) then gosub findSkillSet
 

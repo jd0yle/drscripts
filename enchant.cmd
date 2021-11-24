@@ -187,7 +187,8 @@ checkSigilsLoop:
 
 checkSigils.foundSigil:
 	math index add 1
-	gosub stow my %sigilsNeeded(%index) book
+	#gosub stow my %sigilsNeeded(%index) book
+	gosub stow my book
 	goto checkSigilsLoop
 
 checkSigils.noSigil:

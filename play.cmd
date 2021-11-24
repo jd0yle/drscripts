@@ -56,6 +56,10 @@ play.top:
 			gosub play.setCharacterSong
 		}
 
+		if ($hidden = 1) then gosub unhide
+		if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+		if ($SpellTimer.EyesoftheBlind.active = 1) then gosub release eotb
+
         gosub play $char.instrument.song on my $char.instrument.noun
 
         if (%setEasierSong = 1) then {
