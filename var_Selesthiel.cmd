@@ -237,6 +237,7 @@ put #tvar char.play.useAlmanac 1
 ###      INVENTORY
 ###############################
 put #tvar char.inv.anythingContainer hip pouch
+put #tvar char.inv.autolootContainer 0
 put #tvar char.inv.defaultContainer steelsilk backpack
 put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
 put #tvar char.inv.fullGemPouchContainer portal

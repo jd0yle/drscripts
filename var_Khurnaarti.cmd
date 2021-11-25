@@ -150,7 +150,7 @@ put #tvar char.fight.forceShield 0
 
 # ------ LOOT ------
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType goods
+put #tvar char.fight.lootType treasure
 
 # ------ STANCE ------
 # Force always using stance shield, never stance parry
@@ -185,12 +185,12 @@ put #tvar char.fight.useStealth 0
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # No Targeted Magic
-#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
-#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
+put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # Main Weapons Only
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
+#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
 
 put #tvar char.fight.wornCrossbow 0
 
@@ -201,7 +201,7 @@ put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 0
 put #tvar char.fight.useShadows 0
-put #tvar char.fight.useShw 1
+put #tvar char.fight.useShw 0
 put #tvar char.fight.useSls 0
 put #tvar char.fight.useTksh 1
 
@@ -228,6 +228,7 @@ put #tvar char.instrument.tap asini-wrapped electrum triangle
 ###      INVENTORY
 ###############################
 put #tvar char.inv.anythingContainer poke
+put #tvar char.inv.autolootContainer silk pocket
 put #tvar char.inv.boxContainer shadows
 put #tvar char.inv.defaultContainer shadows
 put #tvar char.inv.emptyGemPouchContainer watersilk bag
