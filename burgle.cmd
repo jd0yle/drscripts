@@ -759,15 +759,31 @@ STORAGEERROR:
 
 DROP:
     var drophand $0
+    var dumpitem 0
+    if ("%drophand" = "right") then {
+        var dumpitem $righthandnoun
+    }
+    if ("%drophand" = "left") then {
+        var dumpitem $lefthandnoun
+    }
     DROP1:
     if ($hidden = 1 || $invisible = 1) then {
-        put #echo >Log #009933 [burgle] You are hidden and I am unable to EMPTY $0 to drop $0hand.
+        put #echo >Log #009933 [burgle] You are hidden($hidden) or invisible($invisible) and I am unable to EMPTY %drophand to drop %dumpitem.
 
         # Check spells first..
-        if ("$SpellTimer.Refractive_Field.duration > 1) then put release rf
-        if ("$SpellTimer.EyesoftheBlind.duration > 1) then put release eotb
-        if ("$SpellTimer.KhriSilence.duration > 1) then put khri stop silence
-        put unhide
+        if ($SpellTimer.RefractiveField.duration > 1) then {
+            put release rf
+        }
+        if ($SpellTimer.EyesoftheBlind.duration > 1) then {
+            put release eotb
+        }
+        if ($SpellTimer.KhriSilence.duration > 1) then {
+            put khri stop silence
+        }
+        if ($hidden = 1) then {
+            put unhide
+        }
+        put drop %dumpitem
     }
      matchre DROP ^\.\.\.wait|^Sorry,|^Please wait\.
      matchre return ^You drop
