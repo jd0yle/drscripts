@@ -764,8 +764,8 @@ DROP:
         put #echo >Log #009933 [burgle] You are hidden and I am unable to EMPTY $0 to drop $0hand.
 
         # Check spells first..
-        if ("$SpellTimer.Refractive_Field.duration > 1) then gosub release rf
-        if ("$SpellTimer.EyesoftheBlind.duration > 1) then gosub release eotb
+        if ("$SpellTimer.Refractive_Field.duration > 1) then put release rf
+        if ("$SpellTimer.EyesoftheBlind.duration > 1) then put release eotb
         if ("$SpellTimer.KhriSilence.duration > 1) then put khri stop silence
         put unhide
     }
