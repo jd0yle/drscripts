@@ -767,7 +767,7 @@ DROP:
         if ("$SpellTimer.Refractive_Field.duration > 1) then gosub release rf
         if ("$SpellTimer.EyesoftheBlind.duration > 1) then gosub release eotb
         if ("$SpellTimer.KhriSilence.duration > 1) then put khri stop silence
-        gosub unhide
+        put unhide
     }
      matchre DROP ^\.\.\.wait|^Sorry,|^Please wait\.
      matchre return ^You drop
