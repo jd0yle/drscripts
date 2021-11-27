@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container 0
-put #tvar char.appraise.item my pouch
+put #tvar char.appraise.container shadows
+put #tvar char.appraise.item almanac
 
 
 ###############################
