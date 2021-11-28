@@ -37,7 +37,7 @@ convert:
     eval str replacere("%str", " hundred", "00 +")
     evalmath num (%str)
     put #var %varName %num
-    put #echo >Debug Green [numConvert] Called with %varName = %numWord.  Result is %varName = $%varName.
+    put #echo >Log Green [numConvert] %varName = $%varName.
     exit
 
 
