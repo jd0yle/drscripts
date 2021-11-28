@@ -114,8 +114,11 @@ eng.prepareItem:
     # Action for finding book page because genie is dumb.
     if ("$eng.craft.item" = "burin") then {
         action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) fine wood $eng.craft.item(.*)$
-    } else {
+    }
+    if (matchre("$eng.craft.item", "bracelet|necklace|earrings|bead")) then {
         action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) (articulated|detailed|pair of)? wood $eng.craft.item(.*)$
+    } else {
+        action var eng.page $1 when ^.*?Page (\d+)\: (a|an|some) wood $eng.craft.item(.*)$
     }
     gosub read my book
     if (%eng.page = 0) then {

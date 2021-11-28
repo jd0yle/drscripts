@@ -5,6 +5,7 @@
 ###############################
 ###    VARIABLES
 ###############################
+var num 0
 var wordBig hundred|thousand
 var wordTens twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|eighty
 var wordOnes one|two|three|four|five|six|seven|eight|nine
@@ -23,7 +24,7 @@ if_1 then {
     exit
 }
 
-var num 0
+
 ###############################
 ###    MAIN
 ###############################
@@ -36,7 +37,7 @@ convert:
     eval str replacere("%str", " hundred", "00 +")
     evalmath num (%str)
     put #var %varName %num
-    put #echo >Debug Green [numConvert] Called with %varName = %numWord.  Result is %varName = $%varName.
+    put #echo >Log Green [numConvert] %varName = $%varName.
     exit
 
 

@@ -301,6 +301,7 @@ put #tvar char.inv.container.incense alchemist's kit
 ###      LOOT
 ###############################
 put #tvar char.inv.anythingContainer hip pouch
+put #tvar char.inv.autolootContainer 0
 put #tvar char.inv.defaultContainer wyvern skull
 put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
 put #tvar char.inv.fullGemPouchContainer portal

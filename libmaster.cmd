@@ -785,12 +785,13 @@ close:
     var location close1
     matchre return ^That is already
     matchre return ^The door
+    matchre return ^The door is open\.  You'll need to shut it first\.
     matchre return ^You close
     matchre return ^You collapse your telescope\.
     matchre return ^You need to be holding the telescope first\.
     matchre return ^You quickly
     matchre return ^You try, but the telescope won't collapse any further\.
-    matchre return ^Your dreamweave fan is already
+    matchre return ^Your .* fan is already
     matchre return ^What were
     matchre return ^With a practiced flick of your wrist
     matchre return ^You try to close
@@ -1549,6 +1550,7 @@ lock:
     matchre return is already locked
     matchre return ^Maybe you should close
     matchre return ^That is
+    matchre return ^The door is open\.  You'll need to shut it first\.
     matchre return ^You don't
     matchre return ^You do not
     matchre return ^You lock

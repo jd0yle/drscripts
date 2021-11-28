@@ -39,6 +39,7 @@ action var researchProject null when ^Breakthrough!
 action var researchProject null when However, there is still more to learn before you arrive at a breakthrough.
 action var researchProject null when ^You complete reviewing your knowledge
 action var usingCrystal 0 when ^The light and crystal sound of your sanowret crystal fades slightly as you come to the end
+action goto loop when ^You require some special means of analyzing the mana streams in order to begin research\.
 
 var stallCheckGametime $gametime
 
