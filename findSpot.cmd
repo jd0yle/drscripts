@@ -121,6 +121,13 @@ if ("%mob" = "leucro") then {
     var maxRoomId 22
 }
 
+if ("%mob" = "mauler") then {
+    var minRoomId 566
+    var maxRoomId 571
+    var waitroomid 370
+    var preferredRoomId 571
+}
+
 if ("%mob" = "peccary") then {
     var minRoomId 255
     var maxRoomId 263
@@ -131,6 +138,12 @@ if ("%mob" = "redgremlin") then {
     var minRoomId 622
     var maxRoomId 632
     var waitroomid 545
+}
+
+if ("%mob" = "stomper") then {
+    var minRoomId 560
+    var maxRoomId 565
+    var waitroomid 370
 }
 
 if ("%mob" = "warklin") then {

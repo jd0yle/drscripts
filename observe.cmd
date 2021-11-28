@@ -59,7 +59,7 @@ main:
     var objects %%skillset
     eval objlength count("%objects", "|")
 
-    if (%noBuffs != 1 && (%$SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2)) then {
+    if (%noBuffs != 1 && ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2)) then {
         gosub runScript cast aus
     }
     if (%noBuffs != 1 && ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2)) then {

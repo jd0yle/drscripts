@@ -84,7 +84,8 @@ main:
         }
         put #echo >Log #cc99ff Going to main combat
         #gosub train.moveToWarklin
-        gosub train.moveToBlackGargoyles
+        #gosub train.moveToBlackGargoyles
+        gosub train.moveToMaulers
         put .fight
         gosub waitForMainCombat
         goto main

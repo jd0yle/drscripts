@@ -2033,6 +2033,8 @@ put:
     var todo $0
     put1:
     matchre closeTelescope telescope is too long
+    matchre return ^No winners have been selected
+    matchre return ^Raffle Attendant Tizzeg examines your ticket but shakes her head, "I'm sorry this isn't a winning ticket.  Better luck next time!"
     matchre return ^You add
     matchre return ^You rearrange
     matchre return ^You drop
@@ -3446,12 +3448,15 @@ checkForBacklashDebuff:
 
     gosub exp mods
     eval lib.debuffedSkills replace("%lib.debuffedSkills", "null|", "")
+    var numDebuffedMagicSkills 0
+    if (contains("%lib.debuffedSkills", "Augmentation")) then math numDebuffedMagicSkills add 1
 
-	if (contains("%lib.debuffedSkills", "Augmentation") && contains("%lib.debuffedSkills", "Utility") && contains("%lib.debuffedSkills", "Warding")) then {
-	    put #tvar lib.backlashDebuff 1
-	}
+	if (contains("%lib.debuffedSkills", "Utility")) then math numDebuffedMagicSkills add 1
+	if (contains("%lib.debuffedSkills", "Warding")) then math numDebuffedMagicSkills add 1
+	if (%numDebuffedMagicSkills >= 2) then put #tvar lib.backlashDebuff 1
 	put #tvar lib.timers.lastCheckForBacklashDebuff $gametime
 	unvar lib.debuffedSkills
+	unvar numDebuffedMagicSkills
     return
 
 checkMoons:

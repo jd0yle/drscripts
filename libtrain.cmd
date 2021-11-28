@@ -1184,6 +1184,52 @@ train.moveToMagic:
     goto train.moveToMagic
 
 
+
+###############################
+###    train.moveToMaulers
+###############################
+train.moveToMaulers:
+    gosub train.setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToMaulers
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto train.moveToMaulers
+    }
+
+	# Hawstkaal Road
+	if ("%zone" = "126") then {
+		gosub runScript travel boar
+		goto train.moveToMaulers
+	}
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" ) then {
+        if ($roomid >= 566 && $roomid <= 571 && "$roomplayers" = "") then return
+        gosub runScript findSpot mauler
+        goto train.moveToMaulers
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        gosub runScript travel boar
+        put #tvar powerwalk 0
+        goto train.moveToMaulers
+    }
+
+    echo No move target found, zoneid = $zoneid  zone = %zone
+    goto train.moveToMaulers
+
+
+
 ###############################
 ###    train.moveToPeccaries
 ###############################
@@ -1230,6 +1276,50 @@ train.moveToPeccaries:
 	}
 
 	goto train.moveToPeccaries
+	
+	
+###############################
+###    train.moveToStompers
+###############################
+train.moveToStompers:
+    gosub train.setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToStompers
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto train.moveToStompers
+    }
+
+	# Hawstkaal Road
+	if ("%zone" = "126") then {
+		gosub runScript travel boar
+		goto train.moveToStompers
+	}
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" ) then {
+        if ($roomid >= 560 && $roomid <= 565 && "$roomplayers" = "") then return
+        gosub runScript findSpot stomper
+        goto train.moveToStompers
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        gosub runScript travel boar
+        put #tvar powerwalk 0
+        goto train.moveToStompers
+    }
+
+    echo No move target found, zoneid = $zoneid  zone = %zone
+    goto train.moveToStompers	
 
 
 ###############################

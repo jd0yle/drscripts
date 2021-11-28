@@ -88,10 +88,12 @@ darkbox.moveToDarkbox:
 	}
 
 	if ($zoneid = 1) then {
+		pause
 		if ($zoneid != 1) then goto darkbox.moveToDarkbox
 		if (contains("$roomname", "Andreshlew")) then goto darkbox.moveToDarkbox
+		pause
 		gosub automove dock
-
+        pause
 		put whistle for dolphin transport
 		pause 10
 		goto darkbox.moveToDarkbox

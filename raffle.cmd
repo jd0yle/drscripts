@@ -3,9 +3,12 @@ include libmaster.cmd
 var nextIsFinalPrize 0
 
 action var mostRecentWinner $1; goto raffle.collectPrize when ^(\w+)'s name appears on the result board!$
-
 action var nextIsFinalPrize 1; echo NEXT IS FINAL when The winning ticket number for the \*Grand\* prize is
 
+action put #play Just Arrived; put #echo ***;put #echo YOU WON A RAFFLE!;put #echo ***; when ^$charactername's name appears on the result board!
+
+
+if ("$righthand" = "raffle ticket" || "$lefthand" = "raffle ticket") then gosub put my raffle ticket on counter
 
 raffle.loop:
 	pause 2
@@ -21,7 +24,7 @@ raffle.collectPrize:
 		echo
 		echo YOU WON!
 		echo
-		put put ticket on counter
+		gosub put my raffle ticket on counter
 		pause
 	}
 	if (%nextIsFinalPrize = 1) then {
@@ -30,7 +33,9 @@ raffle.collectPrize:
 		echo
 		pause 2
 		echo put ticket in bucket
-		put put ticket on counter
+		gosub put my raffle ticket on counter
+		pause
+		gosub put my raffle ticket in bucket
 		gosub stow my ticket
 		var nextIsFinalPrize 0
 	}

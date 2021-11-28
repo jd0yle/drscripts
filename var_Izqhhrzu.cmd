@@ -65,7 +65,7 @@ put #tvar char.cast.ghs.prep 18
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
-put #tvar char.cast.hyh.prep 13
+put #tvar char.cast.hyh.prep 18
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
@@ -150,9 +150,11 @@ put #tvar char.fight.debilPauseTime 5
 
 # The debilitation spell to use
 put #tvar char.fight.debil.spell sick
+put #tvar char.fight.debil.spell ps
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 12
+#put #tvar char.fight.debil.prepAt 12
+put #tvar char.fight.debil.prepAt 15
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -171,7 +173,8 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell do
+#put #tvar char.fight.tmSpell do
+put #tvar char.fight.tmSpell hh
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
@@ -186,7 +189,7 @@ put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|di
 put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 # smokewood pelletbow
-put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
+put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|diamondique hhr'ata|haralun broadsword|triple-weighted bola|blue sling|diamondique hhr'ata
 put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 
@@ -230,7 +233,7 @@ put #tvar char.fight.prayTarget Huldah
 put #tvar char.fight.useBenediction 1
 put #tvar char.fight.useBless 1
 put #tvar char.fight.useGhs 1
-put #tvar char.fight.useHyh 0
+put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMf 1
 put #tvar char.fight.useMpp 1
