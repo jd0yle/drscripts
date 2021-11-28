@@ -95,7 +95,7 @@ train.burgle:
         gosub stow right
         gosub stow left
 
-        gosub runScript dep
+        gosub runScript deposit
 
 		gosub train.getHealed
 
@@ -425,7 +425,7 @@ train.moveToBurgle:
 
 		gosub train.castSpellsForMove
 
-		gosub runScript dep
+		gosub runScript deposit
 		gosub automove teller
 		gosub withdraw 1 gold
 		gosub automove excha

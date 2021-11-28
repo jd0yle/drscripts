@@ -7,7 +7,7 @@ var debt.provinceNumber.Qi 4
 var debt.provinceNumber.Forfedhdar 5
 
 
-gosub runScript dep
+gosub runScript deposit
 gosub automove teller
 
 debt.checkDebt:

@@ -194,7 +194,7 @@ afterBurgle:
     gosub stow right
     gosub stow left
 
-    gosub runScript dep
+    gosub runScript deposit
     gosub move up
     gosub move out
     gosub cast
