@@ -165,6 +165,7 @@ givePrize:
     	put give $diapsid.winner $diapsid.prize platinum Kronar
     	matchwait 5
     	put #echo >log Awarded $diapsid.prize platinum to $diapsid.winner.
+    	put #var lastCoinGametime $gametime
     	goto botWait
     } else {
         goto getPrize
@@ -195,9 +196,10 @@ requestCoinFix:
 
 
 errorFound:
-    evalMath nextCoin (lastCoinGametime + 3600)
+    evalMath nextCoin ($lastCoinGametime + 3600)
     put #echo >log Coin Hand Off Timer not ready.
-    gosub ooc $diapsid.winner [DR Discord Giveaways] I'm incredibly sorry for this, but I am still under a F2P Coin Handoff Timer.  Please check back anywhere from 15 to 30 minutes.
+    evalMath pickupWait (%nextCoin / 60)
+    gosub ooc $diapsid.winner [DR Discord Giveaways] I'm incredibly sorry for this, but I am still under a F2P Coin Handoff Timer.  Please check back in %pickupWait minute(s).
     goto botWait
 
 
