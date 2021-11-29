@@ -2807,6 +2807,7 @@ tdps:
 tdp:
     var location tdp
     matchre return ^An attendant quietly informs you
+    matchre return ^An attendant steps over to you
     matchre return ^You have
     put tdp
     goto retry
