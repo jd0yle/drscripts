@@ -89,9 +89,9 @@ put #tvar char.cast.tattoo.spellName rev
 ###      FIGHT
 ###############################
 #***** AMMO *****
-put #tvar char.fight.ammo.Crossbow bolt
+put #tvar char.fight.ammo.Crossbow matte sphere
 put #tvar char.fight.ammo.Bow arrow
-put #tvar char.fight.ammo.Slings rock
+put #tvar char.fight.ammo.Slings matte sphere
 
 put #tvar char.fight.wornCrossbow 0
 
@@ -135,11 +135,11 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
-
 #put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|competition shortbow
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Bow
+
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
 
 #put #tvar char.fight.weapons.items smokewood latchbow
 #put #tvar char.fight.weapons.skills Crossbow
@@ -306,7 +306,7 @@ unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 48
+var tmp.charge.Warding 45
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding

@@ -14,7 +14,7 @@ var brazier silversteel brazier
 var loop augmenting loop
 
 #var enchantingContainer shadows
-var enchantingContainer steelsilk backpack
+var enchantingContainer white haversack
 var defaultContainer steelsilk backpack
 
 
@@ -76,10 +76,10 @@ action var sigilsNeeded %sigilsNeeded|$2 when (primary|secondary) sigil \((\S+)\
 
 action goto alreadyEnchanted when ^The.* is already enchanted, and further manipulation could damage it.
 
-put store default %enchantingContainer
+#put store default %enchantingContainer
 
-gosub stow left
-gosub stow right
+gosub enchant.stow left
+gosub enchant.stow right
 
 var chapter %1
 var page %2
@@ -120,8 +120,8 @@ enchantLoop:
     }
 
     if (%doSigil = 1) then {
-        gosub stow right
-        gosub stow left
+        gosub enchant.stow right
+        gosub enchant.stow left
 
         gosub get my %sigilToScribe book
         gosub turn my book to page 1
@@ -134,7 +134,7 @@ enchantLoop:
 
         gosub study my sigil-scroll
         gosub trace %baseItem on brazier
-        gosub stow my book
+        gosub enchant.stow my book
     }
 
     if (%doImbue != 1) then {
@@ -142,14 +142,16 @@ enchantLoop:
     }
 
     if (%doImbue = 1) then {
-        gosub stow right
+        gosub enchant.stow right
         put .cast imbue "%baseItem on brazier"
         waitforre ^CAST DONE
     }
 
     if (%doStoreProducts = 1) then {
-        gosub stow fount
-        gosub stow brazier
+        gosub get my fount
+        gosub enchant.stow fount
+        gosub get my brazier
+        gosub enchant.stow brazier
         put store default %defaultContainer
         gosub get my %baseItem
         gosub focus my %baseItem
@@ -164,8 +166,8 @@ enchantLoop:
 checkSigils:
     eval len count("%sigilsNeeded", "|")
     var index 0
-    gosub stow right
-    gosub stow left
+    gosub enchant.stow right
+    gosub enchant.stow left
     echo CHECKING SIGILS %len %sigilsNeeded
 checkSigilsLoop:
     if (%index > %len) then return
@@ -179,7 +181,7 @@ checkSigilsLoop:
         matchwait 10
 
         echo SKIPPED A MATCHWAIT
-        gosub stow right
+        gosub enchant.stow right
         goto checkSigilsLoop
     }
     math index add 1
@@ -187,8 +189,8 @@ checkSigilsLoop:
 
 checkSigils.foundSigil:
 	math index add 1
-	#gosub stow my %sigilsNeeded(%index) book
-	gosub stow my book
+	#gosub enchant.stow my %sigilsNeeded(%index) book
+	gosub enchant.stow my book
 	goto checkSigilsLoop
 
 checkSigils.noSigil:
@@ -197,13 +199,13 @@ checkSigils.noSigil:
 
 
 setArtificingBook:
-    gosub stow right
+    gosub enchant.stow right
     gosub get my artificing book
     gosub turn my book to chapter %chapter
     gosub turn my book to page %page
     #gosub read my book
     gosub study my book
-    gosub stow my book
+    gosub enchant.stow my book
     return
 
 
@@ -222,8 +224,8 @@ setBaseItem:
 
 
 setBrazier:
-    gosub stow right
-    gosub stow left
+    gosub enchant.stow right
+    gosub enchant.stow left
     gosub get my %brazier
     if ("$righthandnoun" != "brazier") then {
         if ("$lefthandnoun" = "brazier") then {
@@ -251,7 +253,7 @@ enchantScribe:
     var useMeditate 0
     var useFocus 0
 
-    if ("$righthandnoun" != "burin" && "$righthand" != "Empty") then gosub stow right
+    if ("$righthandnoun" != "burin" && "$righthand" != "Empty") then gosub enchant.stow right
     if ("$righthandnoun" != "burin") then gosub get my %burin
 
     gosub scribe %baseItem on brazier with my burin
@@ -261,10 +263,10 @@ enchantScribe:
 
 
 useLoopTool:
-    if ("$righthandnoun" != "loop" && "$righthand" != "Empty") then gosub stow right
+    if ("$righthandnoun" != "loop" && "$righthand" != "Empty") then gosub enchant.stow right
     if ("$righthandnoun" != "loop") then gosub get my %loop
     gosub push %baseItem on brazier with my loop
-    #gosub stow my loop
+    #gosub enchant.stow my loop
     gosub put my loop in my shadows
     return
 
@@ -274,6 +276,20 @@ useMeditate:
 
 useFocus:
     gosub focus %baseItem on brazier
+    return
+
+
+enchant.stow:
+    var enchantingThings book|brazier|fount|loop|burin|sigil|sigil-scrolls
+    var item $0
+    eval item replacere("%item", "my ", "")
+    if ("%item" = "right" || "%item" = "") then var item $righthandnoun
+    if (matchre("%item", "(%enchantingThings)")) then {
+        gosub put my %item in my %enchantingContainer
+    } else {
+        gosub stow %item
+    }
+    unvar item
     return
 
 

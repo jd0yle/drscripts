@@ -185,11 +185,11 @@ put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
 # dragonwood crossbow
-put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|diamondique hhr'ata|bastard sword|triple-weighted bola|blue sling|diamondique hhr'ata
-put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+#put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|ka'hurst hhr'ata|bastard sword|triple-weighted bola|blue sling|ka'hurst hhr'ata
+#put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 # smokewood pelletbow
-put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|diamondique hhr'ata|haralun broadsword|triple-weighted bola|blue sling|diamondique hhr'ata
+put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata
 put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 

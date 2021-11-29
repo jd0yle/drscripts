@@ -3,6 +3,7 @@ include libmaster.cmd
 var nextTask null
 action var nextTask $1 when I'd like you to.*(BUILD|DISARM|FORAGE|POKE|PULL|SCREAM|SEARCH|TOUCH|WAVE)
 action var nextTask $1 when You believe you should.*(BUILD|DISARM|FORAGE|POKE|PULL|SCREAM|SEARCH|TOUCH|WAVE)
+action var nextTask null;goto loop when ^Disarm what\?
 
 action goto loop when eval $roomname
 
