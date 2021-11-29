@@ -59,4 +59,7 @@ shop.main:
 
     }
 
-
+shop.exit:
+    pause .002
+    put #parse SHOP DONE
+    exit
