@@ -4,7 +4,7 @@ var keeplist pass|ticket|homespun pouch|brocade pouch|oilcloth pouch|icesilk pou
 #var keeplist pass|pouch|strap|scarecrow|tome|collection|lens|wand|head|arm|leg|body|lid|base|mirror|pan|sigil|belt|bandana|leggings|boots|shirt|monocle|vial|maul|wyvern|mace|halberd|moneybelt|necklace|stars|ticket
 
 # Incidentals storage location
-var incidentalStorage shadows
+var incidentalStorage $char.inv.defaultContainer
 
 # Ignore the keeplist and store all incidentals
 var keepall 1
@@ -32,9 +32,10 @@ action put #var halfling3 $roomid when ^You also see.+tired Halfling
 action put #var halfling5 $roomid when ^You also see.+playful Halfling
 action put #var halfling6 $roomid when ^You also see.+grumpy Halfling
 action put #var halfling4 $roomid when ^You also see.+tall Gor'Tog
-action put #echo >%logWindow Yellow Scarecrow appears!;put #play NewRank when You hear sinister laughter as the Scarecrow invades the Corn Maze!
-action put #echo >%logWindow Yellow Spider appears!;put #play NewRank when A hissing sound echoes through the Corn Maze as Harawep's Spider makes its appearance!
+action put #echo Yellow >%logWindow Scarecrow appears!;goto exit when You hear sinister laughter as the Scarecrow invades the Corn Maze!
+action put #echo Yellow >%logWindow Spider appears!;goto exit when A hissing sound echoes through the Corn Maze as Harawep's Spider makes its appearance!
 action var bottle $1 when You count the number of kernels inside the bottle and find that there are (\d+)\.
+action var bottle $1 when Corn Maze \- (.*) kernels\.
 
 action var goodtask 10 when You think that you've gathered enough tokens and should return to one of the Halflings and ASK HALFLING ABOUT TASK again.
 action var goodtask 10 when You think that you've gathered enough corn and should return to one of the Halflings and ASK HALFLING ABOUT TASK again.
@@ -61,7 +62,7 @@ action math goodtask add 1 when You guess this still counts as 'disarming the tr
 #action math goodtask add 1 when As you bend over the contraption, suddenly the clapper releases and strikes the bell, sounding a cacophonic note that rings your ears!
 action math goodtask add 1 when You're pretty sure that counted toward the total number.
 action math goodtask add 1 when You put the finishing touches on your scarecrow.
-action put #echo >%logWindow Yellow $1 minutes remaining! when A barefoot Halfling trots up to you and says, "Hey, just to let you know you've only got (.+) minutes of time left.  You can either run to the exit and start over, or use another pass to keep exploring the maze."
+action put #echo Yellow >%logWindow $1 minutes remaining! when A barefoot Halfling trots up to you and says, "Hey, just to let you know you've only got (.+) minutes of time left.  You can either run to the exit and start over, or use another pass to keep exploring the maze."
 action goto EXIT when A cheerful looking Halfling wearing a wide brimmed hat comes up to you and says, "It looks like you got lost in the maze\!  I'm here to escort you out\."  He takes your hand and leads you through the twisting passages and brings you to the exit\.
 
 
@@ -241,20 +242,20 @@ SCARESPIDER:
   gosub MOVE
   if matchre ("$roomobjs", "the Scarecrow") then
   {
-    put #echo >%logWindow Yellow Scarecrow found in room $roomid!
+    put #echo Yellow >%logWindow Scarecrow found in room $roomid!
     put #echo NewRank
     exit
   }
   if matchre ("$roomobjs", "Harawep's Spider") then
   {
-    put #echo >%logWindow Yellow Spider found in room $roomid!
+    put #echo Yellow >%logWindow Spider found in room $roomid!
     put #echo NewRank
     exit
   }
   math roomnum add 1
   if %roomnum > %roommax then
   {
-    put #echo >%logWindow Yellow Boss not found!
+    put #echo Yellow >%logWindow Boss not found!
     put #echo NewRank
     exit
   }
@@ -306,12 +307,13 @@ ABAD:
   #echo goodtask: %goodtask
   if %goodtask >= 10 then
   {
-    put #echo >%logWindow Task complete - killing!
+    put ticket
+    put #echo >%logWindow Task complete - killing! Kernels - %bottle
     return
   }
   else
   {
-    put #echo >%logWindow Yellow Unable to peform this task!  Please do it manually!
+    put #echo >%logWindow Yellow Unable to perform this task!  Please do it manually!
     put #play NewRank
     exit
   }
@@ -360,7 +362,8 @@ TASK:
   pause .5
   if %goodtask >= %tasknum then
   {
-    put #echo >%logWindow Task complete - %task!
+    put ticket
+    put #echo >%logWindow Task complete - %task!  Kernels - %bottle
     return
   }
   gosub ROOMTEST
@@ -462,7 +465,8 @@ POKEHALF:
   pause .5
   if %goodtask >= 5 then
   {
-    put #echo >%logWindow Task complete - poke!
+    put ticket
+    put #echo >%logWindow Task complete - poke!  Kernels - %bottle
     return
   }
   var badpoke 0
@@ -475,7 +479,8 @@ POKEHALF:
     put #echo >%logWindow Poke task incomplete.  Running through the loop again.
     return
   }
-  put #echo >%logWindow Task complete - poke!
+  put ticket
+  put #echo >%logWindow Task complete - poke!  Kernels - %bottle
   return
 
 POKEHALFLOOP:
@@ -537,7 +542,8 @@ SCREAMMOVE:
   var roomtarget 227
   gosub MOVE
   gosub SCREAM
-  put #echo >%logWindow Task complete - scream!
+  put ticket
+  put #echo >%logWindow Task complete - scream!  Kernels - %bottle
   return
 
 SCREAMP:
@@ -555,7 +561,8 @@ LANDMARKS:
   math roomnum add 1
   if ((%roomnum > %roomcount) || (%goodtask > 9)) then
   {
-    put #echo >%logWindow Task complete - landmark!
+    put ticket
+    put #echo >%logWindow Task complete - landmark!  Kernels - %bottle
     return
   }
   goto LANDMARKS
