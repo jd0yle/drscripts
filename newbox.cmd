@@ -20,6 +20,7 @@ action var boxDisarmed 1 when By focusing on its tiny legs, you are able to pry 
 action var boxDisarmed 1 when var boxDisarmed 1 when Carefully, you pry the bronze face away from the (.*), then moving even more cautiously, pierce the bladder and allow its unsavory contents to spray harmlessly upon the ground\.
 action var boxDisarmed 1 when Following a few moments of effort, you feel satisfied that the trap is no longer a threat\.
 action var boxDisarmed 1 when Grabbing up a pinch of dust from the ground, you carefully pack it into the small hole, stopping it up and disarming the trap\.
+action var boxDisarmed 1 when Slowly, so as not to accidentally jostle the (.*) during the attempt, you work carefully at the bluish azure circle, and bend it away until its metal no longer touches the hinges at all\.
 action var boxDisarmed 1 when Unsure as to whether the liquid-filled bladder is poison or something else, you work first at draining it\.  Only after you are convinced that is done do you move on to the tiny metal lever.  It takes some effort, but you finally bend it away from any spark-causing surfaces\.
 action var boxDisarmed 1 when With sweat forming on your brow, you slowly move the rune away from the lock and push it deep inside the box\.
 action var boxDisarmed 1 when Working slowly, you carefully bend the head of the needle so that it can no longer spring out from its hidden compartment\.
@@ -50,6 +51,7 @@ action var boxDisarmed 1 ; goto box.pickId when While examining the (.*) for tra
 action var boxDisarmed 1 ; goto box.pickId when You notice a tiny hole near the lock which has been stuffed with dirt rendering the trap harmless\.
 action var boxDisarmed 1 ; goto box.pickId when You see a shattered glass tube with a tiny hammer inside the lock\.  You deem it quite safe\.
 action var boxDisarmed 1 ; goto box.pickId when You see a glowing rune pushed deep within the (.*)\.  It seems far enough away from the lock to be harmless\.
+action var boxDisarmed 1 ; goto box.pickId when A thin metal circle of bluish azure has been peeled away from the hinges of the (.*)\.
 
 # - - Variables
 action var boxContent %0 when In the (.*) you see(.*)some (copper|silver|gold|platinum) (coin|coins)(.*)$
@@ -105,7 +107,7 @@ var pouch pouch
 var race 0
 var strength 0
 var treasure bark|jadeite|kyanite|leaf|ostracon|papyrus|parchment|\broll\b|\brune\b|\bscroll\b|tablet|vellum
-
+var trash cebi root|hisan grass|hulnik grass|jadice flowers|yelith root
 
 ###############################
 ###    CONFIG
@@ -159,7 +161,7 @@ box.main:
 ###    METHODS
 ###############################
 box.boxTypeLoop:
-    if (%boxTypeIndex > 10) then {
+    if (%boxTypeIndex > 0) then {
         math boxIndex add 1
         goto box.main
     }

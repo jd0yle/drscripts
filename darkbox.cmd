@@ -1,12 +1,29 @@
 include libmaster.cmd
+###############################
+###    Darkbox
+###############################
 
-action goto darkbox.getHealed when ^Unfortunately, your wounds make it impossible for you to play the Darkbox\.$
 
+###############################
+###    IDLE ACTIONS
+###############################
+if ("$guild" <> "Empath") then {
+    action goto darkbox.getHealed when ^Unfortunately, your wounds make it impossible for you to play the Darkbox\.$
+} else {
+    action goto darkbox.pauseForRegen when ^Unfortunately, your wounds make it impossible for you to play the Darkbox\.$
+}
 action put #echo >Log [darkbox] Found $1; put #log >darkbox_prizes.log [$datetime] $1 when ^As you remove your hand from the Darkbox you see (.*?) in your grasp!
-
 action goto darkbox.getCoins when ^You try to play the Darkbox, but realize you don't have the
 
 
+###############################
+###    VARIABLES
+###############################
+var trashItems sharkskin|rockweed
+
+###############################
+###    LOCATION CHECK
+###############################
 if (!matchre("$roomobjs", "the Darkbox")) then {
 	gosub darkbox.moveToDarkbox
 } else {
@@ -16,10 +33,12 @@ if (!matchre("$roomobjs", "the Darkbox")) then {
 goto darkbox.loop
 
 
-
+###############################
+###    MAIN
+###############################
 darkbox.loop:
-	if ("$righthand" != "Empty") then gosub put my $righthandnoun in my water bag
-	if ("$lefthand" != "Empty") then gosub put my $lefthandnoun in my water bag
+	if ("$righthand" != "Empty") then gosub put my $righthandnoun in my $char.inv.defaultContainer
+	if ("$lefthand" != "Empty") then gosub put my $lefthandnoun in my $char.inv.defaultContainer
 	put play darkbox
 	pause
 	goto darkbox.loop
@@ -30,6 +49,11 @@ darkbox.getCoins:
 	gosub withdraw 10 plat
 	gosub darkbox.moveToDarkbox
 	put .darkbox
+
+
+darkbox.pauseForRegen:
+    pause 10
+    goto darkbox.loop
 
 
 darkbox.getHealed:

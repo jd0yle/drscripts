@@ -24,9 +24,9 @@ appraise.main:
         if ($monstercount > 0) then gosub retreat
 
         gosub appraise my $char.appraise.item
-        if ($char.appraise.container <> 0) then {
-            if ("$righthandnoun" = "pouch" || "$lefthandnoun" = "pouch" || "$righthand" = "$char.appraise.item" || "$lefthand" = "$char.appraise.item") then {
-                gosub put $char.appraise.item in my $char.appraise.container
+        if ("$char.appraise.container" != "0") then {
+            if ((matchre("$lefthandnoun|$righthandnoun", "pouch")) || (matchre("$righthand|$lefthand", "$char.appraise.item"))) then {
+                gosub put my $char.appraise.item in my $char.appraise.container
             }
         }
 
