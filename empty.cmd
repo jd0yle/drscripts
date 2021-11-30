@@ -7,10 +7,11 @@
 # .empty [--from] [--to] [--nowear=1|0] [--filter]
 #
 # If no --to is specified, the item will be STOWed
-# if --wear=1 is specified, the item will not be WORN
+# if --wear=1 is specified, the item will be worn
 #
 # .empty --from=large sack --to=backpack
-# .empty --from=thigh bag --nowear=1
+# .empty --from=thigh bag
+# .empty --from=thigh bag --wear=1
 # .empty --from=large sack --to=haversack --filter=gloves|sword|pants
 #
 ####################################################################################################
@@ -21,7 +22,10 @@ var nowear 0
 
 var fromContainer %args.from
 var toContainer %args.to
+var nowear 1
+if (%args.nowear = 0) then var nowear 0
 if (%args.nowear = 1) then var nowear 1
+if (%args.wear = 1) then var nowear 0
 var filter %args.filter
 eval filter replacere("%filter", ",", "|")
 
@@ -33,7 +37,6 @@ if (%whitelistLength = 0) then put #var empty.whitelist shield
 eval blacklistLength count("$empty.blacklist", "|")
 if (%blacklistLength = 0) then put #var empty.blacklist the
 
-#action var items %items|$1  when ^  (\w+.*)
 action var contents $1 when ^In the.*you see (.*)
 
 action var containerIsEmpty 1 when  but there is nothing in there\.$
