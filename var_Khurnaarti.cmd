@@ -8,7 +8,7 @@ put #tvar char.appraise.item almanac
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|moonsilk shirt|moonsilk pants|demonscale shield|knee spikes|elbow spikes|steelsilk footwraps|steelsilk handwraps|kelp wrap
+put #tvar char.armor ka'hurst balaclava|ka'hurst gloves|moonsilk shirt|moonsilk pants|demonscale shield|knee spikes|elbow spikes|steelsilk footwraps|hand claws|kelp wrap
 
 
 ###############################
@@ -178,6 +178,7 @@ put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
 put #tvar char.fight.useStealth 0
+put #tvar char.fight.useTarantula 1
 
 # ------ WEAPONS ------
 # Everything
@@ -314,10 +315,10 @@ put #tvar char.pawn.container purse
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 10
 put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves|
-put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|steelsilk handwraps|
+put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|hand claws|
 put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade|
-put #tvar char.repair weapon2 executioner's broad-axe|duraka skefne|haralun broadsword|blue sling
-put #tvar char.repair.list $char.repair.armor + $char.repair.brawl + $char.repair.armor.weapon + $char.repair.weapon2
+put #tvar char.repair.weapon2 executioner's broad-axe|duraka skefne|haralun broadsword|blue sling
+put #tvar char.repair.list $char.repair.armor $char.repair.brawl $char.repair.weapon $char.repair.weapon2
 
 
 ###############################
@@ -328,6 +329,12 @@ put #tvar char.compendium.forceTurn 1
 put #tvar char.research.interrupt.cast 0
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
+###############################
+###      TARANTULA
+###############################
+put #tvar char.tarantula.item harvester spider
+put #tvar char.inv.container.tarantula shadows
 
 
 ###############################
