@@ -54,15 +54,12 @@ house.enterHouse:
     matchre enterHouseCont suddenly opens
     put peer %obj
     matchwait 20
-    gosub open %obj
-    gosub move go %obj
+    gosub move move %obj
     goto house.locationCheck
 
 
 house.enterHouseCont:
-    gosub open %obj
-    gosub move go %obj
-    gosub close door
+    gosub move move %obj
     goto house.locationCheck
 
 
@@ -75,7 +72,7 @@ house.main:
     }
     # Key holders going inside.
     if ("%obj" != "door" && matchre("$charactername", "Selesthiel|Inauri")) then {
-        gosub unlock %obj
+        gosub move move %obj
     }
     # Non-key holders going inside.
     if ("%obj" != "door" && !matchre("$charactername", "Selesthiel|Inauri")) then {
@@ -83,12 +80,11 @@ house.main:
     }
     # Leaving a house.
     if ("%obj" = "door") then {
-        gosub unlock %obj
+        gosub move move %obj
     }
 
     house.mainEnter:
-        gosub open %obj
-        gosub move go %obj
+        gosub move move %obj
 
         if ("%obj" <> "door") then {
             gosub close door
