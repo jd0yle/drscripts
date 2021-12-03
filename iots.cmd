@@ -84,6 +84,7 @@ iotsCast:
     gosub cast %planetName
     if (%isFocusWorn = 1) then {
         gosub wear my %ritualFocus
+        gosub sort auto head
     } else {
         gosub stow my %ritualFocus
     }

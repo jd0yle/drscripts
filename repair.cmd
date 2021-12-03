@@ -143,6 +143,7 @@ repair.fetchItems:
     gosub get my ticket
     if ("$righthandnoun" <> "ticket") then {
         put #echo Blue >Log [repair] Repairs complete.
+        gosub sort auto head
         goto repair.exit
     }
     if (matchre("$righthand", "(%repair.npcs)")) then {
@@ -171,8 +172,9 @@ repair.fetchItems:
         gosub repair.moveToFangCove
         gosub repair.moveToRepairMetal
     }
-    if ("%repair.ticketName" = "clerk") then {
-        gosub repair.moveToCraftHall
+    if (matchre("%repair.ticketName", "cornmaze|raffle")) then {
+        put #echo Blue >Log [repair] Found a ticket that is not a supported repair ticket.  $righthand
+        goto repair.exit
     }
 
 
