@@ -261,6 +261,7 @@ train.escapeTaisidon:
 train.getHealed:
     gosub train.checkHealth
     if (%injured = 1) then {
+        put #echo >Log #FF8fF7 Getting healed
         gosub train.moveToHouse
 
         if (contains("$roomplayers", "Inauri")) then {

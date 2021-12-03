@@ -88,12 +88,14 @@ play.cleanInstrument:
 	gosub stop play
 	gosub stow left
 	gosub get my $char.instrument.cloth
-	if ("$lefthand" = "Empty") then goto done.noCleaningCloth
+	if ("$lefthand" = "Empty" && "$righthand" = "Empty") then goto done.noCleaningCloth
 	gosub wring my cloth
+	if ("$char.instrument.noun" = "zills") then gosub remove my zills
 	gosub wipe my $char.instrument.noun with my cloth
 	gosub clean my $char.instrument.noun with my cloth
 	pause
 	put wring my cloth
+	if ("$char.instrument.noun" = "zills") then gosub wear my zills
 	gosub stow my cloth
 	if (%play.restart = 1) then goto play.top
 	return

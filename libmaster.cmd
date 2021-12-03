@@ -2596,6 +2596,10 @@ stow:
             gosub put my iron greatsword in my hip pouch
             return
         }
+        if (contains("%todo", "halberd") || ("%todo" = "right" && "$righthand" = "glaes halberd") || ("%todo" = "left" && "$lefthand" = "glaes halberd")) then {
+            gosub put my glaes halberd in my hip pouch
+            return
+        }
     }
     if ("$charactername" = "Izqhhrzu") then {
         if ( ("%todo" = "right" && "$righthand" = "blood-red scythe") || ("%todo" = "" && "$righthand" = "blood-red scythe") || contains("%todo", "scythe") || ("%todo" = "left" && "$lefthand" = "blood-red scythe") ) then {

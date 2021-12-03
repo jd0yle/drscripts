@@ -35,8 +35,9 @@ put #tvar char.cambrinth cambrinth spiderling
 put #tvar char.focusContainer $char.storage.default
 put #tvar char.wornCambrinth 1
 
-put #tvar char.ritualFocus ouroboros ring
-put #tvar char.wornFocus 1
+#put #tvar char.ritualFocus ouroboros ring
+put #tvar char.ritualFocus sigil-laced skull
+put #tvar char.wornFocus 0
 
 
 ###############################

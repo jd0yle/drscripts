@@ -3,9 +3,6 @@ include args.cmd
 
 var tarantula.skill %args.skill
 
-#action evalmath timeRemaining ($1 * 60 + 60 + $gametime); put #var lib.timers.nextTarantulaAt %timeRemaining; echo $lib.timers.nextTarantulaAt when It needs approximately (\d+) roisaen to generate enough venom again\.$
-#action put #tvar char.tarantula.lastSkillset $1 when last used gave unbidden knowledge of (\S+) techniques\.$
-
 var usedSkillset null
 action var usedSkillset $1 when ^\[You need to vary which skillset you select with every use.  (\S+) was your last used skillset
 

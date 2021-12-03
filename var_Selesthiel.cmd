@@ -58,6 +58,7 @@ put #tvar char.cast.moonblade.minPrepTime 8
 put #tvar char.cast.mt.minPrepTime 8
 put #tvar char.cast.pg.minPrepTime 12
 put #tvar char.cast.psy.minPrepTime 8
+put #tvar char.cast.rf.minPrepTime 0
 put #tvar char.cast.seer.minPrepTime 15
 put #tvar char.cast.shadowling.minPrepTime 15
 put #tvar char.cast.shadows.minPrepTime 8
@@ -66,6 +67,9 @@ put #tvar char.cast.tksh.minPrepTime 15
 
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
+
+put #tvar char.cast.rf.prep 5
+put #tvar char.cast.rf.charge 0
 
 put #tvar char.cast.rs.prep 40
 put #tvar char.cast.rs.charge 80
@@ -203,11 +207,14 @@ put #tvar char.fight.useLgv 1
 
 if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.useSls 0
-	put #tvar char.fight.weapons.items ka'hurst hhr'ata|diamondwood nightstick|blue sling
-	put #tvar char.fight.weapons.skills Heavy_Thrown|Staves|Slings
+    put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
+    put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
+	put #tvar char.fight.weapons.items competition shortbow|diamondwood nightstick|blue sling
+	put #tvar char.fight.weapons.skills Bow|Staves|Slings
 
-	put #tvar char.fight.arrangeForPart 1
+	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 1
+    put #tvar char.fight.useDissect 1
     put #tvar char.fight.useHunt 0
     put #tvar char.fight.useShadows 0
     put #tvar char.fight.useStealth 0

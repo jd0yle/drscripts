@@ -134,8 +134,11 @@ put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged
+#put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged
+
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword|glaes halberd|competition shortbow|frying pan|ka'hurst hhr'ata
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged|Polearms|Bow|Small_Blunt|Large_Blunt
 
 put #tvar char.fight.trainOffhand 1
 

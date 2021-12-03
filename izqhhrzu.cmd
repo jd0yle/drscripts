@@ -50,7 +50,13 @@ main:
         gosub clericRituals
         gosub train.moveToHouse
         gosub train.performance 5
-        if ($First_Aid.LearningRate < 10) then gosub runScript compendium --target=10
+        if ($First_Aid.LearningRate < 10) then {
+            put #echo >Log #0033CC Start First Aid: $First_Aid.LearningRate/34
+            gosub runScript compendium --target=10
+            put #echo >Log #0033CC End First Aid: $First_Aid.LearningRate/34
+        } else {
+            put #echo >Log #0033CC SKIPPING First Aid: $First_Aid.LearningRate/34
+        }
         #gosub train.compendium 30
         gosub train.getHealed
 
@@ -72,6 +78,7 @@ main:
 
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+        put #echo >Log #0033CC Start combat
         gosub train.getHealed
         if ("$roomname" = "Private Home Interior" || $zoneid = 150) then {
             gosub release cyclic

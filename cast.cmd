@@ -146,7 +146,7 @@ if (%useCambrinth = 1) then {
 if (%harness > 0) then gosub harness %harness
 
 if (!($char.cast.default.minPrepTime > -1)) then var minPrepTime 40
-if ($char.cast.%spell.minPrepTime > 0) then var minPrepTime $char.cast.%spell.minPrepTime
+if ($char.cast.%spell.minPrepTime >= 0) then var minPrepTime $char.cast.%spell.minPrepTime
 
 gosub waitForPrep %minPrepTime
 

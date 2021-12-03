@@ -198,6 +198,7 @@ loop:
     gosub waitForMana 80
     pause .5
     if (%noLoop = 1 && $Warding.LearningRate > 32 && $Utility.LearningRate > 32 && $Augmentation.LearningRate > 32) then goto done
+    if (%lastSpellBackfired = 1) then gosub magic.waitForBacklashLoop
     goto loop
 
 
@@ -219,6 +220,15 @@ findMinLearnRate:
     }
     goto findMinLearnRateLoop
 
+
+magic.waitForBacklashLoop:
+    gosub checkForBacklashDebuff
+    if ($lib.backlashDebuff = 1) then {
+        put #echo >Log [magic] Still waiting for backlash to wear off...
+        pause 60
+        goto magic.waitForBacklashLoop
+    }
+    return
 
 doneNoVars:
      echo CHARACTER GLOBALS AREN'T SET!
