@@ -30,8 +30,8 @@ if ("%armor.act" = "wear") then {
 if ("%armor.act" = "remove") then {
    var armor.verbOne remove
    var armor.verbTwo stow
-   #goto armor.loop
-   gosub runScript armorremove
+   goto armor.loop
+   #gosub runScript armorremove
    goto armor.done
 }
 
