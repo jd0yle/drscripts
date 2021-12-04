@@ -126,7 +126,7 @@ main:
         gosub release spell
 
 
-        gosub runScript armor remove
+        gosub runScript armorremove
 
         gosub cast
 
@@ -374,11 +374,7 @@ castSpellsForMove:
         gosub runScript cast rog
     }
 
-    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then {
-        gosub prep eotb
-        pause 3
-        gosub cast
-    }
+    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then gosub runScript cast eotb
     return
 
 
@@ -459,6 +455,8 @@ moveToAdanf:
 
 moveToBurgle:
     gosub setZone
+
+    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then gosub runScript cast eotb
 
     # Shard West Gate Area
     if ("%zone" = "69") then {
@@ -640,6 +638,10 @@ moveToHouse:
     gosub setZone
 
     if ("$roomname" = "Private Home Interior") then return
+
+    if ("$roomid" != "50") then {
+        if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then gosub runScript cast eotb
+    }
 
     # FC
     if ("%zone" = "150") then {
@@ -940,6 +942,8 @@ moveToWyvern:
         gosub runScript house
         goto moveToWyvern
     }
+
+    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then gosub runScript cast eotb
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {

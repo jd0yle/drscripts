@@ -67,9 +67,7 @@ house.enterHouseCont:
 ###    MAIN
 ###############################
 house.main:
-    if ("$guild" <> "Necromancer") then {
-        gosub house.releaseInvis
-    }
+    gosub house.releaseInvis
     # Key holders going inside.
     if ("%obj" != "door" && matchre("$charactername", "Selesthiel|Inauri")) then {
         gosub move move %obj

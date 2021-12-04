@@ -66,7 +66,7 @@ train.burgle:
         gosub train.moveToBurgle
         gosub release spell
 
-        gosub runScript armor remove
+        gosub runScript armorremove
 
         gosub cast
 

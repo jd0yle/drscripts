@@ -45,9 +45,10 @@ put #tvar char.cast.devour.prep 30
 put #tvar char.cast.devour.charge 40
 put #tvar char.cast.devour.chargeTimes 1
 
-put #tvar char.cast.eotb.prep 20
-put #tvar char.cast.eotb.charge 40
-put #tvar char.cast.eotb.chargeTimes 1
+put #tvar char.cast.eotb.prep 5
+put #tvar char.cast.eotb.charge 0
+put #tvar char.cast.eotb.chargeTimes 0
+put #tvar char.cast.eotb.minPrepTime 0
 
 put #tvar char.cast.nr.prep 20
 put #tvar char.cast.nr.charge 19

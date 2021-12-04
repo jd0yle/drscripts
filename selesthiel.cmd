@@ -94,7 +94,7 @@ main:
         }
 
         gosub prep rf
-        gosub runScript armor remove
+        gosub runScript armorremove
         gosub cast
 
         gosub runScript burgle
