@@ -8,7 +8,7 @@ action var inauriIdle.openDoor 1 when ^($friends)'s face appears in the
 action goto inauriIdle.houseMove when ^($friends) whispers, "inside|^($friends) whispers, "outside
 action var inauriIdle.wounds 0 when \.\.\. no injuries to speak of\.
 action var inauriIdle.openDoor 0 when ^(\S+) opens the door\.
-action var inauriIdle.disease 1 when ^(Her|His) wounds are infected\.$
+action var inauriIdle.disease 1 when (Her|His) wounds are infected\.|(Her|His) wounds are badly infected\.|(He|She) has a dormant infection that could make wounds worse\.
 action var inauriIdle.poison 1 when ^(He|She) has a (dangerously|mildly|critically) poisoned
 action var inauriIdle.poisonSelf 1 when ^You fall to your knees as the world spins around and around\!|You feel a slight twinge in your|^You feel a (sharp|terrible) pain in your|The presence of a faint greenish tinge about yourself\.
 action var inauriIdle.poisonSelf 0 when ^A sudden wave of heat washes over you as your spell flushes all poison from your body\.
