@@ -59,9 +59,9 @@ pb.study:
         goto pb.main
     } else {
         if ("$char.locks.bucket" <> "0") then {
-            gosub put my %pb.box in my $char.locks.bucket
-            gosub tap my $char.locks.bucket
-            gosub tap my $char.locks.bucket
+            gosub put my %pb.box in my bucket
+            gosub tap my bucket
+            gosub tap my bucket
             goto pb.findBox
         } else {
             if (matchre("$roomobjs", "bin|statue|bucket")) then {
