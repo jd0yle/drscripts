@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container shadows
-put #tvar char.appraise.item almanac
+put #tvar char.appraise.container 0
+put #tvar char.appraise.item pouch
 
 
 ###############################
@@ -88,6 +88,15 @@ put #tvar char.cast.dc.prep 50
 put #tvar char.cast.calm.prep 5
 put #tvar char.cast.calm.charge 0
 put #tvar char.cast.calm.chargeTimes 0
+# Mental Blast
+put #tvar char.cast.mb.prep 30
+put #tvar char.cast.mb.charge 0
+put #tvar char.cast.mb.chargeTimes 0
+# Stun Foe
+put #tvar char.cast.sf.prep 20
+put #tvar char.cast.sf.charge 0
+put #tvar char.cast.sf.chargeTimes 0
+# Shadow Web
 put #tvar char.cast.shw.prep 5
 put #tvar char.cast.shw.charge 10
 put #tvar char.cast.shw.chargeTimes 1
@@ -140,8 +149,8 @@ put #tvar char.fight.arrangeFull 0
 
 # ------ DEBILITATION ------
 put #tvar char.fight.debil.use 1
-put #tvar char.fight.debil.spell calm
-put #tvar char.fight.debil.prepAt 3
+put #tvar char.fight.debil.spell sf
+put #tvar char.fight.debil.prepAt 15
 put #tvar char.fight.forceDebil 0
 
 # ------ STANCE ------
@@ -150,7 +159,7 @@ put #tvar char.fight.forceShield 0
 
 # ------ LOOT ------
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType treasure
+put #tvar char.fight.lootType goods
 
 # ------ STANCE ------
 # Force always using stance shield, never stance parry
@@ -160,15 +169,15 @@ put #tvar char.fight.forceShield 0
 put #tvar char.fight.opts null
 
 # ------ TM ------
-put #tvar char.fight.tmSpell do
-put #tvar char.fight.tmPrep 7
+put #tvar char.fight.tmSpell pd
+put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 7
 
 # ------ USE ------
 # Use vars are all "Do this thing or not"
 # All default to 0
 put #tvar char.fight.trainOffhand 1
-put #tvar char.fight.useAlmanac 0
+put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useDissect 1
@@ -186,23 +195,23 @@ put #tvar char.fight.useTarantula 1
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # No Targeted Magic
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
+#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # Main Weapons Only
-#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
-#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
 
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
 put #tvar char.fight.useCol 0
-put #tvar char.fight.useObserve 1
+put #tvar char.fight.useObserve 0
 put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
-put #tvar char.fight.useShadowling 0
+put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
-put #tvar char.fight.useShw 0
+put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
 put #tvar char.fight.useTksh 1
 
