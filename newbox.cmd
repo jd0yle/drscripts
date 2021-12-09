@@ -17,21 +17,28 @@ action var boxDisarmed 1 when After carefully pushing at the sharp blade for a w
 action var boxDisarmed 1 when After studying the design of the trap carefully, you begin to nudge the tip of the dart sideways in an effort to jam the mechanism\.
 action var boxDisarmed 1 when After wiggling the milky-white tube back and forth for a few moments, you manage to bend it away from the tiny hammer set to break it\.  Just for fun, you flick the tube a couple of times with the tip of your finger, which seems to annoy the heck out of the little black dots inside\.
 action var boxDisarmed 1 when By focusing on its tiny legs, you are able to pry the crusty scarab off one small piece at a time\.  Finally, the body of the faux insect falls away and crumbles, surprisingly, into sand\.
-action var boxDisarmed 1 when var boxDisarmed 1 when Carefully, you pry the bronze face away from the (.*), then moving even more cautiously, pierce the bladder and allow its unsavory contents to spray harmlessly upon the ground\.
+action var boxDisarmed 1 when Careful not to jostle the (.*), you reach down and scoop a pinchful of dirt from the ground, then pack it into the pinholes, blocking them\.  It's not exactly an original solution, but it still works\.
+action var boxDisarmed 1 when Carefully, you pry the bronze face away from the (.*), then moving even more cautiously, pierce the bladder and allow its unsavory contents to spray harmlessly upon the ground\.
 action var boxDisarmed 1 when Following a few moments of effort, you feel satisfied that the trap is no longer a threat\.
 action var boxDisarmed 1 when Grabbing up a pinch of dust from the ground, you carefully pack it into the small hole, stopping it up and disarming the trap\.
+action var boxDisarmed 1 when Only after you are convinced that is done do you move on to the tiny metal lever\.  It takes some effort, but you finally bend it away from any spark-causing surfaces\.
+action var boxDisarmed 1 when Reaching into the keyhole carefully, you knock free the coin sized piece of metal and it falls to the bottom of the box with a light "thunk"\.
 action var boxDisarmed 1 when Slowly, so as not to accidentally jostle the (.*) during the attempt, you work carefully at the bluish azure circle, and bend it away until its metal no longer touches the hinges at all\.
 action var boxDisarmed 1 when Unsure as to whether the liquid-filled bladder is poison or something else, you work first at draining it\.  Only after you are convinced that is done do you move on to the tiny metal lever.  It takes some effort, but you finally bend it away from any spark-causing surfaces\.
+action var boxDisarmed 1 when With a smirk you wedge a small stick between the tiny hammer and the tube forcing it back until you hear a\.\.\.\"CLICK\"\.  The hammer seems to be in a locked position\.
+action var boxDisarmed 1 when With precise control, you shove the pin away from the tumblers and it springs upward and lodges into the frame of the (.*) itself\.
 action var boxDisarmed 1 when With sweat forming on your brow, you slowly move the rune away from the lock and push it deep inside the box\.
+action var boxDisarmed 1 when With the precision and grace of a skilled craftsman, you nudge the black crystal away from its position next to the lock\.
 action var boxDisarmed 1 when Working slowly, you carefully bend the head of the needle so that it can no longer spring out from its hidden compartment\.
 action var boxDisarmed 1 when Working slowly, you carefully pry at the studs working them away from what you surmise are contacts located somewhere under the keyhole\.
 action var boxDisarmed 1 when Working with extreme care, you cautiously bend closed the metal plates over the bolts so that the openings are sealed shut\.
 action var boxDisarmed 1 when Working with extreme care, you locate the spring mechanism attached to the blade, and unhook it from the blade rendering it harmless\.
+action var boxDisarmed 1 when Working with extreme care, you poke a small hole in the (.*) and through the vial, allowing the deadly naphtha to drain harmlessly to the ground\.
 action var boxDisarmed 1 when Working with extreme care, you unhook the stopper from the lid, allowing it to be opened safely\.
 action var boxDisarmed 1 when You cautiously pry the seal away from the lid, being extremely careful not to break it\.
 action var boxDisarmed 1 when You manage to work the contact fibers away from the cube of black powder lodged inside the lock casement\.
 action var boxLocked 1 when With a soft click, you remove your lockpick and open and remove the lock\.
-action var boxLocked 1 when ^It's not even locked, why bother\?$
+action var boxLocked 1 ; goto box.mainLoop when It's not even locked, why bother\?
 action goto box.healthCheck when You realize very quickly that this was a very bad idea\.\.\.
 
 
@@ -45,20 +52,29 @@ action var boxDisarmed 1 ; goto box.pickId when A tiny hammer and milky-white tu
 action var boxDisarmed 1 ; goto box.pickId when An incredibly sharp blade rests off to the side in the casing of the (.*), indicating the trap is no longer a danger\.
 action var boxDisarmed 1 ; goto box.pickId when Looking closely at the (.*) you notice a vial of lime green liquid attached to the lid.  Someone has unhooked the stopper, rendering it harmless\.
 action var boxDisarmed 1 ; goto box.pickId when Several small pinholes centered around the keyhole indicate that some sort of apparatus, previously attached, was picked apart and removed from the (.*)\.
+action var boxDisarmed 1 ; goto box.pickId when Several strands of wicker detonator lay inside the casement, separated harmlessly from their charge\.  You guess it is already disarmed\.
 action var boxDisarmed 1 ; goto box.pickId when There are two tiny holes in the (.*)\.  It looks like there used to be something in them, but whatever it was has been pried out\.
+action var boxDisarmed 1 ; goto box.pickId when There is a small hole in the front of the (.*), and a damp stain down the front, as if something had been poured out the hole\.
 action var boxDisarmed 1 ; goto box.pickId when There is a stain near a small notch on the front of the (.*), indicating a liquid was drained out\.  Additionally, a tiny metal lever has been bent away from the casing\.
+action var boxDisarmed 1 ; goto box.pickId when Two sets of six pinholes on either side of the (.*)'s lock are sealed with dirt, blocking whatever would have come out\.
 action var boxDisarmed 1 ; goto box.pickId when While examining the (.*) for traps, you notice a bronze seal with a glass sphere in it.  The seal has been pried away from the lid.
+action var boxDisarmed 1 ; goto box.pickId when You notice a sphere with some type of lacing around it\.  It seems a small portion of the trap has been removed\.
 action var boxDisarmed 1 ; goto box.pickId when You notice a tiny hole near the lock which has been stuffed with dirt rendering the trap harmless\.
-action var boxDisarmed 1 ; goto box.pickId when You see a shattered glass tube with a tiny hammer inside the lock\.  You deem it quite safe\.
 action var boxDisarmed 1 ; goto box.pickId when You see a glowing rune pushed deep within the (.*)\.  It seems far enough away from the lock to be harmless\.
+action var boxDisarmed 1 ; goto box.pickId when You see a pin and shaft lodged into the frame of the (.*)\.  It looks safe enough\.
+action var boxDisarmed 1 ; goto box.pickId when You see a shattered glass tube with a tiny hammer inside the lock\.  You deem it quite safe\.
+action var boxDisarmed 1 ; goto box.pickId when You see nothing of interest in the (.*)\.  It seems harmless\.
 action var boxDisarmed 1 ; goto box.pickId when A thin metal circle of bluish azure has been peeled away from the hinges of the (.*)\.
+action var boxDisarmed 1; var boxLocked 0 ; goto box.pickId when It is locked\.
 
 # - - Variables
-action var boxContent %0 when In the (.*) you see(.*)some (copper|silver|gold|platinum) (coin|coins)(.*)$
+action var boxContent $1 when ^In the.*you see (.*)
+action var boxIsEmpty 1 when  but there is nothing in there\.|There is nothing in there\.
 action var boxDiff 1 when The (.*)'s trap is a trivially constructed gadget which you can take down any time\.
 action var boxDiff 1 when The lock is a trivially constructed piece of junk barely worth your time\.
 action var boxDiff 1 when This (trap|lock) is a laughable matter(.*)you could do it blindfolded\!
-action var boxDiff 1 when An aged grandmother could (defeat|open) this trap in her sleep\.
+action var boxDiff 1 when An aged grandmother could (defeat this trap|open this) in her sleep\.
+action var boxDiff 2 when Somebody has already inspected the current
 action var boxDiff 2 when The (.*) will be a simple matter for you to (disarm|unlock)\.
 action var boxDiff 2 when The (.*) should not take long with your skills\.
 action var boxDiff 2 when You can (disarm|unlock) the (.*) with only minor troubles\.
@@ -97,6 +113,7 @@ var boxDiff 0
 var boxDisarmed 0
 var boxContent 0
 var boxIndex 0
+var boxIsEmpty 0
 var boxItem 0
 var boxLocked 0
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|box
@@ -106,8 +123,8 @@ var guild 0
 var pouch pouch
 var race 0
 var strength 0
-var treasure bark|jadeite|kyanite|leaf|ostracon|papyrus|parchment|\broll\b|\brune\b|\bscroll\b|tablet|vellum
-var trash cebi root|hisan grass|hulnik grass|jadice flowers|yelith root
+var treasure bark|jadeite|kyanite|leaf|ostracon|papyrus|parchment|\broll\b|\brune\b|\bscroll\b|tablet|vellum|bar|nugget
+var trash card|cebi root|embroidery needle|flint|hisan grass|hulnik grass|jadice flowers|mortar|nemoih root|marble pestle|riolur leaf|runestone|wax label|wood glue|yelith root
 
 ###############################
 ###    CONFIG
@@ -127,6 +144,7 @@ box.main:
     if ("$righthand" = "Empty") then {
         var boxItem %boxes(%boxIndex)
         if ("%boxItem" = "box") then {
+            var boxTypeIndex 0
             gosub box.boxTypeLoop
         }
         gosub get my %boxItem
@@ -161,16 +179,18 @@ box.main:
 ###    METHODS
 ###############################
 box.boxTypeLoop:
-    if (%boxTypeIndex > 0) then {
-        math boxIndex add 1
-        goto box.main
-    }
-
-    var boxItem %boxType(%boxTypeIndex) box
-    gosub get my %boxItem
-    if ("$righthand" = "Empty") then {
-        math boxTypeIndex add 1
-        goto box.boxTypeLoop
+    if (%boxTypeIndex < 11) then {
+        var boxItem %boxType(%boxTypeIndex) box
+        gosub get my %boxItem
+        if ("$righthand" = "Empty") then {
+            if (%boxTypeIndex > 10) then {
+                goto box.done
+            }
+            math boxTypeIndex add 1
+            goto box.boxTypeLoop
+        }
+    } else {
+        goto box.done
     }
     goto box.mainLoop
 
@@ -261,20 +281,27 @@ box.lootGems:
 
 
 box.lootMisc:
-	if ("%boxContent" <> 0) then {
-	    if (matchre("%boxContent", "%treasure")) then {
-	        var treasureItem $1
-	        gosub get %treasureItem from my %boxItem
-	        gosub stow my %treasureItem
-	        put #echo >Log [box] Looted a %treasureItem.
-	    }
-	}
+    gosub look in my $righthandnoun
+    if (%boxIsEmpty = 1) then {
+        return
+    } else {
+        if (matchre("%boxContent", "(%treasure)")) then {
+            var treasureItem $1
+            gosub get %treasureItem from my %boxItem
+            gosub stow my %treasureItem
+            put #echo >Log [box] Looted a %treasureItem.
+            goto box.lootMisc
+        }
+    }
     return
 
 
 box.dismantle:
+    var boxContent 0
     var boxDisarmed 0
+    var boxIsEmpty 0
     var boxLocked 0
+
     if (%dismantleType <> 0) then {
         gosub dismantle %boxItem %dismantleType
         if ("$righthand" <> "Empty") then {
