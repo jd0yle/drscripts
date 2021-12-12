@@ -2,10 +2,10 @@ include libmaster.cmd
 ###############################
 ###    IDLE ACTION TRIGGERS
 ###############################
-action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto inauriIdle.healWound when ^($friends) whispers, "heal
+action put #var inauri.heal 1 ; put #var inauri.healTarget $1 ; goto inauriIdle-healWound when ^($friends) whispers, "heal
 #action put #var inauri.heal 0 when ^(\S+) is not wounded in that location\.$
 action var inauriIdle.openDoor 1 when ^($friends)'s face appears in the
-action goto inauriIdle.houseMove when ^($friends) whispers, "inside|^($friends) whispers, "outside
+action goto moveToHouse when ^($friends) whispers, "inside|^($friends) whispers, "outside
 action var inauriIdle.wounds 0 when \.\.\. no injuries to speak of\.
 action var inauriIdle.openDoor 0 when ^(\S+) opens the door\.
 action var inauriIdle.disease 1 when (Her|His) wounds are infected\.|(Her|His) wounds are badly infected\.|(He|She) has a dormant infection that could make wounds worse\.
@@ -17,7 +17,7 @@ action var inauriIdle.vitality 1 when ^(\S+) is suffering from a .+ loss of vita
 action var inauriIdle.vitality 0 when ^(\S+) has normal vitality\.$
 action var inauriIdle.wounds 0 when /./././ no injuries to speak of/.$
 action var inauriIdle.wounds 1 when Wounds to the.*$
-action goto inauriIdle.vitalityHeal when eval $health < 30
+action goto inauriIdle-vitalityHeal when eval $health < 80
 
 
 ###############################
@@ -46,28 +46,29 @@ put .afk
 ###############################
 ###    MAIN
 ###############################
-inauriIdle.loop:
-    gosub inauriIdle.locationCheck
+inauriIdle-loop:
+    gosub inauriIdle-locationCheck
     if (%inauriIdle.teachTrigger = 1) then {
-        gosub inauriIdle.teach
+        gosub inauriIdle-teach
     }
     if ($standing = 0) then gosub stand
-    if (%inauriIdle.poison = 1 || %inauriIdle.poisonSelf = 1) then gosub inauriIdle.healPoison
-    if (%inauriIdle.disease = 1 || %inauriIdle.diseaseSelf = 1) then gosub inauriIdle.healDisease
+    if ($health < 80) then gosub inauriIdle-vitalityHeal
+    if (%inauriIdle.poison = 1 || %inauriIdle.poisonSelf = 1) then gosub inauriIdle-healPoison
+    if (%inauriIdle.disease = 1 || %inauriIdle.diseaseSelf = 1) then gosub inauriIdle-healDisease
     if ($mana > 30 && $SpellTimer.Regenerate.duration < 1) then gosub refreshRegen
     if ($Empathy.LearningRate < 33  && $lib.magicInert <> 1) then gosub percHealth.onTimer
     if ($Attunement.LearningRate < 33 && $lib.magicInert <> 1) then gosub perc.onTimer
-    if (%inauriIdle.openDoor = 1) then gosub inauriIdle.door
+    if (%inauriIdle.openDoor = 1) then gosub inauriIdle-door
     gosub almanac.onTimer
     pause 2
-    gosub inauriIdle.look
-    goto inauriIdle.loop
+    gosub inauriIdle-look
+    goto inauriIdle-loop
 
 
 ###############################
 ###    METHODS
 ###############################
-inauriIdle.caracal:
+inauriIdle-caracal:
     evalmath nextTrainerAt $lastTrainerGametime + 3600
     if (%nextTrainerAt > $gametime) then {
         return
@@ -75,15 +76,14 @@ inauriIdle.caracal:
     gosub inauriIdle.clearHands
     if ($First_Aid.LearningRate < 15 && $Skinning.LearningRate < 15) then {
         put #echo >Log #009933 [inauriIdle] Beginning trainer.
-        put .caracal
-        waitforre ^CARACAL DONE
+        gosub runScript caracal
     	put #echo >Log #009933 [inauriIdle] Trainer complete. FA:($First_Aid.LearningRate/34) SK:($Skinning.LearningRate/34)
     	put #var lastTrainerGametime $gametime
     }
     return
 
 
-inauriIdle.clearHands:
+inauriIdle-clearHands:
     if ("$righthand" <> "Empty") then {
         gosub stow
     }
@@ -93,25 +93,20 @@ inauriIdle.clearHands:
     return
 
 
-inauriIdle.door:
-    if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $0
-        put #script abort $inauri.subScript
-    }
-    if (%inauriIdle.openDoor = 0) then goto inauriIdle.loop
+inauriIdle-door:
+    if (%inauriIdle.openDoor = 0) then goto inauriIdle-loop
     gosub unlock door
     gosub open door
     var inauriIdle.openDoor 0
-    goto inauriIdle.loop
+    goto inauriIdle-loop
 
 
-inauriIdle.forage:
+inauriIdle-forage:
     if ($Outdoorsmanship.LearningRate < 10) then {
         put #echo >Log #009933 [inauriIdle] Going to forage.
         gosub moveToForage
         gosub automove 49
-        put .forage
-        waitforre ^FORAGE DONE
+        gosub runScript forage
         put #echo >Log #009933 [inauriIdle] Forage complete. Outdoor:($Outdoorsmanship.LearningRate/34) Perc:($Perception.LearningRate/34)
         gosub runScript house
         gosub inauriIdle.restart
@@ -120,7 +115,7 @@ inauriIdle.forage:
 
 
 
-inauriIdle.healDisease:
+inauriIdle-healDisease:
     if (%inauriIdle.disease) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget disease quick
@@ -134,10 +129,10 @@ inauriIdle.healDisease:
     return
 
 
-inauriIdle.healWound:
+inauriIdle-healWound:
     if ($inauri.healTarget = 0) then {
         put #var inauri.heal 0
-        goto inauriIdle.loop
+        goto inauriIdle-loop
     }
     gosub redirect all to left leg
     gosub touch $inauri.healTarget
@@ -164,10 +159,10 @@ inauriIdle.healWound:
         gosub whisper $inauri.healTarget You have no wounds.
     }
     put #var inauri.heal 0
-    goto inauriIdle.loop
+    goto inauriIdle-loop
 
 
-inauriIdle.healPoison:
+inauriIdle-healPoison:
     if (%inauriIdle.poison) then {
         gosub touch $inauri.healTarget
         gosub take $inauri.healTarget poison quick
@@ -180,13 +175,7 @@ inauriIdle.healPoison:
     return
 
 
-inauriIdle.houseMove:
-    put .house
-    waitforre ^HOUSE DONE
-    goto inauriIdle.loop
-
-
-inauriIdle.locationCheck:
+inauriIdle-locationCheck:
     if ("$roomname" = "Private Home Interior") then {
         return
     } else {
@@ -195,46 +184,21 @@ inauriIdle.locationCheck:
     return
 
 
-inauriIdle.look:
-  evalmath nextLookAt $lastLookGametime + 240
-  if (%nextLookAt < $gametime) then {
-    gosub tdp
-    put #var lastLookGametime $gametime
-  }
+inauriIdle-look:
+    evalmath nextLookAt $lastLookGametime + 240
+    if (%nextLookAt < $gametime) then {
+        gosub tdp
+        put #var lastLookGametime $gametime
+    }
 return
 
 
 inauriIdle.restart:
     put #echo >log Gray [inauriIdle] Restarting script..
-    goto inauriIdle.loop
+    goto inauriIdle-loop
 
 
-inauriIdle.resumeScript:
-    if ("$inauri.subScript" = "engineer" && "$righthand" <> "Empty") then {
-        if ("$lefthand" = "Empty") then gosub stow left
-            put .engineer 1 $righthandnoun
-        } else {
-            put .engineer 2 $char.craft.item
-        }
-    }
-    if ("$inauri.subScript" = "engbolt" && "$righthand" <> "Empty") then {
-        if ("$lefthand" = "Empty") then gosub stow left
-            put .engbolt 1
-        } else {
-            put .engbolt 2
-        }
-    }
-    if ("$inauri.subScript" = "magic") then {
-        put .magic noLoop
-    }
-    if ("$inauri.subScript" = "research") then {
-        put .research sorcery
-    }
-    put #tvar inauri.subScript 0
-    return
-
-
-inauriIdle.teach:
+inauriIdle-teach:
     if ("$lib.topic" <> "0") then {
         gosub assess teach
         if ("%inauriIdle.target" = "Selesthiel") then {
@@ -280,11 +244,7 @@ inauriIdle.teach:
     return
 
 
-inauriIdle.vitalityHeal:
-    if (matchre("$scriptlist", "($char.common.scripts)")) then {
-        put #tvar inauri.subScript $0
-        put #script abort $inauri.subScript
-    }
+inauriIdle-vitalityHeal:
     gosub link all cancel
     if ($lib.magicInert = 1 && $bleeding = 1) then {
         put #echo >Log [inauriIdle] Bleeding, low vitality, and magically inert.
@@ -297,10 +257,10 @@ inauriIdle.vitalityHeal:
         gosub prep vh
         pause 2
         gosub cast
-        if ($health < 60) then {
-            goto inauriIdle.vitalityHealLoop
+        if ($health < 98) then {
+            goto inauriIdle-vitalityHealLoop
         }
-        goto inauriIdle.loop
+        goto inauriIdle-loop
 
 
 ###############################
@@ -308,14 +268,13 @@ inauriIdle.vitalityHeal:
 ###############################
 moveToForage:
     if ("$roomname" = "Private Home Interior") then {
-        put .house
-        waitforre ^HOUSE DONE
+        gosub runScript house
         goto moveToForage
     }
     # Crossing - City
     if ($zoneid = 1) then {
         if ($roomid = 258) then return
-        gosub automove 258
+        gosub automove 259
         goto moveToForage
     }
     # Crossing - North Gate

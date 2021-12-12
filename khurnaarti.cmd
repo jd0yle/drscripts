@@ -229,7 +229,7 @@ khurnaarti-clearHands:
 
 
 khurnaarti-combatCheck:
-    if ($Brawling.LearningRate < 10) then {
+    if ($Brawling.LearningRate < 10 || $Targeted_Magic.LearningRate < 10 || $Small_Edged.LearningRate < 10 $Heavy_Thrown.LearningRate < 10 || $Light_Thrown.LearningRate < 10 || $Crossbow.LearningRate < 10 || $Staves.LearningRate < 10) then {
         put #echo >Log #FF8080 [khurnaarti] Going to combat.
         gosub moveToCombat
         gosub runScript findSpot blackgargoyle
@@ -243,13 +243,13 @@ khurnaarti-combatCheck:
 khurnaarti-combatLoop:
     pause 5
     gosub health
-#    gosub burgle.setNextBurgleAt
-#    if ($lib.timers.nextBurgleAt < $gametime) then {
+    gosub burgle.setNextBurgleAt
+    if ($lib.timers.nextBurgleAt < $gametime) then {
 #        put #echo >Log #009933 [khurnaarti] Leaving combat to burgle.
 #        put #script abort fight
 #        gosub stance shield
-#        gosub runscript empty --from=pocket --to=portal
-#        gosub khurnaarti.clearHands
+        gosub runscript empty --from=pocket --to=portal
+        gosub khurnaarti-clearHands
 #        if ("$preparedspell" <> "None") then {
 #            gosub release
 #        }
@@ -258,7 +258,7 @@ khurnaarti-combatLoop:
 #        }
 #        var khurnaartiCombatReturn 1
 #        goto khurnaarti-burgle
-#    }
+    }
     if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
         put #script abort fight
         gosub stance shield
@@ -307,7 +307,7 @@ khurnaarti-forage:
 
 khurnaarti-healthCheck:
     gosub health
-    if (%khurnaarti.needHeal = 1||$bleeding = 1) then {
+    if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
         if ("$roomname" <> "Private Home Interior") then {
             gosub moveToHouse
         }

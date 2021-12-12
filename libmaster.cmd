@@ -3313,6 +3313,7 @@ move:
     matchre return ^\[
     matchre return It's pitch dark and you can't see a thing
     matchre return ^Obvious
+    matchre return You don't have a key\.
     matchre return ^You look around in vain for the
     matchre return ^You see no dock.
     matchre return ^You stumble through the darkness

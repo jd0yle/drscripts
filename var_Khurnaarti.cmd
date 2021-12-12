@@ -105,6 +105,9 @@ put #tvar char.cast.shw.chargeTimes 1
 put #tvar char.cast.col.prep 30
 put #tvar char.cast.col.charge 20
 put #tvar char.cast.col.chargeTimes 2
+put #tvar char.cast.cv.prep 30
+put #tvar char.cast.cv.charge 20
+put #tvar char.cast.cv.chargeTimes 2
 put #tvar char.cast.iots.prep 300
 put #tvar char.cast.iots.charge 0
 put #tvar char.cast.maf.prep 30
@@ -113,12 +116,18 @@ put #tvar char.cast.maf.chargeTimes 1
 put #tvar char.cast.moonblade.prep 15
 put #tvar char.cast.moonblade.charge 0
 put #tvar char.cast.moonblade.chargeTimes 0
+put #tvar char.cast.psy.prep 30
+put #tvar char.cast.psy.charge 20
+put #tvar char.cast.psy.chargeTimes 2
 put #tvar char.cast.seer.prep 30
 put #tvar char.cast.seer.charge 20
 put #tvar char.cast.seer.chargeTimes 2
 put #tvar char.cast.shadowling.prep 30
 put #tvar char.cast.shadowling.charge 20
 put #tvar char.cast.shadowling.chargeTimes 1
+put #tvar char.cast.shear.prep 30
+put #tvar char.cast.shear.charge 20
+put #tvar char.cast.shear.chargeTimes 1
 put #tvar char.cast.sls.prep 15
 put #tvar char.cast.sls.charge 0
 put #tvar char.cast.sls.chargeTimes 1
@@ -126,6 +135,17 @@ put #tvar char.cast.sls.constellation spider
 put #tvar char.cast.tksh.prep 30
 put #tvar char.cast.tksh.charge 20
 put #tvar char.cast.tksh.chargeTimes 2
+
+
+###############################
+###      EMPTY
+###############################
+var char.empty.armor shield|balaclava|shirt|pants|gloves|wrap|footwraps|claws|spikes
+var char.empty.weapon pelletbow|hhr'ata|nightstick|sling|broadsword|skefne|broad-axe|riste|blade|sphere|bolt|bolts|arrow|arrows|rock|rocks|button|buttons
+var char.empty.container bottle|pouch|shadows|eddy|backpack|rucksack|saddlebag|poke|folio|box|skippet|trunk|strongbox|chest|crate|casket|coffer|sack
+var char.empty.inven gamantang|pants|pilonu|trews|blouse|robe|robes
+var char.empty.misc yardstick|priest|compendium|almanac|skates|brush|refill|kit|towel|caracal|sun|demonbones|rope
+put #var char.empty.whitelist %char.empty.armor|%char.empty.weapon|%char.empty.container|%char.empty.inven|%char.empty.misc
 
 
 ###############################
@@ -182,7 +202,7 @@ put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
-put #tvar char.fight.useMaf 1
+put #tvar char.fight.useMaf 0
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
@@ -205,7 +225,7 @@ put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_T
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
-put #tvar char.fight.useCol 0
+put #tvar char.fight.useCol 1
 put #tvar char.fight.useObserve 0
 put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
@@ -322,7 +342,7 @@ put #tvar char.pawn.container purse
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true
-put #tvar char.repair.money 10
+put #tvar char.repair.money 50
 put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves|
 put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|hand claws|
 put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade|
