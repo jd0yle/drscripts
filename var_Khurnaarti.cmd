@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container shadows
-put #tvar char.appraise.item almanac
+put #tvar char.appraise.container 0
+put #tvar char.appraise.item pouch
 
 
 ###############################
@@ -88,6 +88,15 @@ put #tvar char.cast.dc.prep 50
 put #tvar char.cast.calm.prep 5
 put #tvar char.cast.calm.charge 0
 put #tvar char.cast.calm.chargeTimes 0
+# Mental Blast
+put #tvar char.cast.mb.prep 30
+put #tvar char.cast.mb.charge 0
+put #tvar char.cast.mb.chargeTimes 0
+# Stun Foe
+put #tvar char.cast.sf.prep 20
+put #tvar char.cast.sf.charge 0
+put #tvar char.cast.sf.chargeTimes 0
+# Shadow Web
 put #tvar char.cast.shw.prep 5
 put #tvar char.cast.shw.charge 10
 put #tvar char.cast.shw.chargeTimes 1
@@ -96,6 +105,9 @@ put #tvar char.cast.shw.chargeTimes 1
 put #tvar char.cast.col.prep 30
 put #tvar char.cast.col.charge 20
 put #tvar char.cast.col.chargeTimes 2
+put #tvar char.cast.cv.prep 30
+put #tvar char.cast.cv.charge 20
+put #tvar char.cast.cv.chargeTimes 2
 put #tvar char.cast.iots.prep 300
 put #tvar char.cast.iots.charge 0
 put #tvar char.cast.maf.prep 30
@@ -104,12 +116,18 @@ put #tvar char.cast.maf.chargeTimes 1
 put #tvar char.cast.moonblade.prep 15
 put #tvar char.cast.moonblade.charge 0
 put #tvar char.cast.moonblade.chargeTimes 0
+put #tvar char.cast.psy.prep 30
+put #tvar char.cast.psy.charge 20
+put #tvar char.cast.psy.chargeTimes 2
 put #tvar char.cast.seer.prep 30
 put #tvar char.cast.seer.charge 20
 put #tvar char.cast.seer.chargeTimes 2
 put #tvar char.cast.shadowling.prep 30
 put #tvar char.cast.shadowling.charge 20
 put #tvar char.cast.shadowling.chargeTimes 1
+put #tvar char.cast.shear.prep 30
+put #tvar char.cast.shear.charge 20
+put #tvar char.cast.shear.chargeTimes 1
 put #tvar char.cast.sls.prep 15
 put #tvar char.cast.sls.charge 0
 put #tvar char.cast.sls.chargeTimes 1
@@ -117,6 +135,17 @@ put #tvar char.cast.sls.constellation spider
 put #tvar char.cast.tksh.prep 30
 put #tvar char.cast.tksh.charge 20
 put #tvar char.cast.tksh.chargeTimes 2
+
+
+###############################
+###      EMPTY
+###############################
+var char.empty.armor shield|balaclava|shirt|pants|gloves|wrap|footwraps|claws|spikes
+var char.empty.weapon pelletbow|hhr'ata|nightstick|sling|broadsword|skefne|broad-axe|riste|blade|sphere|bolt|bolts|arrow|arrows|rock|rocks|button|buttons
+var char.empty.container bottle|pouch|shadows|eddy|backpack|rucksack|saddlebag|poke|folio|box|skippet|trunk|strongbox|chest|crate|casket|coffer|sack
+var char.empty.inven gamantang|pants|pilonu|trews|blouse|robe|robes
+var char.empty.misc yardstick|priest|compendium|almanac|skates|brush|refill|kit|towel|caracal|sun|demonbones|rope
+put #var char.empty.whitelist %char.empty.armor|%char.empty.weapon|%char.empty.container|%char.empty.inven|%char.empty.misc
 
 
 ###############################
@@ -140,8 +169,8 @@ put #tvar char.fight.arrangeFull 0
 
 # ------ DEBILITATION ------
 put #tvar char.fight.debil.use 1
-put #tvar char.fight.debil.spell calm
-put #tvar char.fight.debil.prepAt 3
+put #tvar char.fight.debil.spell sf
+put #tvar char.fight.debil.prepAt 15
 put #tvar char.fight.forceDebil 0
 
 # ------ STANCE ------
@@ -150,7 +179,7 @@ put #tvar char.fight.forceShield 0
 
 # ------ LOOT ------
 # all|treasure|gems whatever the loot options are
-put #tvar char.fight.lootType treasure
+put #tvar char.fight.lootType goods
 
 # ------ STANCE ------
 # Force always using stance shield, never stance parry
@@ -160,20 +189,20 @@ put #tvar char.fight.forceShield 0
 put #tvar char.fight.opts null
 
 # ------ TM ------
-put #tvar char.fight.tmSpell do
-put #tvar char.fight.tmPrep 7
+put #tvar char.fight.tmSpell pd
+put #tvar char.fight.tmPrep 10
 put #tvar char.fight.tmPause 7
 
 # ------ USE ------
 # Use vars are all "Do this thing or not"
 # All default to 0
 put #tvar char.fight.trainOffhand 1
-put #tvar char.fight.useAlmanac 0
+put #tvar char.fight.useAlmanac 1
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useDissect 1
 put #tvar char.fight.useHunt 1
-put #tvar char.fight.useMaf 1
+put #tvar char.fight.useMaf 0
 put #tvar char.fight.usePerc 1
 put #tvar char.fight.useSanowret 1
 put #tvar char.fight.useSkin 1
@@ -186,23 +215,23 @@ put #tvar char.fight.useTarantula 1
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # No Targeted Magic
-put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
-put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
+#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade|flamewood riste|blue sling|executioner's broad-axe|duraka skefne|haralun broadsword
+#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged|Twohanded_Blunt|Slings|Twohanded_Edged|Polearm|Large_Edged
 
 # Main Weapons Only
-#put #tvar char.fight.weapons.items Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
-#put #tvar char.fight.weapons.skills Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|frying pan|smokewood pelletbow|diamondwood nightstick|assassin's blade
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Light_Thrown|Crossbow|Staves|Small_Edged
 
 put #tvar char.fight.wornCrossbow 0
 
 # ------ MOON MAGE ------
-put #tvar char.fight.useCol 0
-put #tvar char.fight.useObserve 1
+put #tvar char.fight.useCol 1
+put #tvar char.fight.useObserve 0
 put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
-put #tvar char.fight.useShadowling 0
+put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
-put #tvar char.fight.useShw 0
+put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 0
 put #tvar char.fight.useTksh 1
 
@@ -313,7 +342,7 @@ put #tvar char.pawn.container purse
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true
-put #tvar char.repair.money 10
+put #tvar char.repair.money 50
 put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves|
 put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|hand claws|
 put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade|

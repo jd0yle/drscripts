@@ -252,7 +252,7 @@ action put #var lib.class 0 when ^You stop teaching so as not to disturb the aur
 action put #var lib.class 0 when ^You stop teaching\.$
 action put #var lib.class 1 when ^\S+ begins to listen to you teach the .* skill\.$
 action put #var lib.class 1 when ^You are teaching a class on .*$
-action put #var lib.class 1 when ^You continue to instruct your students? on (.*)\.$
+action put #var lib.class 1 when ^You continue to instruct your students? on .*\.$
 action put #var lib.student 1 when ^You begin to listen to \w+ teach.*$
 action put #var lib.student 1 when ^.*You are (in|observing) this class\!$
 action put #var lib.student 0 ; put #var lib.instructor $1 when ^(\S+) is teaching a class on .* which is still open to new students\.$
@@ -263,7 +263,8 @@ action put #var lib.student 0 when ^You stop listening to \w+\.$`
 action put #var lib.student 0 when ^Your teacher (has left|is not here), so you are no longer learning anything\.$
 action put #var lib.student 0 ; put #var lib.class 0 when ^You're unconscious\!$
 action put #var lib.topic $1 when ^You are teaching a class on (.+?) which.*$
-
+action put #var lib.topic $1 when .* know\) (.*) which is .*\.  You are in this class\!
+action put #var lib.topic 0 when No one seems to be teaching\.
 
 ###############################
 ###    WAIT FOR PREP
@@ -913,53 +914,33 @@ dip:
 disarm:
     var location disarm1
     var todo $0
-    put #tvar lib.disarmArgs 0
     disarm1:
-    matchre return ^You guess it is already disarmed\.$|indicating the trap is no longer a danger\.
+    matchre return An aged grandmother could defeat this trap in her sleep\.
+    matchre return A pitiful snowball encased in the Flames of Ushnish would fare better than you\.
+    matchre return fails to reveal to you what type of trap protects it\.
+    matchre return Prayer would be a good start for any attempt of yours at disarming the
+    matchre return should not take long with your skills\.
+    matchre return Somebody has already located and identified the current
+    matchre return The odds are against you, but with persistence you believe you could disarm the
+    matchre return The trap has the edge on you, but you've got a good shot at disarming the
+    matchre return This trap is a laughable matter, you could do it blindfolded\!
+    matchre return trap is a trivially constructed gadget which you can take down any time\.
+    matchre return will be a simple matter for you to disarm\.
+    matchre return with only minor troubles\.
+    matchre return would be a longshot\.
     matchre return ^You attempt to disarm the trap
-    matchre disarmCareful A pitiful snowball encased in the Flames of Ushnish would fare better than you\.$
-    matchre disarmCareful Prayer would be a good start for any attempt of yours at disarming the
-    matchre disarmCareful should not take long with your skills\.$
-    matchre disarmCareful The odds are against you, but with persistence you believe you could disarm the
-    matchre disarmCareful The trap has the edge on you, but you've got a good shot at disarming the
-    matchre disarmCareful with only minor troubles\.$
-    matchre disarmCareful would be a longshot\.$
-    matchre disarmCareful You could just jump off a cliff and save yourself the frustration of attempting this
-    matchre disarmCareful You have an amazingly minimal chance at disarming the
-    matchre disarmCareful You have some chance of being able to disarm the
-    matchre disarmCareful You probably have the same shot as a snowball does crossing the desert.
-    matchre disarmCareful You really don't have any chance at disarming this
-    matchre disarmCareful You think this trap is precisely at your skill level\.$
-    matchre disarmDefault fails to reveal to you what type of trap protects it\.$
-    matchre disarmDefault You get the distinct feeling your careless examination caused something to shift inside the trap mechanism\.  This is not likely to be a good thing\.$
-    matchre disarmDefault You work with the trap for a while but are unable to make any progress\.$
-    matchre disarmDefault should not take long with your skills\.$
-    matchre disarmDefault with only minor troubles\.$
-    matchre disarmIdentify is not yet fully disarmed\.$
-    matchre disarmQuick An aged grandmother could defeat this trap in her sleep\.$
-    matchre disarmQuick This trap is a laughable matter, you could do it blindfolded\!$
-    matchre disarmQuick trap is a trivially constructed gadget which you can take down any time.
-    matchre disarmQuick will be a simple matter for you to disarm\.$
-    matchre disarmQuick You can disarm the .* with only minor troubles\.$
+    matchre return You can disarm the .* with only minor troubles\.
+    matchre return You could just jump off a cliff and save yourself the frustration of attempting this
+    matchre return You get the distinct feeling your careless examination caused something to shift inside the trap mechanism\.  This is not likely to be a good thing\.
+    matchre return You guess it is already disarmed\.|indicating the trap is no longer a danger\.
+    matchre return You have an amazingly minimal chance at disarming the
+    matchre return You have some chance of being able to disarm the
+    matchre return You probably have the same shot as a snowball does crossing the desert.
+    matchre return You really don't have any chance at disarming this
+    matchre return You think this trap is precisely at your skill level\.
+    matchre return You work with the trap for a while but are unable to make any progress\.
     put disarm %todo
     goto retry
-
-
-disarmDefault:
-    put #tvar lib.disarmArgs default
-    return
-
-disarmCareful:
-    put #tvar lib.disarmArgs careful
-    return
-
-disarmIdentify:
-    put #tvar lib.disarmArgs identify
-    return
-
-disarmQuick:
-    put #tvar lib.disarmArgs quick
-    return
 
 
 dismantle:
@@ -970,8 +951,8 @@ dismantle:
     matchre return Count yourself fortunate that the only thing truly injured is your pride\.$
     matchre return ^Dismantle what\?$
     matchre return ^While bunnies are useful for a great many things, they do not as a general rule serve well as janitors\.$
-    matchre dismantle1 ^You can not dismantle the
     matchre return ^You must be holding the object you wish to dismantle\.$
+    matchre dismantle1 ^You can not dismantle the
     matchre dismantle1 ^You cannot dismantle the
     put dismantle %todo
     goto retry
@@ -982,6 +963,7 @@ dissect:
     var todo $0
     dissect1:
     matchre return ^What exactly are
+    matchre return ^While likely a fascinating study
     matchre return ^You believe the
     matchre return ^You'll learn nothing
     put dissect %todo
@@ -1795,52 +1777,36 @@ perform:
 pick:
     var location pick1
     var todo $0
-    put #tvar pickArgs 0
     pick1:
+    matchre return Somebody has already inspected the current lock
     matchre return isn't locked
-    matchre return It's not even locked, why bother\?$
+    matchre return It's not even locked, why bother\?
     matchre return The lock looks weak
     matchre return You set about picking
-    matchre pickCareful A pitiful snowball encased in the Flames of Ushnish would fare better than you\.$
-    matchre pickCareful Prayer would be a good start for any attempt of yours at picking open the
-    matchre pickCareful should not take long with your skills\.$
-    matchre pickCareful Somebody has already inspected the current lock on this
-    matchre pickCareful The lock has the edge on you, but you've got a good shot at picking open the
-    matchre pickCareful The odds are against you, but with persistence you believe you could pick open the
-    matchre pickCareful with only minor troubles\.$
-    matchre pickCareful would be a longshot\.$
-    matchre pickCareful You could just jump off a cliff and save yourself the frustration of attempting this
-    matchre pickCareful You have an amazingly minimal chance at picking open the
-    matchre pickCareful You have some chance of being able to pick open the
-    matchre pickCareful You probably have the same shot as a snowball does crossing the desert\.$
-    matchre pickCareful You really don't have any chance at picking open this
-    matchre pickDefault You think this lock is precisely at your skill level\.$
-    matchre pickDefault fails to teach you anything about the lock guarding it\.$
-    matchre pickDefault You are unable to make any progress towards opening the lock\.$
-    matchre pickIdentify You discover another lock protecting the
-    matchre pickQuick An aged grandmother could open this in her sleep\.$
-    matchre pickQuick should not take long with your skills\.$
-    matchre pickQuick The lock is a trivially constructed piece of junk barely worth your time\.$
-    matchre pickQuick This lock is a laughable matter, you could do it blindfolded\!$
-    matchre pickQuick will be a simple matter for you to unlock\.$
+    matchre return A pitiful snowball encased in the Flames of Ushnish would fare better than you\.
+    matchre return Prayer would be a good start for any attempt of yours at picking open the
+    matchre return should not take long with your skills\.
+    matchre return Somebody has already inspected the current lock on this
+    matchre return The lock has the edge on you, but you've got a good shot at picking open the
+    matchre return The odds are against you, but with persistence you believe you could pick open the
+    matchre return with only minor troubles\.
+    matchre return would be a longshot\.
+    matchre return You could just jump off a cliff and save yourself the frustration of attempting this
+    matchre return You have an amazingly minimal chance at picking open the
+    matchre return You have some chance of being able to pick open the
+    matchre return You probably have the same shot as a snowball does crossing the desert\.
+    matchre return You really don't have any chance at picking open this
+    matchre return You think this lock is precisely at your skill level\.
+    matchre return fails to teach you anything about the lock guarding it\.
+    matchre return You are unable to make any progress towards opening the lock\.
+    matchre return You discover another lock protecting the
+    matchre return An aged grandmother could open this in her sleep\.
+    matchre return should not take long with your skills\.
+    matchre return The lock is a trivially constructed piece of junk barely worth your time\.
+    matchre return This lock is a laughable matter, you could do it blindfolded\!
+    matchre return will be a simple matter for you to unlock\.
     put pick %todo
     goto retry
-
-pickCareful:
-    put #tvar lib.pickArgs careful
-    return
-
-pickDefault:
-    put #tvar lib.pickArgs default
-    return
-
-pickIdentify:
-    put #tvar lib.pickArgs identify
-    return
-
-pickQuick:
-    put #tvar lib.pickArgs quick
-    return
 
 
 play:
@@ -2320,6 +2286,8 @@ sell:
     matchre return ^"Hmm\?" says Scupper, "What are you talking about\?"
     matchre return ^I could not find what you were referring to\.
     matchre return Oweede
+    matchre return Relf rocks back
+    matchre return Relf takes your
     matchre return ^Sell what\?
     matchre return ^Scupper separates the bundle and sorts through it carefully
     matchre return ^There is no merchant
@@ -3346,6 +3314,7 @@ move:
     matchre return ^\[
     matchre return It's pitch dark and you can't see a thing
     matchre return ^Obvious
+    matchre return You don't have a key\.
     matchre return ^You look around in vain for the
     matchre return ^You see no dock.
     matchre return ^You stumble through the darkness

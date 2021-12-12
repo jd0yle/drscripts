@@ -187,6 +187,22 @@ house.findLocalHouse:
         gosub automove leth
         goto house.findLocalHouse
     }
+    # Inner, Outer Hib
+    if ($zoneid = 116) then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto house.findLocalHouse
+    }
+    # Road Between Hib and Boar Clan
+    if ($zoneid = 126) then {
+        gosub automove hib
+        goto house.findLocalHouse
+    }
+    # Boar Clan
+    if ($zoneid = 127) then {
+        gosub automove hib
+        goto house.findLocalHouse
+    }
     # Fang Cove
     if ($zoneid = 150) then {
         if ($roomid = 50) then {

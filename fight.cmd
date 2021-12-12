@@ -905,7 +905,7 @@ checkDeadMob:
         if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
             if ($char.fight.useDissect = 1 && $Skinning.LearningRate > $First_Aid.LearningRate && $First_Aid.LearningRate < 33) then {
                 var dissectFail 0
-                gosub dissect %mobName
+                gosub dissect
                 if (%dissectFail = 1) then {
                     echo DISSECT FAILED!
                 }
