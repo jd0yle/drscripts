@@ -1277,6 +1277,49 @@ train.moveToPeccaries:
 	}
 
 	goto train.moveToPeccaries
+
+	
+###############################
+###    train.moveToShardBulls
+###############################
+train.moveToShardBulls:
+	gosub train.setZone
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToShardBulls
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 597 && $roomid <= 605 && "$roomplayers" = "") then return
+        gosub runScript findSpot shardbull
+        return
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto train.moveToShardBulls
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto train.moveToShardBulls
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ($Attunement.LearningRate < 25) then put #tvar powerwalk 1
+        gosub automove portal
+        put #tvar powerwalk 0
+        gosub move go exit portal
+        goto train.moveToShardBulls
+    }
+
+    goto train.moveToShardBulls	
+
 	
 	
 ###############################

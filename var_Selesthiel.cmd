@@ -8,9 +8,9 @@ put #tvar char.appraise.item gem pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor demonscale shield|parry stick|moonsilk pants|moonsilk shirt|chain gloves|lamellar helm|plate mask
-put #tvar char.armor.light demonscale shield|parry stick|moonsilk pants|moonsilk shirt|moonsilk gloves|moonsilk hood|moonsilk mask
-put #tvar char.armor.wyvern demonscale shield|parry stick|moonsilk pants|moonsilk shirt|chain gloves|moonsilk hood|moonsilk mask
+put #tvar char.armor demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|chain gloves|lamellar helm|plate mask
+put #tvar char.armor.light demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|moonsilk gloves|moonsilk hood|moonsilk mask
+put #tvar char.armor.wyvern demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|chain gloves|moonsilk hood|moonsilk mask
 
 
 ###############################
@@ -82,6 +82,9 @@ put #tvar char.cast.sls.prep 33
 put #tvar char.cast.sls.charge 0
 put #tvar char.cast.sls.minPrepTime 10
 
+put #tvar char.cast.sr.prep 100
+put #tvar char.cast.sr.charge 0
+
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
 put #tvar char.cast.iots.prep 800
@@ -110,7 +113,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debil.spell mb
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 35
+put #tvar char.fight.debil.prepAt 30
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -201,8 +204,14 @@ put #tvar char.fight.usePhp 0
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 0
 
+#***** PALADIN *****
+put #tvar char.fight.useSr 1
+
 #***** TRADER *****
-put #tvar char.fight.useLgv 1
+put #tvar char.fight.useLgv 0
+
+#***** WARRIOR MAGE *****
+put #tvar char.fight.useSuf 1
 
 
 if ($char.fight.backtrain = 1) then {

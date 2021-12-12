@@ -18,6 +18,8 @@ put #tvar char.appraise.item gem pouch
 ###      ARMOR
 ###############################
 put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|scale helm|plate mask
+put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|ka'hurst balaclava
+
 
 put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|ka'hurst gloves|ka'hurst balaclava
 
@@ -56,13 +58,13 @@ put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
 put #tvar char.cast.benediction.prep 15
 put #tvar char.cast.benediction.charge 25
 put #tvar char.cast.benediction.harness 0
-put #tvar char.cast.benediction.chargeTimes 2
+put #tvar char.cast.benediction.chargeTimes 3
 
 put #tvar char.cast.centering.prep 1
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 18
+put #tvar char.cast.ghs.prep 20
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -70,31 +72,36 @@ put #tvar char.cast.hyh.prep 18
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
-put #tvar char.cast.mapp.prep 30
+put #tvar char.cast.mapp.prep 20
 put #tvar char.cast.mapp.charge 20
 put #tvar char.cast.mapp.harness 0
-put #tvar char.cast.mapp.chargeTimes 3
+put #tvar char.cast.mapp.chargeTimes 4
 
-put #tvar char.cast.mf.prep 550
+put #tvar char.cast.mpp.prep 20
+put #tvar char.cast.mpp.charge 20
+put #tvar char.cast.mpp.harness 0
+put #tvar char.cast.mpp.chargeTimes 4
+
+put #tvar char.cast.mf.prep 700
 
 put #tvar char.cast.om.prep 30
 put #tvar char.cast.om.charge 20
 put #tvar char.cast.om.chargeTimes 4
 
-put #tvar char.cast.pom.prep 500
+put #tvar char.cast.pom.prep 600
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 put #tvar char.cast.rejuv.chargeTimes 2
 
-put #tvar char.cast.rev.prep 20
+put #tvar char.cast.rev.prep 21
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
-put #tvar char.cast.sol.prep 15
-put #tvar char.cast.sol.charge 30
+put #tvar char.cast.sol.prep 20
+put #tvar char.cast.sol.charge 20
 put #tvar char.cast.sol.harness 0
-put #tvar char.cast.sol.chargeTimes 2
+put #tvar char.cast.sol.chargeTimes 4
 
 put #tvar char.cast.sl.prep 20
 put #tvar char.cast.sl.charge 15
@@ -151,11 +158,11 @@ put #tvar char.fight.debilPauseTime 5
 
 # The debilitation spell to use
 put #tvar char.fight.debil.spell sick
-put #tvar char.fight.debil.spell ps
+#put #tvar char.fight.debil.spell ps
 
 # The amount of mana to prep debilitation at
-#put #tvar char.fight.debil.prepAt 12
-put #tvar char.fight.debil.prepAt 15
+put #tvar char.fight.debil.prepAt 12
+#put #tvar char.fight.debil.prepAt 15
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -174,8 +181,8 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-#put #tvar char.fight.tmSpell do
-put #tvar char.fight.tmSpell hh
+put #tvar char.fight.tmSpell do
+#put #tvar char.fight.tmSpell hh
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
@@ -232,7 +239,7 @@ put #tvar char.fight.prayTarget Huldah
 
 
 put #tvar char.fight.useBenediction 1
-put #tvar char.fight.useBless 1
+put #tvar char.fight.useBless 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1

@@ -78,8 +78,14 @@ loop:
 
 	if ($char.magic.train.usePom = 1 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 3)) then gosub runScript cast pom
 
-    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 31) then gosub observe.onTimer
-    if ("$guild" = "Moon Mage" && $Astrology.LearningRate < 25) then gosub runScript predict
+    if ("$guild" = "Moon Mage") then {
+        #if ("$predictPool.defens" = "complete") then {
+        #    gosub runScript predict parry
+        #    gosub predict state all
+        #}
+        if ($Astrology.LearningRate < 31) then gosub observe.onTimer
+        if ($Astrology.LearningRate < 25) then gosub runScript predict
+    }
 
     if ("$guild" = "Moon Mage" && $char.magic.train.useShadowling = 1) then {
         if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) then {

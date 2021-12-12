@@ -66,7 +66,7 @@ if (contains("$roomname", "A'baya")) then goto escapeTaisidon
 if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
 if ("%startAt" = "fight") then goto startFight
-if ("%startAt" = "magic") then
+if ("%startAt" = "magic") then {
 	echo starting at magic
 	goto startMagic
 }
@@ -78,9 +78,10 @@ main:
     gosub resetState
 
     gosub burgle recall
-    pause .5
-    #gosub burgle.setNextBurgleAt
-    pause .5
+    pause 1
+    pause 1
+
+    echo $lib.timers.nextBurgleAt < $gametime
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
         put #echo >Log #cc99ff Train: Going to burgle
@@ -98,8 +99,8 @@ main:
         gosub cast
 
         gosub runScript burgle
-        gosub runScript armor wear wyvern
-        #gosub runScript armor wear
+        #gosub runScript armor wear wyvern
+        gosub runScript armor wear
 
         gosub automove n gate
         gosub automove portal

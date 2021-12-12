@@ -429,8 +429,9 @@ attackThrownWeapon:
 		var throwCommand throw
 		if (%doOffhand = 1) then var throwCommand throw left
 
-
-        if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata" || "$righthandnoun" = "pan" || "$righthandnoun" = "wand" || "$righthandnoun" = "naphtha") then {
+        #if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata" || "$righthandnoun" = "pan" || "$righthandnoun" = "wand" || "$righthandnoun" = "naphtha") then {
+        var fight.throwableItems bola|hammer|hhr'ata|pan|wand|naphtha|cuska
+        if (matchre("$righthandnoun", "(%fight.throwableItems)")) then {
             if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
             gosub attack %throwCommand
             gosub get %weapons.items(%weapons.index)
@@ -583,6 +584,12 @@ buffs:
         return
     }
 
+    # PALADIN
+    if ($char.fight.useSr = 1 && ($SpellTimer.SentinelsResolve.active = 0 || $SpellTimer.SentinelsResolve.duration < 3)) then {
+        gosub runScript cast sr
+        return
+    }
+
     # RANGER
     if ($char.fight.useInst = 1 && ($SpellTimer.Instinct.active != 1 || $SpellTimer.Instinct.duration < 2)) then {
         gosub runScript cast inst
@@ -596,6 +603,12 @@ buffs:
     # TRADER
     if ($char.fight.useLgv = 1 && ($SpellTimer.LastGiftofVithwokIV.active = 0 || $SpellTimer.LastGiftofVithwokIV.duration < 3)) then {
         gosub runScript cast lgv
+        return
+    }
+
+    # WARRIOR MAGE
+    if ($char.fight.useSuf = 1 && ($SpellTimer.SureFooting.active = 0 || $SpellTimer.SureFooting.duration < 3)) then {
+        gosub runScript cast suf
         return
     }
 
@@ -961,6 +974,10 @@ debil:
 ###############################
 fight.observe:
 	# monstercount is here so that we don't retreat and potentially lose ammunition to a creature leaving the room
+	#if (%useObserve = 1 && "$predictPool.defens" = "complete") then {
+	#    gosub runScript predict parry
+	#    gosub predict state all
+    #}
     if (%useObserve = 1 && $Astrology.LearningRate < 30 && $monstercount < 4) then gosub runScript observe
     if (%useObserve = 1 && $Astrology.LearningRate < 22 && $monstercount < 4) then gosub runScript predict
     return

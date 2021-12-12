@@ -33,7 +33,16 @@ if ($monstercount = 0 && $char.predict.useDc = 1 && ($SpellTimer.DestinyCipher.a
 
 if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then gosub runScript cast aus
 
+# If no skill or skillset was specified, find a skillset with full pool then use these specified skills for each skillset
 if (%skillset = null) then gosub findSkillSet
+
+if ("%skillset" = "lore") then var skillset tactics
+if ("%skillset" = "survival") then var skillset first aid
+if ("%skillset" = "defens") then var skillset parry
+if ("%skillset" = "magic") then var skillset sorcery
+if ("%skillset" = "offens") then var skillset offhand
+
+
 
 if ("%skillset" = "null" && "$char.predict.preferred.skill" != "") then {
 	if ("$predictPool.$char.predict.preferred.skillset" = "complete") then var skillset $char.predict.preferred.skill
@@ -57,7 +66,7 @@ goto done
 ###############################
 findSkillSet:
     var skillset null
-    var skillsets lore|survival|defens|offens|magic
+    var skillsets defens|survival|magic|lore|offens
     eval len count("%skillsets", "|")
     var index 0
     gosub checkPredState

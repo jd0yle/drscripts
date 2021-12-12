@@ -1570,6 +1570,7 @@ look:
     matchre return ^(He|She) is
     matchre return ^I could not find what you were referring to\.
     matchre return ^In the
+    matchre return ^It is labeled
     matchre return ^Looking
     matchre return ^There is nothing
     matchre return ^On the

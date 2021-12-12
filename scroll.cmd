@@ -11,7 +11,7 @@ var typeIndex 0
 eval typeLength count("%scrolls", "|")
 
 loop:
-    gosub get my %scrolls(%typeIndex)
+    gosub get my %scrolls(%typeIndex) from my backpack
     if ("$righthand" = "Empty") then {
         math typeIndex add 1
         if (%typeIndex > %typeLength) then goto done
@@ -28,7 +28,8 @@ doRead:
     goto doStow
 
 doStow:
-    put push my folio with my %scrolls(%typeIndex)
+    #put push my folio with my %scrolls(%typeIndex)
+    gosub put my %scrolls(%typeIndex) in my shadows
     goto loop
 
 

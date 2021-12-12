@@ -82,17 +82,27 @@ main:
         gosub train.getHealed
         if ("$roomname" = "Private Home Interior" || $zoneid = 150) then {
             gosub release cyclic
+            if ($mana < 80) then gosub waitForMana 80
 			if ($SpellTimer.MurrulasFlames.active != 1 || $SpellTimer.MurrulasFlames.duration < 45) then gosub runScript cast mf
-			if ($SpellTimer.OsrelMeraud.active = 1 && $SpellTimer.OsrelMeraud.duration < 90) then gosub runScript cast om orb
+
+			if ($mana < 80) then gosub waitForMana 80
+			if ($SpellTimer.OsrelMeraud.active = 1 && $SpellTimer.OsrelMeraud.duration < 75) then gosub runScript cast om orb
+
+			if ($mana < 80) then gosub waitForMana 80
 			if ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 30) then gosub runScript cast mapp
+
+			if ($mana < 80) then gosub waitForMana 80
 			if ($SpellTimer.Benediction.active != 1 || $SpellTimer.Benediction.duration < 30) then gosub runScript cast benediction
+
+			if ($mana < 80) then gosub waitForMana 80
 			if ($SpellTimer.ShieldofLight.active != 1 || $SpellTimer.ShieldofLight.duration < 30) then gosub runScript cast sol
+
+			if ($mana < 80) then gosub waitForMana 80
 			if ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 30) then gosub runScript cast mpp
         }
         put #echo >Log #cc99ff Going to main combat
-        #gosub train.moveToWarklin
-        #gosub train.moveToBlackGargoyles
-        gosub train.moveToMaulers
+        #gosub train.moveToMaulers
+        gosub train.moveToShardBulls
         put .fight
         gosub waitForMainCombat
         goto main
