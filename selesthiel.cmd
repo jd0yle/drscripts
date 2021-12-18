@@ -6,6 +6,7 @@ var expectedNumBolts twelve
 
 #action goto logout when eval $health < 50
 action goto logout when eval $dead = 1
+action goto logout when ^You are a ghost
 
 action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
@@ -59,6 +60,10 @@ timer start
 
 gosub burgle recall
 
+gosub look in my portal
+
+gosub awake
+
 if ($standing != 1) then gosub stand
 
 if (contains("$roomname", "A'baya")) then goto escapeTaisidon
@@ -66,6 +71,7 @@ if (contains("$roomname", "A'baya")) then goto escapeTaisidon
 if ($health < 80 && "$roomname" != "Private Home Interior") then goto getHealedTrigger
 
 if ("%startAt" = "fight") then goto startFight
+if ("%startAt" = "backtrain") then goto startBacktrain
 if ("%startAt" = "magic") then {
 	echo starting at magic
 	goto startMagic
@@ -80,6 +86,7 @@ main:
     gosub burgle recall
     pause 1
     pause 1
+    gosub awake
 
     echo $lib.timers.nextBurgleAt < $gametime
 
@@ -155,6 +162,7 @@ main:
     if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 0 || $Augmentation.LearningRate < 0 || %startMagic = 1) then {
         var startMagic 0
         put #echo >Log #0099ff Moving to magic
+        gosub awake
         gosub moveToMagic
         gosub getHealed
 
@@ -173,7 +181,7 @@ main:
         }
 
 
-        if ($First_Aid.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
+        if (1 = 0 && $First_Aid.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
             put #echo >Log #00ffff First Aid start - First Aid: $First_Aid.LearningRate/34
             gosub release cyclic
             gosub runScript cast rev
@@ -189,7 +197,9 @@ main:
         put #echo >Log #00ffff Magic start - Warding: $Warding.LearningRate/34
         put .magic
         gosub waitForMagic
+        gosub awake
         put #echo >Log #00ffff Magic End - Warding: $Warding.LearningRate/34
+
 
         if ($Performance.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
 	        put #echo >Log #009999 Play start - Performance $Performance.LearningRate/34
@@ -212,30 +222,32 @@ main:
         goto main
     }
 
-	# Main Combat
-    startFight:
-	    put #echo >Log #cc99ff Moving to combat
-	    #gosub moveToWyverns
-	    #gosub moveToTelgas
-	    gosub moveToAdultWyverns
-	    if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict
-	    put #tvar char.fight.backtrain 0
-	    put .fight
-	    gosub waitForMainCombat
-	    goto main
-
+    put #tvar char.fight.backtrain 0
 
     # Backtrain
-    backtrain:
-    if (1 = 0) then {
+    startBacktrain:
+    if ($First_Aid.LearningRate < 10) then {
         put #echo >Log #0099ff Moving to backtrain
-        gosub moveToShardBulls
+        gosub moveToWyverns
         put #tvar char.fight.backtrain 1
         put .fight backtrain
         gosub waitForBacktrain
         put #tvar char.fight.backtrain 0
         goto main
     }
+
+	# Main Combat
+    startFight:
+	    put #echo >Log #cc99ff Moving to combat
+	    gosub moveToAdultWyverns
+	    #if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict
+	    put #tvar char.fight.backtrain 0
+	    put .fight
+	    gosub waitForMainCombat
+	    goto main
+
+
+
 
     #if ($Crossbow.LearningRate < 30 || $Small_Edged.LearningRate < 30 || $Targeted_Magic.LearningRate < 30 || $Brawling.LearningRate < 30 || $Light_Thrown.LearningRate < 30 || $Evasion.LearningRate < 0 || $Parry_Ability.LearningRate < 30 || $Shield_Usage.LearningRate < 30) then {
 
@@ -667,8 +679,8 @@ moveToAdultWyverns:
 
 moveToWyverns:
     if ("$roomname" = "Private Home Interior") then {
-        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
-        if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
+        #if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
+        #if ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 10) then gosub runScript cast maf
         #if ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10) then gosub runScript cast col
         gosub runScript house
         goto moveToWyverns
@@ -683,8 +695,9 @@ moveToWyverns:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
-        gosub runScript findSpot juvenilewyvern
+        if ($roomid >= 480 && $roomid <= 487 && "$roomplayers" = "") then return
+        if ($roomid >= 567 && $roomid <= 572 && "$roomplayers" = "") then return
+        gosub runScript findSpot wyvern
         goto moveToWyverns
     }
 
@@ -856,7 +869,7 @@ waitForBacktrain:
     pause 1
 
 waitForBacktrainLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Heavy_Thrown.LearningRate > 29 && $Staves.LearningRate > 29 )) then {
+    if ($lib.timers.nextBurgleAt < $gametime || $First_Aid.LearningRate > 29) then {
         put #tvar char.fight.backtrain 0
         gosub resetState
         if ($bleeding = 1) then goto moveToHeal

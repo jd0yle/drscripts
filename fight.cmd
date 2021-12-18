@@ -155,6 +155,8 @@ init:
 
     #gosub runScript armor wear
 
+    gosub awake
+
     gosub sortWeaponSkillsByRank
     gosub sortWeaponSkillsByLearningRate
     put #echo >Debug [fight] LearningRate ord: %weapons.skills
@@ -501,6 +503,10 @@ buffs:
         gosub runScript cast om orb
         return
     }
+    if ($char.fight.useAuspice = 1 && ($SpellTimer.Auspice.active != 1 || $SpellTimer.Auspice.duration < 3)) then {
+        gosub runScript cast auspice
+        return
+    }
     if ($char.fight.useBenediction = 1 && ($SpellTimer.Benediction.active != 1 || $SpellTimer.Benediction.duration < 2)) then {
         if (%buffCheckAgain = 1) then {
             gosub runScript cast benediction
@@ -508,6 +514,10 @@ buffs:
         } else {
             var buffCheckAgain 1
         }
+        return
+    }
+    if ($char.fight.useCentering = 1 && ($SpellTimer.Centering.active != 1 || $SpellTimer.Centering.duration < 3)) then {
+        gosub runScript cast centering
         return
     }
     if ($char.fight.useMapp = 1 && ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 3)) then {
@@ -777,7 +787,7 @@ checkWeaponSkills:
         }
     }
 
-    if ("%weapons.items(%weapons.index)" = "bastard sword") then gosub checkWeaponSkills.swapWeapon
+    if ("%weapons.items(%weapons.index)" = "bastard sword" || "%weapons.items(%weapons.index)" = "flamewood riste") then gosub checkWeaponSkills.swapWeapon
 
     if ("%weapons.skills(%weapons.index)" = "Crossbow" && $char.fight.wornCrossbow = 1) then gosub remove my %weapons.items(%weapons.index)
 
@@ -831,11 +841,19 @@ checkWeaponSkills.findLowestLearningRate:
 ###############################
 checkWeaponSkills.swapWeapon:
     if ("%weapons.skills(%weapons.index)" = "Large_Edged" && "%weapon_hand" != "he") then {
-        gosub swap my sword
+        gosub swap my %weapons.items(%weapons.index)
         goto checkWeaponSkills.swapWeapon
     }
     if ("%weapons.skills(%weapons.index)" = "Twohanded_Edged" && "%weapon_hand" != "The") then {
-        gosub swap my sword
+        gosub swap my %weapons.items(%weapons.index)
+        goto checkWeaponSkills.swapWeapon
+    }
+    if ("%weapons.skills(%weapons.index)" = "Large_Blunt" && "%weapon_hand" != "hb") then {
+        gosub swap my %weapons.items(%weapons.index)
+        goto checkWeaponSkills.swapWeapon
+    }
+    if ("%weapons.skills(%weapons.index)" = "Twohanded_Blunt" && "%weapon_hand" != "Thb") then {
+        gosub swap my %weapons.items(%weapons.index)
         goto checkWeaponSkills.swapWeapon
     }
     return
@@ -902,8 +920,9 @@ checkDeadMob:
             gosub performRitual %mobName
         }
 
-        if (%useSkin = 1 && matchre("%skinnablecritters", "%mobName")) then {
-            if ($char.fight.useDissect = 1 && $Skinning.LearningRate > $First_Aid.LearningRate && $First_Aid.LearningRate < 33) then {
+        if (matchre("%skinnablecritters", "%mobName")) then {
+            #if ($char.fight.useDissect = 1 && $Skinning.LearningRate > $First_Aid.LearningRate && $First_Aid.LearningRate < 33) then {
+            if ($char.fight.useDissect = 1 && $First_Aid.LearningRate < 33) then {
                 var dissectFail 0
                 gosub dissect
                 if (%dissectFail = 1) then {
@@ -917,13 +936,14 @@ checkDeadMob:
             if (%arrangeFull = 1) then {
                 gosub arrange full
             }
-
-            var preSkinRightHand $righthand
-            gosub skin
-            var skinType null
-            if ("%preSkinRightHand" = "Empty" && "$righthand" != "Empty") then var skinType $righthandnoun
-            if ("%preSkinRightHand" != "Empty" && "$lefthand" != "Empty") then var skinType $lefthandnoun
-            if ("%skinType" != "null") then gosub makeNewBundle %skinType
+            if (%useSkin = 1) then {
+                var preSkinRightHand $righthand
+                gosub skin
+                var skinType null
+                if ("%preSkinRightHand" = "Empty" && "$righthand" != "Empty") then var skinType $righthandnoun
+                if ("%preSkinRightHand" != "Empty" && "$lefthand" != "Empty") then var skinType $lefthandnoun
+                if ("%skinType" != "null") then gosub makeNewBundle %skinType
+            }
         }
         gosub loot %lootType
     }
@@ -979,7 +999,8 @@ fight.observe:
 	#    gosub predict state all
     #}
     if (%useObserve = 1 && $Astrology.LearningRate < 30 && $monstercount < 4) then gosub runScript observe
-    if (%useObserve = 1 && $Astrology.LearningRate < 22 && $monstercount < 4) then gosub runScript predict
+    #if (%useObserve = 1 && $Astrology.LearningRate < 22 && $monstercount < 4) then gosub runScript predict
+    if (%useObserve = 1 && $Astrology.LearningRate < 22) then gosub runScript predict
     return
 
 
@@ -1132,12 +1153,12 @@ manageCyclics.moonMage:
     if (%fight.tmp.nextCastRevGametime < $gametime && $SpellTimer.Revelation.active = 1) then gosub release rev
     unvar fight.tmp.nextCastRevGametime
 
-	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && ($Sorcery.LearningRate < 33 || $Augmentation.LearningRate < 33 || $Utility.LearningRate < 33)) then {
-		var debuffSkills null
-		action (expMods) on
-		put exp mods
-		pause 2
-		action (expMods) off
+	if ($char.fight.useRevSorcery = 1 && $SpellTimer.Revelation.active != 1 && $SpellTimer.ShadowWeb.active != 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && ($Sorcery.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Utility.LearningRate < 20)) then {
+		#var debuffSkills null
+		#action (expMods) on
+		#put exp mods
+		#pause 2
+		#action (expMods) off
 		#if (!matchre("%debuffSkills", "(Sorcery)")) then {
 			gosub release cyclic
 			gosub invoke my tattoo
@@ -1145,7 +1166,14 @@ manageCyclics.moonMage:
 			gosub cast
 		#}
 	} else {
-		if ($SpellTimer.Revelation.active = 1 && $mana < 60) then gosub release rev
+		if ($SpellTimer.Revelation.active = 1) then {
+		    var fight.tmp.releaseRev 0
+		    if ($char.fight.useRevSorcery != 1) then var fight.tmp.releaseRev 1
+		    if ($mana < 60) then var fight.tmp.releaseRev 1
+		    if ($Sorcery.LearningRate > 33 && $Augmentation.LearningRate > 33 && $Utility.LearningRate > 33) then var fight.tmp.releaseRev 1
+		    if (%fight.tmp.releaseRev = 1) then gosub release rev
+		    unvar fight.tmp.releaseRev
+        }
 	}
 
 	return
@@ -1406,11 +1434,24 @@ fight.tarantula:
     if ($char.fight.useTarantula = 1 && %tarantula.timeRemaining < 0) then {
 		var fight.tmp.tarantulaSkill null
 
-		if ("$char.tarantula.lastSkillset" != "Magic" && "$char.tarantula.lastSkillset" != "Magics") then var fight.tmp.tarantulaSkill arcana
+		#if ("$char.tarantula.lastSkillset" != "Magic" && "$char.tarantula.lastSkillset" != "Magics" && $Arcana.LearningRate > 10) then var fight.tmp.tarantulaSkill Arcana
+        #if ("%fight.tmp.tarantulaSkill" = "null" && !contains("$char.tarantula.lastSkillset", "Magic") && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
 
-		if ("%fight.tmp.tarantulaSkill" = "null" && $Melee_Mastery.LearningRate > 10 && $Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then var fight.tmp.tarantulaSkill melee
-		if ("%fight.tmp.tarantulaSkill" = "null" && $Missile_Mastery.LearningRate > 10 && $Missile_Mastery.LearningRate > $Melee_Mastery.LearningRate) then var fight.tmp.tarantulaSkill missile
-        if ("%fight.tmp.tarantulaSkill" = "null" && $Defending.LearningRate > 10) then var fight.tmp.tarantulaSkill defending
+        # By default, prefer using the magic skillset
+        if (!contains("$char.tarantula.lastSkillset", "Magic")) then {
+            if ($Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Primary_Magic.LearningRate > 20 && $Primary_Magic.LearningRate > $Arcana.LearningRate) then var fight.tmp.tarantulaSkill Primary Magic
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Arcana.LearningRate > 10) then var fight.tmp.tarantulaSkill Arcana
+        }
+
+        if (!contains("$char.tarantula.lastSkillset", "Weapon")) then {
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Melee_Mastery.LearningRate > 10 && $Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then var fight.tmp.tarantulaSkill melee
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Missile_Mastery.LearningRate > 10 && $Missile_Mastery.LearningRate > $Melee_Mastery.LearningRate) then var fight.tmp.tarantulaSkill missile
+        }
+
+        if (!contains("$char.tarantula.lastSkillset", "Armor")) then {
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Defending.LearningRate > 10) then var fight.tmp.tarantulaSkill defending
+        }
 
         if ("%fight.tmp.tarantulaSkill" != "null") then gosub runScript tarantula --skill=%fight.tmp.tarantulaSkill
         unvar fight.tmp.tarantulaSkill

@@ -170,6 +170,7 @@ main:
         gosub automove 50
         put #tvar powerwalk 0
         pause 1
+        gosub runScript fixinventory
         put .qizhmur
         put .reconnect
         put .afk

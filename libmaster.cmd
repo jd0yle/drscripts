@@ -121,6 +121,12 @@ action var weapon_hand he when ^You turn your sword easily in your hands and end
 action var weapon_hand he when ^Silver light kisses the surface of your.*as you shift it to a heavy edged grip\.$
 action var weapon_hand he when ^With one superbly balanced motion, you shift your bastard sword to a heavy edged grip in front of your heart\.$
 action var weapon_hand he when ^You shift your.*to a heavy edged grip while quietly paying homage to the war gods\.$
+action var weapon_hand he when ^You effortlessly switch to a grip for using your.*as a heavy edged weapon\.$
+
+action var weapon_hand hb when ^You effortlessly switch to a grip for using your.*as a heavy blunt weapon\.$
+
+action var weapon_hand Thb when ^You turn your .* easily in your hands and end with it in position to be used as a two-handed blunt weapon\.$
+
 var weapon_hand NONERIGHTNOW
 
 

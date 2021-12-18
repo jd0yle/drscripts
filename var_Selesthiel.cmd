@@ -145,11 +145,11 @@ put #tvar char.fight.tmPause 5
 #put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|competition shortbow
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Bow
 
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|iron greatsword
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Twohanded_Edged
 
-#put #tvar char.fight.weapons.items smokewood latchbow
-#put #tvar char.fight.weapons.skills Crossbow
+#put #tvar char.fight.weapons.items flamewood riste|flamewood riste|flamewood riste
+#put #tvar char.fight.weapons.skills Twohanded_Blunt|Large_Blunt|Large_Edged
 
 put #tvar char.fight.trainOffhand 1
 
@@ -215,16 +215,15 @@ put #tvar char.fight.useSuf 1
 
 
 if ($char.fight.backtrain = 1) then {
-    put #tvar char.fight.useSls 0
-    put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste
-    put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt
-	put #tvar char.fight.weapons.items competition shortbow|diamondwood nightstick|blue sling
-	put #tvar char.fight.weapons.skills Bow|Staves|Slings
+    put #tvar char.fight.useSls 1
+	put #tvar char.fight.weapons.items competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|darkstone longsword
+	put #tvar char.fight.weapons.skills Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Large_Edged
 
 	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 1
+    put #tvar char.fight.useShw 0
     put #tvar char.fight.useDissect 1
-    put #tvar char.fight.useHunt 0
+    put #tvar char.fight.useHunt 1
     put #tvar char.fight.useShadows 0
     put #tvar char.fight.useStealth 0
 }

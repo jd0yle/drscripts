@@ -17,9 +17,11 @@ put #tvar char.appraise.item gem pouch
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|scale helm|plate mask
-put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|ka'hurst balaclava
+# Light, Chain, Brig, Plate
+#put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|scale helm|plate mask
 
+# Just light and chain
+put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|ka'hurst balaclava
 
 put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|ka'hurst gloves|ka'hurst balaclava
 
@@ -47,28 +49,32 @@ put #tvar char.wornFocus 0
 ###############################
 put #tvar char.cast.invokeSpell 1
 
-put #tvar char.cast.default.prep 30
+put #tvar char.cast.default.prep 20
 put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
-put #tvar char.cast.default.chargeTimes 3
+put #tvar char.cast.default.chargeTimes 4
 
 put #tvar char.cast.useOm 1
-put #tvar char.cast.omSpells benediction|centering|dr|halo|mapp|mpp|sol|pfe
+put #tvar char.cast.omSpells auspice|benediction|centering|dr|mapp|mpp|sol|sos|pfe
 
-put #tvar char.cast.benediction.prep 15
+put #tvar char.cast.benediction.prep 20
 put #tvar char.cast.benediction.charge 25
 put #tvar char.cast.benediction.harness 0
 put #tvar char.cast.benediction.chargeTimes 3
 
-put #tvar char.cast.centering.prep 1
+put #tvar char.cast.centering.prep 20
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 20
+put #tvar char.cast.ghs.prep 21
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
-put #tvar char.cast.hyh.prep 18
+put #tvar char.cast.halo.prep 30
+put #tvar char.cast.halo.charge 20
+put #tvar char.cast.halo.chargeTimes 2
+
+put #tvar char.cast.hyh.prep 21
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
@@ -84,17 +90,17 @@ put #tvar char.cast.mpp.chargeTimes 4
 
 put #tvar char.cast.mf.prep 700
 
-put #tvar char.cast.om.prep 30
+put #tvar char.cast.om.prep 70
 put #tvar char.cast.om.charge 20
 put #tvar char.cast.om.chargeTimes 4
 
-put #tvar char.cast.pom.prep 600
+put #tvar char.cast.pom.prep 700
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 put #tvar char.cast.rejuv.chargeTimes 2
 
-put #tvar char.cast.rev.prep 21
+put #tvar char.cast.rev.prep 22
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -197,8 +203,11 @@ put #tvar char.fight.tmPause 7
 #put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 # smokewood pelletbow
-put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata
-put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
+#put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata|bastard sword|steel hanger|competition shortbow|white nightstick|tyrium cuska|kertig maul
+#put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt|Twohanded_Edged|Small_Edged|Bow|Staves|Small_Blunt|Twohanded_Blunt
+
+put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata|bastard sword|kertig maul
+put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt|Twohanded_Edged|Twohanded_Blunt
 
 
 #put #tvar char.fight.weapons.items smokewood pelletbow|blue sling
@@ -237,9 +246,10 @@ put #tvar char.fight.useCommuneMeraud 1
 put #tvar char.fight.usePray 1
 put #tvar char.fight.prayTarget Huldah
 
-
+put #tvar char.fight.useAuspice 1
 put #tvar char.fight.useBenediction 1
 put #tvar char.fight.useBless 0
+put #tvar char.fight.useCentering 1
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
@@ -302,7 +312,7 @@ put #tvar char.instrument.container thigh bag
 # char.inventory.numIncense
 # char.inventory.numHolyWater
 
-put #tvar char.inv.container.incense alchemist's kit
+put #tvar char.inv.container.incense devotional bag
 
 
 ###############################

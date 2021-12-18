@@ -104,8 +104,8 @@ getClericTools.fillJar:
 	put fill my jar with water from well
 	pause .1
 	math i add 1
-	if (%jarFull = 1 || %i > 100) then return
-	goto getClericTools.fillJar
+	#if (%jarFull != 1 && %i <= 100) then goto getClericTools.fillJar
+
 
 	if (%jarFull = 1 || %i > 100) then {
 		gosub release spell
@@ -113,7 +113,7 @@ getClericTools.fillJar:
 		pause 3
 		gosub cast water in my jar
 		gosub stow my jar
-		gosub runScript travel crossing portal
+		#gosub runScript travel crossing portal
 		return
 	}
 
