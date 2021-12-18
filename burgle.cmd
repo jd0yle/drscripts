@@ -768,8 +768,10 @@ DROP:
     }
     DROP1:
     if ($hidden = 1 || $invisible = 1) then {
-        put #echo >Log #009933 [burgle] You are hidden($hidden) or invisible($invisible) and I am unable to EMPTY %drophand to drop %dumpitem.
-
+        put drop %dumpitem
+        if (matchre("%drophand", "%dumpitem")) then {
+            echo Releasing invisibility to drop %dumpitem...
+        }
         # Check spells first..
         if ($SpellTimer.RefractiveField.duration > 1) then {
             put release rf
@@ -783,7 +785,6 @@ DROP:
         if ($hidden = 1) then {
             put unhide
         }
-        put drop %dumpitem
     }
      matchre DROP ^\.\.\.wait|^Sorry,|^Please wait\.
      matchre return ^You drop
