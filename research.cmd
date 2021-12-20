@@ -57,6 +57,7 @@ loop:
         evalmath diff ($gametime - %stallCheckGametime)
         if (%diff > 300) then {
             pause
+            if ($SpellTimer.GaugeFlow.duration < 10) then gosub runScript cast gaf
             put research %project 300
             var stallCheckGametime $gametime
         }
