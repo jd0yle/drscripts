@@ -62,7 +62,7 @@ put #tvar char.burgle.container purse
 put #tvar char.cambrinth snakelet
 put #tvar char.focusContainer shadows
 put #tvar char.ritualFocus puzzle rings
-put #tvar char.tmFocus lightning bolt
+put #tvar char.tmFocus ka'hurst sun
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
 
@@ -142,7 +142,7 @@ put #tvar char.cast.tksh.chargeTimes 2
 ###############################
 var char.empty.armor shield|balaclava|shirt|pants|gloves|wrap|footwraps|claws|spikes
 var char.empty.weapon pelletbow|hhr'ata|nightstick|sling|broadsword|skefne|broad-axe|riste|blade|sphere|bolt|bolts|arrow|arrows|rock|rocks|button|buttons
-var char.empty.container bottle|pouch|shadows|eddy|backpack|rucksack|saddlebag|poke|folio|box|skippet|trunk|strongbox|chest|crate|casket|coffer|sack
+var char.empty.container bottle|pouch|shadows|eddy|backpack|rucksack|saddlebag|poke|pack|saddlebag|folio|box|skippet|trunk|strongbox|chest|crate|casket|coffer|caddy|sack
 var char.empty.inven gamantang|pants|pilonu|trews|blouse|robe|robes
 var char.empty.misc yardstick|priest|compendium|almanac|skates|brush|refill|kit|towel|caracal|sun|demonbones|rope
 put #var char.empty.whitelist %char.empty.armor|%char.empty.weapon|%char.empty.container|%char.empty.inven|%char.empty.misc
