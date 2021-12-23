@@ -84,6 +84,8 @@ eng.lumberCount:
 
 
 eng.prepareLumber:
+    gosub stow
+    gosub stow left
     gosub get my lumber
     if (%eng.lumber <> %eng.cut) then {
         gosub mark my lumber at %eng.cut

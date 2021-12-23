@@ -303,14 +303,14 @@ box.dismantle:
     var boxLocked 0
 
     if (%dismantleType <> 0) then {
-        gosub dismantle %boxItem %dismantleType
+        gosub dismantle my %boxItem %dismantleType
         if ("$righthand" <> "Empty") then {
-            gosub dismantle %boxItem %dismantleType
+            gosub dismantle my %boxItem %dismantleType
         }
     } else {
-        gosub dismantle %boxItem
+        gosub dismantle my %boxItem
         if ("$righthand" <> "Empty") then {
-            gosub dismantle %boxItem
+            gosub dismantle my %boxItem
         }
     }
     return

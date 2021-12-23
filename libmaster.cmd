@@ -2292,6 +2292,7 @@ sell:
     matchre return ^"Hmm\?" says Scupper, "What are you talking about\?"
     matchre return ^I could not find what you were referring to\.
     matchre return Oweede
+    matchre return Relf briefly glances
     matchre return Relf rocks back
     matchre return Relf takes your
     matchre return ^Sell what\?

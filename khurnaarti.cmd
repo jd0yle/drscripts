@@ -248,8 +248,12 @@ khurnaarti-combatLoop:
 #        put #echo >Log #009933 [khurnaarti] Leaving combat to burgle.
 #        put #script abort fight
 #        gosub stance shield
-        gosub runscript empty --from=pocket --to=portal
-        gosub khurnaarti-clearHands
+        evalmath nextLookAt $lastLookGametime + 1800
+        if (%nextLookAt < $gametime) then {
+            gosub runscript empty --from=pocket --to=portal
+            gosub khurnaarti-clearHands
+            put #var lastLookGametime $gametime
+        }
 #        if ("$preparedspell" <> "None") then {
 #            gosub release
 #        }
@@ -285,7 +289,7 @@ khurnaarti-compendium:
         }
         gosub khurnaarti-clearHands
         put #echo >Log #ffcc00 [khurnaarti] Beginning compendium.
-        gosub runScript compendium
+        gosub runScript compendium --target=34
         put #var lastCompendiumGametime $gametime
         put #echo >Log #ffcc00 [khurnaarti] Compendium complete.  FA: ($First_Aid.LearningRate/34) SCH: ($Scholarship.LearningRate/34)
     }
@@ -584,6 +588,7 @@ moveToCombat:
 
 
 moveToFangCove:
+    pause .002
     # Crossing - City
     if ($zoneid = 1) then {
         gosub automove portal
@@ -743,7 +748,7 @@ khurnaarti-getHealedTrigger:
     gosub khurnaarti-getHealed
 
     # Reset
-    gosub khurnaarti-restartScript
+    gosub khurnaarti-restart
     action (health) on
 
 
