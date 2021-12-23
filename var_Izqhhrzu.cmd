@@ -17,11 +17,11 @@ put #tvar char.appraise.item gem pouch
 ###############################
 ###      ARMOR
 ###############################
-# Light, Chain, Brig, Plate
-#put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|scale helm|plate mask
-
 # Just light and chain
-put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|ka'hurst balaclava
+#put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|ka'hurst balaclava
+
+# Light, Chain, Brig, Plate
+put #tvar char.armor demonscale shield|parry stick|ka'hurst hauberk|demonscale gloves|scale helm|plate mask
 
 put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|ka'hurst gloves|ka'hurst balaclava
 
@@ -55,7 +55,7 @@ put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 4
 
 put #tvar char.cast.useOm 1
-put #tvar char.cast.omSpells auspice|benediction|centering|dr|mapp|mpp|sol|sos|pfe
+put #tvar char.cast.omSpells auspice|benediction|centering|dr|gg|mapp|mpp|sol|sos|pfe
 
 put #tvar char.cast.benediction.prep 20
 put #tvar char.cast.benediction.charge 25
@@ -100,7 +100,7 @@ put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
 put #tvar char.cast.rejuv.chargeTimes 2
 
-put #tvar char.cast.rev.prep 22
+put #tvar char.cast.rev.prep 23
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -160,14 +160,14 @@ put #tvar char.fight.arrangeFull 0
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
-put #tvar char.fight.debilPauseTime 5
+put #tvar char.fight.debilPauseTime 8
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell sick
+put #tvar char.fight.debil.spell sleep
 #put #tvar char.fight.debil.spell ps
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 12
+put #tvar char.fight.debil.prepAt 11
 #put #tvar char.fight.debil.prepAt 15
 
 # Setting to 1 will force casting a debilitation spell for every attack
@@ -192,7 +192,7 @@ put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 20
+put #tvar char.fight.tmPrep 24
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 7
@@ -206,8 +206,8 @@ put #tvar char.fight.tmPause 7
 #put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata|bastard sword|steel hanger|competition shortbow|white nightstick|tyrium cuska|kertig maul
 #put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt|Twohanded_Edged|Small_Edged|Bow|Staves|Small_Blunt|Twohanded_Blunt
 
-put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata|bastard sword|kertig maul
-put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt|Twohanded_Edged|Twohanded_Blunt
+put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata
+put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 
 #put #tvar char.fight.weapons.items smokewood pelletbow|blue sling
@@ -250,6 +250,7 @@ put #tvar char.fight.useAuspice 1
 put #tvar char.fight.useBenediction 1
 put #tvar char.fight.useBless 0
 put #tvar char.fight.useCentering 1
+put #tvar char.fight.useGg 0
 put #tvar char.fight.useGhs 1
 put #tvar char.fight.useHyh 1
 put #tvar char.fight.useMapp 1
@@ -288,6 +289,18 @@ put #tvar char.fight.useInst 0
 put #tvar char.fight.useStw 0
 
 
+if ($char.fight.backtrain = 1) then {
+    put #tvar char.fight.useHyh 0
+    put #tvar char.fight.weapons.items bastard sword|kertig maul|steel hanger|tyrium cuska|competition shortbow|white nightstick
+    put #tvar char.fight.weapons.skills Twohanded_Edged|Twohanded_Blunt|Small_Edged|Small_Blunt|Bow|Staves
+
+	put #tvar char.fight.arrangeForPart 0
+    put #tvar char.fight.debil.use 1
+    put #tvar char.fight.useDissect 1
+    put #tvar char.fight.useHunt 1
+    put #tvar char.fight.trainOffhand 0
+
+}
 
 ###############################
 ###      FRIENDS

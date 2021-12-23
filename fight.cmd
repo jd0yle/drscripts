@@ -520,6 +520,10 @@ buffs:
         gosub runScript cast centering
         return
     }
+    if ($char.fight.useGg = 1 && ($SpellTimer.GlythidesGift.active != 1 || $SpellTimer.GlythidesGift.duration < 3)) then {
+        gosub runScript cast gg
+        return
+    }
     if ($char.fight.useMapp = 1 && ($SpellTimer.MajorPhysicalProtection.active != 1 || $SpellTimer.MajorPhysicalProtection.duration < 3)) then {
         gosub runScript cast mapp
         return
@@ -1350,10 +1354,7 @@ sortWeaponSkillsByRank:
             if (!contains("%newWeapons.skills", "%weapons.skills(%currIndex)")) then {
 				if (%lowestSkillIndex = null) then var lowestSkillIndex %currIndex
 				if ($%weapons.skills(%currIndex).Ranks < $%weapons.skills(%lowestSkillIndex).Ranks) then var lowestSkillIndex %currIndex
-				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then {
-					var lowestSkillIndex %currIndex
-					put #echo >Debug [fight] Forcing TM first useUsol = %useUsol = 1  useSls=%useSls Time.isDay=$Time.isDay
-                }
+				if (%tmpForceTmFirst = 1 && "%weapons.skills(%currIndex)" = "Targeted_Magic") then var lowestSkillIndex %currIndex
             }
             math currIndex add 1
             if (%currIndex <= %weapons.length) then goto sortWeaponSkillsByRank.sortLoop

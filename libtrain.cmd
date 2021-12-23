@@ -725,7 +725,7 @@ train.moveToGargoyles:
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
-        gosub move go portal
+        gosub move go meeting portal
         goto train.moveToGargoyles
     }
 
@@ -936,7 +936,7 @@ train.moveToHouse:
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
-        gosub move go portal
+        gosub move go meeting portal
         goto train.moveToHouse
     }
 
@@ -1398,7 +1398,7 @@ train.moveToYellowGremlins:
     # Shard East Gate Area
     if ("%zone" = "66") then {
         gosub automove portal
-        gosub move go portal
+        gosub move go meeting portal
         goto train.moveToYellowGremlins
     }
 

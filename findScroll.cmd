@@ -5,7 +5,7 @@ var spellName %args.spell
 var stackerTypes folio|worn book
 
 var spellNames
-action var spellNames %spellNames|$2 $1 when ^The (.*) section has (\d+) cop
+action var spellNames %spellNames|$1 $2 when ^The (.*) section has (\d+) cop
 
 var index 0
 
@@ -15,6 +15,7 @@ loop:
 		math index add 1
 		if (%index > count("%stackerTypes", "|")) then {
 		    echo %spellNames
+		    put #log >findScrolls.txt %spellNames
 		    gosub findScroll.storeStackers
 		    exit
 		}

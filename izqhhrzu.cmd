@@ -23,6 +23,8 @@ if_1 then {
     }
 }
 
+put #tvar char.fight.backtrain 0
+
 gosub burgle.setNextBurgleAt
 
 gosub burgle recall
@@ -74,7 +76,17 @@ main:
     }
 
 
-
+    # Backtrain
+    startBacktrain:
+    if ($First_Aid.LearningRate < 10) then {
+        put #echo >Log #0099ff Moving to backtrain
+        gosub train.moveToYellowGremlins
+        put #tvar char.fight.backtrain 1
+        put .fight backtrain
+        gosub waitForBacktrain
+        put #tvar char.fight.backtrain 0
+        goto main
+    }
 
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
@@ -178,6 +190,42 @@ clericRituals:
     gosub stand
 
     return
+
+
+waitForBacktrain:
+    pause 2
+    put #script abort all except izqhhrzu
+    put .reconnect
+    put .afk
+    pause 1
+    put #script abort all except izqhhrzu
+    put .reconnect
+    put .afk
+    gosub stow right
+    gosub stow left
+    gosub burgle.setNextBurgleAt
+    put #tvar char.fight.backtrain 1
+    put .fight
+    pause 1
+
+
+waitForBacktrainLoop:
+    if ($lib.timers.nextBurgleAt < $gametime || $First_Aid.LearningRate > 29) then {
+        put #tvar char.fight.backtrain 0
+        put #script abort all except izqhhrzu
+        put .reconnect
+        put .afk
+        pause 1
+        put #script abort all except izqhhrzu
+        put .reconnect
+        put .afk
+        if ($bleeding = 1) then goto moveToHeal
+        return
+    }
+    put #tvar char.fight.backtrain 1
+    if (!contains("$scriptlist", "fight.cmd")) then put .fight
+    pause 2
+    goto waitForBacktrainLoop
 
 
 waitForMagic:

@@ -13,7 +13,7 @@ if ($char.inventory.numHolyWaterParts = 0) then {
 	gosub getClericTools.getWater
 	#gosub getClericTools.getWaterP5
 }
-if ($char.inventory.numIncense < 40) then {
+if ($char.inventory.numIncense < 10) then {
 	put #echo >Log [getClericTools] Fetching Incense
 	#gosub getClericTools.getIncenseP5
 	gosub getClericTools.getIncense
@@ -41,11 +41,11 @@ getClericTools.buyIncense:
     # 407 is for crossing
     #if ("$roomid" != "407") then gosub automove 407
     put order incense
-    put offer 62
+    put offer 45
     gosub put my incense in my $char.inv.container.incense
     pause .1
     math i add 1
-    if (%i > 100) then return
+    if (%i > 30) then return
     goto getClericTools.buyIncense
 
 

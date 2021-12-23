@@ -33,6 +33,8 @@ action goto houseDelay when ^\.\.\.All this activity is beginning to make you ti
 
 action put #tvar powerwalk 0 when eval $Attunement.LearningRate = 34
 
+action send release eotb when ^You can't move in that direction unseen
+
 
 action put #script abort all except qizhmur;put .qizhmur when eval contains("$roomname", "Kirm Morzindu")
 
