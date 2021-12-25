@@ -1,7 +1,10 @@
 include libmaster.cmd
 
-var buffs ks|bue|ivm|php
-var spellNames KuraSilma|ButchersEye|IvoryMask|PhilosophersPreservation
+
+
+var buffs $char.buffs.spells
+var spellNames $char.buffs.spellNames
+
 var index 0
 eval numBuffs count("%buffs", "|")
 

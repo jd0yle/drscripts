@@ -21,6 +21,13 @@ put #tvar char.astral.timesToHarness 3
 
 
 ###############################
+###      BUFFS
+###############################
+put #tvar char.buffs.spells shadowling|seer|col|tksh|sr|suf
+put #tvar char.buffs.spellNames Shadowling|SeersSense|CageofLight|TelekineticShield|SentinelsResolve|SureFooting
+
+
+###############################
 ###      BURGLE
 ###############################
 put #tvar char.burgle.cooldown null
@@ -81,6 +88,9 @@ put #tvar char.cast.shw.minPrepTime 8
 put #tvar char.cast.sls.prep 33
 put #tvar char.cast.sls.charge 0
 put #tvar char.cast.sls.minPrepTime 10
+
+put #tvar char.cast.suf.prep 100
+put #tvar char.cast.suf.charge 0
 
 put #tvar char.cast.sr.prep 100
 put #tvar char.cast.sr.charge 0

@@ -16,6 +16,13 @@ put #tvar char.armor demonscale leathers|plate gauntlets|demonscale shield|scale
 
 
 ###############################
+###      BUFFS
+###############################
+put #tvar char.buffs.spells ks|bue|ivm|php
+put #tvar char.buffs.spellNames KuraSilma|ButchersEye|IvoryMask|PhilosophersPreservation
+
+
+###############################
 ###      BURGLE
 ###############################
 put #tvar char.burgle.cooldown null

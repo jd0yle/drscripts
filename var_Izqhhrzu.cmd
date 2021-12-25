@@ -27,6 +27,13 @@ put #tvar char.armor.chain demonscale shield|parry stick|ka'hurst hauberk|ka'hur
 
 
 ###############################
+###      BUFFS
+###############################
+put #tvar char.buffs.spells pom|mf|benediction|mapp|mpp|sol|centering|auspice|gg
+put #tvar char.buffs.spellNames KuraSilma|ButchersEye|IvoryMask|PhilosophersPreservation
+
+
+###############################
 ###      BURGLE
 ###############################
 put #tvar char.burgle.cooldown null
@@ -192,7 +199,7 @@ put #tvar char.fight.tmSpell do
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 24
+put #tvar char.fight.tmPrep 22
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 7
@@ -472,9 +479,7 @@ put #tvar char.research.useSanowret 1
 put #tvar char.tarantula.item harvester spider
 put #tvar char.inv.container.tarantula wyvern skull
 
-put #tvar char.tarantula.skillsetOrder Magic|Survival|Weapons|Armor|Lore
-put #tvar char.tarantula.skills.Magic Arcana|Primary_Magic|Utility
-put #tvar char.tarantula.skills.Survival Evasion|Thievery
+put #tvar char.tarantula.skills Defending|Perception|Missile_Mastery|Arcana
 
 
 ###############################

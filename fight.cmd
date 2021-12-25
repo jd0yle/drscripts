@@ -1435,8 +1435,6 @@ fight.tarantula:
     if ($char.fight.useTarantula = 1 && %tarantula.timeRemaining < 0) then {
 		var fight.tmp.tarantulaSkill null
 
-		#if ("$char.tarantula.lastSkillset" != "Magic" && "$char.tarantula.lastSkillset" != "Magics" && $Arcana.LearningRate > 10) then var fight.tmp.tarantulaSkill Arcana
-        #if ("%fight.tmp.tarantulaSkill" = "null" && !contains("$char.tarantula.lastSkillset", "Magic") && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
 
         # By default, prefer using the magic skillset
         if (!contains("$char.tarantula.lastSkillset", "Magic")) then {
@@ -1459,6 +1457,18 @@ fight.tarantula:
     }
     unvar tarantula.timeRemaining
 	return
+
+
+fight.tarantula.sortSkills:
+    var index 0
+    var fight.tmp.tarantulaSkill null
+    fight.tarantula.sortSkills.loop:
+        if ("%fight.tmp.tarantulaSkill" = "null" || $$char.tarantula.skills(%index).LearningRate > $%fight.tmp.tarantulaSkill.LearningRate) then var fight.tmp.tarantulaSkill $char.tarantula.skills(%index)
+        math index add 1
+        if (%index > count("$char.tarantula.skills", "|")) then return
+        goto fight.tarantula.sortSkills.loop
+
+
 
 ###############################
 ###      DONE
