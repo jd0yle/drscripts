@@ -970,25 +970,14 @@ debil:
     var force 0
     if ("$1" = "force") then var force 1
 
-    var tmpCastDebil 1
-
-    if (%debil.use != 1) then var tmpCastDebil 0
-    if ($mana < 80 ) then var tmpCastDebil 0
-    #if ($char.fight.useHyh = 1) then var tmpCastDebil 0
-    #if ($char.fight.useShw = 1) then var tmpCastDebil 0
-    if (matchre("$monsterlist", "(%debilConditions)")) then var tmpCastDebil 0
-    if ($Debilitation.LearningRate > 32) then var tmpCastDebil 0
-
-    #if (%tmpCastDebil = 1 || %force = 1) then {
-    if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)")) then {
+    if (%debil.use = 1 && $mana > 80 && (%force = 1 || $Debilitation.LearningRate < 34) && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)"))) then {
         gosub prep %debil.spell %debil.prepAt
-        if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
+        if (!($char.fight.debilPauseTime > -1)) then put #tvar char.fight.debilPauseTime 4
         pause $char.fight.debilPauseTime
         gosub cast
     }
 
     unvar force
-    unvar tmpCastDebil
     return
 
 
@@ -1131,6 +1120,66 @@ manageCyclics.cleric:
 
 
 manageCyclics.moonMage:
+	# SLS
+	var shouldCastSls 1
+	if (%useSls != 1) then var shouldCastSls 0
+	if ($SpellTimer.StarlightSphere.active = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 27 || $Time.isDay != 0) then var shouldCastSls 0
+	var shouldReleaseSls 0
+	if ($SpellTimer.StarlightSphere.active = 1 && ($Targeted_Magic.LearningRate > 33 || $mana < 60) then var shouldReleaseSls 1
+
+	# SHW
+	var shouldCastShw 1
+	if (%useShw != 1 || $SpellTimer.ShadowWeb.active = 1 || $SpellTimer.StarlightSphere.active = 1 || $mana < 80 || $Debilitation.LearningRate > 27) then var shouldCastShw 0
+	var shouldReleaseShw 0
+	if ($SpellTimer.ShadowWeb.active = 1 && ($Debilitation.LearningRate > 33 || $mana < 60)) then var shouldReleaseShw 1
+
+
+	# REV SORCERY
+	var shouldCastRevSorcery 1
+	if ($char.fight.useRevSorcery != 1) then var shouldCastRevSorcery 0
+	if ($SpellTimer.Revelation.active = 1) then var shouldCastRevSorcery 0
+    if ($SpellTimer.ShadowWeb.active = 1 || $SpellTimer.StarlightSphere.active = 1) then var shouldCastRevSorcery 0
+	if ($mana < 80 || ($Sorcery.LearningRate > 20 && $Augmentation.LearningRate > 20 && $Utility.LearningRate > 20)) then var shouldCastRevSorcery 0
+
+	var shouldReleaseRevSorcery 0
+        # release REV if we last cast it more than 5 minutes ago
+    if (!($char.cast.cyclic.lastCastGametime.rev > -1) then put #tvar char.cast.cyclic.lastCastGametime.rev 1
+    evalmath fight.tmp.nextCastRevGametime (300 + $char.cast.cyclic.lastCastGametime.rev)
+    if (%fight.tmp.nextCastRevGametime < $gametime && $SpellTimer.Revelation.active = 1) then var shouldReleaseRevSorcery 1
+    if ($Utility.LearningRate > 33 && $Sorcery.LearningRate > 33 && $Augmentation.LearningRate > 33) then var shouldReleaseRevSorcery 1
+    unvar fight.tmp.nextCastRevGametime
+
+
+	if (%shouldReleaseRevSorcery = 1 || %shouldReleaseSls = 1 || %shouldReleaseShw = 1) then {
+	    gosub release cyclic
+	    return
+    }
+
+    if (%shouldCastSls = 1) then {
+        gosub release cyclic
+        gosub prep sls $char.cast.sls.prep
+        gosub waitForPrep
+        gosub cast spider in sky
+        return
+    }
+
+    if (%shouldCastShw = 1) then {
+        gosub release cyclic
+        gosub runScript cast shw
+        return
+    }
+
+    if (%shouldCastRevSorcery = 1) then {
+        gosub release cyclic
+        gosub runScript cast rev
+        return
+    }
+
+    return
+
+
+
+
 	# SLS
 	if (%useSls = 1 && $SpellTimer.StarlightSphere.active != 1 && $mana > 80 && $monstercount > -1 && $Targeted_Magic.LearningRate < 27 && $Time.isDay = 0) then {
 	    gosub release cyclic

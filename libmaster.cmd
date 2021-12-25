@@ -2297,6 +2297,7 @@ sell:
     matchre return Relf takes your
     matchre return ^Sell what\?
     matchre return ^Scupper separates the bundle and sorts through it carefully
+    matchre return ^There doesn't seem to be anyone around.
     matchre return ^There is no merchant
     matchre return ^You ask
     matchre return ^You ask Scupper to buy a lumpy bundle\.
