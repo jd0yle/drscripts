@@ -980,7 +980,7 @@ debil:
     if ($Debilitation.LearningRate > 32) then var tmpCastDebil 0
 
     #if (%tmpCastDebil = 1 || %force = 1) then {
-    if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)")) then {
+    if (%debil.use = 1 && $mana > 80 && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)"))) then {
         gosub prep %debil.spell %debil.prepAt
         if (!($char.fight.debilPauseTime > 0)) then put #tvar char.fight.debilPauseTime 4
         pause $char.fight.debilPauseTime
