@@ -89,7 +89,7 @@ findSkillSet:
 checkPredState:
     if (!($lastPredictionAt > -1)) then put #var lastPredictionAt 1
     if ($lastPredictionAt > $lastPredStateAllAt || $lastObserveAt > $lastPredStateAllAt) then {
-        #echo "No PRED STATE ALL since last PREDICTION, do predstateall"
+        if ($monstercount > 0) then gosub retreat
         gosub predict state all
     }
     return
