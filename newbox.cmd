@@ -151,6 +151,10 @@ box.main:
     }
 
     if ("$righthand" = "Empty") then {
+        gosub get my %boxItem from my portal
+    }
+
+    if ("$righthand" = "Empty") then {
         math boxIndex add 1
         goto box.main
     }
@@ -182,6 +186,9 @@ box.boxTypeLoop:
     if (%boxTypeIndex < 11) then {
         var boxItem %boxType(%boxTypeIndex) box
         gosub get my %boxItem
+        if ("$righthand" = "Empty") then {
+            gosub get my %boxItem from my portal
+        }
         if ("$righthand" = "Empty") then {
             if (%boxTypeIndex > 10) then {
                 goto box.done

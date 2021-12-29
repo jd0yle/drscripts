@@ -2282,6 +2282,7 @@ sell:
     var location sell1
     var todo $0
     sell1:
+    matchre return A Halfling gembuyer
     matchre return Aelik
     matchre return ^Cormyn looks around
     matchre return ^Cormyn looks puzzled
