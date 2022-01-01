@@ -161,8 +161,6 @@ init:
     gosub sortWeaponSkillsByLearningRate
     put #echo >Debug [fight] LearningRate ord: %weapons.skills
 
-    gosub sortArmorRanks
-
     var weapons.lowestLearningRateIndex 0
 
     ## Start with the weapon with the lowest learning rate
@@ -1371,24 +1369,7 @@ releaseUnwantedSpells:
     if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
 
     return
-
-
-###############################
-###      sortArmorRanks
-###############################
-sortArmorRanks:
-	var tmpIndex 0
-	var armorIndex 0
-
-	sortArmorRanks.loop:
-		if ($$char.fight.armor.skill.%tmpIndex.LearningRate < $$char.fight.armor.skill.%armorIndex.LearningRate) then var armorIndex %tmpIndex
-		math tmpIndex add 1
-		if (contains("$char.fight.armor.skill.%tmpIndex", "char.fight.armor")) then {
-			unvar tmpIndex
-			return
-		}
-		goto sortArmorRanks.loop
-
+    
 
 
 ###############################
