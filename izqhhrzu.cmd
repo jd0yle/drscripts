@@ -52,7 +52,7 @@ main:
         gosub clericRituals
         gosub train.moveToHouse
         gosub train.performance 5
-        if ($First_Aid.LearningRate < 10) then {
+        if ($First_Aid.LearningRate < 0) then {
             put #echo >Log #0033CC Start First Aid: $First_Aid.LearningRate/34
             gosub runScript compendium --target=10
             put #echo >Log #0033CC End First Aid: $First_Aid.LearningRate/34
@@ -78,7 +78,7 @@ main:
 
     # Backtrain
     startBacktrain:
-    if ($First_Aid.LearningRate < 10) then {
+    if ($First_Aid.LearningRate < 30) then {
         put #echo >Log #0099ff Moving to backtrain
         gosub train.moveToYellowGremlins
         put #tvar char.fight.backtrain 1
@@ -89,7 +89,7 @@ main:
     }
 
     startFight:
-    if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Staves.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+    if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
         put #echo >Log #0033CC Start combat
         gosub train.getHealed
         if ("$roomname" = "Private Home Interior" || $zoneid = 150) then {
@@ -136,7 +136,7 @@ main:
     put .reconnect
     put .afk
 
-    gosub runScript caracal
+    #gosub runScript caracal
 
     put .magic
     gosub waitForMagic
@@ -210,7 +210,10 @@ waitForBacktrain:
 
 
 waitForBacktrainLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || $First_Aid.LearningRate > 29) then {
+    gosub getLowestLearningRateFromList $char.fight.weapons.skills|$First_Aid
+    var tmpLowestLearningRate %returnVal
+
+    if ($lib.timers.nextBurgleAt < $gametime || %tmpLowestLearningRate > 32) then {
         put #tvar char.fight.backtrain 0
         put #script abort all except izqhhrzu
         put .reconnect
@@ -277,9 +280,14 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || ($Targeted_Magic.LearningRate > 25 && $Polearms.LearningRate > 30 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Staves.LearningRate > 30 && $Slings.LearningRate > 30 && $Twohanded_Edged.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)) then {
+    gosub getLowestLearningRateFromList $char.fight.weapons.skills|Evasion|Parry_Ability|Shield_Usage
+    var tmpLowestLearningRate %returnVal
+
+    #if ($lib.timers.nextBurgleAt < $gametime || ($Targeted_Magic.LearningRate > 25 && $Polearms.LearningRate > 30 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Slings.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || %tmpLowestLearningRate > 30) then {
         echo
         echo DONE WITH COMBAT!
+        put #echo >Log #999900 DONE WITH COMBAT, lowest LR=%tmpLowestLearningRate
         echo burgle $lib.timers.nextBurgleAt < $gametime
         echo ($Targeted_Magic.LearningRate > 25 && $Polearms.LearningRate > 30 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Staves.LearningRate > 30 && $Slings.LearningRate > 30 && $Twohanded_Edged.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)
         echo

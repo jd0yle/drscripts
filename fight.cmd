@@ -161,8 +161,6 @@ init:
     gosub sortWeaponSkillsByLearningRate
     put #echo >Debug [fight] LearningRate ord: %weapons.skills
 
-    gosub sortArmorRanks
-
     var weapons.lowestLearningRateIndex 0
 
     ## Start with the weapon with the lowest learning rate
@@ -503,6 +501,10 @@ buffs:
         gosub runScript cast om orb
         return
     }
+    if ($char.fight.useMf = 1 && $SpellTimer.MurrulasFlames.active != 1) then {
+        gosub runScript cast mf
+        return
+    }
     if ($char.fight.useAuspice = 1 && ($SpellTimer.Auspice.active != 1 || $SpellTimer.Auspice.duration < 3)) then {
         gosub runScript cast auspice
         return
@@ -514,6 +516,10 @@ buffs:
         } else {
             var buffCheckAgain 1
         }
+        return
+    }
+    if ($char.fight.usePom = 1 && $SpellTimer.PersistenceofMana.active = 1 && $SpellTimer.PersistenceofMana.duration < 5)) then {
+        gosub runScript cast pom
         return
     }
     if ($char.fight.useCentering = 1 && ($SpellTimer.Centering.active != 1 || $SpellTimer.Centering.duration < 3)) then {
@@ -532,10 +538,7 @@ buffs:
         gosub runScript cast mpp
         return
     }
-    if ($char.fight.useMf = 1 && $SpellTimer.MurrulasFlames.active != 1) then {
-        gosub runScript cast mf
-        return
-    }
+
     if ($char.fight.usePfe = 1 && ($SpellTimer.ProtectionfromEvil.active != 1 || $SpellTimer.ProtectionfromEvil.duration < 3)) then {
         gosub runScript cast pfe
         return
@@ -1366,24 +1369,7 @@ releaseUnwantedSpells:
     if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
 
     return
-
-
-###############################
-###      sortArmorRanks
-###############################
-sortArmorRanks:
-	var tmpIndex 0
-	var armorIndex 0
-
-	sortArmorRanks.loop:
-		if ($$char.fight.armor.skill.%tmpIndex.LearningRate < $$char.fight.armor.skill.%armorIndex.LearningRate) then var armorIndex %tmpIndex
-		math tmpIndex add 1
-		if (contains("$char.fight.armor.skill.%tmpIndex", "char.fight.armor")) then {
-			unvar tmpIndex
-			return
-		}
-		goto sortArmorRanks.loop
-
+    
 
 
 ###############################
@@ -1484,12 +1470,14 @@ fight.tarantula:
     if ($char.fight.useTarantula = 1 && %tarantula.timeRemaining < 0) then {
 		var fight.tmp.tarantulaSkill null
 
+        ## If the character var file has a skillset order defined, prefer that
+        if (count("$char.tarantula.skillsetOrder", "|") > 0) then gosub fight.tarantula.setSkill
 
-        # By default, prefer using the magic skillset
+        ## If we don't have a preferred skillset order:
         if (!contains("$char.tarantula.lastSkillset", "Magic")) then {
-            if ($Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Arcana.LearningRate > 20) then var fight.tmp.tarantulaSkill Arcana
             if ("%fight.tmp.tarantulaSkill" = "null" && $Primary_Magic.LearningRate > 20 && $Primary_Magic.LearningRate > $Arcana.LearningRate) then var fight.tmp.tarantulaSkill Primary Magic
-            if ("%fight.tmp.tarantulaSkill" = "null" && $Arcana.LearningRate > 10) then var fight.tmp.tarantulaSkill Arcana
         }
 
         if (!contains("$char.tarantula.lastSkillset", "Weapon")) then {
@@ -1506,6 +1494,41 @@ fight.tarantula:
     }
     unvar tarantula.timeRemaining
 	return
+
+
+fight.tarantula.setSkill:
+    if (!(%tarantulaSkillsetIndex > -1)) then var tarantulaSkillsetIndex 0
+    if (!contains("$char.tarantula.lastSkillset", "$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)") then {
+        if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Magic") then {
+            if ($Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Arcana.LearningRate > 20) then var fight.tmp.tarantulaSkill Arcana
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Primary_Magic.LearningRate > 20 && $Primary_Magic.LearningRate > $Arcana.LearningRate) then var fight.tmp.tarantulaSkill Primary Magic
+        }
+
+        if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Weapon") then {
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Missile_Mastery.LearningRate > 20 && $Missile_Mastery.LearningRate > $Melee_Mastery.LearningRate) then var fight.tmp.tarantulaSkill missile
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Melee_Mastery.LearningRate > 20 && $Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then var fight.tmp.tarantulaSkill melee
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Parry_Ability.LearningRate > 20) then var fight.tmp.tarantulaSkill parry
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Offhand_Weapon.LearningRate > 20) then var fight.tmp.tarantulaSkill offhand
+        }
+
+        if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Armor") then {
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Defending.LearningRate > 20) then var fight.tmp.tarantulaSkill defending
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Light_Armor.LearningRate > 20) then var fight.tmp.tarantulaSkill light armor
+        }
+
+        if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Survival") then {
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Perception.LearningRate > 20) then var fight.tmp.tarantulaSkill perception
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Skinning.LearningRate > 20) then var fight.tmp.tarantulaSkill skinning
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Evasion.LearningRate > 20) then var fight.tmp.tarantulaSkill evasion
+        }
+    }
+    math tarantulaSkillsetIndex add 1
+    if ("%fight.tmp.tarantulaSkill" != "null" || %tarantulaSkillsetIndex > count("$char.tarantula.skillsetOrder", "|")) then {
+        unvar tarantulaSkillsetIndex
+        return
+    }
+    goto fight.tarantula.setSkill
 
 
 fight.tarantula.sortSkills:

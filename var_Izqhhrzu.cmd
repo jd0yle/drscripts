@@ -265,6 +265,7 @@ put #tvar char.fight.useMf 1
 put #tvar char.fight.useMpp 1
 put #tvar char.fight.useOm 1
 put #tvar char.fight.usePfe 0
+put #tvar char.fight.usePom 1
 put #tvar char.fight.useRev 1
 put #tvar char.fight.useSap 0
 put #tvar char.fight.useSol 1
@@ -479,7 +480,7 @@ put #tvar char.research.useSanowret 1
 put #tvar char.tarantula.item harvester spider
 put #tvar char.inv.container.tarantula wyvern skull
 
-put #tvar char.tarantula.skills Defending|Perception|Missile_Mastery|Arcana
+put #tvar char.tarantula.skillsetOrder Survival|Armor|Weapon|Magic|Lore
 
 
 ###############################
