@@ -30,6 +30,7 @@ getClericTools.getIncense:
 	if ("$roomname" = "Private Home Interior") then gosub runScript house
 	if ("$zoneid" != "67") then gosub runScript travel shard teller
 	#if ("$zoneid" != "1") then gosub runScript travel crossing teller
+	gosub runScript payDebt
 	gosub runScript deposit
 	gosub automove teller
 	gosub withdraw 1 plat
@@ -41,7 +42,7 @@ getClericTools.buyIncense:
     # 407 is for crossing
     #if ("$roomid" != "407") then gosub automove 407
     put order incense
-    put offer 45
+    put offer 65
     gosub put my incense in my $char.inv.container.incense
     pause .1
     math i add 1

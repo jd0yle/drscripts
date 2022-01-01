@@ -358,12 +358,14 @@ aim:
     aim1:
     matchre return ^At what are you trying to aim\?
     matchre return ^But the .+ in your right hand isn't a ranged weapon\!
+    matchre return ^There is nothing else to face!
     matchre return ^You are already targetting that\!
     matchre return ^You begin to target
     matchre return ^You don't have a ranged weapon to aim with\!
     matchre return ^You need both hands in order to aim\.
     matchre return ^You shift your target to
     matchre return ^Your .+ isn't loaded\!
+    matchre return ^What are you trying to attack?
     put aim %todo
     goto retry
 
@@ -1525,6 +1527,7 @@ load:
     matchre return ^What weapon are you trying to load\?
     matchre return ^You can't load .+, silly\!
     matchre return ^You don't have the proper ammunition readily available for your
+    matchre return ^You don't have the proper ammunition
     matchre return ^You need to hold the
     matchre return ^Your .+ is already loaded
     put load %todo
@@ -3461,6 +3464,38 @@ checkMoons:
 debug:
 	put #echo [%scriptname] $0
 	return
+
+
+getLowestLearningRateFromList:
+    var tmpSkills $0
+    var tmpIndex 0
+    var returnVal -1
+
+    getLowestLearningRateFromList.loop:
+        if (%returnVal = -1 || $%tmpSkills(%tmpIndex).LearningRate < %returnVal) then var returnVal $%tmpSkills(%tmpIndex).LearningRate
+        math tmpIndex add 1
+        if (%tmpIndex > count("%tmpSkills", "|")) then {
+            unvar tmpSkills
+            unvar tmpIndex
+            return
+        }
+        goto getLowestLearningRateFromList.loop
+
+
+getLowestLearningRateSkillFromList:
+    var tmpSkills $0
+    var tmpIndex 0
+    var returnVal null
+
+    getLowestLearningRateSkillFromList.loop:
+        if ("%returnVal" = "null" || $%tmpSkills(%tmpIndex).LearningRate < $%returnVal.LearningRate) then var returnVal %tmpSkills(%tmpIndex)
+        math tmpIndex add 1
+        if (%tmpIndex > count("%tmpSkills", "|")) then {
+            unvar tmpSkills
+            unvar tmpIndex
+            return
+        }
+        goto getLowestLearningRateSkillFromList.loop
 
 
 retry:

@@ -406,9 +406,7 @@ put #tvar char.research.useSanowret 1
 put #tvar char.tarantula.item harvester spider
 put #tvar char.inv.container.tarantula steelsilk backpack
 
-put #tvar char.tarantula.skillsetOrder Magic|Survival|Weapons|Armor|Lore
-put #tvar char.tarantula.skills.Magic Arcana|Primary_Magic|Utility
-put #tvar char.tarantula.skills.Survival Evasion|Thievery
+put #tvar char.tarantula.skillsetOrder Magic|Weapon|Armor|Survival|Lore
 
 
 ###############################

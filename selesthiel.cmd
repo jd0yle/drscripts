@@ -869,7 +869,10 @@ waitForBacktrain:
     pause 1
 
 waitForBacktrainLoop:
-    if ($lib.timers.nextBurgleAt < $gametime || $First_Aid.LearningRate > 29) then {
+    gosub getLowestLearningRateFromList $char.fight.weapons.skills|$First_Aid
+    var tmpLowestLearningRate %returnVal
+
+    if ($lib.timers.nextBurgleAt < $gametime || %tmpLowestLearningRate > 32) then {
         put #tvar char.fight.backtrain 0
         gosub resetState
         if ($bleeding = 1) then goto moveToHeal
