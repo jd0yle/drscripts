@@ -17,7 +17,7 @@ action var sellgem.bagContents $1 when ^In .* you see (.*)\.$
 ###############################
 var sellgem.gem nugget|bar
 var sellgem.indexGem 0
-var sellgem.mat brass|bronze|coal|copper|electrum|gold|iron|nickel|pewter|silver|steel|oravir|zinc
+var sellgem.mat brass|bronze|coal|copper|covellite|electrum|gold|iron|lead|nickel|pewter|silver|steel|oravir|zinc
 var sellgem.indexMat 0
 
 
