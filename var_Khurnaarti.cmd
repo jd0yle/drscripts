@@ -292,7 +292,7 @@ put #tvar char.inv.eddyContainer writhing eddy
 
 # Loot
 put #tvar char.loot.boxes 1
-
+put #tvar char.loot.nuggetBars 1
 
 ###############################
 ###      LOCKSMITHING
