@@ -143,6 +143,12 @@ put #tvar char.cast.tksh.prep 30
 put #tvar char.cast.tksh.charge 20
 put #tvar char.cast.tksh.chargeTimes 2
 
+#Utility
+put #tvar char.cast.ss.prep 30
+put #tvar char.cast.ss.charge 0
+put #tvar char.cast.ss.chargeTimes 0
+put #tvar char.cast.ss.minPrepTime 10
+
 
 ###############################
 ###      EMPTY
@@ -252,7 +258,7 @@ put #tvar char.fight.useTksh 1
 ###      FRIENDS
 ###############################
 put #tvar friends Inauri|Qizhmur|Selesthiel|Izqhhrzu
-put #tvar enemies Nemy|Ponni|Sothios|Kethrai
+put #tvar enemies Nemy|Ponni|Kethrai
 put #tvar super.enemies null
 
 
@@ -275,6 +281,7 @@ put #tvar char.inv.boxContainer shadows
 put #tvar char.inv.defaultContainer shadows
 put #tvar char.inv.emptyGemPouchContainer watersilk bag
 put #tvar char.inv.fullGemPouchContainer shadows
+put #tvar char.inv.gemPouch black pouch
 put #tvar char.inv.memoryOrbContainer shadows
 put #tvar char.inv.secondaryContainer leather purse
 put #tvar char.inv.servant.bags pack|saddlebag|pouch|rucksack|backpack|poke

@@ -28,9 +28,10 @@ action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as
 action (health) goto khurnaarti-getHealedTrigger when eval $health < 85
 action (health) goto khurnaarti-getHealedTrigger when eval $bleeding = 1
 action put store box purse;put stow;put stow left when There isn't any more room in the eddy for that\.|You just can't get the (.*) to fit in the writhing eddy, no matter how you arrange it\.
-action put store box backpack;put stow;put stow left when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
-action put store box shadows;put stow;put stow left when There isn't any more room in the backpack for that\.|You just can't get the (.*) to fit in the indigo backpack, no matter how you arrange it\.
-action goto khurnaarti-fullBags when There isn't any more room in the shadows for that\.|You just can't get the (.*) to fit in the encompassing shadows, no matter how you arrange it\.
+#action put store box backpack;put stow;put stow left when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
+#action put store box shadows;put stow;put stow left when There isn't any more room in the backpack for that\.|You just can't get the (.*) to fit in the indigo backpack, no matter how you arrange it\.
+action goto khurnaarti-fullBags when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
+action goto khurnaarti-fullPouch when ^You think the black gem pouch is too full to fit another gem into\.$
 
 
 if ($health < 80 && "$roomname" <> "Private Home Interior") then goto khurnaarti-getHealedTrigger
@@ -330,6 +331,25 @@ khurnaarti-fullBags:
     goto khurnaarti-openBoxes
 
 
+khurnaarti-fullPouch:
+    put #script pause fight
+    if !(matchre("$righthand|$lefthand", "Empty")) then {
+        gosub put my $righthandnoun in my $char.inv.defaultContainer
+    }
+    gosub remove my $char.inv.gemPouch
+    gosub put $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
+    gosub get $char.inv.gempouch from my $char.inv.emptyGemPouchContainer
+
+    if (matchre("$righthand|$lefthand", "$char.inv.gemPouch")) then {
+        gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+        gosub tie my $char.inv.gemPouch
+        gosub wear my $char.inv.gemPouch
+        put #script unpause fight
+        goto khurnaarti-combatLoop
+    }
+
+
+
 khurnaarti-healthCheck:
     gosub health
     if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
@@ -449,7 +469,7 @@ khurnaarti-openBoxes:
         gosub runScript newbox
         put #echo >Log #009933 [khurnaarti] Done opening boxes. Locks:($Locksmithing.LearningRate/34).
         gosub runScript armor wear
-        gosub runSript sellgem
+        gosub runScript sellgem shadows
     } else {
         put #echo >Log #009933 [khurnaarti] No boxes to open.
         return
