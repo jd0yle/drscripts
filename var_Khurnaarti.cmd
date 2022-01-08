@@ -19,6 +19,13 @@ put #tvar char.astral.timesToHarness 2
 
 
 ###############################
+###      BUFFS
+###############################
+put #tvar char.buffs.spells shadowling|seer|col|tksh|psy
+put #tvar char.buffs.spellNames Shadowling|SeersSense|CageofLight|TelekineticShield|PsychicShield
+
+
+###############################
 ###      BURGLE
 ###############################
 # ------ ATTEMPT HANDLING ------
@@ -93,7 +100,7 @@ put #tvar char.cast.mb.prep 30
 put #tvar char.cast.mb.charge 0
 put #tvar char.cast.mb.chargeTimes 0
 # Stun Foe
-put #tvar char.cast.sf.prep 20
+put #tvar char.cast.sf.prep 15
 put #tvar char.cast.sf.charge 0
 put #tvar char.cast.sf.chargeTimes 0
 # Shadow Web
@@ -136,17 +143,27 @@ put #tvar char.cast.tksh.prep 30
 put #tvar char.cast.tksh.charge 20
 put #tvar char.cast.tksh.chargeTimes 2
 
+#Utility
+put #tvar char.cast.ss.prep 30
+put #tvar char.cast.ss.charge 0
+put #tvar char.cast.ss.chargeTimes 0
+put #tvar char.cast.ss.minPrepTime 10
+
 
 ###############################
 ###      EMPTY
 ###############################
-var char.empty.armor shield|balaclava|shirt|pants|gloves|wrap|footwraps|claws|spikes
-var char.empty.weapon pelletbow|hhr'ata|nightstick|sling|broadsword|skefne|broad-axe|riste|blade|sphere|bolt|bolts|arrow|arrows|rock|rocks|button|buttons
-var char.empty.container bottle|pouch|shadows|eddy|backpack|rucksack|saddlebag|poke|pack|saddlebag|folio|box|skippet|trunk|strongbox|chest|crate|casket|coffer|caddy|sack
-var char.empty.inven gamantang|pants|pilonu|trews|blouse|robe|robes
-var char.empty.misc yardstick|priest|compendium|almanac|skates|brush|refill|kit|towel|caracal|sun|demonbones|rope
-put #var char.empty.whitelist %char.empty.armor|%char.empty.weapon|%char.empty.container|%char.empty.inven|%char.empty.misc
-
+put #tvar char.empty.armor balaclava|claws|footwraps|gloves|pants|shield|shirt|spikes|wrap
+put #tvar char.empty.weapon arrow|arrows|blade|broad-axe|broadsword|bolt|bolts|button|buttons|hhr-ata|nightstick|pan|pelletbow|rock|rocks|riste|skefne|sling|sphere
+put #tvar char.empty.container backpack|bag|bottle|case|eddy|folio|pocket|pouch|purse|rucksack|saddlebag|shadows|poke|pack|saddlebag|sack|vial
+put #tvar char.empty.boxContainer box|caddy|casket|chest|coffer|crate|skippet|strongbox|trunk
+put #tvar char.empty.wornInven circlet|cloak|crystal|belt|blade|blouse|bucket|gamantang|garter|horns|pants|pilonu|ring|rings|robe|robes|sandals|silk|snakelet|stars|trews
+put #tvar char empty.misc almanac|bead|book|brush|caracal|card|cloth|compendium|demonbones|gwethdesuan|kit|mirror|priest|refill|rope|skates|spider|sun|telescope|towel|triangle|water|yardstick
+put #tvar char.empty.whitelist $char.empty.armor|$char.empty.weapon|$char.empty.container|$char.empty.boxContainer|$char.empty.wornInven|$char.empty.misc
+if ("$empty.whitelist" <> "$char.empty.whitelist") then {
+    put #var empty.whitelist $char.empty.whitelist
+    echo Updated empty.whitelist.
+}
 
 ###############################
 ###      FIGHT
@@ -170,7 +187,8 @@ put #tvar char.fight.arrangeFull 0
 # ------ DEBILITATION ------
 put #tvar char.fight.debil.use 1
 put #tvar char.fight.debil.spell sf
-put #tvar char.fight.debil.prepAt 15
+put #tvar char.fight.debil.prepAt 25
+put #tvar char.fight.debilPauseTime 12
 put #tvar char.fight.forceDebil 0
 
 # ------ STANCE ------
@@ -231,7 +249,7 @@ put #tvar char.fight.useRevSorcery 0
 put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
-put #tvar char.fight.useShw 1
+put #tvar char.fight.useShw 0
 put #tvar char.fight.useSls 0
 put #tvar char.fight.useTksh 1
 
@@ -240,7 +258,7 @@ put #tvar char.fight.useTksh 1
 ###      FRIENDS
 ###############################
 put #tvar friends Inauri|Qizhmur|Selesthiel|Izqhhrzu
-put #tvar enemies Nemy|Ponni|Sothios|Kethrai
+put #tvar enemies Nemy|Ponni|Kethrai
 put #tvar super.enemies null
 
 
@@ -263,6 +281,7 @@ put #tvar char.inv.boxContainer shadows
 put #tvar char.inv.defaultContainer shadows
 put #tvar char.inv.emptyGemPouchContainer watersilk bag
 put #tvar char.inv.fullGemPouchContainer shadows
+put #tvar char.inv.gemPouch black pouch
 put #tvar char.inv.memoryOrbContainer shadows
 put #tvar char.inv.secondaryContainer leather purse
 put #tvar char.inv.servant.bags pack|saddlebag|pouch|rucksack|backpack|poke
@@ -273,7 +292,7 @@ put #tvar char.inv.eddyContainer writhing eddy
 
 # Loot
 put #tvar char.loot.boxes 1
-
+put #tvar char.loot.nuggetBars 1
 
 ###############################
 ###      LOCKSMITHING

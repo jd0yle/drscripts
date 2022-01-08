@@ -14,6 +14,9 @@ include libmaster.cmd
 ###############################
 action var khurnaarti.armor 0 when You aren't wearing anything like that\.
 action var khurnaarti.armor 1 when All of your armor
+action var khurnaarti.bagContent $1 when ^In .* you see (.*)\.$
+action var khurnaarti.bagHasContent 1 when ^Inside a writhing eddy of silvery light caught in a ka\'hurst sun, you see\:
+action var khurnaarti.bagHasContent 0 when ^There's nothing inside (.*)\!$
 action var khurnaarti.needHeal 0 when ^You have no significant injuries\.$
 action var khurnaarti.needHeal 1 when ^You have.*(blank stare|bleeding|bloated|bruises|bruising|chunks|clouded|cracked|cuts|death pallor|difficulty|emaciated|eye socket|gashes|horrendous|mangled|numbness|open|painful|paralysis|paralyzed|rash|severe|severely|slashes|stump|swelling|swollen|twitch|twitching)
 action var khurnaarti.needHeal 1 when ^The pain is too much\.|You are unable to hold the .* telescope steady, and give up\.|You cannot play the .* in your current physical condition\.|Will alone cannot conquer the paralysis that has wracked your body\.
@@ -24,6 +27,12 @@ action put #var lib.student 0 when ^Inauri stops teaching\.$
 action put #var lastTrainerGametime $gametime when ^The leather looks frayed, as if worked too often recently
 action (health) goto khurnaarti-getHealedTrigger when eval $health < 85
 action (health) goto khurnaarti-getHealedTrigger when eval $bleeding = 1
+action put store box purse;put stow;put stow left when There isn't any more room in the eddy for that\.|You just can't get the (.*) to fit in the writhing eddy, no matter how you arrange it\.
+#action put store box backpack;put stow;put stow left when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
+#action put store box shadows;put stow;put stow left when There isn't any more room in the backpack for that\.|You just can't get the (.*) to fit in the indigo backpack, no matter how you arrange it\.
+action goto khurnaarti-fullBags when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
+action goto khurnaarti-fullPouch when ^You think the black gem pouch is too full to fit another gem into\.$
+
 
 if ($health < 80 && "$roomname" <> "Private Home Interior") then goto khurnaarti-getHealedTrigger
 
@@ -61,6 +70,8 @@ if ($Targeted_Magic.Ranks < $Debilitation.Ranks) then {
     var khurnaarti.class debilitation
 }
 var khurnaarti.armor 0
+var khurnaarti.bagContent 0
+var khurnaarti.bagHasContent 0
 var khurnaarti.combatReturn 0
 var khurnaarti.forageRoom 44
 var khurnaarti.needHeal 0
@@ -91,11 +102,11 @@ khurnaarti-loop:
     if ($Astrology.LearningRate < 30) then gosub khurnaarti-astrology
     pause 1
     if ($lib.magicInert <> 1) then {
-        if ($lib.magicInert <> 1) then gosub khurnaarti-research
+#        if ($lib.magicInert <> 1) then gosub khurnaarti-research
         if ($Attunement.LearningRate < 33 && $lib.magicInert <> 1) then gosub perc.onTimer
         gosub khurnaarti-arcana
         if ($mana > 30 && $lib.magicInert <> 1) then gosub khurnaarti-magic
-        if ($lib.magicInert <> 1) then gosub khurnaarti-research
+#        if ($lib.magicInert <> 1) then gosub khurnaarti-research
         gosub khurnaarti-healthCheck
     }
     pause 1
@@ -103,6 +114,7 @@ khurnaarti-loop:
     gosub khurnaarti-caracal
     gosub khurnaarti-compendium
     gosub khurnaarti-play
+    gosub khurnaarti-openBoxes
     gosub khurnaarti-lock
     gosub khurnaarti-combatCheck
     pause 1
@@ -243,17 +255,11 @@ khurnaarti-combatCheck:
 khurnaarti-combatLoop:
     pause 5
     gosub health
-    gosub burgle.setNextBurgleAt
-    if ($lib.timers.nextBurgleAt < $gametime) then {
+#    gosub burgle.setNextBurgleAt
+#    if ($lib.timers.nextBurgleAt < $gametime) then {
 #        put #echo >Log #009933 [khurnaarti] Leaving combat to burgle.
 #        put #script abort fight
 #        gosub stance shield
-        evalmath nextLookAt $lastLookGametime + 1800
-        if (%nextLookAt < $gametime) then {
-            gosub runscript empty --from=pocket --to=portal
-            gosub khurnaarti-clearHands
-            put #var lastLookGametime $gametime
-        }
 #        if ("$preparedspell" <> "None") then {
 #            gosub release
 #        }
@@ -262,6 +268,12 @@ khurnaarti-combatLoop:
 #        }
 #        var khurnaartiCombatReturn 1
 #        goto khurnaarti-burgle
+#    }
+    evalmath nextLookAt $lastLookGametime + 1800
+    if (%nextLookAt < $gametime) then {
+        gosub runscript empty --from=pocket --to=portal
+        gosub khurnaarti-clearHands
+        put #var lastLookGametime $gametime
     }
     if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
         put #script abort fight
@@ -309,6 +321,35 @@ khurnaarti-forage:
     return
 
 
+khurnaarti-fullBags:
+    put #echo >Log Red [khurnaarti] All of your bags are full of boxes you idiot.
+    gosub khurnaarti-clearHands
+    gosub stow sphere
+    gosub stow hhr'ata
+    gosub stow pan
+    gosub runScript house
+    goto khurnaarti-openBoxes
+
+
+khurnaarti-fullPouch:
+    put #script pause fight
+    if !(matchre("$righthand|$lefthand", "Empty")) then {
+        gosub put my $righthandnoun in my $char.inv.defaultContainer
+    }
+    gosub remove my $char.inv.gemPouch
+    gosub put $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
+    gosub get $char.inv.gempouch from my $char.inv.emptyGemPouchContainer
+
+    if (matchre("$righthand|$lefthand", "$char.inv.gemPouch")) then {
+        gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+        gosub tie my $char.inv.gemPouch
+        gosub wear my $char.inv.gemPouch
+        put #script unpause fight
+        goto khurnaarti-combatLoop
+    }
+
+
+
 khurnaarti-healthCheck:
     gosub health
     if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
@@ -329,6 +370,19 @@ khurnaarti-healthCheck:
             put exit
             put #script abort all
         }
+    }
+    return
+
+
+khurnaarti-idle:
+    evalmath nextLookAt $lastLookGametime + 240
+    if (%nextLookAt < $gametime) then {
+        gosub tdp
+        put #var lastLookGametime $gametime
+    }
+    if ("%khurnaarti.mode" = "idle") then {
+        pause 240
+        goto khurnaarti-idle
     }
     return
 
@@ -391,19 +445,6 @@ khurnaarti-lock:
     return
 
 
-khurnaarti-idle:
-    evalmath nextLookAt $lastLookGametime + 240
-    if (%nextLookAt < $gametime) then {
-        gosub tdp
-        put #var lastLookGametime $gametime
-    }
-    if ("%khurnaarti.mode" = "idle") then {
-        pause 240
-        goto khurnaarti-idle
-    }
-    return
-
-
 khurnaarti-magic:
     if ($Augmentation.LearningRate < 10 || $Warding.LearningRate < 10 || $Utility.LearningRate < 10) then {
         put #echo >Log #6600ff [khurnaarti] Beginning magic.
@@ -413,6 +454,27 @@ khurnaarti-magic:
         put #echo >Log #6600ff [khurnaarti] Magic complete. Ward:($Warding.LearningRate/34)
     }
     return
+
+
+khurnaarti-openBoxes:
+    gosub inventory eddy
+    if (%khurnaarti.bagHasContent = 1) then {
+        gosub look in my portal
+        echo khurnaarti.bagContent = %khurnaarti.bagContent
+        echo char.empty.boxContainer = $char.empty.boxContainer
+    }
+    if (matchre("%khurnaarti.bagContent", "$char.empty.boxContainer")) then {
+        put #echo >Log #009933 [khurnaarti] Found boxes in eddy. Locks:($Locksmithing.LearningRate/34).
+        gosub runScript armor remove
+        gosub runScript newbox
+        put #echo >Log #009933 [khurnaarti] Done opening boxes. Locks:($Locksmithing.LearningRate/34).
+        gosub runScript armor wear
+        gosub runScript sellgem shadows
+    } else {
+        put #echo >Log #009933 [khurnaarti] No boxes to open.
+        return
+    }
+    goto khurnaarti-loop
 
 
 khurnaarti-play:

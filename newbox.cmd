@@ -3,16 +3,22 @@ include libmaster.cmd
 ###    Box Opening Script
 ###############################
 
+
 ###############################
 ###    IDLE ACTIONS
 ###############################
+# - - Armor Handling
+action var boxArmorCheck 1 when All of your armor\:
+action var boxWeaponCheck 1 when All of your weapons\:
+action goto box-removeArmor when Your .* hinders your attempt\.
+
 # - - Box Opening
-action var boxDisarmed 0 ; goto box.disarmId  when However, (.*) is not fully disarmed, making any chance of picking it unlikely\.
-action var boxDisarmed 0 ; goto box.disarmId  when Careful probing of the (.*) fails to reveal to you what type of trap protects it\.
-action var boxDisarmed 0 ; goto box.disarmId  when You believe that the (.*) is not yet fully disarmed\.
-action var boxDisarmed 0 ; goto box.disarmId  when You realize that despite this mishap, the (.*) still has more to torment you with\.
-action var boxLocked 0 ; goto box.pickId when You discover another lock protecting the (.*)s contents as soon as you remove this one\.
-action var boxLocked 0 ; goto box.pickId when You are unable to make any progress towards opening the lock\.
+action var boxDisarmed 0 ; goto box-disarmId  when However, (.*) is not fully disarmed, making any chance of picking it unlikely\.
+action var boxDisarmed 0 ; goto box-disarmId  when Careful probing of the (.*) fails to reveal to you what type of trap protects it\.
+action var boxDisarmed 0 ; goto box-disarmId  when You believe that the (.*) is not yet fully disarmed\.
+action var boxDisarmed 0 ; goto box-disarmId  when You realize that despite this mishap, the (.*) still has more to torment you with\.
+action var boxLocked 0 ; goto box-pickId when You discover another lock protecting the (.*)s contents as soon as you remove this one\.
+action var boxLocked 0 ; goto box-pickId when You are unable to make any progress towards opening the lock\.
 action var boxDisarmed 1 when After carefully pushing at the sharp blade for a while, you manage to bend it well away from the mesh bag\.
 action var boxDisarmed 1 when After studying the design of the trap carefully, you begin to nudge the tip of the dart sideways in an effort to jam the mechanism\.
 action var boxDisarmed 1 when After wiggling the milky-white tube back and forth for a few moments, you manage to bend it away from the tiny hammer set to break it\.  Just for fun, you flick the tube a couple of times with the tip of your finger, which seems to annoy the heck out of the little black dots inside\.
@@ -38,34 +44,32 @@ action var boxDisarmed 1 when Working with extreme care, you unhook the stopper 
 action var boxDisarmed 1 when You cautiously pry the seal away from the lid, being extremely careful not to break it\.
 action var boxDisarmed 1 when You manage to work the contact fibers away from the cube of black powder lodged inside the lock casement\.
 action var boxLocked 1 when With a soft click, you remove your lockpick and open and remove the lock\.
-action var boxLocked 1 ; goto box.mainLoop when It's not even locked, why bother\?
-action goto box.healthCheck when You realize very quickly that this was a very bad idea\.\.\.
-
-
+action var boxLocked 1 ; goto box-mainLoop when It's not even locked, why bother\?
+action goto box-healthCheck when You realize very quickly that this was a very bad idea\.\.\.
 
 # - - Box is already disarmed.
-action var boxDisarmed 1 ; goto box.pickId when A bent needle sticks harmlessly out from its hidden compartment near the lock\.
-action var boxDisarmed 1 ; goto box.pickId when A broken spring is sticking out of a hidden seam on the front of the (.*)\.  It is no longer attached to a razor-sharp scythe blade within the gap\.
-action var boxDisarmed 1 ; goto box.pickId when A row of concealed openings on the front of the (.*), have been bent in such a way that they no longer will function\.
-action var boxDisarmed 1 ; goto box.pickId when A small hole near the lock houses a tiny dart with a silver tip\.  It appears, however, that the dart has been moved too far out of position for the mechanism to function properly\.
-action var boxDisarmed 1 ; goto box.pickId when A tiny hammer and milky-white tube on the front of the (.*) have been bent away from each other\.
-action var boxDisarmed 1 ; goto box.pickId when An incredibly sharp blade rests off to the side in the casing of the (.*), indicating the trap is no longer a danger\.
-action var boxDisarmed 1 ; goto box.pickId when Looking closely at the (.*) you notice a vial of lime green liquid attached to the lid.  Someone has unhooked the stopper, rendering it harmless\.
-action var boxDisarmed 1 ; goto box.pickId when Several small pinholes centered around the keyhole indicate that some sort of apparatus, previously attached, was picked apart and removed from the (.*)\.
-action var boxDisarmed 1 ; goto box.pickId when Several strands of wicker detonator lay inside the casement, separated harmlessly from their charge\.  You guess it is already disarmed\.
-action var boxDisarmed 1 ; goto box.pickId when There are two tiny holes in the (.*)\.  It looks like there used to be something in them, but whatever it was has been pried out\.
-action var boxDisarmed 1 ; goto box.pickId when There is a small hole in the front of the (.*), and a damp stain down the front, as if something had been poured out the hole\.
-action var boxDisarmed 1 ; goto box.pickId when There is a stain near a small notch on the front of the (.*), indicating a liquid was drained out\.  Additionally, a tiny metal lever has been bent away from the casing\.
-action var boxDisarmed 1 ; goto box.pickId when Two sets of six pinholes on either side of the (.*)'s lock are sealed with dirt, blocking whatever would have come out\.
-action var boxDisarmed 1 ; goto box.pickId when While examining the (.*) for traps, you notice a bronze seal with a glass sphere in it.  The seal has been pried away from the lid.
-action var boxDisarmed 1 ; goto box.pickId when You notice a sphere with some type of lacing around it\.  It seems a small portion of the trap has been removed\.
-action var boxDisarmed 1 ; goto box.pickId when You notice a tiny hole near the lock which has been stuffed with dirt rendering the trap harmless\.
-action var boxDisarmed 1 ; goto box.pickId when You see a glowing rune pushed deep within the (.*)\.  It seems far enough away from the lock to be harmless\.
-action var boxDisarmed 1 ; goto box.pickId when You see a pin and shaft lodged into the frame of the (.*)\.  It looks safe enough\.
-action var boxDisarmed 1 ; goto box.pickId when You see a shattered glass tube with a tiny hammer inside the lock\.  You deem it quite safe\.
-action var boxDisarmed 1 ; goto box.pickId when You see nothing of interest in the (.*)\.  It seems harmless\.
-action var boxDisarmed 1 ; goto box.pickId when A thin metal circle of bluish azure has been peeled away from the hinges of the (.*)\.
-action var boxDisarmed 1; var boxLocked 0 ; goto box.pickId when It is locked\.
+action var boxDisarmed 1 ; goto box-pickId when A bent needle sticks harmlessly out from its hidden compartment near the lock\.
+action var boxDisarmed 1 ; goto box-pickId when A broken spring is sticking out of a hidden seam on the front of the (.*)\.  It is no longer attached to a razor-sharp scythe blade within the gap\.
+action var boxDisarmed 1 ; goto box-pickId when A row of concealed openings on the front of the (.*), have been bent in such a way that they no longer will function\.
+action var boxDisarmed 1 ; goto box-pickId when A small hole near the lock houses a tiny dart with a silver tip\.  It appears, however, that the dart has been moved too far out of position for the mechanism to function properly\.
+action var boxDisarmed 1 ; goto box-pickId when A tiny hammer and milky-white tube on the front of the (.*) have been bent away from each other\.
+action var boxDisarmed 1 ; goto box-pickId when An incredibly sharp blade rests off to the side in the casing of the (.*), indicating the trap is no longer a danger\.
+action var boxDisarmed 1 ; goto box-pickId when Looking closely at the (.*) you notice a vial of lime green liquid attached to the lid.  Someone has unhooked the stopper, rendering it harmless\.
+action var boxDisarmed 1 ; goto box-pickId when Several small pinholes centered around the keyhole indicate that some sort of apparatus, previously attached, was picked apart and removed from the (.*)\.
+action var boxDisarmed 1 ; goto box-pickId when Several strands of wicker detonator lay inside the casement, separated harmlessly from their charge\.  You guess it is already disarmed\.
+action var boxDisarmed 1 ; goto box-pickId when There are two tiny holes in the (.*)\.  It looks like there used to be something in them, but whatever it was has been pried out\.
+action var boxDisarmed 1 ; goto box-pickId when There is a small hole in the front of the (.*), and a damp stain down the front, as if something had been poured out the hole\.
+action var boxDisarmed 1 ; goto box-pickId when There is a stain near a small notch on the front of the (.*), indicating a liquid was drained out\.  Additionally, a tiny metal lever has been bent away from the casing\.
+action var boxDisarmed 1 ; goto box-pickId when Two sets of six pinholes on either side of the (.*)'s lock are sealed with dirt, blocking whatever would have come out\.
+action var boxDisarmed 1 ; goto box-pickId when While examining the (.*) for traps, you notice a bronze seal with a glass sphere in it.  The seal has been pried away from the lid.
+action var boxDisarmed 1 ; goto box-pickId when You notice a sphere with some type of lacing around it\.  It seems a small portion of the trap has been removed\.
+action var boxDisarmed 1 ; goto box-pickId when You notice a tiny hole near the lock which has been stuffed with dirt rendering the trap harmless\.
+action var boxDisarmed 1 ; goto box-pickId when You see a glowing rune pushed deep within the (.*)\.  It seems far enough away from the lock to be harmless\.
+action var boxDisarmed 1 ; goto box-pickId when You see a pin and shaft lodged into the frame of the (.*)\.  It looks safe enough\.
+action var boxDisarmed 1 ; goto box-pickId when You see a shattered glass tube with a tiny hammer inside the lock\.  You deem it quite safe\.
+action var boxDisarmed 1 ; goto box-pickId when You see nothing of interest in the (.*)\.  It seems harmless\.
+action var boxDisarmed 1 ; goto box-pickId when A thin metal circle of bluish azure has been peeled away from the hinges of the (.*)\.
+action var boxDisarmed 1; var boxLocked 0 ; goto box-pickId when It is locked\.
 
 # - - Variables
 action var boxContent $1 when ^In the.*you see (.*)
@@ -87,15 +91,14 @@ action var guild $1 when Guild\: (Barbarian|Bard|Commoner|Cleric|Empath|Moon Mag
 action var race $1 when Race\: (Dwarf|Elothean|Gnome|Gor'Tog|Kaldar|Prydaen|Rakash)
 action var strength $1 when Strength \:  (\d+)              Reflex
 
-
 # - - Too Difficult
-action goto box.exit when would be a longshot\.
-action goto box.exit when Prayer would be a good start for any attempt of yours
-action goto box.exit when You have an amazingly minimal chance
-action goto box.exit when You really don't have any chance at
-action goto box.exit when You probably have the same shot as a snowball does crossing the desert\.
-action goto box.exit when You could just jump off a cliff and save yourself the frustration
-action goto box.exit when A pitiful snowball encased in the Flames of Ushnish
+action goto box-exit when would be a longshot\.
+action goto box-exit when Prayer would be a good start for any attempt of yours
+action goto box-exit when You have an amazingly minimal chance
+action goto box-exit when You really don't have any chance at
+action goto box-exit when You probably have the same shot as a snowball does crossing the desert\.
+action goto box-exit when You could just jump off a cliff and save yourself the frustration
+action goto box-exit when A pitiful snowball encased in the Flames of Ushnish
 
 
 
@@ -118,71 +121,85 @@ var boxItem 0
 var boxLocked 0
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|box
 var boxType brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
+var craftMaterial bar\b|nugget
 var dismantleType 0
 var guild 0
 var pouch pouch
 var race 0
 var strength 0
-var treasure bark|jadeite|kyanite|leaf|ostracon|papyrus|parchment|\broll\b|\brune\b|\bscroll\b|tablet|vellum|bar|nugget
-var trash card|cebi root|embroidery needle|flint|hisan grass|hulnik grass|jadice flowers|mortar|nemoih root|marble pestle|riolur leaf|runestone|wax label|wood glue|yelith root
+var treasure bark|jadeite|kyanite|leaf|ostracon|papyrus|parchment|\broll\b|\brune\b|\bscroll\b|tablet|vellum
+var trash card|cebi root|dira|embroidery needle|flint|hisan grass|hulnik grass|jadice flowers|marble pestle|mortar|nemoih root|oil|riolur leaf|runestone|wax label|wood glue|yelith root
+
 
 ###############################
 ###    CONFIG
 ###############################
-gosub box.setDismantle
+gosub box-setDismantle
 if matchre("$righthandnoun", "(%boxes)") then {
     var boxItem $righthandnoun
-    goto box.main
+    goto box-main
 }
 
 
 ###############################
 ###    MAIN
 ###############################
-box.main:
+box-main:
     if (%boxIndex > 8) then goto box.done
     if ("$righthand" = "Empty") then {
         var boxItem %boxes(%boxIndex)
         if ("%boxItem" = "box") then {
             var boxTypeIndex 0
-            gosub box.boxTypeLoop
+            gosub box-boxTypeLoop
         }
         gosub get my %boxItem
-    }
-
-    if ("$righthand" = "Empty") then {
-        gosub get my %boxItem from my portal
+        if (("$righthand" = "Empty") && ($char.inv.eddyContainer <> null)) then {
+            gosub get my %boxItem from my portal
+        }
     }
 
     if ("$righthand" = "Empty") then {
         math boxIndex add 1
-        goto box.main
+        goto box-main
     }
 
 
-    box.mainLoop:
+    box-mainLoop:
         if (%boxDisarmed = 0) then {
-            gosub box.disarmId
+            gosub box-disarmId
         }
         pause 1
         if (%boxLocked = 0) then {
-            gosub box.pickId
+            gosub box-pickId
         }
         var boxContent 0
         gosub open my %boxItem
         if ("$char.inv.autolootContainer" = "0") then {
-            gosub box.lootCoin
+            gosub box-lootCoin
         }
-        gosub box.lootGems
-        gosub box.lootMisc
-        gosub box.dismantle
-        goto box.main
+        gosub box-lootGems
+        gosub box-lootMisc
+        gosub box-dismantle
+        goto box-main
 
 
 ###############################
 ###    METHODS
 ###############################
-box.boxTypeLoop:
+box-armorCheck:
+    var boxArmorCheck 0
+    var boxWeaponCheck 0
+    gosub inven armor
+    gosub inven weapon
+    if ((%boxArmorCheck = 1) || (%boxWeaponCheck = 1)) then {
+        gosub runScript armor remove
+    } else {
+        goto box-main
+    }
+    goto box-armorCheck
+
+
+box-boxTypeLoop:
     if (%boxTypeIndex < 11) then {
         var boxItem %boxType(%boxTypeIndex) box
         gosub get my %boxItem
@@ -191,24 +208,24 @@ box.boxTypeLoop:
         }
         if ("$righthand" = "Empty") then {
             if (%boxTypeIndex > 10) then {
-                goto box.done
+                goto box-done
             }
             math boxTypeIndex add 1
-            goto box.boxTypeLoop
+            goto box-boxTypeLoop
         }
     } else {
-        goto box.done
+        goto box-done
     }
-    goto box.mainLoop
+    goto box-mainLoop
 
 
-box.disarmId:
+box-disarmId:
     pause 2
     var boxDiff 0
     gosub disarm my %boxItem identify
     # Safety check.
     if (%boxDiff = 0) then {
-        goto box.disarmId
+        goto box-disarmId
     }
     if (%boxDiff = 1) then {
         gosub disarm my %boxItem quick
@@ -224,86 +241,13 @@ box.disarmId:
         goto box.exit
     }
     if (%boxDisarmed = 0) then {
-        goto box.disarmId
+        goto box-disarmId
     } else {
-        goto box.mainLoop
+        goto box-mainLoop
     }
 
 
-box.pickId:
-    pause 2
-    var boxDiff 0
-    gosub pick my %boxItem identify
-    # Safety check.
-    if (%boxDiff = 0) then {
-        goto box.pickId
-    }
-    if (%boxDiff = 1) then {
-        gosub pick my %boxItem quick
-    }
-    if (%boxDiff = 2) then {
-        gosub pick my %boxItem
-    }
-    if (%boxDiff = 3) then {
-        gosub pick my %boxItem careful
-    }
-    if (%boxDiff = 4) then {
-        put #echo >Log [box] The $righthand is too difficult, exiting.
-        goto box.exit
-    }
-    if (%boxLocked = 0) then {
-        goto box.pickId
-    } else {
-        goto box.mainLoop
-    }
-
-
-box.lootCoin:
-    if ("%boxContent" <> "0") then {
-        if (matchre("%boxCoinArr", "platinum coin")) then {
-            gosub get my platinum coin from my %boxItem
-        }
-        if (matchre("%boxCoinArr", "gold coin")) then {
-            gosub get my gold coin from my %boxItem
-        }
-        if (matchre("%boxCoinArr", "silver coin")) then {
-            gosub get my silver coin from my %boxItem
-        }
-        if (matchre("%boxCoinArr", "copper coin")) then {
-            gosub get my copper coin from my %boxItem
-        }
-    } else {
-        echo [box] No coins inside box.
-    }
-    return
-
-
-box.lootGems:
-    var boxFullPouch 0
-	gosub fill my pouch with my %boxItem
-	if (%boxFullPouch = 1) then {
-	    gosub box.fullPouch
-	}
-	return
-
-
-box.lootMisc:
-    gosub look in my $righthandnoun
-    if (%boxIsEmpty = 1) then {
-        return
-    } else {
-        if (matchre("%boxContent", "(%treasure)")) then {
-            var treasureItem $1
-            gosub get %treasureItem from my %boxItem
-            gosub stow my %treasureItem
-            put #echo >Log [box] Looted a %treasureItem.
-            goto box.lootMisc
-        }
-    }
-    return
-
-
-box.dismantle:
+box-dismantle:
     var boxContent 0
     var boxDisarmed 0
     var boxIsEmpty 0
@@ -323,7 +267,115 @@ box.dismantle:
     return
 
 
-box.setDismantle:
+box-fullPouch:
+    if !(matchre("$righthand|$lefthand", "Empty")) then {
+        gosub put my $lefthandnoun in my $char.inv.defaultContainer
+    }
+    gosub remove my $char.inv.gemPouch
+    gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
+    gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
+
+    if (matchre("$righthand|$lefthand", "$char.inv.gemPouch")) then {
+        gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+        gosub tie my $char.inv.gemPouch
+        gosub wear my $char.inv.gemPouch
+        return
+    } else {
+        put #echo >Log [newbox] NO MORE EMPTY POUCHES FOUND.
+        goto box-exit
+    }
+
+
+box-lootCoin:
+    if ("%boxContent" <> "0") then {
+        if (matchre("%boxCoinArr", "platinum coin")) then {
+            gosub get my platinum coin from my %boxItem
+        }
+        if (matchre("%boxCoinArr", "gold coin")) then {
+            gosub get my gold coin from my %boxItem
+        }
+        if (matchre("%boxCoinArr", "silver coin")) then {
+            gosub get my silver coin from my %boxItem
+        }
+        if (matchre("%boxCoinArr", "copper coin")) then {
+            gosub get my copper coin from my %boxItem
+        }
+    } else {
+        echo [box] No coins inside box.
+    }
+    return
+
+
+box-lootGems:
+    var boxFullPouch 0
+	gosub fill my pouch with my %boxItem
+	if (%boxFullPouch = 1) then {
+	    gosub box-fullPouch
+	}
+	return
+
+
+box-lootMisc:
+    var treasureItem 0
+    gosub look in my $righthandnoun
+    if (%boxIsEmpty = 1) then {
+        return
+    } else {
+        if (matchre("%boxContent", "(%treasure)")) then {
+            var treasureItem $1
+            gosub get %treasureItem from my %boxItem
+            gosub stow my %treasureItem
+            put #echo >Log [box] Looted a %treasureItem.
+            goto box-lootMisc
+        }
+        var treasureItem 0
+        if ($char.loot.nuggetBars = 1) then {
+            if (matchre("%boxContent", "(%craftMaterial)")) then {
+                var treasureItem $0
+                gosub get %treasureItem from my %boxItem
+                gosub stow my %treasureItem
+                put #echo >Log [box] Looted a %treasureItem.
+                goto box-lootMisc
+            }
+        }
+    }
+    return
+
+
+box-pickId:
+    pause 2
+    var boxDiff 0
+    gosub pick my %boxItem identify
+    # Safety check.
+    if (%boxDiff = 0) then {
+        goto box-pickId
+    }
+    if (%boxDiff = 1) then {
+        gosub pick my %boxItem quick
+    }
+    if (%boxDiff = 2) then {
+        gosub pick my %boxItem
+    }
+    if (%boxDiff = 3) then {
+        gosub pick my %boxItem careful
+    }
+    if (%boxDiff = 4) then {
+        put #echo >Log [box] The $righthand is too difficult, exiting.
+        goto box-exit
+    }
+    if (%boxLocked = 0) then {
+        goto box-pickId
+    } else {
+        goto box-mainLoop
+    }
+
+
+box-removeArmor:
+    gosub runScript armor remove
+    goto box-main
+
+
+box-setDismantle:
     gosub info
     if ("%guild" = "Barbarian") then var dismantleType bash
     if ("%guild" = "Bard") then var dismantleType shriek
@@ -354,17 +406,17 @@ box.setDismantle:
 ###############################
 ###    EXIT
 ###############################
-box.done:
+box-done:
     put #echo >log [box] All accessible boxes opened! Locks: ($Locksmithing.LearningRate/34)
-    goto box.exit
+    goto box-exit
 
 
-box.error:
+box-error:
     put #echo >log [box] You are missing lockpicks.
-    goto box.exit
+    goto box-exit
 
 
-box.exit:
+box-exit:
     pause .2
     put #parse BOX DONE
     exit

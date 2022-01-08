@@ -7,7 +7,7 @@ include libmaster.cmd
 ###############################
 ###      IDLE ACTION TRIGGERS
 ###############################
-action var sb.haveBundle 1 when (a tight bundle|a lumpy bundle)
+action var sb.haveBundle 1 when (tight bundle|lumpy bundle)
 
 ###############################
 ###      VARIABLES
@@ -20,6 +20,7 @@ var sb.haveBundle 0
 ###############################
 sb.main:
     gosub sb.checkLocation
+    gosub sb.checkInventory
     gosub sb.clearHands
 
     sb.loop:
@@ -35,6 +36,16 @@ sb.main:
 ###############################
 ###      UTILITY
 ###############################
+sb.checkInventory:
+    gosub inventory search bundle
+    if (%sb.haveBundle = 0) then {
+        put #echo >Log [sellbundle] No bundles to sell.
+        gosub sb.exit
+    } else {
+        return
+    }
+
+
 sb.checkLocation:
     if ("$roomname" = "Private Home Interior") then {
         put .house
@@ -42,21 +53,22 @@ sb.checkLocation:
     }
 
     if ("$zoneid" <> "150") then {
-        put #echo >Log [sellbundle] Not in Fang Cove, existing.
+        put #echo >Log [sellbundle] Not in Fang Cove, exiting.
         goto sb.exit
     } else {
-        if ("$roomid" <> "139") then {
+        if ("$roomid" <> "137") then {
             gosub automove bundle
         }
         return
     }
+
 
 sb.clearHands:
     if ("$righthand" <> "Empty") then {
         gosub stow
     }
     if ("$lefthand" <> "Empty") then {
-            gosub stow left
+        gosub stow left
     }
     return
 
@@ -67,21 +79,15 @@ sb.deposit:
 
 
 sb.getBundle:
+    var sb.haveBundle 0
     gosub remove my bundle
-    if (matchre("$righthandnoun|$lefthandnoun", "bundle")) then {
-        var sb.haveBundle 1
-        return
-    } else {
+    if (%sb.haveBundle = 0) then {
         gosub get my bundle
-        if (matchre("$righthandnoun|$lefthandnoun", "bundle")) then {
-            var sb.haveBundle 1
-            return
-        } else {
-            put #echo >Log [sellbundle] No more bundles found.
-            var sb.haveBundle 0
-            return
-        }
     }
+    if ((%sb.haveBundle = 0) && ($char.inv.eddyContainer <> null)) then {
+        gosub get my bundle from my portal
+    }
+    return
 
 
 sb.sellBundle:
@@ -97,7 +103,6 @@ sb.sellBundle:
         gosub sb.clearHands
     }
     return
-
 
 
 sb.exit:

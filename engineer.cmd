@@ -106,6 +106,7 @@ eng.prepareLumber:
 eng.prepareItem:
     gosub get my shaping book
     if ("$lefthandnoun" <> "book") then {
+        goto eng.prepareItem
         echo lefthandnoun: $lefthandnoun
         put #echo >Log Orange [eng] Missing our shaping book, exiting.
         gosub stow
@@ -183,6 +184,7 @@ eng.prepareDesign:
     var eng.page 0
     gosub get my codex
     if ("$lefthandnoun" <> "codex") then {
+        goto eng.prepareDesign
         put #echo >Log Orange [eng] Design codex is missing, exiting.
         gosub stow
         goto eng.exit
@@ -227,6 +229,7 @@ eng.main:
         gosub get my drawknife
     }
     if ("$lefthandnoun" <> "drawknife") then {
+        goto eng.main
         put #echo >Log Orange [eng] Drawknife missing!
         gosub stow left
         goto eng.exit
@@ -300,6 +303,7 @@ eng.knife:
         gosub get my carving knife
     }
     if ("$lefthandnoun" <> "knife") then {
+        gosub eng.knife
         put #echo >Log Orange [eng] Carving knife missing!
         gosub stow
         goto eng.exit
@@ -315,6 +319,7 @@ eng.rasp:
         gosub get my rasp
     }
     if ("$lefthandnoun" <> "rasp") then {
+        gosub eng.rasp
         put #echo >Log Orange [eng] Rasp missing!
         gosub stow
         goto eng.exit
@@ -340,6 +345,7 @@ eng.shaper:
         gosub get my wood shaper
     }
     if ("$lefthandnoun" <> "shaper") then {
+        gosub eng.shaper
         put #echo >Log Orange [eng] Wood shaper missing!
         gosub stow
         goto eng.exit
@@ -358,6 +364,7 @@ eng.stamp:
         gosub get my stamp
     }
     if ("$lefthand" = "Empty") then {
+        gosub eng.stamp
         put #echo >Log Orange [eng] Stamp is missing!
         return
     }
@@ -396,7 +403,6 @@ eng.stunPause:
 ###    EXIT
 ###############################
 eng.exit:
-    put #var inauri.subScript 0
     if ("$righthand" <> "Empty" || "$lefthand" <> "Empty") then {
         gosub stow
         gosub stow left

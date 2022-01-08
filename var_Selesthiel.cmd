@@ -266,6 +266,7 @@ put #tvar char.inv.autolootContainer 0
 put #tvar char.inv.defaultContainer steelsilk backpack
 put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
 put #tvar char.inv.fullGemPouchContainer portal
+put #tvar char.inv.gemPouch gem pouch
 put #tvar char.inv.memoryOrbContainer portal
 put #tvar char.inv.secondaryContainer shadows
 put #tvar char.inv.servant.description mischievous Shadow Servant composed of fractured shadows
@@ -274,6 +275,7 @@ put #tvar char.inv.tertiaryContainer 0
 
 # Loot
 put #tvar char.loot.boxes 0
+put #tvar char.loot.nuggetBars 0
 
 
 ###############################

@@ -17,9 +17,10 @@ action var sellgem.bagContents $1 when ^In .* you see (.*)\.$
 ###############################
 var sellgem.gem nugget|bar
 var sellgem.indexGem 0
-var sellgem.mat brass|bronze|coal|copper|electrum|gold|iron|nickel|pewter|silver|steel|oravir|zinc
+var sellgem.mat brass|bronze|coal|copper|covellite|electrum|gold|iron|lead|nickel|pewter|silver|steel|oravir|zinc
 var sellgem.indexMat 0
-
+var sellgem.lengthMat 0
+eval sellgem.lengthMat count("%sellgem.mat", "|")
 
 if_1 then {
     var sellgem.bag %1
@@ -48,17 +49,16 @@ sellgem-main:
     gosub sellgem-checkLocation
     gosub sellgem-clearHands
     goto sellgem-get
-    gosub sellgem-exit
 
 
 sellgem-get:
     if (%sellgem.indexGem < 2) then {
-        if (%sellgem.indexMat < 12) then {
+        if (%sellgem.indexMat =< %sellgem.lengthMat) then {
             var gem %sellgem.mat(%sellgem.indexMat) %sellgem.gem(%sellgem.indexGem)
             gosub get my %gem from my %sellgem.bag
 
             if ("$righthand" <> "%gem" && "$righthand" = "Empty") then {
-                if (%sellgem.indexMat = 11) then {
+                if ("%sellgem.mat(%sellgem.indexMat)" = "zinc") then {
                     var sellgem.indexMat 0
                     math sellgem.indexGem add 1
                     goto sellgem-get
