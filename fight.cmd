@@ -1369,7 +1369,7 @@ releaseUnwantedSpells:
     if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
 
     return
-    
+
 
 
 ###############################

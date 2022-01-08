@@ -55,6 +55,7 @@ action put whisper inauri teach $1 when ^Inauri stops trying to teach (.*) to yo
 
 action var playerName $1; var buffSpell $2; goto buffPlayer when ^(Inauri|Qizhmur|Khurnaarti) whispers, "(?:C|c)ast (\S+)"
 
+put #var char.instrument.song concerto
 
 timer start
 

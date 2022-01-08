@@ -21,12 +21,10 @@ var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|stee
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox
 var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover|kirmhiro draught
 var ammo sphere|bone shard|doorknob|candle stub|brick clump|cougar-claw arrow|boar-tusk arrow|basilisk arrow|barbed arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock|frying pan|naphtha|wand|spear
-#var ammo bone shard|cougar-claw arrow|boar-tusk arrow|basilisk arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock|frying pan|naphtha|wand|spear
 var coin coin|coins
 
 var gems %gems1|%gems2|%gems3|%gems4
 
-#var box (?:%boxtype) (?:%boxes)
 var boxes (?:brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox)
 
 var lootables %ammo|%coin|%scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%miscKeep
@@ -34,7 +32,6 @@ var lootables %ammo|%coin|%scrolls|%treasuremaps|%gems1|%gems2|%gems3|%gems4|%mi
 if (%lootBoxes = 1) then var lootables %lootables|%boxes
 
 var toLoot null
-#action (invFeet) var toLoot %toLoot|$1 when (%lootables)
 action (invFeet) var toLoot %toLoot|$1 when ^\s\s(.*)
 action (invFeet) off
 
@@ -51,58 +48,45 @@ exit
 
 
 pickupLoot:
-    #eval gwethsInRoom matchre("$roomobjs", "(%gweths)")
-    if (1=0 && contains("$roomobjs", "waermodi stone")) then {
-        gosub get waermodi stone
-        gosub put my waermodi stone in my %specialStorage
-        gosub stow my w stone
-        goto pickupLoot
-    }
+    eval objArray replacere("$roomobjs", ",", "|")
+    eval objArray replacere("%objArray", " and ", "|")
 
-    if (1=0 && contains("$roomobjs", "hematite")) then {
-        gosub get hematite
-        gosub put my hematite in my %specialStorage
-        gosub stow my hematite
-        goto pickupLoot
-    }
+    echo %objArray
 
-    eval numItems count("%lootables", "|")
     var loot.index 0
 
     pickupLootLoop:
         eval preLootLen len("$roomobjs")
-        if (contains("$roomobjs", "%lootables(%loot.index)")) then {
-            if (matchre("$roomobjs", "(%gems)")) then {
-                var itemGem $1
-                echo Found gem: %itemGem
+        if (matchre("%objArray(%loot.index)", "(%lootables)")) then {
+            var item $1
+            echo [loot] FOUND %item
+            if (matchre("%item", "(%gems)") then {
                 gosub stow gem
             } else {
-                gosub stow %lootables(%loot.index)
-            }
-            if (%newGemPouch = 1) then {
-                if ("$lefthand" != "Empty") then {
-                    gosub put my $lefthandnoun in my $char.inv.defaultContainer
-                }
-                gosub stow right
-                gosub stow left
-                gosub remove my gem pouch
-                gosub put my gem pouch in my $char.inv.fullGemPouchContainer
-                gosub get gem pouch from my $char.inv.emptyGemPouchContainer
-                gosub wear my gem pouch
-                gosub store gem gem pouch
-                gosub fill my gem pouch with my $char.inv.defaultContainer
-                gosub tie my gem pouch
-                gosub drop my %lootables(%loot.index)
-                var newGemPouch 0
-                goto pickupLootLoop
+                gosub stow %item
             }
         }
-        if (len("$roomobjs") != %preLootLen) then {
+
+        if (%newGemPouch = 1) then {
+            if ("$lefthand" != "Empty") then {
+                gosub put my $lefthandnoun in my $char.inv.defaultContainer
+            }
+            gosub stow right
+            gosub stow left
+            gosub remove my gem pouch
+            gosub put my gem pouch in my $char.inv.fullGemPouchContainer
+            gosub get gem pouch from my $char.inv.emptyGemPouchContainer
+            gosub wear my gem pouch
+            gosub store gem gem pouch
+            gosub fill my gem pouch with my $char.inv.defaultContainer
+            gosub tie my gem pouch
+            gosub drop my %lootables(%loot.index)
+            var newGemPouch 0
             goto pickupLootLoop
         }
 
         math loot.index add 1
-        if (%loot.index > %numItems) then return
+        if (%loot.index > count ("%objArray", "|")) then return
         goto pickupLootLoop
 
 

@@ -950,11 +950,11 @@ moveToWyvern:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        if ($roomid >= 567 && $roomid <= 572 && "$roomplayers" = "") then return
-        if ($roomid >= 480 && $roomid <= 487 && "$roomplayers" = "") then return
-        #if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
+        #if ($roomid >= 567 && $roomid <= 572 && "$roomplayers" = "") then return
+        #if ($roomid >= 480 && $roomid <= 487 && "$roomplayers" = "") then return
+        if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
         #if ( (($roomid >= 480 && $roomid <= 487) || ($roomid >= 567 && $roomid <= 572)) && "$roomplayers" = "") then return
-        gosub runScript findSpot wyvern
+        gosub runScript findSpot juvenilewyvern
         goto moveToWyvern
     }
 

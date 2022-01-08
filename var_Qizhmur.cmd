@@ -191,7 +191,7 @@ put #tvar char.fight.avoidDivineOutrage 0
 
 put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0
-put #tvar char.fight.usePhp 0
+put #tvar char.fight.usePhp 1
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 1
 
