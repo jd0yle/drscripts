@@ -121,7 +121,7 @@ main:
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
         put exp 0 all
-        put #echo >Log #cc99ff Going to burgle
+        put #echo >Log #838700 Going to burgle
 
         gosub moveToBurgle
         gosub runScript tend
@@ -173,6 +173,7 @@ main:
         put #tvar powerwalk 0
         pause 1
         gosub runScript fixinventory
+        gosub runScript sortNecroMaterial
         put .qizhmur
         put .reconnect
         put .afk
@@ -182,7 +183,7 @@ main:
     #if ($Parry_Ability.LearningRate < 29 || $Shield_Usage.LearningRate < 29 || $Evasion.LearningRate < 25 || $Heavy_Thrown.LearningRate < 29 || $Targeted_Magic.LearningRate < 29 || $Staves.LearningRate < 29 || $Brawling.LearningRate < 29 || $Crossbow.LearningRate < 29 || $Small_Edged.LearningRate < 29) then {
     if ($Parry_Ability.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Evasion.LearningRate < 25 || $Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Small_Edged.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Staves.LearningRate < 25 || $Twohanded_Blunt.LearningRate < 25) then {
         gosub waitForRepair
-        put #echo >Log #cc99ff Going to main combat
+        put #echo >Log #838700 Going to main combat
         gosub moveToWyvern
         gosub runScript tend
         put .fight
@@ -192,7 +193,7 @@ main:
 
     startMagic:
     #if ($Attunement.LearningRate < 5 || $Arcana.LearningRate < 20 || $Utility.LearningRate < 25 || $Warding.LearningRate < 25 || $Augmentation.LearningRate < 25 || $Sorcery.LearningRate < 3) then {
-	    put #echo >Log #cc99ff Going to magic
+	    put #echo >Log #838700 Going to magic
 	    gosub moveToHouse
 
 	    if ("$roomname" != "Private Home Interior") then {

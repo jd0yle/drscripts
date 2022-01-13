@@ -79,6 +79,8 @@ if ("%startAt" = "magic") then {
 }
 
 
+gosub checkForRepairs
+
 
 main:
     gosub abortScripts
@@ -92,7 +94,7 @@ main:
     echo $lib.timers.nextBurgleAt < $gametime
 
     if ($lib.timers.nextBurgleAt < $gametime) then {
-        put #echo >Log #cc99ff Train: Going to burgle
+        put #echo >Log #838700 Train: Going to burgle
 		put exp 0 all
 
         gosub moveToBurgle
@@ -151,6 +153,7 @@ main:
         gosub cast
         gosub moveToMagic
         gosub runScript fixInventory
+        gosub checkGemPouches
     }
 
 
@@ -162,7 +165,7 @@ main:
     #if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 20 || $Augmentation.LearningRate < 20 || $Arcana.LearningRate < 25 || $Sorcery.LearningRate < 5) then {
     if ($bleeding = 1 || $Warding.LearningRate < 20 || $Utility.LearningRate < 0 || $Augmentation.LearningRate < 0 || %startMagic = 1) then {
         var startMagic 0
-        put #echo >Log #0099ff Moving to magic
+        put #echo >Log #838700 Moving to magic
         gosub awake
         gosub moveToMagic
         gosub getHealed
@@ -228,7 +231,7 @@ main:
     # Backtrain
     startBacktrain:
     if ($First_Aid.LearningRate < 10) then {
-        put #echo >Log #0099ff Moving to backtrain
+        put #echo >Log #838700 Moving to backtrain
         gosub moveToWyverns
         put #tvar char.fight.backtrain 1
         put .fight backtrain
@@ -239,7 +242,7 @@ main:
 
 	# Main Combat
     startFight:
-	    put #echo >Log #cc99ff Moving to combat
+	    put #echo >Log #838700 Moving to combat
 	    gosub moveToAdultWyverns
 	    #if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict
 	    put #tvar char.fight.backtrain 0
@@ -466,6 +469,71 @@ checkHealthInjured:
 checkHealthNotInjured:
     var injured 0
     return
+
+
+
+checkGemPouches:
+    gosub runScript fixInventory
+    gosub runScript count --item=gem pouch --container=steelsilk backpack --echo=1
+    var numPouches $char.countResult
+    put #echo >Debug We have %numPouches pouches available
+    if (%numPouches < 5) then gosub getGemPouches
+    return
+
+
+getGemPouches:
+    put #echo >Debug Fetching more gem pouches
+    gosub stow right
+    gosub stow left
+    gosub moveToGemShop
+    var npc wick
+    if (matchre("$roomobjs", "gembuyer")) then var npc gembuyer
+    var gemPouchIndex 0
+
+    getGemPouches.loop:
+        put ask %npc for gem pouch
+        gosub stow my gem pouch
+        math gemPouchIndex add 1
+        if (%gemPouchIndex > 4) then {
+            gosub runScript count --item=gem pouch --container=steelsilk backpack --echo=1
+            var numPouches $char.countResult
+            put #echo >Debug We have %numPouches pouches available
+            gosub get my gem pouch
+            gosub fill my gem pouch with my backpack
+            gosub tie my gem pouch
+            gosub fill my gem pouch with my backpack
+            gosub wear my gem pouch
+            gosub stow right
+            gosub stow left
+            return
+        }
+        goto getGemPouches.loop
+
+
+checkForRepairs:
+    if ("$roomname" = "Private Home Interior") then gosub runScript house
+    if ($zoneid != 150) then {
+        gosub moveToMagic
+        goto checkForRepairs
+    }
+    if ($roomid != 50) then {
+        gosub automove 50
+        goto checkForRepairs
+    }
+    gosub runScript repair --noWait=1
+    gosub stow right
+    gosub stow left
+    gosub get my ticket
+    if ("$righthand" = "Empty") then {
+        gosub runScript armorremove
+        gosub runScript armor wear
+        return
+    }
+    gosub stow my ticket
+    put #echo >Log Waiting on repairs...
+    gosub runScript play
+    put #script abort idle
+    goto checkForRepairs
 
 
 
@@ -767,6 +835,124 @@ moveToTelgas:
     }
 
     goto moveToTelgas
+
+
+
+
+###############################
+###    moveToGemShop
+###############################
+moveToGemShop:
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
+
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToGemShop
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        if ("$roomname" = "Private Home Interior") then {
+            gosub runScript house
+            goto moveToGemShop
+        }
+        if ("$roomid" = "127") then {
+            if ($SpellTimer.RefractiveField.active = 1) then gosub release rf
+            return
+        }
+        gosub automove 127
+        put #tvar powerwalk 0
+        goto moveToGemShop
+    }
+
+    # Shard S Gate
+    if ("%zone" = "68") then {
+        gosub automove e gate
+        goto moveToGemShop
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto moveToGemShop
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto moveToGemShop
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
+        goto moveToGemShop
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto moveToGemShop
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto moveToGemShop
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto moveToGemShop
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto moveToGemShop
+    }
+
+    # Shard East Gate Area
+    if ("%zone" = "66") then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto moveToGemShop
+    }
+
+    # Shard
+    if ("%zone" = "67") then {
+        gosub automove 132
+        goto moveToGemShop
+    }
+
+    # Shard West Gate Area
+    if ("%zone" = "69") then {
+        gosub automove n gate
+        goto moveToGemShop
+    }
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" || "%zone" = "126") then {
+        gosub runScript travel hib portal
+        goto moveToGemShop
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        if ("$roomid" != "96") then gosub automove portal
+        gosub move go meeting portal
+        put #tvar powerwalk 0
+        goto moveToGemShop
+    }
+
+    goto moveToGemShop
+
+
 
 
 moveToHeal:

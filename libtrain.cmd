@@ -806,6 +806,123 @@ train.moveToGerbils:
 
 
 ###############################
+###    train.moveToGemShop
+###############################
+train.moveToGemShop:
+    gosub train.setZone
+
+	if ($SpellTimer.HydraHex.active = 1) then gosub release hyh
+
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToGemShop
+    }
+
+    # FC
+    if ("%zone" = "150") then {
+        if ("$roomname" = "Private Home Interior") then {
+            gosub runScript house
+            goto train.moveToGemShop
+        }
+        if ("$roomid" = "127") then {
+            return
+        }
+        gosub train.castSpellsForMove
+        if ($Attunement.LearningRate < 30 && "$guild" != "Moon Mage") then put #tvar powerwalk 1
+        gosub automove 127
+        put #tvar powerwalk 0
+        goto train.moveToGemShop
+    }
+
+    # Shard S Gate
+    if ("%zone" = "68") then {
+        gosub automove e gate
+        goto train.moveToGemShop
+    }
+
+    # Abandoned Mine
+    if ("%zone" = "10") then {
+        gosub automove ntr
+        goto train.moveToGemShop
+    }
+
+    # NTR
+    if ("%zone" = "7") then {
+        gosub automove n gate
+        goto train.moveToGemShop
+    }
+
+    # Vineyard
+    if ("%zone" = "7a") then {
+        gosub automove ntr
+        goto train.moveToGemShop
+    }
+
+    # Crossing Temple
+    if ("%zone" = "2a") then {
+        gosub automove crossing
+        goto train.moveToGemShop
+    }
+
+    # Crossing N Gate
+    if ("%zone" = "6") then {
+        gosub automove crossing
+        goto train.moveToGemShop
+    }
+
+    # Crossing W Gate
+    if ("%zone" = "4") then {
+        gosub automove crossing
+        goto train.moveToGemShop
+    }
+
+    # Crossing
+    if ("%zone" = "1") then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto train.moveToGemShop
+    }
+
+    # Shard East Gate Area
+    if ("%zone" = "66") then {
+        gosub automove portal
+        gosub move go meeting portal
+        goto train.moveToGemShop
+    }
+
+    # Shard
+    if ("%zone" = "67") then {
+        gosub automove 132
+        goto train.moveToGemShop
+    }
+
+    # Shard West Gate Area
+    if ("%zone" = "69") then {
+        gosub automove n gate
+        goto train.moveToGemShop
+    }
+
+    # Boar Clan / Asketi's Mount
+    if ("%zone" = "127" || "%zone" = "126") then {
+        gosub runScript travel hib portal
+        goto train.moveToGemShop
+    }
+
+    # Hib
+    if ("%zone" = "116") then {
+        put #tvar powerwalk 0
+        if ($Attunement.LearningRate < 34) then put #tvar powerwalk 1
+        if ("$roomid" != "96") then gosub automove portal
+        gosub move go meeting portal
+        put #tvar powerwalk 0
+        goto train.moveToGemShop
+    }
+
+    goto train.moveToGemShop
+
+
+
+###############################
 ###    train.moveToHouse
 ###############################
 train.moveToHouse:

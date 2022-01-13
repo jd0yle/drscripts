@@ -79,7 +79,7 @@ main:
     # Backtrain
     startBacktrain:
     if ($First_Aid.LearningRate < 30) then {
-        put #echo >Log #0099ff Moving to backtrain
+        put #echo >Log #838700 Moving to backtrain
         gosub train.moveToYellowGremlins
         put #tvar char.fight.backtrain 1
         put .fight backtrain
@@ -112,8 +112,7 @@ main:
 			if ($mana < 80) then gosub waitForMana 80
 			if ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 30) then gosub runScript cast mpp
         }
-        put #echo >Log #cc99ff Going to main combat
-        #gosub train.moveToMaulers
+        put #echo >Log #838700 Going to main combat
         gosub train.moveToShardBulls
         put .fight
         gosub waitForMainCombat
@@ -123,7 +122,7 @@ main:
 
 
     startMagic:
-    put #echo >Log #cc99ff Going to magic
+    put #echo >Log #838700 Going to magic
     gosub train.moveToHouse
 
     if ("$roomname" != "Private Home Interior") then {

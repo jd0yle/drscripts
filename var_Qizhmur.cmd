@@ -113,11 +113,11 @@ put #tvar char.fight.debil.spell ip
 put #tvar char.fight.debilPauseTime 6
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 23
+put #tvar char.fight.debil.prepAt 25
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
-put #tvar char.fight.forceDebil 0
+put #tvar char.fight.forceDebil 1
 
 #***** STANCE *****
 # Force always using stance shield, never stance parry
@@ -189,7 +189,7 @@ put #tvar char.fight.necroRitual dissection
 
 put #tvar char.fight.avoidDivineOutrage 0
 
-put #tvar char.fight.useCh 0
+put #tvar char.fight.useCh 1
 put #tvar char.fight.useIvm 0
 put #tvar char.fight.usePhp 1
 put #tvar char.fight.useQe 0
@@ -226,6 +226,8 @@ put #tvar char.inv.memoryOrbContainer 0
 put #tvar char.inv.secondaryContainer shadows
 put #tvar char.inv.tempContainer shadows
 put #tvar char.inv.tertiaryContainer 0
+
+put #tvar char.inv.materialContainer student's satchel
 
 # Loot
 put #tvar char.loot.boxes 0

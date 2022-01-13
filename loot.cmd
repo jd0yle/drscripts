@@ -69,7 +69,6 @@ pickupLoot:
         eval preLootLen len("$roomobjs")
         if (matchre("%objArray(%loot.index)", "(%lootables)")) then {
             var item $1
-            echo [loot] FOUND %item
 
             # Commented this in case bars and nuggets need to use STOW GEM instead of STOW %item
             #if (matchre("%item", "(%gems)") || matchre("%item", "(%craftMaterial)") then {

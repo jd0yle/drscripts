@@ -971,7 +971,7 @@ checkHide:
 ###############################
 debil:
     var force 0
-    if ("$1" = "force") then var force 1
+    if ("$1" = "force" || $char.fight.forceDebil = 1) then var force 1
 
     if (%debil.use = 1 && $mana > 80 && (%force = 1 || $Debilitation.LearningRate < 34) && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)"))) then {
         gosub prep %debil.spell %debil.prepAt
@@ -1125,15 +1125,15 @@ manageCyclics.cleric:
 manageCyclics.moonMage:
 	# SLS
 	var shouldCastSls 1
+	var shouldReleaseSls 0
 	if (%useSls != 1) then var shouldCastSls 0
 	if ($SpellTimer.StarlightSphere.active = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 27 || $Time.isDay != 0) then var shouldCastSls 0
-	var shouldReleaseSls 0
 	if ($SpellTimer.StarlightSphere.active = 1 && ($Targeted_Magic.LearningRate > 33 || $mana < 60) then var shouldReleaseSls 1
 
 	# SHW
 	var shouldCastShw 1
-	if (%useShw != 1 || $SpellTimer.ShadowWeb.active = 1 || $SpellTimer.StarlightSphere.active = 1 || $mana < 80 || $Debilitation.LearningRate > 27) then var shouldCastShw 0
 	var shouldReleaseShw 0
+	if (%useShw != 1 || $SpellTimer.ShadowWeb.active = 1 || $SpellTimer.StarlightSphere.active = 1 || $mana < 80 || $Debilitation.LearningRate > 27) then var shouldCastShw 0
 	if ($SpellTimer.ShadowWeb.active = 1 && ($Debilitation.LearningRate > 33 || $mana < 60)) then var shouldReleaseShw 1
 
 
