@@ -79,8 +79,6 @@ if ("%startAt" = "magic") then {
 }
 
 
-gosub checkForRepairs
-
 
 main:
     gosub abortScripts
@@ -152,6 +150,7 @@ main:
         gosub move out
         gosub cast
         gosub moveToMagic
+        gosub checkForRepairs
         gosub runScript fixInventory
         gosub checkGemPouches
     }
