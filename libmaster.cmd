@@ -1015,6 +1015,22 @@ drop:
     goto retry
 
 
+dump:
+    var location dump1
+    var todo $0
+    dump1:
+    matchre return .* will need to be empty before you dump things into it\.
+    matchre return ^Dump what\?
+    matchre return ^Dump .* into what\?
+    matchre return ^\[You have marked this room to be cleaned by the janitor\.  It should arrive shortly.\]
+    matchre return ^The janitor was recently summoned to this room\.  Please wait \d+ seconds\.
+    matchre return ^There is nothing in .*\.
+    matchre return ^You're not sure that everything in .* will fit into .*\.
+    matchre return ^You should just kick yourself in the shin\.  There is no junk here\.
+    put dump %todo
+    goto retry
+
+
 dump.junk:
     var location dump.junk
     matchre return ^\[You have marked this room to be cleaned by the janitor\.  It should arrive shortly.\]
@@ -1562,6 +1578,7 @@ look:
     matchre return ^I could not find what you were referring to\.
     matchre return ^In the
     matchre return ^It is labeled
+    matchre return ^Junk items in the room\:
     matchre return ^Looking
     matchre return ^There is nothing
     matchre return ^On the
@@ -1982,6 +1999,7 @@ pull:
     var todo $0
     pull1:
     matchre return ^Roundtime
+    matchre return I'm afraid that you can't pull that\.
     matchre return ^With a muttered curse
     matchre return ^You are a little too busy with combat to worry about that right now\.
     matchre return ^You throw away the ruined portion
