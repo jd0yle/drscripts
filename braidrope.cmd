@@ -11,6 +11,7 @@ action var readyToPull false when ^You are certain that the braided grass isn't 
 action var readyToPull true when piece of bundling rope\.$
 action goto braidrope-forage when ^You need to have more material in your other hand to continue braiding.
 action goto braidrope-clearHands when ^You really need to have at least one hand free to forage properly\.
+action goto braidrope-done when ^I'm afraid that you can't pull that\.
 
 
 ###############################
@@ -86,7 +87,7 @@ braidrope-braid:
 
 
 braidrope-pull:
-    if ("$righthandnoun" = "rope") then return
+    if (matchre("$righthandnoun|$lefthandnoun", "rope")) then return
     if ($monstercount != 0) then {
         gosub retreat
         gosub retreat
