@@ -100,6 +100,9 @@ action goto box-exit when You probably have the same shot as a snowball does cro
 action goto box-exit when You could just jump off a cliff and save yourself the frustration
 action goto box-exit when A pitiful snowball encased in the Flames of Ushnish
 
+# - - Misc
+action goto box-error when ^Find a more appropriate tool and try again\!
+action put get $1 when ^Your .* falls to the ground\.
 
 
 ###############################
@@ -121,6 +124,7 @@ var boxItem 0
 var boxLocked 0
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|box
 var boxType brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
+var componentList sealed vial|stoppered vial|capillary tube|short needle|broken needle|bronze seal|animal bladder|silver studs|sharp blade|curved blade|broken rune|coiled spring|metal spring|metal lever|tiny hammer|iron disc|bronze disc|glass reservoir|bronze face|steel pin|steel striker|chitinous leg|(?!cracked )black crystal|metal circle|brown clay|black cube|glass sphere
 var craftMaterial bar\b|nugget
 var dismantleType 0
 var guild 0
@@ -154,6 +158,7 @@ box-main:
         }
         gosub get my %boxItem
         if (("$righthand" = "Empty") && ($char.inv.eddyContainer <> null)) then {
+            gosub look in my portal
             gosub get my %boxItem from my portal
         }
     }
@@ -214,9 +219,30 @@ box-boxTypeLoop:
             goto box-boxTypeLoop
         }
     } else {
-        goto box-done
+        goto box-cleanRoom
     }
     goto box-mainLoop
+
+
+box-cleanRoom:
+    var trashItem 0
+    if (matchre("$roomobjs", "%trash") && ($char.locks.bucket <> null)) then {
+        var trashItem $0
+        gosub get %trashItem
+        gosub put my %trashItem in my bucket
+        goto box-cleanRoom
+    }
+    if (matchre("$roomobjs", "junk")) then {
+        gosub look junk
+        echo [newbox] Calling DUMP to trash ($roomjunk)
+        gosub dump junk
+    }
+    if ($char.locks.bucket <> null) then {
+        gosub tap my bucket
+        gosub tap my bucket
+    }
+    goto box-done
+
 
 
 box-disarmId:
@@ -274,16 +300,10 @@ box-fullPouch:
     gosub remove my $char.inv.gemPouch
     gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
     gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
-
-    if (matchre("$righthand|$lefthand", "$char.inv.gemPouch")) then {
-        gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
-        gosub tie my $char.inv.gemPouch
-        gosub wear my $char.inv.gemPouch
-        return
-    } else {
-        put #echo >Log [newbox] NO MORE EMPTY POUCHES FOUND.
-        goto box-exit
-    }
+    gosub wear my $char.inv.gemPouch
+    gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+    gosub tie my $char.inv.gemPouch
+    goto box-main
 
 
 box-lootCoin:
