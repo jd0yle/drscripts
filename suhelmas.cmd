@@ -68,6 +68,7 @@ suhelmas-weaponCheck:
 
 
 suhelmas-contractCheck:
+    var activeContract 0
     gosub info
     if (%activeContract = 1) then goto suhelmas-join
     if !(matchre("$lefthand", "Empty")) then {
