@@ -874,6 +874,12 @@ count:
     goto retry
 
 
+crawl:
+    matchre return Dropping to all fours, you move underneath the trap
+    put crawl
+    goto retry
+
+
 cut:
     var location cut1
     var todo $0
@@ -1244,7 +1250,7 @@ give:
     matchre return ^What is it
     matchre return ^You hand
     matchre return ^You may only
-    matchre return ^You offer
+    matchre return ^You offerr
     put give %todo
     goto retry
 
@@ -1369,6 +1375,7 @@ join:
     var location join1
     var todo $0
     join1:
+    matchre return An empath wreathed in violet robes pulls you aside
     matchre return glances at you briefly and then steps away
     matchre return ^You hold out your dueling slip
     matchre return ^You join
@@ -2066,6 +2073,17 @@ read:
     matchre return ^You open your logbook
     matchre return ^You page through
     put read %todo
+    goto retry
+
+
+redeem:
+    var location redeem1
+    var todo $0
+    redeem1:
+    matchre return Once you redeem this
+    matchre return The REDEEM verb is used to activate certain items\.
+    matchre return ^The violet empath takes one of your contracts\.
+    put redeem %todo
     goto retry
 
 
