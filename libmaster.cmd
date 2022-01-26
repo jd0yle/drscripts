@@ -2440,6 +2440,15 @@ smell:
     goto retry
 
 
+smite:
+    var location smite1
+    var todo $0
+    smite1:
+    matchre return ^You retain
+    put smite %todo
+    goto retry
+
+
 sneak:
     var location sneak1
     var todo $0

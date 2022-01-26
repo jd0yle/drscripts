@@ -42,7 +42,7 @@ var action 0
 var activeContract 0
 var lootHand left
 var SHtrash NULL
-var suhelmas.weapon scythe
+var suhelmas.weapon scimitar
 
 
 ###############################
@@ -117,7 +117,7 @@ suhelmas-loop:
 suhelmas-looting:
 	pause .5
 	if !(matchre("$%lootHandhandnoun", "(%SHtrash)")) then {
-	    gosub put my $%lootHandhandnoun in my sack in my $char.inv.defaultContainer
+	    gosub put my $%lootHandhandnoun in my canvas sack in my $char.inv.defaultContainer
 	} else {
 	    gosub put my $%lootHandhandnoun in my $char.inv.defaultContainer
 	}
