@@ -2085,7 +2085,7 @@ redeem:
     redeem1:
     matchre return Once you redeem this
     matchre return The REDEEM verb is used to activate certain items\.
-    matchre return ^The violet empath takes one of your contracts\.
+    matchre return ^The violet empath takes
     put redeem %todo
     goto retry
 
