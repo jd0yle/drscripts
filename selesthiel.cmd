@@ -150,7 +150,7 @@ main:
         gosub move out
         gosub cast
         gosub moveToMagic
-        gosub checkForRepairs
+        #gosub checkForRepairs
         gosub runScript fixInventory
         gosub checkGemPouches
     }
@@ -530,6 +530,7 @@ checkForRepairs:
     }
     gosub stow my ticket
     put #echo >Log Waiting on repairs...
+    gosub moveToMagic
     gosub runScript play
     put #script abort idle
     goto checkForRepairs

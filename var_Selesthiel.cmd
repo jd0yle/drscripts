@@ -23,8 +23,8 @@ put #tvar char.astral.timesToHarness 3
 ###############################
 ###      BUFFS
 ###############################
-put #tvar char.buffs.spells shadowling|seer|col|tksh|sr|suf
-put #tvar char.buffs.spellNames Shadowling|SeersSense|CageofLight|TelekineticShield|SentinelsResolve|SureFooting
+put #tvar char.buffs.spells shadowling|seer|col|tksh|sr|suf|psy|cv|shadows
+put #tvar char.buffs.spellNames Shadowling|SeersSense|CageofLight|TelekineticShield|SentinelsResolve|SureFooting|PsychicShield|ClearVision|Shadows
 
 
 ###############################
@@ -198,7 +198,7 @@ put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
-put #tvar char.fight.useSls 1
+put #tvar char.fight.useSls 0
 put #tvar char.fight.useTksh 1
 
 #***** NECRO *****
@@ -225,9 +225,9 @@ put #tvar char.fight.useSuf 1
 
 
 if ($char.fight.backtrain = 1) then {
-    put #tvar char.fight.useSls 1
-	put #tvar char.fight.weapons.items competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|darkstone longsword
-	put #tvar char.fight.weapons.skills Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Large_Edged
+    put #tvar char.fight.useSls 0
+	put #tvar char.fight.weapons.items competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
+	put #tvar char.fight.weapons.skills Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
 
 	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 1

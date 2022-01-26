@@ -2,7 +2,7 @@
 ###      APPRAISE
 ###############################
 put #tvar char.appraise.container portal
-put #tvar char.appraise.item my gem pouch
+put #tvar char.appraise.item gem pouch
 
 
 ###############################
@@ -49,7 +49,7 @@ put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 4
 
 put #tvar char.cast.devour.prep 30
-put #tvar char.cast.devour.charge 40
+put #tvar char.cast.devour.charge 70
 put #tvar char.cast.devour.chargeTimes 1
 
 put #tvar char.cast.eotb.prep 5

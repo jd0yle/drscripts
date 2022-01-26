@@ -24,7 +24,8 @@ var useCambrinth 1
 var cambrinthFull 0
 action var cambrinthFull 1 when dissipates (uselessly|harmlessly)\.$
 
-var noTargetSpells fp|cd|bless
+var noTargetSpells gg|fp|cd|bless
+var noCast 0
 var isFullyPrepped 0
 var stowedItemNoun null
 
@@ -36,7 +37,11 @@ if ("%1" = "n") then {
 var spell %1
 
 if_2 then {
-    var target %2
+    if ("%2" = "noCast") then {
+       var noCast 1
+    } else {
+        var target %2
+    }
 } else {
     if (!matchre("%spell", "%noTargetSpells")) then var target $charactername
 }
@@ -145,9 +150,11 @@ if (%useCambrinth = 1) then {
 
 if (%harness > 0) then gosub harness %harness
 
+# Check if we wanted to only prep the spell
+if (%noCast = 1) then goto done
+
 if (!($char.cast.default.minPrepTime > -1)) then var minPrepTime 40
 if ($char.cast.%spell.minPrepTime >= 0) then var minPrepTime $char.cast.%spell.minPrepTime
-
 gosub waitForPrep %minPrepTime
 
 if ("%spell" = "devour") then gosub get my material

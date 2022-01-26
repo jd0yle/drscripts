@@ -20,6 +20,7 @@ main:
             gosub get my $char.trainer.almanacItem
             gosub awake
         }
+        if ("$lefthandnoun" != "$char.trainer.almanacItem" && "$righthandnoun" != "$char.trainer.almanacItem") then goto done
         if ("$lefthandnoun" != "$char.trainer.almanacItem") then gosub swap
         gosub study my $char.trainer.almanacItem
         gosub put my $char.trainer.almanacItem in my $char.trainer.almanacContainer

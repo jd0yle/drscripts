@@ -16,9 +16,10 @@ echo skillToCheck %skillToCheck  $%skillToCheck.Ranks   skillRanksToCheck %skill
 
 evalmath numHours (($gametime - $lastLoginTime) / 60 / 60)
 evalmath numDays (($gametime - $lastLoginTime) / 60 / 60 / 24)
-if (!(%numHours > 0)) then var %numHours 1
-if (!(%numDays > 0)) then var %numDays 1
+if (!(%numHours > -1)) then var %numHours 0
+if (!(%numDays > -1)) then var %numDays 0
 echo numHours: %numHours
+
 
 
 
@@ -36,7 +37,7 @@ waitforre ^EXP HELP
 var i 0
 eval len count("%skills", "|")
 
-echo RPH  |  RPD  |  HPR  |  DPR  - SKILL: RANKS
+echo SKILL: RANKS           Ranks\hr  |  Ranks\day  |  Hrs\Rank  |  Days\Rank
 
 
 
@@ -63,7 +64,9 @@ loop:
 
 	    eval skillNameVar replacere("%skills(%i)", " ", "_")
 
-	    echo %rph  |  %rpd  |  %hpr  |  %dpr  - %skills(%i) $%skillNameVar.Ranks (+%ranks(%i))  %echoSkillRanks
+	    #echo %rph  |  %rpd  |  %hpr  |  %dpr  -  (+%ranks(%i))  %echoSkillRanks
+	    echo %skills(%i): $%skillNameVar.Ranks     %rph     |   %rpd     |   %hpr     |  %dpr
+	    echo %echoSkillRanks
     }
     math i add 1
     if (%i > %len) then goto done

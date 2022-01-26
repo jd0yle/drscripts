@@ -691,6 +691,7 @@ cast:
     matchre return ^Rutilant sparks of light encircle
     matchre return ^The blood on your palm bubbles slightly
     matchre return ^The mental strain of this pattern
+    matchre return ^The spell pattern needs a constellation to anchor it.
     matchre return ^With a flick of your wrist,
     matchre return ^With a wave of your hand,
     matchre return ^You attempt to quiet your mind
@@ -973,6 +974,7 @@ dissect:
     matchre return ^What exactly are
     matchre return ^While likely a fascinating study
     matchre return ^You believe the
+    matchre return ^You need at least one free hand for that!
     matchre return ^You'll learn nothing
     put dissect %todo
     goto retry
@@ -1560,6 +1562,7 @@ look:
     matchre return ^\[
     matchre return ^(He|She) is
     matchre return ^I could not find what you were referring to\.
+    matchre return ^Illustrations of complex
     matchre return ^In the
     matchre return ^It is labeled
     matchre return ^Looking

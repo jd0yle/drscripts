@@ -33,6 +33,7 @@ var play.restart 0
 action var play.restart 1; goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
 action var play.restart 1; goto play.cleanInstrument when ^You notice that moisture has accumulated
 action var play.restart 1; goto play.cleanInstrument when  dirtiness may affect your performance\.$
+action var play.restart 1; goto play.cleanInstrument when ^You really need to drain
 
 action var play.refillRepairKit 1 when ^There are not enough.*in your repair kit
 
@@ -91,6 +92,8 @@ play.cleanInstrument:
 	if ("$lefthand" = "Empty" && "$righthand" = "Empty") then goto done.noCleaningCloth
 	gosub wring my cloth
 	if ("$char.instrument.noun" = "zills") then gosub remove my zills
+	gosub get my $char.instrument.noun
+	put dry my $char.instrument.noun with my cloth
 	gosub wipe my $char.instrument.noun with my cloth
 	gosub clean my $char.instrument.noun with my cloth
 	pause
@@ -126,7 +129,9 @@ play.getSongIndex:
 ###############################
 play.repairInstrument:
 	gosub stop play
-	gosub stow left
+	if ("$lefthandnoun" != "$char.instrument.noun") then gosub stow left
+	if ("$righthandnoun" != "$char.instrument.noun") then gosub stow right
+	if ("$righthand" = "Empty" && "$lefthand" = "Empty") then gosub get my $char.instrument.noun
 	gosub get my repair kit
 	if ("$lefthand" = "Empty") then goto done.noRepairKit
 	gosub repair my $char.instrument.noun with my repair kit
@@ -202,7 +207,7 @@ play.setHarderSong:
 play.wait:
 	pause 2
 	if ($char.isPerforming != 1) then return
-	if ($char.play.useAlmanac = 1) then gosub almanac.onTimer
+	#if ($char.play.useAlmanac = 1) then gosub almanac.onTimer
 	goto play.wait
 
 

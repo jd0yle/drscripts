@@ -153,8 +153,6 @@ action (expMods) var debuffSkills %debuffSkills|$2 when ^--(\d+)\(\d+%\) (.*?) \
 init:
     put #class combat on
 
-    #gosub runScript armor wear
-
     gosub awake
 
     gosub sortWeaponSkillsByRank
@@ -200,6 +198,8 @@ loop:
     gosub checkStances
     if (%useArmor = 1) then gosub checkArmorSkills
 
+    gosub prepNextSpell
+
     gosub checkDeadMob
     if ($char.loot.boxes = 1) then {
         gosub runScript loot --boxes=1
@@ -233,6 +233,8 @@ loop:
     # Use numMobs so that we can subtract non-combat "pets" (ex: dirt construct, shadow servant, etc.)
     var numMobs $monstercount
     if (contains("$roomobjs", (dirt construct)) then math numMobs subtract 1
+    if (contains("$roomobjs", (Shadow Servant)) then math numMobs subtract 1
+    if (contains("$roomobjs", (shadowling)) then math numMobs subtract 1
 
     var attackContinue 1
     if (%attackContinue = 1 && %numMobs = 0) then {
@@ -492,7 +494,7 @@ buffs:
 
     # GENERAL
     if ($char.fight.useMaf = 1 && ($SpellTimer.ManifestForce.active = 0 || $SpellTimer.ManifestForce.duration < 3)) then {
-        gosub runScript cast maf
+        gosub runScript cast maf noCast
         return
     }
 
@@ -559,7 +561,7 @@ buffs:
 
     # MOON MAGE
     if ($char.fight.useSeer = 1 && ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3)) then {
-        gosub runScript cast seer
+        gosub runScript cast seer noCast
         return
     }
     if ($char.fight.useCol = 1 && ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 3)) then {
@@ -567,15 +569,15 @@ buffs:
         return
     }
     if ($char.fight.useShadowling = 1 && $SpellTimer.Shadowling.active = 0) then {
-        gosub runScript cast shadowling
+        gosub runScript cast shadowling noCast
         return
     }
     if ($char.fight.useShadows = 1 && ($SpellTimer.Shadows.active = 0 || $SpellTimer.Shadows.duration < 2)) then {
-        gosub runScript cast shadows
+        gosub runScript cast shadows noCast
         return
     }
     if ($char.fight.useTksh = 1 && ($SpellTimer.TelekineticShield.active = 0 || $SpellTimer.TelekineticShield.duration < 2)) then {
-        gosub runScript cast tksh
+        gosub runScript cast tksh noCast
         return
     }
 
@@ -603,7 +605,7 @@ buffs:
 
     # PALADIN
     if ($char.fight.useSr = 1 && ($SpellTimer.SentinelsResolve.active = 0 || $SpellTimer.SentinelsResolve.duration < 3)) then {
-        gosub runScript cast sr
+        gosub runScript cast sr noCast
         return
     }
 
@@ -619,13 +621,13 @@ buffs:
 
     # TRADER
     if ($char.fight.useLgv = 1 && ($SpellTimer.LastGiftofVithwokIV.active = 0 || $SpellTimer.LastGiftofVithwokIV.duration < 3)) then {
-        gosub runScript cast lgv
+        gosub runScript cast lgv noCast
         return
     }
 
     # WARRIOR MAGE
     if ($char.fight.useSuf = 1 && ($SpellTimer.SureFooting.active = 0 || $SpellTimer.SureFooting.duration < 3)) then {
-        gosub runScript cast suf
+        gosub runScript cast suf noCast
         return
     }
 
@@ -930,7 +932,6 @@ checkDeadMob:
         if (matchre("%skinnablecritters", "%mobName")) then {
             #if ($char.fight.useDissect = 1 && $Skinning.LearningRate > $First_Aid.LearningRate && $First_Aid.LearningRate < 33) then {
             if ($char.fight.useDissect = 1 && $First_Aid.LearningRate < 33) then {
-                if ("$lefthand" != "Empty" && "$righthand" != "Empty") then gosub stow left
                 var dissectFail 0
                 gosub dissect
                 if (%dissectFail = 1) then {
@@ -1125,13 +1126,11 @@ manageCyclics.cleric:
 
 manageCyclics.moonMage:
 	# SLS
-	var slsIsActive 0
-	if ($SpellTimer.StarlightSphere.active = 1 || matchre("$roomobjs", "a twinkling brilliant red sphere")) then var slsIsActive 1
 	var shouldCastSls 1
 	var shouldReleaseSls 0
 	if (%useSls != 1) then var shouldCastSls 0
-	if (%slsIsActive = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 27 || $Time.isDay != 0) then var shouldCastSls 0
-	if (%slsIsActive = 1 && ($Targeted_Magic.LearningRate > 33 || $mana < 60) then var shouldReleaseSls 1
+	if ($SpellTimer.StarlightSphere.active = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 27 || $Time.isDay != 0) then var shouldCastSls 0
+	if ($SpellTimer.StarlightSphere.active = 1 && ($Targeted_Magic.LearningRate > 33 || $mana < 60) then var shouldReleaseSls 1
 
 	# SHW
 	var shouldCastShw 1
@@ -1360,6 +1359,18 @@ fight.playIdle.loop:
 
 
 ###############################
+###      prepNextSpell
+###############################
+prepNextSpell:
+    if ("%weapons.skills(%weapons.index)" = "Targeted_Magic") then {
+
+    }
+    if ("$preparedspell" != "None" && $spelltime < 20) then return
+
+    return
+
+
+###############################
 ###      releaseUnwantedSpells
 ###############################
 releaseUnwantedSpells:
@@ -1516,8 +1527,8 @@ fight.tarantula.setSkill:
         }
 
         if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Armor") then {
-            if ("%fight.tmp.tarantulaSkill" = "null" && $Light_Armor.LearningRate > 20) then var fight.tmp.tarantulaSkill light armor
             if ("%fight.tmp.tarantulaSkill" = "null" && $Defending.LearningRate > 20) then var fight.tmp.tarantulaSkill defending
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Light_Armor.LearningRate > 20) then var fight.tmp.tarantulaSkill light armor
         }
 
         if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Survival") then {

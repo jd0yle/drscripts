@@ -76,18 +76,6 @@ main:
     }
 
 
-    # Backtrain
-    startBacktrain:
-    if ($First_Aid.LearningRate < 30) then {
-        put #echo >Log #838700 Moving to backtrain
-        gosub train.moveToYellowGremlins
-        put #tvar char.fight.backtrain 1
-        put .fight backtrain
-        gosub waitForBacktrain
-        put #tvar char.fight.backtrain 0
-        goto main
-    }
-
     startFight:
     if ($Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
         put #echo >Log #0033CC Start combat
@@ -119,6 +107,18 @@ main:
         goto main
     }
 
+
+    # Backtrain
+    startBacktrain:
+    if ($First_Aid.LearningRate < 30) then {
+        put #echo >Log #838700 Moving to backtrain
+        gosub train.moveToYellowGremlins
+        put #tvar char.fight.backtrain 1
+        put .fight backtrain
+        gosub waitForBacktrain
+        put #tvar char.fight.backtrain 0
+        goto main
+    }
 
 
     startMagic:

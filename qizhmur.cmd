@@ -174,6 +174,7 @@ main:
         pause 1
         gosub runScript fixinventory
         gosub runScript sortNecroMaterial
+        #gosub checkForRepairs
         put .qizhmur
         put .reconnect
         put .afk
@@ -336,6 +337,33 @@ checkHealthInjured:
 checkHealthNotInjured:
     var injured 0
     return
+
+
+checkForRepairs:
+    if ("$roomname" = "Private Home Interior") then gosub runScript house
+    if ($zoneid != 150) then {
+        gosub moveToMagic
+        goto checkForRepairs
+    }
+    if ($roomid != 50) then {
+        gosub automove 50
+        goto checkForRepairs
+    }
+    gosub runScript repair --noWait=1
+    gosub stow right
+    gosub stow left
+    gosub get my ticket
+    if ("$righthand" = "Empty") then {
+        gosub runScript armorremove
+        gosub runScript armor wear
+        return
+    }
+    gosub stow my ticket
+    put #echo >Log Waiting on repairs...
+    gosub moveToHouse
+    gosub runScript play
+    put #script abort idle
+    goto checkForRepairs
 
 
 healWithRats:
