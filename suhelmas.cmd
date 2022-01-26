@@ -49,6 +49,7 @@ var suhelmas.weapon scimitar
 ###    MAIN
 ###############################
 suhelmas-roomCheck:
+    gosub look
 	#if !(matchre("$roomobjs", "empath")) then goto suhelmas-errorRoom
 	goto suhelmas-weaponCheck
 
@@ -71,10 +72,10 @@ suhelmas-contractCheck:
     var activeContract 0
     gosub info
     if (%activeContract = 1) then goto suhelmas-join
-    if !(matchre("$lefthand", "Empty")) then {
-        gosub stow left
-    }
     if !(matchre("$lefthand|$righthand", "Su Helmas contract")) then {
+        if !(matchre("$lefthand", "Empty")) then {
+            gosub stow left
+        }
         gosub get my contract from my $char.inv.defaultContainer
         if !(matchre("$lefthand|$righthand", "Su Helmas contract")) then goto suhelmas-errorContract
     }
@@ -106,6 +107,9 @@ suhelmas-loop:
         } else {
             gosub %action
         }
+    } else {
+        var action 0
+        gosub look
     }
     pause 2
     goto suhelmas-loop
