@@ -875,6 +875,12 @@ count:
     goto retry
 
 
+crawl:
+    matchre return Dropping to all fours, you move underneath the trap
+    put crawl
+    goto retry
+
+
 cut:
     var location cut1
     var todo $0
@@ -1014,6 +1020,22 @@ drop:
     matchre return ^You drop
     matchre return ^You spread
     put drop %todo
+    goto retry
+
+
+dump:
+    var location dump1
+    var todo $0
+    dump1:
+    matchre return .* will need to be empty before you dump things into it\.
+    matchre return ^Dump what\?
+    matchre return ^Dump .* into what\?
+    matchre return ^\[You have marked this room to be cleaned by the janitor\.  It should arrive shortly.\]
+    matchre return ^The janitor was recently summoned to this room\.  Please wait \d+ seconds\.
+    matchre return ^There is nothing in .*\.
+    matchre return ^You're not sure that everything in .* will fit into .*\.
+    matchre return ^You should just kick yourself in the shin\.  There is no junk here\.
+    put dump %todo
     goto retry
 
 
@@ -1230,7 +1252,7 @@ give:
     matchre return ^What is it
     matchre return ^You hand
     matchre return ^You may only
-    matchre return ^You offer
+    matchre return ^You offerr
     put give %todo
     goto retry
 
@@ -1355,6 +1377,7 @@ join:
     var location join1
     var todo $0
     join1:
+    matchre return An empath wreathed in violet robes pulls you aside
     matchre return glances at you briefly and then steps away
     matchre return ^You hold out your dueling slip
     matchre return ^You join
@@ -1565,6 +1588,7 @@ look:
     matchre return ^Illustrations of complex
     matchre return ^In the
     matchre return ^It is labeled
+    matchre return ^Junk items in the room\:
     matchre return ^Looking
     matchre return ^There is nothing
     matchre return ^On the
@@ -1985,6 +2009,7 @@ pull:
     var todo $0
     pull1:
     matchre return ^Roundtime
+    matchre return I'm afraid that you can't pull that\.
     matchre return ^With a muttered curse
     matchre return ^You are a little too busy with combat to worry about that right now\.
     matchre return ^You throw away the ruined portion
@@ -2051,6 +2076,17 @@ read:
     matchre return ^You open your logbook
     matchre return ^You page through
     put read %todo
+    goto retry
+
+
+redeem:
+    var location redeem1
+    var todo $0
+    redeem1:
+    matchre return Once you redeem this
+    matchre return The REDEEM verb is used to activate certain items\.
+    matchre return ^The violet empath takes one of your contracts\.
+    put redeem %todo
     goto retry
 
 

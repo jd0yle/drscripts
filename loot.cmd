@@ -80,19 +80,23 @@ pickupLoot:
         }
 
         if (%newGemPouch = 1) then {
-            if ("$lefthand" != "Empty") then {
+            if !(matchre("$righthand|$lefthand", "Empty")) then {
                 gosub put my $lefthandnoun in my $char.inv.defaultContainer
             }
-            gosub stow right
-            gosub stow left
-            gosub remove my gem pouch
-            gosub put my gem pouch in my $char.inv.fullGemPouchContainer
-            gosub get gem pouch from my $char.inv.emptyGemPouchContainer
-            gosub wear my gem pouch
-            gosub store gem gem pouch
-            gosub fill my gem pouch with my $char.inv.defaultContainer
-            gosub tie my gem pouch
-            gosub drop my %lootables(%loot.index)
+            gosub remove my $char.inv.gemPouch
+            gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
+            gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
+
+            if (matchre("$lefthandnoun", "pouch")) then {
+                gosub wear my $char.inv.gemPouch
+                gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+                gosub tie my $char.inv.gemPouch
+                # In case there is more than 70 gems, fill again.
+                gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+                gosub store gem $char.inv.gemPouch
+            } else {
+                gosub drop my %lootables(%loot.index)
+            }
             var newGemPouch 0
             goto pickupLootLoop
         }

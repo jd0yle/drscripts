@@ -275,14 +275,13 @@ khurnaarti-combatLoop:
         gosub khurnaarti-clearHands
         put #var lastLookGametime $gametime
     }
+    if ($Astrology.LearningRate < 5 && $Warding.LearningRate < 5 && $Utility.LearningRate < 5 && $Augmentation.LearningRate < 5) then {
+        put #echo >Log [khurnaarti] Leaving combat.
+        goto khurnaarti-combatQuit
+    }
     if (%khurnaarti.needHeal = 1 || $bleeding = 1) then {
-        put #script abort fight
-        gosub stance shield
         put #echo >Log Pink [khurnaarti] Leaving combat to be healed.
-        gosub khurnaarti-clearHands
-        gosub moveToHouse
-        var khurnaarti.needHeal 1
-        goto khurnaarti-loop
+        goto khurnaarti-combatQuit
     }
     if !(matchre("$scriptlist", "fight")) then {
         put .fight
@@ -291,6 +290,15 @@ khurnaarti-combatLoop:
         put .afk
     }
    goto khurnaarti-combatLoop
+
+
+khurnaarti-combatQuit:
+    put #script abort fight
+    gosub stance shield
+    gosub khurnaarti-clearHands
+    gosub moveToHouse
+    var khurnaarti.needHeal 1
+    goto khurnaarti-loop
 
 
 khurnaarti-compendium:
@@ -323,7 +331,9 @@ khurnaarti-forage:
 
 khurnaarti-fullBags:
     put #echo >Log Red [khurnaarti] All of your bags are full of boxes you idiot.
+    gosub store box shadows
     gosub khurnaarti-clearHands
+    gosub store box eddy
     gosub stow sphere
     gosub stow hhr'ata
     gosub stow pan
@@ -333,19 +343,22 @@ khurnaarti-fullBags:
 
 khurnaarti-fullPouch:
     put #script pause fight
-    if !(matchre("$righthand|$lefthand", "Empty")) then {
-        gosub put my $righthandnoun in my $char.inv.defaultContainer
+    if !(matchre("$lefthand", "Empty")) then {
+        gosub put my $lefthandnoun in my $char.inv.defaultContainer
     }
     gosub remove my $char.inv.gemPouch
-    gosub put $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
-    gosub get $char.inv.gempouch from my $char.inv.emptyGemPouchContainer
+    gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
+    gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
 
-    if (matchre("$righthand|$lefthand", "$char.inv.gemPouch")) then {
+    if (matchre("$lefthandnoun", "pouch")) then {
         gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
         gosub tie my $char.inv.gemPouch
         gosub wear my $char.inv.gemPouch
         put #script unpause fight
         goto khurnaarti-combatLoop
+    } else {
+        put #echo >Log [khurnaarti] NO MORE EMPTY POUCHES FOUND.
+        exit
     }
 
 
@@ -460,8 +473,6 @@ khurnaarti-openBoxes:
     gosub inventory eddy
     if (%khurnaarti.bagHasContent = 1) then {
         gosub look in my portal
-        echo khurnaarti.bagContent = %khurnaarti.bagContent
-        echo char.empty.boxContainer = $char.empty.boxContainer
     }
     if (matchre("%khurnaarti.bagContent", "$char.empty.boxContainer")) then {
         put #echo >Log #009933 [khurnaarti] Found boxes in eddy. Locks:($Locksmithing.LearningRate/34).

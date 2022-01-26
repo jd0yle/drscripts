@@ -158,7 +158,7 @@ put #tvar char.empty.weapon arrow|arrows|blade|broad-axe|broadsword|bolt|bolts|b
 put #tvar char.empty.container backpack|bag|bottle|case|eddy|folio|pocket|pouch|purse|rucksack|saddlebag|shadows|poke|pack|saddlebag|sack|vial
 put #tvar char.empty.boxContainer box|caddy|casket|chest|coffer|crate|skippet|strongbox|trunk
 put #tvar char.empty.wornInven circlet|cloak|crystal|belt|blade|blouse|bucket|gamantang|garter|horns|pants|pilonu|ring|rings|robe|robes|sandals|silk|snakelet|stars|trews
-put #tvar char empty.misc almanac|bead|book|brush|caracal|card|cloth|compendium|demonbones|gwethdesuan|kit|mirror|priest|refill|rope|skates|spider|sun|telescope|towel|triangle|water|yardstick
+put #tvar char.empty.misc almanac|bead|book|brush|caracal|card|cloth|compendium|demonbones|gwethdesuan|kit|mirror|priest|refill|rope|skates|spider|sun|telescope|towel|triangle|water|yardstick
 put #tvar char.empty.whitelist $char.empty.armor|$char.empty.weapon|$char.empty.container|$char.empty.boxContainer|$char.empty.wornInven|$char.empty.misc
 if ("$empty.whitelist" <> "$char.empty.whitelist") then {
     put #var empty.whitelist $char.empty.whitelist
@@ -279,7 +279,7 @@ put #tvar char.inv.anythingContainer poke
 put #tvar char.inv.autolootContainer silk pocket
 put #tvar char.inv.boxContainer shadows
 put #tvar char.inv.defaultContainer shadows
-put #tvar char.inv.emptyGemPouchContainer watersilk bag
+put #tvar char.inv.emptyGemPouchContainer bag
 put #tvar char.inv.fullGemPouchContainer shadows
 put #tvar char.inv.gemPouch black pouch
 put #tvar char.inv.memoryOrbContainer shadows
@@ -342,12 +342,11 @@ put #tvar char.predict.useDc 1
 put #tvar char.observe.telescope midnight-blue telescope
 put #tvar char.observe.telescope.container khor'vela case
 
-put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh|forge
-put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi|forge
-put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia|Amlothi|Dawgolesh
-put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda|Er'qutra|forge
-put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena|Er'qutra
-#magic/lore/off/def/surv 125 eye
+put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh|forge|eye
+put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi|forge|eye
+put #tvar char.observe.magic Yavash|Wolf|Toad|Ismenia|Amlothi|Dawgolesh|eye
+put #tvar char.observe.offense Cat|Viper|Spider|Estrilda|Szeldia|Merewalda|Er'qutra|forge|eye
+put #tvar char.observe.survival Ram|Yoakena|Szeldia|Morleena|Er'qutra|eye
 put #tvar char.observe.predict 1
 
 
@@ -355,24 +354,25 @@ put #tvar char.observe.predict 1
 ###      PAWN
 ###############################
 put #tvar char.pawn.container purse
-
+#put #tvar char.pawn.burglePawn bodice dagger|case|fabric|pot helm|recipe box|skillet|telescope
 
 ###############################
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
-put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves|
-put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|hand claws|
-put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade|
+put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves
+put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|hand claws
+put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade
 put #tvar char.repair.weapon2 executioner's broad-axe|duraka skefne|haralun broadsword|blue sling
-put #tvar char.repair.list $char.repair.armor $char.repair.brawl $char.repair.weapon $char.repair.weapon2
+put #tvar char.repair.list $char.repair.armor|$char.repair.brawl|$char.repair.weapon|$char.repair.weapon2
 
 
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendiums black compendium|crimson-scaled compendium|pale compendium
+put #tvar char.compendium golden textbook
+put #tvar char.compendiums null
 put #tvar char.compendium.forceTurn 1
 put #tvar char.research.interrupt.cast 0
 put #tvar char.research.interrupt.study 0
