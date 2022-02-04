@@ -284,6 +284,19 @@ loop:
             var continue 0
         }
 
+        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "Outdoorsmanship") then {
+            if ("%useCollect" = "0") then {
+                put #echo >Debug SKIPPING COLLECTING, useCollect = %useCollect
+                gosub checkWeaponSkills.nextWeapon
+            } else {
+                gosub retreat
+                gosub collect dirt
+                gosub kick pile
+                gosub kick dirt
+            }
+            var continue 0
+        }
+
         if (%continue = 1) then {
             #gosub analyze
 

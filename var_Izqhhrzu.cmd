@@ -73,7 +73,7 @@ put #tvar char.cast.centering.prep 20
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 21
+put #tvar char.cast.ghs.prep 23
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -256,7 +256,7 @@ put #tvar char.fight.useBless 0
 put #tvar char.fight.useCentering 1
 put #tvar char.fight.useGg 0
 put #tvar char.fight.useGhs 1
-put #tvar char.fight.useHyh 1
+put #tvar char.fight.useHyh 0
 put #tvar char.fight.useMapp 1
 put #tvar char.fight.useMf 1
 put #tvar char.fight.useMpp 1
@@ -296,8 +296,8 @@ put #tvar char.fight.useStw 0
 
 if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.useHyh 0
-    put #tvar char.fight.weapons.items bastard sword|kertig maul|steel hanger|tyrium cuska|competition shortbow|white nightstick
-    put #tvar char.fight.weapons.skills Twohanded_Edged|Twohanded_Blunt|Small_Edged|Small_Blunt|Bow|Staves
+    put #tvar char.fight.weapons.items Empty|bastard sword|kertig maul|steel hanger|tyrium cuska|competition shortbow|white nightstick
+    put #tvar char.fight.weapons.skills Outdoorsmanship|Twohanded_Edged|Twohanded_Blunt|Small_Edged|Small_Blunt|Bow|Staves
 
 	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 1

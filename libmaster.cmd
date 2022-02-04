@@ -2599,10 +2599,10 @@ stow:
     if ("%todo" = "right" && "$righthand" = "Empty") then return
     if ("%todo" = "left" && "$lefthand" = "Empty") then return
     if ("$charactername" = "Selesthiel") then {
-        if (contains("%todo", "ka'hurst hauberk") || ("%todo" = "right" && "$righthand" = "ka'hurst hauberk") || ("%todo" = "left" && "$lefthand" = "ka'hurst hauberk")) then {
-			gosub put my hauberk in my water bag
-			return
-        }
+        #if (contains("%todo", "ka'hurst hauberk") || ("%todo" = "right" && "$righthand" = "ka'hurst hauberk") || ("%todo" = "left" && "$lefthand" = "ka'hurst hauberk")) then {
+		#	gosub put my hauberk in my water bag
+		#	return
+        #}
         if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope") || ("%todo" = "left" && "$lefthand" = "clockwork telescope")) then {
             gosub put my telescope in my telescope case
             return

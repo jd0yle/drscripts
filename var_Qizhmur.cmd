@@ -145,8 +145,8 @@ put #tvar char.fight.tmPause 5
 #put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged
 
-put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword|glaes halberd|competition shortbow|frying pan|ka'hurst hhr'ata|haralun broadsword
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged|Polearms|Bow|Small_Blunt|Large_Blunt|Large_Edged
+put #tvar char.fight.weapons.items Empty|Empty|ka'hurst hhr'ata|assassin's blade|frying pan|diamondwood nightstick|spiritwood lockbow|kertig maul|leather sling|iron greatsword|glaes halberd|competition shortbow|frying pan|ka'hurst hhr'ata|haralun broadsword|Empty
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Heavy_Thrown|Small_Edged|Light_Thrown|Staves|Crossbow|Twohanded_Blunt|Slings|Twohanded_Edged|Polearms|Bow|Small_Blunt|Large_Blunt|Large_Edged|Outdoorsmanship
 
 put #tvar char.fight.trainOffhand 1
 
@@ -191,7 +191,7 @@ put #tvar char.fight.avoidDivineOutrage 0
 
 put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0
-put #tvar char.fight.usePhp 1
+put #tvar char.fight.usePhp 0
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 1
 

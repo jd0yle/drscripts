@@ -152,14 +152,15 @@ put #tvar char.fight.tmPrep 30
 put #tvar char.fight.tmPause 5
 
 #***** WEAPONS *****
-#put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood latchbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|competition shortbow
-#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Bow
+#put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|iron greatsword
+#put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Twohanded_Edged
 
 put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|iron greatsword
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Twohanded_Edged
 
-#put #tvar char.fight.weapons.items flamewood riste|flamewood riste|flamewood riste
-#put #tvar char.fight.weapons.skills Twohanded_Blunt|Large_Blunt|Large_Edged
+
+#put #tvar char.fight.weapons.items Empty|Imperial Spear
+#put #tvar char.fight.weapons.skills Outdoorsmanship|Polearms
 
 put #tvar char.fight.trainOffhand 1
 
@@ -226,8 +227,8 @@ put #tvar char.fight.useSuf 1
 
 if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.useSls 0
-	put #tvar char.fight.weapons.items competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
-	put #tvar char.fight.weapons.skills Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
+	put #tvar char.fight.weapons.items Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
+	put #tvar char.fight.weapons.skills Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
 
 	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 1
@@ -261,7 +262,7 @@ put #tvar char.play.useAlmanac 1
 ###############################
 ###      INVENTORY
 ###############################
-put #tvar char.inv.anythingContainer hip pouch
+put #tvar char.inv.anythingContainer firesilk rucksack
 put #tvar char.inv.autolootContainer 0
 put #tvar char.inv.defaultContainer steelsilk backpack
 put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
