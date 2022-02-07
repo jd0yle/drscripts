@@ -5,7 +5,7 @@ include libmaster.cmd
 ###############################
 action put #tvar diapsid.donator $1; put #tvar diapsid.donation $2 ; goto botAccept when ^(\S+) offers you(.*)\.(.*)Enter ACCEPT to accept
 action put #tvar diapsid.donator $1; put #tvar diapsid.coinDonation $2 ; goto botAcceptCoin when ^(\S+) offers you a tip of (\d+)
-action put #tvar diapsid.donator $1; put #tvar diapsid.coinDonation $2 ; goto botThank when ^(\S+) gives you (\d+)
+action put #tvar diapsid.donator $1; put #tvar diapsid.coinDonation $2 ; goto botThank when ^(\S+) gives you (\d+) (coins|Kronars|Lirums|Dokoras)
 action put #tvar diapsid.fortuneTarget $1; goto giveFortune when ^(\S+) whispers, "(.*)fortune(.*)"$/i
 action goto givePrize when ^$diapsid.winner whispers, "(.*)prize(.*)"$/i
 action goto givePickup when ^$diapsid.name whispers, "(.*)($diapsid.keyword)(.*)"$/i

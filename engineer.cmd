@@ -38,7 +38,7 @@ var eng.cut 0
 var eng.page 0
 
 if ("$charactername" = "Inauri") then put .look
-gosub store default $char.craft.container
+gosub store default $char.inv.container.craft
 goto eng.finishItem
 
 
@@ -68,7 +68,7 @@ eng.setNextTool:
 eng.checkLumber:
     matchre eng.lumberCount ^.*\b(lumber)\b.*$
     matchre eng.needLumberExit ^\[Use INVENTORY HELP for more options\.\]$
-    gosub inventory $char.craft.container
+    gosub inventory $char.inv.container.craft
     matchwait 5
 
 
@@ -408,7 +408,7 @@ eng.exit:
         gosub stow left
     }
     put #echo >log yellow [eng] Engineering done.
-    gosub store default $char.craft.default.container
+    gosub store default $char.inv.container.default
 
     pause .2
     put #parse ENGINEER DONE
@@ -427,5 +427,5 @@ eng.needLumberExit:
     }
     put #var eng.needLumber 1
     put #echo >log yellow [eng] Need more lumber.
-    gosub store default $char.craft.default.container
+    gosub store default $char.inv.container.default
     goto eng.exit

@@ -1,7 +1,7 @@
 include libmaster.cmd
 
-var orbContainer $char.inv.memoryOrbContainer
-var tempContainer $char.inv.tempContainer
+var orbContainer $char.inv.container.memoryOrb
+var tempContainer $char.inv.container.temp
 
 action var orbSkill $1 when for a little enlightment on (.*)\.$
 

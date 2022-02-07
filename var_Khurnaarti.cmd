@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container 0
 put #tvar char.appraise.item pouch
+put #tvar char.inv.container.appraise 0
 
 
 ###############################
@@ -60,18 +60,19 @@ put #tvar char.burgle.trashThisList basket|kaleidoscope|sieve|stick|diary|top|ra
 
 # ------ STORAGE HANDLING ------
 # container: pack, rucksack, portal, shadows, backpack, satchel, etc.
-put #tvar char.burgle.container purse
+put #tvar char.inv.container.burgle $char.inv.container.secondary
 
 
 ###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth snakelet
-put #tvar char.focusContainer shadows
 put #tvar char.ritualFocus puzzle rings
 put #tvar char.tmFocus ka'hurst sun
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 1
+
+put #tvar char.inv.container.focus $char.inv.container.default
 
 
 ###############################
@@ -151,11 +152,20 @@ put #tvar char.cast.ss.minPrepTime 10
 
 
 ###############################
+###      COMPENDIUM
+###############################
+put #tvar char.compendium golden textbook
+put #tvar char.compendiums 0
+put #tvar char.compendium.forceTurn 1
+
+put #tvar char.inv.container.compendium $char.inv.container.default
+
+###############################
 ###      EMPTY
 ###############################
 put #tvar char.empty.armor balaclava|claws|footwraps|gloves|pants|shield|shirt|spikes|wrap
 put #tvar char.empty.weapon arrow|arrows|blade|broad-axe|broadsword|bolt|bolts|button|buttons|hhr-ata|nightstick|pan|pelletbow|rock|rocks|riste|skefne|sling|sphere
-put #tvar char.empty.container backpack|bag|bottle|case|eddy|folio|pocket|pouch|purse|rucksack|saddlebag|shadows|poke|pack|saddlebag|sack|vial
+put #tvar char.empty.container backpack|bag|bottle|case|clouds|eddy|folio|pocket|pouch|purse|rucksack|saddlebag|shadows|poke|pack|shadows|saddlebag|sack|vial
 put #tvar char.empty.boxContainer box|caddy|casket|chest|coffer|crate|skippet|strongbox|trunk
 put #tvar char.empty.wornInven circlet|cloak|crystal|belt|blade|blouse|bucket|gamantang|garter|horns|pants|pilonu|ring|rings|robe|robes|sandals|silk|snakelet|stars|trews
 put #tvar char.empty.misc almanac|bead|book|brush|caracal|card|cloth|compendium|demonbones|gwethdesuan|kit|mirror|priest|refill|rope|skates|spider|sun|telescope|towel|triangle|water|yardstick
@@ -267,32 +277,38 @@ put #tvar super.enemies null
 ###############################
 put #tvar char.instrument.cloth colored cloth
 put #tvar char.instrument.song tango
-put #tvar char.instrument.container shadows
 put #tvar char.instrument.noun triangle
 put #tvar char.instrument.tap asini-wrapped electrum triangle
+
+put #tvar char.inv.container.instrument $char.inv.container.default
 
 
 ###############################
 ###      INVENTORY
 ###############################
-put #tvar char.inv.anythingContainer poke
-put #tvar char.inv.autolootContainer silk pocket
-put #tvar char.inv.boxContainer shadows
-put #tvar char.inv.defaultContainer shadows
-put #tvar char.inv.emptyGemPouchContainer bag
-put #tvar char.inv.fullGemPouchContainer shadows
-put #tvar char.inv.gemPouch black pouch
-put #tvar char.inv.memoryOrbContainer shadows
-put #tvar char.inv.secondaryContainer leather purse
-put #tvar char.inv.servant.bags pack|saddlebag|pouch|rucksack|backpack|poke
-put #tvar char.inv.servant.description cantankerous Shadow Servant
-put #tvar char.inv.tempContainer leather purse
-put #tvar char.inv.tertiaryContainer indigo backpack
-put #tvar char.inv.eddyContainer writhing eddy
+put #tvar char.inv.container.almanac $char.inv.container.default
+put #tvar char.inv.container.autoloot silk pocket
+put #tvar char.inv.container.default shadows
+put #tvar char.inv.container.eddy writhing eddy
+put #tvar char.inv.container.emptyGemPouch watersilk bag
+put #tvar char.inv.container.fullGemPouch shadows
+put #tvar char.inv.container.gemPouch black pouch
+put #tvar char.inv.container.holdAnything poke
+put #tvar char.inv.container.memoryOrb shadows
+put #tvar char.inv.container.practicebox shadows
+put #tvar char.inv.container.secondary leather purse
+put #tvar char.inv.container.sellGemBag $char.inv.container.default
+put #tvar char.inv.container.servantOptions pack|saddlebag|pouch|rucksack|backpack|poke
+put #tvar char.inv.container.servantDescription cantankerous Shadow Servant
+put #tvar char.inv.container.temp $char.inv.container.secondary
+put #tvar char.inv.container.tertiary indigo backpack
+put #tvar char.inv.container.trash $char.inv.container.secondary
 
 # Loot
 put #tvar char.loot.boxes 1
 put #tvar char.loot.nuggetBars 1
+if (!($char.loot.untiedGemPouch >0)) then put #tvar char.loot.untiedGemPouch 0
+
 
 ###############################
 ###      LOCKSMITHING
@@ -305,8 +321,7 @@ put #tvar char.locks.lockpickType ring
 ###      MAGIC
 ###############################
 put #tvar guild Moon Mage
-put #tvar char.magic.train.almanacItem almanac
-put #tvar char.magic.train.almanacContainer shadows
+put #tvar char.magic.train.almanac $char.trainer.almanac
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 1
 put #tvar char.magic.train.useShadowling 1
@@ -335,12 +350,12 @@ put #tvar char.magic.train.revSorcery 0
 ###      OBSERVE & PREDICT
 ###############################
 put #tvar char.predict.tool chalky demonbones
-put #tvar char.predict.tool.container shadows
+put #tvar char.inv.container.predictTool shadows
 
 put #tvar char.predict.useDc 1
 
 put #tvar char.observe.telescope midnight-blue telescope
-put #tvar char.observe.telescope.container khor'vela case
+put #tvar char.inv.container.telescope telescope case
 
 put #tvar char.observe.defense Katamba|Magpie|Giant|Penhetia|Merewalda|Morleena|Dawgolesh|forge|eye
 put #tvar char.observe.lore Xibar|Raven|Phoenix|Ismenia|Amlothi|forge|eye
@@ -353,8 +368,9 @@ put #tvar char.observe.predict 1
 ###############################
 ###      PAWN
 ###############################
-put #tvar char.pawn.container purse
+put #tvar char.inv.container.pawn $char.inv.container.secondary
 #put #tvar char.pawn.burglePawn bodice dagger|case|fabric|pot helm|recipe box|skillet|telescope
+
 
 ###############################
 ###      REPAIR
@@ -371,12 +387,10 @@ put #tvar char.repair.list $char.repair.armor|$char.repair.brawl|$char.repair.we
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendium golden textbook
-put #tvar char.compendiums null
-put #tvar char.compendium.forceTurn 1
 put #tvar char.research.interrupt.cast 0
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
+
 
 ###############################
 ###      TARANTULA
@@ -388,8 +402,7 @@ put #tvar char.inv.container.tarantula shadows
 ###############################
 ###      TRAINER
 ###############################
-put #tvar char.trainer.almanacContainer shadow
-put #tvar char.trainer.almanacItem almanac
+put #tvar char.trainer.almanac almanac
 put #tvar char.trainer.firstaid caracal
 
 

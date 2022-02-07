@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container portal
 put #tvar char.appraise.item gem pouch
+put #tvar char.inv.container.appraise portal
 
 
 ###############################
@@ -32,7 +32,7 @@ put #tvar char.burgle.cooldown null
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth cambrinth calf
-put #tvar char.focusContainer gryphon skull
+put #tvar char.inv.container.focus gryphon skull
 put #tvar char.ritualFocus null
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
@@ -90,6 +90,14 @@ put #tvar char.combat.spell.Targeted_Magic 0
 put #tvar char.combat.prep.Targeted_Magic 0
 put #tvar char.combat.charge.Targeted_Magic 0
 put #tvar char.combat.harness.Targeted_Magic 0
+
+
+###############################
+###      COMPENDIUM
+###############################
+put #tvar char.compendium 0
+put #tvar char.compendiums 0
+put #tvar char.compendium.forceTurn 1
 
 
 ###############################
@@ -210,28 +218,32 @@ var super.enemies null
 put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun zills
 put #tvar char.instrument.tap thin-edged zills
-put #tvar char.instrument.container skull
+put #tvar char.inv.container.instrument skull
 
 
 ###############################
 ###      INVENTORY
 ###############################
-put #tvar char.inv.anythingContainer hip pouch
-put #tvar char.inv.autolootContainer 0
-put #tvar char.inv.defaultContainer wyvern skull
-put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
-put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.gemPouch gem pouch
-put #tvar char.inv.memoryOrbContainer 0
-put #tvar char.inv.secondaryContainer shadows
-put #tvar char.inv.tempContainer shadows
-put #tvar char.inv.tertiaryContainer 0
-
-put #tvar char.inv.materialContainer student's satchel
+put #tvar char.inv.container.almanac skull
+put #tvar char.inv.container.holdAnything hip pouch
+put #tvar char.inv.container.autoloot 0
+put #tvar char.inv.container.default wyvern skull
+put #tvar char.inv.container.emptyGemPouch $char.inv.container.default
+put #tvar char.inv.container.fullGemPouch portal
+put #tvar char.inv.container.gemPouch gem pouch
+put #tvar char.inv.container.material student's satchel
+put #tvar char.inv.container.memoryOrb 0
+put #tvar char.inv.container.secondary shadows
+put #tvar char.inv.container.sellGemBag 0
+put #tvar char.inv.container.temp shadows
+put #tvar char.inv.container.tertiary 0
+put #tvar char.inv.container.trash skull
 
 # Loot
 put #tvar char.loot.boxes 0
 put #tvar char.loot.nuggetBars 0
+if (!($char.loot.untiedGemPouch >0)) then put #tvar char.loot.untiedGemPouch 0
+
 
 ###############################
 ###      MAGIC
@@ -317,7 +329,7 @@ unvar tmp.charge.Warding
 ###############################
 ###      PAWN
 ###############################
-put #tvar char.pawn.container portal
+put #tvar char.inv.container.pawn portal
 
 
 ###############################
@@ -329,10 +341,10 @@ put #tvar char.repair.waitRoomId 50
 #put #tvar char.repair.list demonscale helm|demonscale mask|calcified femur|demonscale leathers|demonscale gloves|demonscale shield
 put #tvar char.repair.list $char.armor|$char.fight.weapons.items|$char.armor.light
 
+
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendium 0
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
@@ -341,8 +353,7 @@ put #tvar char.research.useSanowret 1
 ###############################
 ###      TRAINER
 ###############################
-put #tvar char.trainer.almanacContainer skull
-put #tvar char.trainer.almanacItem almanac
+put #tvar char.trainer.almanac almanac
 put #tvar char.trainer.firstaid 0
 
 

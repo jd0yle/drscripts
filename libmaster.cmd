@@ -2598,45 +2598,41 @@ stow:
     if ("%todo" = "" && "$righthand" = "Empty") then return
     if ("%todo" = "right" && "$righthand" = "Empty") then return
     if ("%todo" = "left" && "$lefthand" = "Empty") then return
-    if ("$charactername" = "Selesthiel") then {
-        #if (contains("%todo", "ka'hurst hauberk") || ("%todo" = "right" && "$righthand" = "ka'hurst hauberk") || ("%todo" = "left" && "$lefthand" = "ka'hurst hauberk")) then {
-		#	gosub put my hauberk in my water bag
-		#	return
-        #}
-        if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "clockwork telescope") || ("%todo" = "left" && "$lefthand" = "clockwork telescope")) then {
-            gosub put my telescope in my telescope case
+    if (("$guild" = "Moon Mage") && ($char.inv.container.%todo <> null)) then {
+        if (contains("%todo", "tele") || ("%todo" = "right" && "$righthand" = "$char.observe.telescope") || ("%todo" = "left" && "$lefthand" = "$char.observe.telescope")) then {
+            gosub put my $char.observe.telescope in my $char.inv.container.telescope
             return
         }
-        if (contains("%todo", "bones") || ("%todo" = "right" && "$righthand" = "divination bones") || ("%todo" = "left" && "$lefthand" = "divination bones")) then {
-            gosub put my divination bones in my telescope case
+        if (contains("%todo", "$char.predict.tool") || ("%todo" = "right" && "$righthand" = "$char.predict.tool") || ("%todo" = "left" && "$lefthand" = "$char.predict.tool")) then {
+            gosub put my $char.predict.tool in my $char.inv.container.predictTool
             return
         }
-        if (contains("%todo", "compendium") || ("%todo" = "right" && "$righthandnoun" = "compendium")) then {
-            gosub put my compendium in my thigh bag
+        if (contains("%todo", "$char.compendium") || ("%todo" = "right" && "$righthandnoun" = "$char.compendium")) then {
+            gosub put my $char.compendium in my $char.inv.container.compendium
             return
         }
     }
     if ("$charactername" = "Qizhmur") then {
         if (contains("%todo", "material") || ("%todo" = "right" && "$righthandnoun" = "material") || ("%todo" = "left" && "$lefthandnoun" = "material")) then {
-            gosub put my material in my satchel
+            gosub put my material in my $char.inv.container.material
             return
         }
         if (contains("%todo", "greatsword") || ("%todo" = "right" && "$righthand" = "iron greatsword") || ("%todo" = "left" && "$lefthand" = "iron greatsword")) then {
-            gosub put my iron greatsword in my hip pouch
+            gosub put my iron greatsword in my $char.inv.container.holdAnything
             return
         }
         if (contains("%todo", "halberd") || ("%todo" = "right" && "$righthand" = "glaes halberd") || ("%todo" = "left" && "$lefthand" = "glaes halberd")) then {
-            gosub put my glaes halberd in my hip pouch
+            gosub put my glaes halberd in my $char.inv.container.holdAnything
             return
         }
     }
     if ("$charactername" = "Izqhhrzu") then {
         if ( ("%todo" = "right" && "$righthand" = "blood-red scythe") || ("%todo" = "" && "$righthand" = "blood-red scythe") || contains("%todo", "scythe") || ("%todo" = "left" && "$lefthand" = "blood-red scythe") ) then {
-            gosub put my scythe in my hip pouch
+            gosub put my scythe in my $char.inv.container.holdAnything
             return
         }
         if ( ("%todo" = "right" && "$righthand" = "holy water") || ("%todo" = "" && "$righthand" = "holy water") || contains("%todo", "holy water") || ("%todo" = "left" && "$lefthand" = "holy water") ) then {
-            gosub put my holy water in my witch jar
+            gosub put my holy water in my $char.inv.container.holyWater
             return
         }
     }
@@ -2666,7 +2662,7 @@ stow:
 
 stow.tieGemPouch:
     var stowTodo %todo
-    gosub tie my gem pouch
+    gosub tie my $char.inv.container.gemPouch
     gosub stow %stowTodo
     return
 

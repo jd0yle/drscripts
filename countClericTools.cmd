@@ -12,7 +12,7 @@ gosub runScript count --item=incense --container=$char.inv.container.incense
 var numIncense $char.countResult
 put #echo >Log Incense: %numIncense
 
-gosub runScript count --item=holy water --container=witch jar
+gosub runScript count --item=holy water --container=$char.inv.container.holyWater
 var numHolyWater $char.countResult
 
 gosub count holy water in my witch jar

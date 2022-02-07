@@ -54,7 +54,7 @@ if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty
     var stowedItemNoun $lefthandnoun
     if ("$lefthandnoun" = "telescope") then {
         gosub close my $char.observe.telescope
-        gosub put my $char.observe.telescope in $char.observe.telescope.container
+        gosub put my $char.observe.telescope in $char.inv.container.telescope
     } else {
         gosub stow left
     }
@@ -207,7 +207,7 @@ ritualSpell:
         gosub wear my $char.ritualFocus
         gosub sort auto head
     } else {
-        gosub put my $char.ritualFocus in my $char.focusContainer
+        gosub put my $char.ritualFocus in my $char.inv.container.focus
     }
     goto done
 

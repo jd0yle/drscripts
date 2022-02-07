@@ -16,14 +16,14 @@ main:
     evalmath nextStudyAt $lastAlmanacGametime + 600
 
     if (%nextStudyAt < $gametime) then {
-        if ("$lefthandnoun" != "$char.trainer.almanacItem" && "$righthandnoun" != "$char.trainer.almanacItem") then {
-            gosub get my $char.trainer.almanacItem
+        if ("$lefthandnoun" != "$char.trainer.almanac" && "$righthandnoun" != "$char.trainer.almanac") then {
+            gosub get my $char.trainer.almanac
             gosub awake
         }
-        if ("$lefthandnoun" != "$char.trainer.almanacItem" && "$righthandnoun" != "$char.trainer.almanacItem") then goto done
-        if ("$lefthandnoun" != "$char.trainer.almanacItem") then gosub swap
-        gosub study my $char.trainer.almanacItem
-        gosub put my $char.trainer.almanacItem in my $char.trainer.almanacContainer
+        if ("$lefthandnoun" != "$char.trainer.almanac" && "$righthandnoun" != "$char.trainer.almanac") then goto done
+        if ("$lefthandnoun" != "$char.trainer.almanac") then gosub swap
+        gosub study my $char.trainer.almanac
+        gosub put my $char.trainer.almanac in my $char.inv.container.almanac
         if (%isAsleep = 1) then {
             gosub sleep
             gosub sleep

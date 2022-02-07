@@ -4,7 +4,7 @@ gosub stow right
 gosub stow left
 
 loop:
-    gosub get my gem pouch from my $char.inv.defaultContainer
+    gosub get my gem pouch from my $char.inv.container.default
     if ("$righthand" = "Empty") then goto shadowToBack
     matchre loopcont ^You sort through the contents of the gem pouch and find (\d+) gems in
     matchre loopcont ^The gem pouch
@@ -14,18 +14,18 @@ loop:
     loopcont:
     var numGems $1
     if ("%numGems" = "500") then {
-        gosub put my gem pouch in my $char.inv.fullGemPouchContainer
+        gosub put my gem pouch in my $char.inv.container.fullGemPouch
     } else {
-        gosub put my gem pouch in my $char.inv.tempContainer
+        gosub put my gem pouch in my $char.inv.container.temp
     }
 
     goto loop
 
 
 shadowToBack:
-    gosub get gem pouch from my $char.inv.tempContainer
+    gosub get gem pouch from my $char.inv.container.temp
     if ("$righthand" = "Empty") then goto done
-    gosub put my gem pouch in my $char.inv.emptyGemPouchContainer
+    gosub put my gem pouch in my $char.inv.container.emptyGemPouch
     goto shadowToBack
 
 

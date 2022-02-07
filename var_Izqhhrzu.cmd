@@ -10,8 +10,8 @@ put #tvar char.storage.incense $char.storage.default
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container portal
 put #tvar char.appraise.item gem pouch
+put #tvar char.inv.container.appraise portal
 
 
 ###############################
@@ -43,7 +43,7 @@ put #tvar char.burgle.cooldown null
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth cambrinth spiderling
-put #tvar char.focusContainer $char.storage.default
+put #tvar char.inv.container.focus $char.storage.default
 put #tvar char.wornCambrinth 1
 
 #put #tvar char.ritualFocus ouroboros ring
@@ -130,12 +130,8 @@ put #tvar char.cast.pfe.chargeTimes 2
 ###############################
 ###      CRAFTING
 ###############################
-put #tvar char.craft.container $char.inv.defaultContainer
-put #tvar char.craft.default.container $char.inv.defaultContainer
-put #tvar char.craft.tool.container $char.inv.defaultContainer
-
-
-
+put #tvar char.inv.container.craft $char.inv.container.default
+put #tvar char.inv.container.craftTool $char.inv.container.default
 put #tvar char.craft.workorder.item burin
 #put #tvar char.craft.item burin
 
@@ -143,6 +139,7 @@ put #tvar char.craft.workorder.item burin
 ###############################
 ###      COMPENDIUM
 ###############################
+put #tvar char.compendium 0
 put #tvar char.compendiums black compendium|bloodstained compendium|pale compendium
 put #tvar char.compendium.forceTurn 1
 
@@ -321,7 +318,7 @@ var super.enemies null
 put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun rattle
 put #tvar char.instrument.tap voodoo priest's rattle
-put #tvar char.instrument.container thigh bag
+put #tvar char.inv.container.instrument thigh bag
 
 
 ###############################
@@ -331,25 +328,30 @@ put #tvar char.instrument.container thigh bag
 # char.inventory.numHolyWater
 
 put #tvar char.inv.container.incense devotional bag
+put #tvar char.inv.container.holyWater witch jar
 
 
 ###############################
 ###      LOOT
 ###############################
-put #tvar char.inv.anythingContainer hip pouch
-put #tvar char.inv.autolootContainer 0
-put #tvar char.inv.defaultContainer wyvern skull
-put #tvar char.inv.emptyGemPouchContainer $char.inv.defaultContainer
-put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.gemPouch gem pouch
-put #tvar char.inv.memoryOrbContainer 0
-put #tvar char.inv.secondaryContainer canvas backpack
-put #tvar char.inv.tempContainer alchemist's kit
-put #tvar char.inv.tertiaryContainer 0
+put #tvar char.inv.container.almanac thigh bag
+put #tvar char.inv.container.autoloot 0
+put #tvar char.inv.container.default wyvern skull
+put #tvar char.inv.container.emptyGemPouch $char.inv.container.default
+put #tvar char.inv.container.fullGemPouch portal
+put #tvar char.inv.container.gemPouch gem pouch
+put #tvar char.inv.container.holdAnything hip pouch
+put #tvar char.inv.container.memoryOrb 0
+put #tvar char.inv.container.secondary canvas backpack
+put #tvar char.inv.container.sellGemBag 0
+put #tvar char.inv.container.temp alchemist's kit
+put #tvar char.inv.container.tertiary 0
+put #tvar char.inv.container.trash 0
 
 # Loot
 put #tvar char.loot.boxes 0
 put #tvar char.loot.nuggetBars 0
+if (!($char.loot.untiedGemPouch >0)) then put #tvar char.loot.untiedGemPouch 0
 
 
 ###############################
@@ -439,24 +441,6 @@ unvar var.magic.Warding
 
 
 ###############################
-###      OBSERVE & PREDICT
-###############################
-#put #tvar char.predict.tool divination bones
-#put #tvar char.predict.tool.container telescope case
-
-#put #tvar char.observe.telescope clockwork telescope
-#put #tvar char.observe.telescope.container telescope case
-
-#put #tvar char.observe.defense Merewalda|Dawgolesh|Penhetia|Giant|Katamba
-#put #tvar char.observe.lore forge|Amlothi|Verena|Phoenix|Xibar
-#put #tvar char.observe.magic Ismenia|Durgaulda|Dawgolesh|Toad|Yavash
-#put #tvar char.observe.offense Estrilda|Szeldia|forge|Spider
-#put #tvar char.observe.survival Morleena|Yoakena|Er'qutra|Ram
-
-#put #tvar char.observe.predict 0
-
-
-###############################
 ###      REPAIR
 ###############################
 put #tvar char.repair.forceFangCove true
@@ -485,11 +469,9 @@ put #tvar char.tarantula.skillsetOrder Survival|Armor|Weapon|Magic|Lore
 ###############################
 ###      TRAINER
 ###############################
-put #tvar char.trainer.almanacContainer thigh bag
-put #tvar char.trainer.almanacItem almanac
+put #tvar char.trainer.almanac almanac
+put #tvar char.trainer.compendium 0
 put #tvar char.trainer.firstaid 0
-
-
 
 
 pause .2

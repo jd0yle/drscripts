@@ -18,8 +18,8 @@ var engbolt.numberCrafted 0
 var engbolt.numberNeeded %1
 var engbolt.page 9
 var engbolt.pageContent 0
-var engbolt.craftbag $char.craft.container
-var engbolt.defaultbag $char.craft.default.container
+var engbolt.craftbag $char.inv.container.craft
+var engbolt.defaultbag $char.inv.container.default
 
 
 if (%engbolt.numberNeeded = null) then {

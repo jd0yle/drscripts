@@ -23,7 +23,7 @@ if ("%workOrderMaster" = null) then {
 
 workOrderCount:
     matchre workOrderDoCount ^In the.*?you see (.*)\.$
-    gosub look in my $char.craft.container
+    gosub look in my $char.inv.container.craft
     matchwait 5
     goto workOrderCountDone
 
@@ -80,7 +80,7 @@ workOrderGet:
 workOrderBundle:
     if (%workOrderTotalNeed <> 0) then {
         if (%workOrderTotalHave >= %workOrderTotalNeed) then {
-            gosub get $char.craft.workorder.item from my $char.craft.container
+            gosub get $char.craft.workorder.item from my $char.inv.container.craft
             gosub bundle my $char.craft.workorder.item with my logbook
             evalmath workOrderTotalNeed (%workOrderTotalNeed - 1)
             evalmath workOrderTotalHave (%workOrderTotalHave - 1)
@@ -152,7 +152,7 @@ workOrderRestock:
             math workOrderLumberHave add 10
             goto workOrderRestockLoop
         } else {
-            gosub put my lumber in my $char.craft.container
+            gosub put my lumber in my $char.inv.container.craft
             put #echo >log yellow [workorder] Lumber count: %workOrderLumberHave.
             goto workOrderDone
         }
@@ -165,12 +165,12 @@ workOrderRestock:
 ##############
 workOrderDone:
     if ("$righthandnoun" = "logbook") then {
-        gosub put my logbook in my $char.craft.container
+        gosub put my logbook in my $char.inv.container.craft
     }
     if (%workOrderTotalHave < %workOrderTotalNeed) then {
         put #echo >log yellow [workorder] More items needed. (%workOrderTotalHave/%workOrderTotalNeed)
     } else {
-        put #echo >log yellow [workorder] Unable to turn in more orders. %workOrderTotalHave remaining in $char.craft.container.
+        put #echo >log yellow [workorder] Unable to turn in more orders. %workOrderTotalHave remaining in $char.inv.container.craft.
     }
 
     pause .2

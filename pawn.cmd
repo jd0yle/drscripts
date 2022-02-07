@@ -1,6 +1,6 @@
 include libmaster.cmd
 
-var container $char.pawn.container
+var container $char.inv.container.pawn
 
 var dryRun false
 if_1 then {
