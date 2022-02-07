@@ -4,7 +4,7 @@ var keeplist pass|ticket|homespun pouch|brocade pouch|oilcloth pouch|icesilk pou
 #var keeplist pass|pouch|strap|scarecrow|tome|collection|lens|wand|head|arm|leg|body|lid|base|mirror|pan|sigil|belt|bandana|leggings|boots|shirt|monocle|vial|maul|wyvern|mace|halberd|moneybelt|necklace|stars|ticket
 
 # Incidentals storage location
-var incidentalStorage $char.inv.defaultContainer
+var incidentalStorage $char.inv.container.default
 
 # Ignore the keeplist and store all incidentals
 var keepall 1

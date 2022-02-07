@@ -76,7 +76,7 @@ suhelmas-contractCheck:
         if !(matchre("$lefthand", "Empty")) then {
             gosub stow left
         }
-        gosub get my contract from my $char.inv.defaultContainer
+        gosub get my contract from my $char.inv.container.default
         if !(matchre("$lefthand|$righthand", "Su Helmas contract")) then goto suhelmas-errorContract
     }
     goto suhelmas-redeem
@@ -86,7 +86,7 @@ suhelmas-redeem:
     gosub redeem my contract
     gosub redeem my contract
 	if matchre("$righthand|$lefthand", "contract(s?)") then {
-	    gosub put contract in my $char.inv.defaultContainer
+	    gosub put contract in my $char.inv.container.default
 	}
 	goto suhelmas-join
 
@@ -121,9 +121,9 @@ suhelmas-loop:
 suhelmas-looting:
 	pause .5
 	if !(matchre("$%lootHandhandnoun", "(%SHtrash)")) then {
-	    gosub put my $%lootHandhandnoun in my canvas sack in my $char.inv.defaultContainer
+	    gosub put my $%lootHandhandnoun in my canvas sack in my $char.inv.container.default
 	} else {
-	    gosub put my $%lootHandhandnoun in my $char.inv.defaultContainer
+	    gosub put my $%lootHandhandnoun in my $char.inv.container.default
 	}
 	pause 3
 	goto suhelmas-contractCheck
