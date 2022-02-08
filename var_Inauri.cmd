@@ -107,10 +107,10 @@ put #tvar super.enemies Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahije
 ###      INVENTORY
 ###############################
 put #tvar char.inv.container.almanac satchel
-put #tvar char.inv.container.autoloot
+put #tvar char.inv.container.autoloot 0
 put #tvar char.inv.container.craft workbag
 put #tvar char.inv.container.default satchel
-pur #tvar char.inv.container.eddy 0
+put #tvar char.inv.container.eddy 0
 put #tvar char.inv.container.emptyGemPouch 0
 put #tvar char.inv.container.fullGemPouch satchel
 put #tvar char.inv.container.gemPouch blue pouch
