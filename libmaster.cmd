@@ -315,6 +315,7 @@ adjust:
     adjust1:
     matchre return You adjust
     matchre return ^You cannot adjust
+    gosub checkLatencyStart
     put adjust %todo
     goto retry
 
@@ -871,6 +872,7 @@ count:
     matchre return ^You count some
     matchre return ^You count up the items in your
     matchre return ^You take a quick count of potential threats in the area\.\.\.
+    gosub checkLatencyStart
     put count %todo
     goto retry
 
@@ -1100,6 +1102,7 @@ EXP:
     matchre return ^The bonus
     matchre return ^The following skills
     matchre return ^You do not have
+    gosub checkLatencyStart
     put EXP %todo
     goto retry
 
@@ -1230,6 +1233,7 @@ get:
     matchre return ^You need a free hand
     matchre return ^You pick up
     matchre return ^You pull
+    gosub checkLatencyStart
     put get %todo
     goto retry
 
@@ -1277,6 +1281,7 @@ health:
     var location health
     matchre return ^Your body feels
     matchre return ^Your spirit feels
+    gosub checkLatencyStart
     put health
     goto retry
 
@@ -1344,6 +1349,7 @@ inventory:
     var todo $0
     inventory1:
     matchre return ^\[Use INVENTORY HELP for more options\.\]$
+    gosub checkLatencyStart
     put inventory %todo
     goto retry
 
@@ -1596,6 +1602,7 @@ look:
     matchre return ^You are
     matchre return ^You have
     matchre return ^You see
+    gosub checkLatencyStart
     put look %todo
     goto retry
 
@@ -1994,6 +2001,7 @@ prepare:
     matchre return ^Your eyes darken to black as a starless night
     matchre return ^You recall the exact details of the
     matchre prepare.ritualFix ^Magical rituals are exceedingly obvious.  You cannot do it while remaining hidden.
+    gosub checkLatencyStart
     put prepare %todo
     goto retry
 
@@ -2059,6 +2067,7 @@ put:
     matchre return too long to fit
     matchre return ^Perhaps you should be holding that first.$
     matchre return ^You carefully fit
+    gosub checkLatencyStart
     put put %todo
     goto retry
 
@@ -2177,6 +2186,7 @@ remove:
     matchre return ^You sling
     matchre return ^You take
     matchre return ^You work your way out of
+    gosub checkLatencyStart
     put remove %todo
     goto retry
 
@@ -2277,6 +2287,7 @@ rummage:
     rummage1:
     matchre return ^You rummage
     matchre return ^I don't
+    gosub checkLatencyStart
     put rummage %todo
     goto retry
 
@@ -2492,6 +2503,7 @@ stance:
     matchre return ^You are now set to use your
     matchre return ^Your (attack|evasion|parry|shield) ability is now set at
     matchre return (Attack|Evade|Parry|Block)
+    gosub checkLatencyStart
     put stance %todo
     goto retry
 
@@ -2656,6 +2668,7 @@ stow:
     matchre stowing too long to fit
     matchre stowing too wide to fit
     matchre stow.tieGemPouch ^You've already got a wealth of gems in there\!
+    gosub checkLatencyStart
     put stow %todo
     goto retry
 
@@ -2732,6 +2745,7 @@ swap:
     matchre return ^You turn
     matchre return ^Your eyes blaze
     matchre return ^With one superbly balanced motion
+    gosub checkLatencyStart
     put swap %todo
     goto retry
 
@@ -2830,6 +2844,7 @@ tdps:
     tdps1:
     matchre return ^An attendant
     matchre return ^You have
+    gosub checkLatencyStart
     put tdps %todo
     goto retry
 
@@ -2838,6 +2853,7 @@ tdp:
     matchre return ^An attendant quietly informs you
     matchre return ^An attendant steps over to you
     matchre return ^You have
+    gosub checkLatencyStart
     put tdp
     goto retry
 
@@ -2859,6 +2875,7 @@ teach:
     matchre return ^You begin to lecture
     matchre return ^You cannot listen to a teacher and teach at the same time
     matchre return ^You have already offered to
+    gosub checkLatencyStart
     put teach %todo
     goto retry
 
@@ -2893,6 +2910,7 @@ tie:
     matchre return ^You are already
     matchre return ^You attach
     matchre return ^You tie
+    gosub checkLatencyStart
     put tie %todo
     goto retry
 
@@ -3088,6 +3106,7 @@ wear:
     matchre return ^You work your way into
     matchre location.unload1 ^You need to unload the
     matchre location.unload1 ^You should unload the
+    gosub checkLatencyStart
     put wear %todo
     goto retry
 
@@ -3259,10 +3278,10 @@ percHealth.onTimer:
 pray.onTimer:
     var todo $0
     var location pray.onTimer1
-    
+
     pray.onTimer1:
     if (!($lastPrayGametime > 0)) then put #var lastPrayGametime 1
-	
+
 	evalmath nextPrayGametime $lastPrayGametime + 601
 
 	if ($gametime > %nextPrayGametime) then {
@@ -3410,7 +3429,7 @@ move.releaseInvis:
     if ($SpellTimer.RefractiveField.active = 1 || $SpellTimer.RefractiveField.duration > 0) then gosub release rf
     if ($SpellTimer.EyesoftheBlind.active = 1 || $SpellTimer.EyesoftheBlind.duration > 0) then gosub release eotb
     goto move1
-    
+
 
 pause.then.move:
     pause .2
@@ -3491,6 +3510,33 @@ checkForBacklashDebuff:
 	unvar lib.debuffedSkills
 	unvar numDebuffedMagicSkills
     return
+
+
+#########
+# Populates the $latency variable with the round-trip time to send no-RT command and receive response
+#########
+checkLatency:
+    gosub checkLatencyStart
+    gosub tdp
+    gosub checkLatencyEnd
+    return
+
+checkLatencyStart:
+    var checkLatency.isStarted 1
+    timer start
+    var checkLatency.timerStartValue %t
+    return
+
+checkLatencyEnd:
+    if (%checkLatency.isStarted = 1) then {
+        evalmath tmpLatency (1000 * (%t - %checkLatency.timerStartValue))
+        eval tmpLatency replacere("%tmpLatency", "\.\d+", "")
+        put #tvar latency %tmpLatency
+        unvar tmpLatency
+    }
+    var checkLatency.isStarted 0
+    return
+
 
 checkMoons:
     put #var moon null
@@ -3611,6 +3657,7 @@ return.p:
 
 
 return:
+    gosub checkLatencyEnd
     return
 
 
