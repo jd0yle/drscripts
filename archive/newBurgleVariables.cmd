@@ -54,7 +54,7 @@ if ("$charactername" = "%CHARACTER1") then {
 
 	# ------ STORAGE HANDLING ------
 	# container: pack, rucksack, portal, shadows, backpack, satchel, etc.
-	put #tvar char.burgle.container pack
+	put #tvar char.inv.container.burgle pack
 }
 
 if ("$charactername" = "%CHARACTER2") then {
@@ -90,7 +90,7 @@ if ("$charactername" = "%CHARACTER2") then {
 
 	# ------ STORAGE HANDLING ------
 	# container: pack, rucksack, portal, shadows, backpack, satchel, etc.
-	put #tvar char.burgle.container pack
+	put #tvar char.inv.container.burgle pack
 }
 
 if ("$charactername" = "%CHARACTER3") then {
@@ -126,7 +126,7 @@ if ("$charactername" = "%CHARACTER3") then {
 
 	# ------ STORAGE HANDLING ------
 	# container: pack, rucksack, portal, shadows, backpack, satchel, etc.
-	put #tvar char.burgle.container pack
+	put #tvar char.inv.container.burgle pack
 }
 
 if ("$charactername" = "%CHARACTER4") then {
@@ -162,7 +162,7 @@ if ("$charactername" = "%CHARACTER4") then {
 
 	# ------ STORAGE HANDLING ------
 	# container: pack, rucksack, portal, shadows, backpack, satchel, etc.
-	put #tvar char.burgle.container pack
+	put #tvar char.inv.container.burgle pack
 }
 
 goto burgleVariables.done

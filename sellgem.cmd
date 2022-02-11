@@ -4,6 +4,7 @@ include libmaster.cmd
 ###############################
 # Change Log
 # 29-DEC-2021 - Only sells nuggets and bars.  Only works in Fang Cove.
+# 06-FEB-2022 - Added platinum.  Updated container variables and updated to use a tvar if desired.
 
 
 ###############################
@@ -17,13 +18,32 @@ action var sellgem.bagContents $1 when ^In .* you see (.*)\.$
 ###############################
 var sellgem.gem nugget|bar
 var sellgem.indexGem 0
-var sellgem.mat brass|bronze|coal|copper|covellite|electrum|gold|iron|lead|nickel|pewter|silver|steel|oravir|zinc
+var sellgem.mat brass|bronze|coal|copper|covellite|electrum|gold|iron|lead|nickel|pewter|platinum|silver|steel|oravir|zinc
 var sellgem.indexMat 0
 var sellgem.lengthMat 0
 eval sellgem.lengthMat count("%sellgem.mat", "|")
 
 if_1 then {
     var sellgem.bag %1
+    gosub sellgem-checkBag
+} else {
+    if ($char.inv.container.sellGemBag <> 0) then {
+        var sellgem.bag $char.inv.container.sellGemBag
+        gosub sellgem-checkBag
+    }
+    echo ************
+    echo   SELLGEM
+    echo ************
+    echo Please call this script with a bag to check.  This is to prevent accidental sales.
+    echo Example:  .sellgem purse
+    echo Alternatively, you can set char.inv.container.sellGemBag to a default bag to check.
+    echo Example:  .sellgem
+    echo ************
+    exit
+}
+
+
+sellgem-checkBag:
     gosub look in my %sellgem.bag
     if (matchre("%sellgem.bagContents", "%sellgem.gem")) then {
         goto sellgem-main
@@ -31,15 +51,6 @@ if_1 then {
         put #echo >Log [sellgem] Did not find any loose gems in your %sellgem.bag.
         goto sellgem-exit
     }
-} else {
-    echo ************
-    echo   SELLGEM
-    echo ************
-    echo Please call this script with a bag to check.  This is to prevent accidental sales.
-    echo Example:  .sellgem purse
-    echo ************
-    exit
-}
 
 
 ###############################

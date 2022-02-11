@@ -29,12 +29,12 @@ var pb.newBox 0
 pb.findBox:
     matchre pb.getBox ^.*(%pb.boxTypes).*$
     matchre pb.errorBox ^\[Use INVENTORY HELP for more options\.\]$
-    gosub inventory $char.inv.boxContainer
+    gosub inventory $char.inv.container.practicebox
     matchwait 5
 
 
 pb.getBox:
-    gosub get my %pb.box from my $char.inv.boxContainer
+    gosub get my %pb.box from my $char.inv.container.practicebox
     if (matchre("$righthand|$lefthand", "(%pb.boxTypes)")) then {
             var pb.box $0
             if ("$righthand" != "%pb.box") then {
@@ -48,7 +48,7 @@ pb.getBox:
             gosub stow left
             goto pb.getBox
         }
-        gosub open my $char.inv.boxContainer
+        gosub open my $char.inv.container.practicebox
         goto pb.getBox
     }
 
@@ -62,6 +62,7 @@ pb.study:
             gosub put my %pb.box in my bucket
             gosub tap my bucket
             gosub tap my bucket
+            var pb.box 0
             goto pb.findBox
         } else {
             if (matchre("$roomobjs", "bin|statue|bucket")) then {

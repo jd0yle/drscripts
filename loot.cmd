@@ -45,13 +45,16 @@ var newGemPouch 0
 action var newGemPouch 1 when ^You think the .* pouch is too full to fit another gem into\.
 action var newGemPouch 1 when ^The .* pouch is too full to fit any more gems\!
 action var newGemPouch 1 when ^WARNING: You are carrying an extremely large number of items on your person\.$
+action goto loot-tieOff when ^You've already got a wealth of gems in there\!  You'd better tie it up before putting more gems inside\.
+#action put #tvar char.loot.untiedGemPouch 1 when ^Tie it off when it's empty\?  Why\?
+
 
 ###############################
 ###    MAIN
 ###############################
 loot-main:
-    gosub pickupLoot
-    gosub pickupLootAtFeet
+    gosub loot-pickupLoot
+    gosub loot-pickupLootAtFeet
     pause .2
     put #parse LOOT DONE
     exit
@@ -60,12 +63,22 @@ loot-main:
 ###############################
 ###    UTILITY
 ###############################
-pickupLoot:
+loot-tieOff:
+    if !(matchre("$righthand|$lefthand", "Empty")) then {
+        gosub put my $righthandnoun in my $char.inv.defaultContainer
+        gosub put my $lefthandnoun in my $char.inv.defaultContainer
+    }
+    gosub tie my $char.inv.gemPouch
+    gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+    goto loot-main
+
+
+loot-pickupLoot:
     eval objArray replacere("$roomobjs", ",", "|")
     eval objArray replacere("%objArray", " and ", "|")
     var loot.index 0
 
-    pickupLootLoop:
+    loot-pickupLootLoop:
         eval preLootLen len("$roomobjs")
         if (matchre("%objArray(%loot.index)", "(%lootables)")) then {
             var item $1
@@ -74,6 +87,10 @@ pickupLoot:
             #if (matchre("%item", "(%gems)") || matchre("%item", "(%craftMaterial)") then {
             if (matchre("%item", "(%gems)")) then {
                 gosub stow gem
+                if ($char.loot.untiedGemPouch = 1) then {
+                    put #tvar char.loot.untiedGemPouch 0
+                    gosub tie my $char.inv.gemPouch
+                }
             } else {
                 gosub stow %item
             }
@@ -98,15 +115,15 @@ pickupLoot:
                 gosub drop my %lootables(%loot.index)
             }
             var newGemPouch 0
-            goto pickupLootLoop
+            goto loot-pickupLootLoop
         }
 
         math loot.index add 1
         if (%loot.index > count ("%objArray", "|")) then return
-        goto pickupLootLoop
+        goto loot-pickupLootLoop
 
 
-pickupLootAtFeet:
+loot-pickupLootAtFeet:
     action (invFeet) on
     var toLoot null
     pause .2
@@ -116,9 +133,9 @@ pickupLootAtFeet:
     var invIndex 0
 
 
-    pickupLootAtFeetLoop:
+    loot-pickupLootAtFeetLoop:
         #if ("%toLoot(%invIndex)" != "null") then gosub stow %toLoot(%invIndex)
         if ("%toLoot(%invIndex)" != "null") then gosub stow feet
         math invIndex add 1
         if (%invIndex > %invLength) then return
-        goto pickupLootAtFeetLoop
+        goto loot-pickupLootAtFeetLoop

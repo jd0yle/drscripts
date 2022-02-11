@@ -157,7 +157,7 @@ box-main:
             gosub box-boxTypeLoop
         }
         gosub get my %boxItem
-        if (("$righthand" = "Empty") && ($char.inv.eddyContainer <> null)) then {
+        if (("$righthand" = "Empty") && ($char.inv.container.eddy <> null)) then {
             gosub look in my portal
             gosub get my %boxItem from my portal
         }
@@ -179,7 +179,7 @@ box-main:
         }
         var boxContent 0
         gosub open my %boxItem
-        if ("$char.inv.autolootContainer" = "0") then {
+        if ("$char.inv.container.autoloot" = "0") then {
             gosub box-lootCoin
         }
         gosub box-lootGems
@@ -295,14 +295,23 @@ box-dismantle:
 
 box-fullPouch:
     if !(matchre("$righthand|$lefthand", "Empty")) then {
-        gosub put my $lefthandnoun in my $char.inv.defaultContainer
+        gosub put my $lefthandnoun in my $char.inv.container.default
     }
     gosub remove my $char.inv.gemPouch
-    gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
-    gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
-    gosub wear my $char.inv.gemPouch
-    gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
-    gosub tie my $char.inv.gemPouch
+    gosub put my $char.inv.gemPouch in my $char.inv.container.fullGemPouch
+    gosub get my $char.inv.gemPouch from my $char.inv.container.emptyGemPouch
+    if (matchre("$lefthandnoun", "pouch")) then {
+        gosub wear my $char.inv.gemPouch
+        gosub fill my $char.inv.gemPouch with my $char.inv.container.default
+        gosub tie my $char.inv.gemPouch
+        # In case there is more than 70 gems, fill again.
+        gosub fill my $char.inv.gemPouch with my $char.inv.container.default
+        gosub store gem $char.inv.gemPouch
+    } else {
+        put #echo >Log [newbox] There are no more empty pouches in your $char.inv.container.emptyGemPouch.  Setting STORE GEM $char.inv.container.default.
+        gosub store gem $char.inv.container.default
+        put #tvar char.inv.refillGemPouches 1
+    }
     goto box-main
 
 

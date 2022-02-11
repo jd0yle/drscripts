@@ -14,8 +14,8 @@ var brazier silversteel brazier
 var loop augmenting loop
 
 #var enchantingContainer shadows
-var enchantingContainer white haversack
-var defaultContainer steelsilk backpack
+var enchantingContainer $char.inv.container.craft
+var defaultContainer $char.inv.container.default
 
 
 ######################

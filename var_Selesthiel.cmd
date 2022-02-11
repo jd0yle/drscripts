@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container portal
 put #tvar char.appraise.item gem pouch
+put #tvar char.inv.container.appraise portal
 
 
 ###############################
@@ -37,7 +37,7 @@ put #tvar char.burgle.cooldown null
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth mammoth calf
-put #tvar char.focusContainer steelsilk backpack
+put #tvar char.inv.container.focus steelsilk backpack
 put #tvar char.ritualFocus inauri plush
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
@@ -101,6 +101,23 @@ put #tvar char.cast.iots.prep 800
 put #tvar char.cast.rtr.prep 800
 
 put #tvar char.cast.tattoo.spellName rev
+
+
+###############################
+###      COMPENDIUM
+###############################
+put #tvar char.compendium third compendium
+put #tvar char.compendiums 0
+put #tvar char.compendium.forceTurn 1
+
+put #tvar char.inv.container.compendium thigh bag
+
+
+###############################
+###      CRAFT/ENCHANTING
+###############################
+put #tvar char.inv.craft.container white haversack
+
 
 ###############################
 ###      FIGHT
@@ -256,7 +273,7 @@ var super.enemies null
 put #tvar char.instrument.cloth chamois cloth
 put #tvar char.instrument.noun ocarina
 put #tvar char.instrument.tap indurium ocarina
-put #tvar char.instrument.container thigh bag
+put #tvar char.inv.container.instrument thigh bag
 
 put #tvar char.play.useAlmanac 1
 
@@ -264,21 +281,28 @@ put #tvar char.play.useAlmanac 1
 ###############################
 ###      INVENTORY
 ###############################
-put #tvar char.inv.anythingContainer firesilk rucksack
-put #tvar char.inv.autolootContainer 0
-put #tvar char.inv.defaultContainer steelsilk backpack
-put #tvar char.inv.emptyGemPouchContainer steelsilk backpack
-put #tvar char.inv.fullGemPouchContainer portal
-put #tvar char.inv.gemPouch gem pouch
-put #tvar char.inv.memoryOrbContainer portal
-put #tvar char.inv.secondaryContainer shadows
-put #tvar char.inv.servant.description mischievous Shadow Servant composed of fractured shadows
-put #tvar char.inv.tempContainer shadows
-put #tvar char.inv.tertiaryContainer 0
+put #tvar char.inv.container.almanac thigh bag
+put #tvar char.inv.container.autoloot 0
+put #tvar char.inv.container.default steelsilk backpack
+put #tvar char.inv.container.emptyGemPouch steelsilk backpack
+put #tvar char.inv.container.fullGemPouch portal
+put #tvar char.inv.container.gemPouch gem pouch
+put #tvar char.inv.container.holdAnything firesilk rucksack
+put #tvar char.inv.container.memoryOrb portal
+put #tvar char.inv.container.scroll shadows
+put #tvar char.inv.container.scrollStackers shadows
+put #tvar char.inv.container.scrollTemp duffel
+put #tvar char.inv.container.secondary shadows
+put #tvar char.inv.container.sellGemBag 0
+put #tvar char.inv.container.servantDescription mischievous Shadow Servant composed of fractured shadows
+put #tvar char.inv.container.temp shadows
+put #tvar char.inv.container.tertiary 0
+put #tvar char.inv.container.trash backpack
 
 # Loot
 put #tvar char.loot.boxes 0
 put #tvar char.loot.nuggetBars 0
+if (!($char.loot.untiedGemPouch >0)) then put #tvar char.loot.untiedGemPouch 0
 
 
 ###############################
@@ -361,7 +385,7 @@ unvar tmp.charge.Warding
 ###      OBSERVE & PREDICT
 ###############################
 put #tvar char.predict.tool divination bones
-put #tvar char.predict.tool.container telescope case
+put #tvar char.inv.container.predictTool telescope case
 
 put #tvar char.predict.useDc 0
 
@@ -369,7 +393,7 @@ put #tvar char.predict.preferred.skillset survival
 put #tvar char.predict.preferred.skill First Aid
 
 put #tvar char.observe.telescope clockwork telescope
-put #tvar char.observe.telescope.container telescope case
+put #tvar char.inv.container.telescope telescope case
 
 put #tvar char.observe.defense Merewalda|Dawgolesh|Penhetia|Giant|Katamba
 put #tvar char.observe.lore forge|Amlothi|Verena|Phoenix|Xibar
@@ -383,7 +407,7 @@ put #tvar char.observe.predict 0
 ###############################
 ###      PAWN
 ###############################
-put #tvar char.pawn.container watersilk bag
+put #tvar char.inv.container.pawn watersilk bag
 
 
 ###############################
@@ -399,7 +423,6 @@ put #tvar char.repair.list $char.armor|$char.fight.weapons.items|$char.armor.lig
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendium third compendium
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 0
 put #tvar char.research.useSanowret 1
@@ -417,8 +440,7 @@ put #tvar char.tarantula.skillsetOrder Magic|Weapon|Armor|Survival|Lore
 ###############################
 ###      TRAINER
 ###############################
-put #tvar char.trainer.almanacContainer thigh bag
-put #tvar char.trainer.almanacItem almanac
+put #tvar char.trainer.almanac almanac
 put #tvar char.trainer.firstaid 0
 
 pause .2

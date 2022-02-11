@@ -3,10 +3,7 @@ include libmaster.cmd
 var scrollstore.scrollItems scroll|ostracon|roll|leaf|vellum|tablet|parchment|bark|papyrus
 var scrollstore.stackerItems folio|worn book
 
-var tempContainer duffel
-
-put #tvar char.inv.container.scrolls shadows
-put #tvar char.inv.container.scrollStackers shadows
+var tempContainer $char.inv.container.scrollTemp
 
 
 action var scrollstore.spellName $1; put #echo >Log Scroll: $1 when ^It is labeled "(.*)\."$
@@ -20,7 +17,7 @@ gosub stow left
 scrollstore.getScroll:
     var scrollstore.spellName null
     if (!(%scrollstore.scrollIndex > -1)) then var scrollstore.scrollIndex 0
-    gosub get my %scrollstore.scrollItems(%scrollstore.scrollIndex) from my $char.inv.container.scrolls
+    gosub get my %scrollstore.scrollItems(%scrollstore.scrollIndex) from my $char.inv.container.scroll
     if ("$righthand" = "Empty") then {
         math scrollstore.scrollIndex add 1
         if (%scrollstore.scrollIndex > count("%scrollstore.scrollItems", "|")) then goto scrollstore.done

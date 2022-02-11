@@ -1,8 +1,8 @@
 ###############################
 ###      APPRAISE
 ###############################
-put #tvar char.appraise.container satchel
-put #tvar char.appraise.item my chronicle
+put #tvar char.appraise.item $char.inv.container.gemPouch
+put #tvar char.inv.container.appraise 0
 
 
 ###############################
@@ -46,14 +46,14 @@ put #tvar char.burgle.trashThisList basket|kaleidoscope|sieve|stick|diary|top|ra
 
 # ------ STORAGE HANDLING ------
 # container: pack, rucksack, portal, shadows, backpack, satchel, etc.
-put #tvar char.burgle.container rucksack
+put #tvar char.inv.container.burgle rucksack
 
 
 ###############################
 ###      CAMBRINTH
 ###############################
 put #tvar char.cambrinth viper
-put #tvar char.focusContainer poke
+put #tvar char.inv.container.focus poke
 put #tvar char.ritualFocus cameo
 put #tvar char.wornCambrinth 1
 put #tvar char.wornFocus 0
@@ -81,12 +81,17 @@ put #tvar char.common.scripts burgle|caracal|compendium|deposit|engbolt|engineer
 
 
 ###############################
+###      COMPENDIUM
+###############################
+put #tvar char.compendium compendium
+
+
+###############################
 ###      CRAFTING
 ###############################
-put #tvar char.craft.container workbag
-put #tvar char.craft.default.container satchel
 put #tvar char.craft.item crown
-put #tvar char.craft.tool.container workbag
+put #tvar char.inv.container.craft workbag
+put #tvar char.inv.container.craftTool workbag
 put #tvar char.craft.workorder.item crown
 
 
@@ -101,17 +106,25 @@ put #tvar super.enemies Akriana|Azurinna|Cote|Dasheek|Elonda|Enfermo|Erzo|Fahije
 ###############################
 ###      INVENTORY
 ###############################
-put #tvar char.inv.defaultContainer satchel
-put #tvar char.inv.emptyGemPouchContainer 0
-put #tvar char.inv.fullGemPouchContainer satchel
-put #tvar char.inv.memoryOrbContainer satchel
-put #tvar char.inv.secondaryContainer rucksack
-put #tvar char.inv.tempContainer rucksack
-put #tvar char.inv.tertiaryContainer poke
+put #tvar char.inv.container.almanac satchel
+put #tvar char.inv.container.autoloot 0
+put #tvar char.inv.container.craft workbag
+put #tvar char.inv.container.default satchel
+put #tvar char.inv.container.eddy 0
+put #tvar char.inv.container.emptyGemPouch 0
+put #tvar char.inv.container.fullGemPouch satchel
+put #tvar char.inv.container.gemPouch blue pouch
+put #tvar char.inv.container.holdAnything poke
+put #tvar char.inv.container.memoryOrb satchel
+put #tvar char.inv.container.secondary rucksack
+put #tvar char.inv.container.temp rucksack
+put #tvar char.inv.container.tertiary poke
+put #tvar char.inv.container.trash 0
 
 # Loot
 put #tvar char.loot.boxes 1
-
+put #tvar char.loot.nuggetBars 1
+if (!($char.loot.untiedGemPouch >0)) then put #tvar char.loot.untiedGemPouch 0
 
 ###############################
 ###      MAGIC
@@ -141,7 +154,7 @@ put #tvar char.magic.train.harness.Warding 0
 ###############################
 ###      PAWN
 ###############################
-put #tvar char.pawn.container rucksack
+put #tvar char.inv.container.pawn rucksack
 
 
 ###############################
@@ -155,7 +168,6 @@ put #tvar char.repair.list demonscale shield|jagged scythe|wood shaper|tapered r
 ###############################
 ###      RESEARCH
 ###############################
-put #tvar char.compendium compendium
 put #tvar char.research.interrupt.cast 1
 put #tvar char.research.interrupt.study 1
 put #tvar char.research.useSanowret 1
@@ -164,8 +176,7 @@ put #tvar char.research.useSanowret 1
 ###############################
 ###      TRAINER
 ###############################
-put #tvar char.trainer.almanacContainer satchel
-put #tvar char.trainer.almanacItem chronicle
+put #tvar char.trainer.almanac chronicle
 put #tvar char.trainer.firstaid caracal
 
 pause .2

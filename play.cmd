@@ -7,7 +7,7 @@
 # ****** MUST DEFINE THESE CHAR VARIABLES FIRST: ******
 # char.instrument.noun
 # char.instrument.tap
-# char.instrument.container
+# char.inv.container.instrument
 #
 # USAGE
 # .play [--noWait=1]  #By default, the script will wait until you are done playing to exit
@@ -143,7 +143,7 @@ play.repairInstrument:
 	if ("$lefthand" = "Empty") then goto done.noRepairKit
 	gosub repair my $char.instrument.noun with my repair kit
 	if (%play.refillRepairKit = 1) then {
-		gosub put my $char.instrument.noun in my $char.instrument.container
+		gosub put my $char.instrument.noun in my $char.inv.container.instrument
 		gosub get my refill
 
 		if ("$righthand" = "Empty") then goto play.done.noRepairKitRefill
@@ -251,7 +251,7 @@ play.setCharacterSong:
 play.done.noRepairKitRefill:
 	echo [play] REPAIR KIT NEEDS REFILL, NO REFILL FOUND
 	put #echo >Log [play] No refill for repair kit
-	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.instrument.container
+	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.inv.container.instrument
 	gosub stow right
 	gosub stow left
 	put #parse PLAY DONE
@@ -266,7 +266,7 @@ play.done:
         gosub play.cleanInstrument
         gosub play.repairInstrument
 	}
-	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.instrument.container
+	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.inv.container.instrument
 	pause .2
 	put #parse PLAY DONE
 	exit

@@ -252,6 +252,9 @@ repair.getNpc:
     # Check the npc for the location.
     if (matchre("$monsterlist", "(%repair.npcs)")) then {
         var repair.npc $1
+    } else {
+        put #echo >Log Blue [repair] Cannot find NPC for repairs.
+        goto repair.exit
     }
     return
 
@@ -288,6 +291,10 @@ repair.repairSingle:
             if ("$lefthand" = "%repair.group(%repair.index)") then {
                 gosub swap
             }
+        }
+        if ("%repair.npc" = "0") then {
+            put #echo >Log Blue [repair] Cannot find NPC for repairs.
+            goto repair.exit
         }
         if ("$righthand" = "%repair.group(%repair.index)") then {
             gosub give %repair.npc

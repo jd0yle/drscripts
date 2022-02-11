@@ -30,8 +30,9 @@ action (health) goto khurnaarti-getHealedTrigger when eval $bleeding = 1
 action put store box purse;put stow;put stow left when There isn't any more room in the eddy for that\.|You just can't get the (.*) to fit in the writhing eddy, no matter how you arrange it\.
 #action put store box backpack;put stow;put stow left when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
 #action put store box shadows;put stow;put stow left when There isn't any more room in the backpack for that\.|You just can't get the (.*) to fit in the indigo backpack, no matter how you arrange it\.
-action goto khurnaarti-fullBags when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.
+action goto khurnaarti-fullBags when There isn't any more room in the purse for that\.|You just can't get the (.*) to fit in the leather purse, no matter how you arrange it\.|That's too heavy to go in there\!
 action goto khurnaarti-fullPouch when ^You think the black gem pouch is too full to fit another gem into\.$
+action send tie my $char.inv.gemPouch when ^You've already got a wealth of gems in there\!  You'd better tie it up before putting more gems inside\.
 
 
 if ($health < 80 && "$roomname" <> "Private Home Interior") then goto khurnaarti-getHealedTrigger
@@ -52,12 +53,14 @@ if_1 then {
 ###############################
 ###    VARIABLES
 ###############################
+if (!($char.inv.refillGemPouches >0)) then put #tvar char.inv.refillGemPouches 0
 if (!($lastAppGametime >0)) then put #var lastAppGametime 0
 if (!($lastCompendiumGametime >0)) then put #var lastCompendiumGametime 0
 if (!($lastHealedGametime >0)) then put #var lastHealedGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastLocksGametime >0)) then put #var lastLocksGametime 0
+if (!($lastRefreshGametime >0)) then put #var $lastRefreshGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 put exp magic all
@@ -86,9 +89,10 @@ khurnaarti-loop:
     pause 1
     gosub khurnaarti-locationCheck
     gosub khurnaarti-healthCheck
+    gosub khurnaarti-refreshCheck
     gosub khurnaarti-scriptCheck
     if ("%khurnaarti.mode" = "fight") then {
-        gosub khurnaart-armorCheck
+        gosub khurnaarti-armorCheck
         gosub khurnaarti-combatCheck
     }
     if ("%khurnaarti.mode" = "idle") then {
@@ -283,6 +287,10 @@ khurnaarti-combatLoop:
         put #echo >Log Pink [khurnaarti] Leaving combat to be healed.
         goto khurnaarti-combatQuit
     }
+    if ($char.inv.refillGemPouches = 1) then {
+        put #echo >Log [khurnaarti] Out of empty gem pouches, restocking.
+        goto khurnaarti-combatQuit
+    }
     if !(matchre("$scriptlist", "fight")) then {
         put .fight
     }
@@ -342,24 +350,27 @@ khurnaarti-fullBags:
 
 
 khurnaarti-fullPouch:
-    put #script pause fight
+    if (matchre("$scriptlist", "fight|loot|newbox")) then {
+        goto khurnaarti-combatLoop
+    }
+
     if !(matchre("$lefthand", "Empty")) then {
-        gosub put my $lefthandnoun in my $char.inv.defaultContainer
+        gosub put my $lefthandnoun in my $char.inv.container.default
     }
     gosub remove my $char.inv.gemPouch
-    gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
-    gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
+    gosub put my $char.inv.gemPouch in my $char.inv.container.fullGemPouch
+    gosub get my $char.inv.gemPouch from my $char.inv.containeremptyGemPouch
 
     if (matchre("$lefthandnoun", "pouch")) then {
-        gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+        gosub fill my $char.inv.gemPouch with my $char.inv.containerdefault
         gosub tie my $char.inv.gemPouch
         gosub wear my $char.inv.gemPouch
-        put #script unpause fight
-        goto khurnaarti-combatLoop
     } else {
-        put #echo >Log [khurnaarti] NO MORE EMPTY POUCHES FOUND.
-        exit
+        put #echo >Log [khurnaarti] NO MORE EMPTY POUCHES FOUND, setting STORE GEM to $char.inv.containerdefault
+        put #tvar char.inv.refillGemPouches 1
+        gosub store gem $char.inv.container.default
     }
+    goto khurnaarti-combatLoop
 
 
 
@@ -499,6 +510,32 @@ khurnaarti-play:
     put #echo >Log #ffcc00 [khurnaarti] Performance complete. Perf:($Performance.LearningRate/34)
     return
 
+
+khurnaarti-refreshCheck:
+    evalmath nextRefreshAt $lastRefreshGametime + 86400
+    if (%nextRefreshAt < $gametime) then {
+        put #var lastRefreshGametime $gametime
+        gosub runScript sellBundle
+        gosub runScript sellGem shadow
+
+        if ($char.inv.refillGemPouches = 1) then {
+            gosub automove gem
+            if (matchre("$roomobjs", "appraiser|gembuyer|Wickett")) then {
+                var npc $0
+            }
+            var count 0
+
+            khurnaarti-refreshCheckPouchLoop:
+                if (%count <> 30) then {
+                    gosub ask %npc for pouch
+                    gosub put my pouch in my $char.inv.container.emptyGemPouch
+                    math count add 1
+                    goto khurnaarti-refreshCheckPouchLoop
+                }
+                goto khurnaarti-loop
+        }
+   }
+return
 
 khurnaarti-research:
     if ($lib.magicInert = 1) then {

@@ -13,7 +13,7 @@ var halfling4 0
 var halfling5 0
 var halfling6 0
 # Incidentals
-var incidentalStorage $char.inv.defaultContainer
+var incidentalStorage $char.inv.container.default
 var incidentalSurfaces altar|weathered basket|small boulder|large boulder|burrow|broken fencepost|yellow hay|wooden hut|red pail|large rake|large spiderweb|dragon statue|Halfling statue|smooth stones|straw|wagon|broken wheelbarrow|stack of wood
 # Keep Everything (0-Off/1-On)
 var keepall 1

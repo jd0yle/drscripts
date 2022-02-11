@@ -3,7 +3,7 @@ include libmaster.cmd
 var numMaterial 0
 
 matchre doCount ^You rummage through.*?and see (.*)\.$
-gosub rummage my satchel
+gosub rummage my $char.inv.container.material
 matchwait 5
 goto done
 
