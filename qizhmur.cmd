@@ -126,9 +126,11 @@ main:
         gosub moveToBurgle
         gosub runScript tend
         gosub release spell
+        gosub stow right
+        gosub stow left
+        if ($SpellTimer.Devour.active != 1) then gosub cast devour
 
-
-        gosub runScript armorremove
+        #gosub runScript armorremove
 
         gosub cast
 

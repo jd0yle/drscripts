@@ -211,21 +211,39 @@ main:
 	        gosub runScript play
 	        put #echo >Log #009999 Play end   - Performance: $Performance.LearningRate/34
         }
-        #if ($Outdoorsmanship.LearningRate < 10 && $lib.timers.nextBurgleAt > $gametime) then {
-	    #    put #echo >Log #009999 Outdoorsmanship $Outdoorsmanship.LearningRate/34
-	    #    gosub release cyclic
-	    #    gosub runScript cast rev
-	    #    if ($roomid != 50) then {
-	    #        gosub moveToHouse
-	    #        gosub runScript house
-	    #    }
-	    #    gosub waitForOutdoorsmanship
-	    #    put #echo >Log #009999 Outdoorsmanship $Outdoorsmanship.LearningRate/34
-        #}
         goto main
     }
 
     put #tvar char.fight.backtrain 0
+
+    gosub getLowestLearningRateFromList $char.fight.weapons.skills|Evasion|Parry_Ability|Shield_Usage
+    var lowestMainCombatSkillRate %returnVal
+
+    gosub getLowestLearningRateFromList $char.backtrain.skills|$First_Aid
+    var lowestBacktrainCombatSkillRate %returnVal
+
+    var shouldDoBacktrain null
+
+    # If main combats are low or less than backtrain, do main
+    if (%lowestMainCombatSkillRate < 10 || %lowestMainCombatSkillRate < %lowestBacktrainCombatSkillRate) then var shouldDoBacktrain 0
+
+    # If backtrain is low, do backtrain
+    if ("%shouldDoBacktrain" = "null" && %lowestBacktrainCombatSkillRate < 10) then var shouldDoBacktrain 1
+
+    # If main combat is not maxed, do main
+    if ("%shouldDoBacktrain" = "null" && %lowestMainCombatSkillRate < 30) then var shouldDoBacktrain 0
+
+    # if backtrain is not maxed, do backtrain
+    if ("%shouldDoBacktrain" = "null" && %lowestBacktrainCombatSkillRate < 33) then var shouldDoBacktrain 1
+
+    # Default to main combat if none of the previous apply
+    if ("%shouldDoBacktrain" = "null") then var shouldDoBacktrain 0
+
+    if ("%shouldDoBacktrain" = 1) then {
+        goto startBacktrain
+    } else {
+        goto startFight
+    }
 
     # Backtrain
     startBacktrain:
@@ -241,6 +259,9 @@ main:
 
 	# Main Combat
     startFight:
+    if (%tmpLowestLearningRate < 25) then {
+    }
+
 	    put #echo >Log #838700 Moving to combat
 	    gosub moveToAdultWyverns
 	    #if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict

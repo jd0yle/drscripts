@@ -754,6 +754,7 @@ checkWeaponSkills:
 
     if (%noAmmo = 1 && ("%weapons.skills(%weapons.index)" = "Crossbow" || "%weapons.skills(%weapons.index)" = "Bow" || "%weapons.skills(%weapons.index)" = "Slings")) then {
         put #echo >Debug #DD6601 NO AMMO FOR %weapons.skills(%weapons.index)
+        put #echo >Log #DD6601 NO AMMO FOR %weapons.skills(%weapons.index)
         gosub checkWeaponSkills.nextWeapon
         var noAmmo 0
     }

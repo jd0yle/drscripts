@@ -107,6 +107,8 @@ if (!contains("$roomname", "Astral Plane")) then {
 
 gosub awake
 
+if ($SpellTimer.Shear.active = 1) then gosub release shear
+gosub release cyclic
 if ($SpellTimer.Shadowling.active != 1 || $SpellTimer.Shadowling.duration < 5) then gosub runScript cast shadowling
 if ($SpellTimer.AuraSight.active != 1 || $SpellTimer.AuraSight.duration < 5) then gosub runScript cast aus
 if ($SpellTimer.BraunsConjecture.active != 1 || $SpellTimer.BraunsConjecture.duration < 5) then gosub runScript cast bc

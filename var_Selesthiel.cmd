@@ -158,6 +158,8 @@ put #tvar char.fight.tmPause 5
 put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|iron greatsword
 put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Twohanded_Edged
 
+put #tvar char.backtrain.items Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
+put #tvar char.backtrain.skills Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
 
 #put #tvar char.fight.weapons.items Empty|Imperial Spear
 #put #tvar char.fight.weapons.skills Outdoorsmanship|Polearms
@@ -199,7 +201,7 @@ put #tvar char.fight.useSeer 1
 put #tvar char.fight.useShadowling 1
 put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
-put #tvar char.fight.useSls 0
+put #tvar char.fight.useSls 1
 put #tvar char.fight.useTksh 1
 
 #***** NECRO *****

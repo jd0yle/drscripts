@@ -31,9 +31,13 @@ action var setHarderSong 0;var setEasierSong 0 when only the slightest hint of d
 
 var play.restart 0
 action var play.restart 1; goto play.repairInstrument when ^The damage to your instrument affects your performance\.$
-action var play.restart 1; goto play.cleanInstrument when ^You notice that moisture has accumulated
+# action var play.restart 1; goto play.cleanInstrument when ^You notice that moisture has accumulated
 action var play.restart 1; goto play.cleanInstrument when  dirtiness may affect your performance\.$
 action var play.restart 1; goto play.cleanInstrument when ^You really need to drain
+#action var play.restart 0; var play.isRaining 1 when ^The steady rain falls down on the surface of your
+#action var play.restart 0; var play.isRaining 1 when ^The heavy snow falls down on the surface of your
+
+action var play.restart 0; var play.isRaining 1 when ^The .* falls down on the surface of your
 
 action var play.refillRepairKit 1 when ^There are not enough.*in your repair kit
 
@@ -88,6 +92,9 @@ play.top:
 play.cleanInstrument:
 	gosub stop play
 	gosub stow left
+
+	if (%play.isRaining = 1) then goto play.done
+
 	gosub get my $char.instrument.cloth
 	if ("$lefthand" = "Empty" && "$righthand" = "Empty") then goto done.noCleaningCloth
 	gosub wring my cloth
@@ -255,8 +262,10 @@ play.done.noRepairKitRefill:
 ###      play.done
 ###############################
 play.done:
-	gosub play.cleanInstrument
-	gosub play.repairInstrument
+    if (%play.isRaining != 1) then {
+        gosub play.cleanInstrument
+        gosub play.repairInstrument
+	}
 	if ($char.isPerforming != 1 && ("$righthand" = "$char.instrument.tap" || "$lefthand" = "$char.instrument.tap")) then gosub put my $char.instrument.noun in my $char.instrument.container
 	pause .2
 	put #parse PLAY DONE
