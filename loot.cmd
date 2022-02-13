@@ -65,11 +65,11 @@ loot-main:
 ###############################
 loot-tieOff:
     if !(matchre("$righthand|$lefthand", "Empty")) then {
-        gosub put my $righthandnoun in my $char.inv.defaultContainer
-        gosub put my $lefthandnoun in my $char.inv.defaultContainer
+        gosub put my $righthandnoun in my $char.inv.container.default
+        gosub put my $lefthandnoun in my $char.inv.container.default
     }
-    gosub tie my $char.inv.gemPouch
-    gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
+    gosub tie my $char.inv.container.gemPouch
+    gosub fill my $char.inv.container.gemPouch with my $char.inv.container.default
     goto loot-main
 
 
@@ -89,7 +89,7 @@ loot-pickupLoot:
                 gosub stow gem
                 if ($char.loot.untiedGemPouch = 1) then {
                     put #tvar char.loot.untiedGemPouch 0
-                    gosub tie my $char.inv.gemPouch
+                    gosub tie my $char.inv.container.gemPouch
                 }
             } else {
                 gosub stow %item
@@ -97,20 +97,23 @@ loot-pickupLoot:
         }
 
         if (%newGemPouch = 1) then {
-            if !(matchre("$righthand|$lefthand", "Empty")) then {
-                gosub put my $lefthandnoun in my $char.inv.defaultContainer
+            if !(matchre("$lefthand", "Empty")) then {
+                gosub put my $lefthandnoun in my $char.inv.container.default
             }
-            gosub remove my $char.inv.gemPouch
-            gosub put my $char.inv.gemPouch in my $char.inv.fullGemPouchContainer
-            gosub get my $char.inv.gemPouch from my $char.inv.emptyGemPouchContainer
+            if !(matchre("$righthand", "Empty")) then {
+                gosub put my $righthandnoun in my $char.inv.container.default
+            }
+            gosub remove my $char.inv.container.gemPouch
+            gosub put my $char.inv.container.gemPouch in my $char.inv.container.fullGemPouch
+            gosub get my $char.inv.container.gemPouch from my $char.inv.container.emptyGemPouch
 
             if (matchre("$lefthandnoun", "pouch")) then {
-                gosub wear my $char.inv.gemPouch
-                gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
-                gosub tie my $char.inv.gemPouch
+                gosub wear my $char.inv.container.gemPouch
+                gosub fill my $char.inv.container.gemPouch with my $char.inv.container.default
+                gosub tie my $char.inv.container.gemPouch
                 # In case there is more than 70 gems, fill again.
-                gosub fill my $char.inv.gemPouch with my $char.inv.defaultContainer
-                gosub store gem $char.inv.gemPouch
+                gosub fill my $char.inv.container.gemPouch with my $char.inv.container.default
+                gosub store gem $char.inv.container.gemPouch
             } else {
                 gosub drop my %lootables(%loot.index)
             }
