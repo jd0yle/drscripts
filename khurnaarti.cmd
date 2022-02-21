@@ -37,7 +37,6 @@ action send tie my $char.inv.gemPouch when ^You've already got a wealth of gems 
 
 if ($health < 80 && "$roomname" <> "Private Home Interior") then goto khurnaarti-getHealedTrigger
 
-var khurnaarti.mode normal
 if_1 then {
     if ("%1" = "fight") then {
         var khurnaarti.mode fight
@@ -50,6 +49,8 @@ if_1 then {
         goto khurnaarti-idle
     }
 }
+
+
 ###############################
 ###    VARIABLES
 ###############################
@@ -60,7 +61,7 @@ if (!($lastHealedGametime >0)) then put #var lastHealedGametime 0
 if (!($lastLookGametime >0)) then put #var lastLookGametime 0
 if (!($lastPercGametime >0)) then put #var lastPercGametime 0
 if (!($lastLocksGametime >0)) then put #var lastLocksGametime 0
-if (!($lastRefreshGametime >0)) then put #var $lastRefreshGametime 0
+if (!($lastRefreshGametime >0)) then put #var lastRefreshGametime 0
 if (!($lastTrainerGametime >0)) then put #var lastTrainerGametime 0
 
 put exp magic all
@@ -77,6 +78,7 @@ var khurnaarti.bagContent 0
 var khurnaarti.bagHasContent 0
 var khurnaarti.combatReturn 0
 var khurnaarti.forageRoom 44
+var khurnaarti.mode normal
 var khurnaarti.needHeal 0
 
 
@@ -491,7 +493,7 @@ khurnaarti-openBoxes:
         gosub runScript newbox
         put #echo >Log #009933 [khurnaarti] Done opening boxes. Locks:($Locksmithing.LearningRate/34).
         gosub runScript armor wear
-        gosub runScript sellgem shadows
+        gosub runScript sellgem
     } else {
         put #echo >Log #009933 [khurnaarti] No boxes to open.
         return
