@@ -170,7 +170,7 @@ put #tvar char.fight.debilPauseTime 8
 put #tvar char.fight.debil.spell sleep
 
 # The amount of mana to prep debilitation at
-put #tvar char.fight.debil.prepAt 12
+put #tvar char.fight.debil.prepAt 13
 
 # Setting to 1 will force casting a debilitation spell for every attack
 # (Otherwise it only does it for learning)
@@ -199,9 +199,6 @@ put #tvar char.fight.tmPrep 23
 put #tvar char.fight.tmPause 7
 
 #***** WEAPONS *****
-# dragonwood crossbow
-#put #tvar char.fight.weapons.items blood-red scythe|Empty|dragonwood crossbow|ka'hurst hhr'ata|bastard sword|triple-weighted bola|blue sling|ka'hurst hhr'ata
-#put #tvar char.fight.weapons.skills Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
 # smokewood pelletbow
 #put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata|bastard sword|steel hanger|competition shortbow|white nightstick|tyrium cuska|kertig maul
@@ -210,9 +207,10 @@ put #tvar char.fight.tmPause 7
 put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata
 put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt
 
+# Everything including backtrain stuff
+#put #tvar char.fight.weapons.items Empty|blood-red scythe|Empty|smokewood pelletbow|ka'hurst hhr'ata|darkstone longsword|tyrium cuska|blue sling|ka'hurst hhr'ata|Empty|bastard sword|kertig maul|steel hanger|tyrium cuska|competition shortbow|white nightstick
+#put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|Heavy_Thrown|Large_Edged|Light_Thrown|Slings|Large_Blunt|Outdoorsmanship|Twohanded_Edged|Twohanded_Blunt|Small_Edged|Small_Blunt|Bow|Staves
 
-#put #tvar char.fight.weapons.items smokewood pelletbow|blue sling
-#put #tvar char.fight.weapons.skills Crossbow|Slings
 
 put #tvar char.fight.trainOffhand 1
 
@@ -297,7 +295,7 @@ if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.weapons.skills Outdoorsmanship|Twohanded_Edged|Twohanded_Blunt|Small_Edged|Small_Blunt|Bow|Staves
 
 	put #tvar char.fight.arrangeForPart 0
-    put #tvar char.fight.debil.use 1
+    put #tvar char.fight.debil.use 0
     put #tvar char.fight.useDissect 1
     put #tvar char.fight.useHunt 1
     put #tvar char.fight.trainOffhand 0
