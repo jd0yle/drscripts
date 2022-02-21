@@ -162,7 +162,7 @@ if ("%spell" = "devour") then gosub get my material
 if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)") && $SpellTimer.OsrelMeraud.active = 1) then {
 	gosub touch orb
 } else {
-	if ("%target" != "0arget" && "%spell" != "gg") then {
+	if ("%target" != "0arget" && !(matchre("%spell", "(%noTargetSpells)")) then {
 	    gosub cast %target
 	} else {
 	    gosub cast
