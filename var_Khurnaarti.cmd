@@ -299,7 +299,7 @@ put #tvar char.inv.container.practicebox shadows
 put #tvar char.inv.container.secondary leather purse
 put #tvar char.inv.container.sellGemBag $char.inv.container.default
 put #tvar char.inv.container.servantOptions pack|saddlebag|pouch|rucksack|backpack|poke
-put #tvar char.inv.container.servantDescription cantankerous Shadow Servant
+put #tvar char.inv.container.servantDescription emaciated Shadow Servant with hollow eyes
 put #tvar char.inv.container.temp $char.inv.container.secondary
 put #tvar char.inv.container.tertiary indigo backpack
 put #tvar char.inv.container.trash $char.inv.container.secondary
@@ -330,17 +330,17 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 15
+put #tvar char.magic.train.charge.Augmentation 18
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 15
+put #tvar char.magic.train.charge.Utility 18
 put #tvar char.magic.train.harness.Utility 0
 
-put #tvar char.magic.train.spell.Warding shear
+put #tvar char.magic.train.spell.Warding tksh
 put #tvar char.magic.train.prep.Warding 30
-put #tvar char.magic.train.charge.Warding 5
+put #tvar char.magic.train.charge.Warding 7
 put #tvar char.magic.train.harness.Warding 0
 
 put #tvar char.magic.train.revSorcery 0

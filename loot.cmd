@@ -107,7 +107,7 @@ loot-pickupLoot:
             gosub put my $char.inv.container.gemPouch in my $char.inv.container.fullGemPouch
             gosub get my $char.inv.container.gemPouch from my $char.inv.container.emptyGemPouch
 
-            if (matchre("$lefthandnoun", "pouch") || matchre("$righthandnoun", "pouch")) then {
+            if (matchre("$lefthandnoun|$righthandnoun", "pouch")) then {
                 gosub wear my $char.inv.container.gemPouch
                 gosub fill my $char.inv.container.gemPouch with my $char.inv.container.default
                 gosub tie my $char.inv.container.gemPouch

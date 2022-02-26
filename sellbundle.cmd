@@ -85,6 +85,7 @@ sb.getBundle:
         gosub get my bundle
     }
     if ((%sb.haveBundle = 0) && ($char.inv.container.eddy <> null)) then {
+        gosub look in my portal
         gosub get my bundle from my portal
     }
     return

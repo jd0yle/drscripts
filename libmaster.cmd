@@ -176,6 +176,8 @@ if ("$charactername" = "Inauri") then {
 }
 action put #var lib.magicInert 1 when ^The spell pattern resists the influx of unstable mana, overloading your arcane senses and rendering you magically inert\.
 action put #var lib.magicInert 0 when ^Awareness enfolds you like the embrace of a loving parent as your attunement to (Life|Lunar|Arcane|Elemental|Holy) mana returns\.
+action put #var lib.symbiosis 1 when ^You recall the exact details of the Chaos symbiosis, preparing to integrate it with the next spell you cast\.|But you've already prepared the Chaos symbiosis\!
+action put #var lib.symbiosis 0 when ^You release the Chaos symbiosis\.|You pause for a moment as the details of the Chaos symbiosis fade from your mind\.|But you haven't prepared a symbiosis\!
 action (checkForBacklashDebuff) var lib.debuffedSkills %lib.debuffedSkills|$1 when ^--.* (Lunar Magic|Augmentation|Debilitation|Utility|Warding|Sorcery)
 
 ###############################
