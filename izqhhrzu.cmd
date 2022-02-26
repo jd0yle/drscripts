@@ -114,7 +114,7 @@ main:
 
     # Backtrain
     startBacktrain:
-    if ($First_Aid.LearningRate < 30) then {
+    #if ($First_Aid.LearningRate < 30) then {
         put #echo >Log #838700 Moving to backtrain
         #gosub train.moveToYellowGremlins
         gosub train.moveToCloudRats
@@ -123,7 +123,9 @@ main:
         gosub waitForBacktrain
         put #tvar char.fight.backtrain 0
         goto main
-    }
+    #}
+
+    goto main
 
 
     startMagic:

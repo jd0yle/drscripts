@@ -23,6 +23,11 @@ loop:
 	}
 	gosub open my %stackerTypes(%index)
 	put flip my %stackerTypes(%index)
+	pause .1
+	if (matchre("%spellNames", "%spellName")) then {
+	    echo FOUND THE SPELL
+	    exit
+	}
 	gosub put my %stackerTypes(%index) in my portal
 	goto loop
 

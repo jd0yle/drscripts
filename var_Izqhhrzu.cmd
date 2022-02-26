@@ -105,7 +105,8 @@ put #tvar char.cast.pom.prep 700
 
 put #tvar char.cast.rejuv.prep 5
 put #tvar char.cast.rejuv.charge 25
-put #tvar char.cast.rejuv.chargeTimes 2
+put #tvar char.cast.rejuv.harness 20
+put #tvar char.cast.rejuv.chargeTimes 3
 
 put #tvar char.cast.rev.prep 23
 put #tvar char.cast.rev.charge 0
@@ -130,8 +131,9 @@ put #tvar char.cast.pfe.chargeTimes 2
 ###############################
 ###      CRAFTING
 ###############################
-put #tvar char.inv.container.craft $char.inv.container.default
-put #tvar char.inv.container.craftTool $char.inv.container.default
+#put #tvar char.inv.container.craft $char.inv.container.default
+put #tvar char.inv.container.craft alchemist kit
+put #tvar char.inv.container.craftTool alchemist kit
 put #tvar char.craft.workorder.item burin
 #put #tvar char.craft.item burin
 
@@ -167,7 +169,7 @@ put #tvar char.fight.debil.use 1
 put #tvar char.fight.debilPauseTime 8
 
 # The debilitation spell to use
-put #tvar char.fight.debil.spell sleep
+put #tvar char.fight.debil.spell sick
 
 # The amount of mana to prep debilitation at
 put #tvar char.fight.debil.prepAt 13
@@ -189,7 +191,7 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
-put #tvar char.fight.tmSpell do
+put #tvar char.fight.tmSpell horn
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)

@@ -10,7 +10,7 @@ action rezz.memoryState $1 when thin (\S+) nimbus
 gosub stow right
 gosub stow left
 
-#gosub rezz.rejuv
+gosub rezz.rejuv
 
 if ($SpellTimer.Resurrection.active != 1) then {
 	gosub prep rezz 8
@@ -20,8 +20,8 @@ if ($SpellTimer.Resurrection.active != 1) then {
 
 rezz.loop:
     gosub rezz.waitForMana
-    gosub harness 8
-    gosub infuse rezz 8
+    gosub harness 20
+    gosub infuse rezz 20
     goto rezz.loop
 
 

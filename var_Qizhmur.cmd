@@ -195,11 +195,11 @@ put #tvar char.fight.useSls 0
 # (Will still use harvest when low on material, consume for devour, etc.)
 put #tvar char.fight.necroRitual dissection
 
-put #tvar char.fight.avoidDivineOutrage 0
+put #tvar char.fight.avoidDivineOutrage 1
 
 put #tvar char.fight.useCh 0
 put #tvar char.fight.useIvm 0
-put #tvar char.fight.usePhp 1
+put #tvar char.fight.usePhp 0
 put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 1
 
@@ -237,7 +237,7 @@ put #tvar char.inv.container.secondary shadows
 put #tvar char.inv.container.sellGemBag 0
 put #tvar char.inv.container.temp shadows
 put #tvar char.inv.container.tertiary 0
-put #tvar char.inv.container.trash skull
+put #tvar char.inv.container.trash shadows
 
 # Loot
 put #tvar char.loot.boxes 0

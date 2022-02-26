@@ -64,9 +64,12 @@ if ("$preparedspell" != "None") then gosub release spell
 
 if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom" || "%spell" = "mf") then goto ritualSpell
 if ("%spell" = "col") then {
-    gosub checkMoons
-    if ("%target" = "$charactername") then var target $moon
-    if ("$moon" = "null") then var target ambient
+    # Replacing moons with ambient all the time because of the inaccuracy of the Genie time plugin - JD
+    #gosub checkMoons
+    #if ("%target" = "$charactername") then var target $moon
+    #if ("$moon" = "null") then var target ambient
+
+    var target ambient
 
 }
 

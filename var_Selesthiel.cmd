@@ -360,7 +360,7 @@ unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 45
+var tmp.charge.Warding 47
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding
