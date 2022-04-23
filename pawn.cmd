@@ -9,7 +9,7 @@ if_1 then {
 put .BurgleVariables
 var donotsell $BURGLE.KEEP
 var trashItems $BURGLE.TRASHITEMS
-var sellables amulet|apron|bangles|bank|bathrobe|bear|blanket|blossom|bottoms|bowl|bracer|briquet|broom|brush|canvas tote|charts|choker|cloak|comb|cookbook|cowbell|cube|cudgel|cufflinks|cylinder|diary|distaff|earrings|fan|hammer|handkerchief|haircomb|jug|kaleidoscope|knife|knives|lamp|leaflet|lens|locket|lunchbox|mirror|mortar|napkin|nightcap|nightgown|oil|opener|pajamas|paperweight|pestle|pillow|pins|plate|pot helm|prism|quill|rasp|razor|ring|rod|scissors|scroll|shakers|shaper|sieve|sipar|skillet|slate|slippers|snare|sphere|statuette|stick|stove|tankard|towel|top|twine|vase|yardstick
+var sellables amulet|apron|bangles|bank|bathrobe|bear|blanket|blossom|bottoms|bowl|bracer|briquet|broom|brush|canvas tote|charts|choker|cloak|comb|cookbook|cowbell|cube|cudgel|cufflinks|cylinder|bodice dagger|diary|distaff|earrings|fan|hammer|handkerchief|haircomb|jug|kaleidoscope|knife|knives|lamp|leaflet|lens|locket|lunchbox|mirror|mortar|napkin|nightcap|nightgown|oil|opener|pajamas|paperweight|pestle|pillow|pins|plate|pot helm|prism|quill|rasp|razor|ring|rod|scissors|scroll|shakers|shaper|sieve|sipar|skillet|slate|slippers|snare|sphere|statuette|stick|stove|tankard|telescope|towel|top|twine|vase|yardstick
 var soldItems null
 
 action var items $1 when ^You rummage through.*and see (.*)\.$

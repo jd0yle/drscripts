@@ -89,10 +89,12 @@ put #tvar char.compendium compendium
 ###############################
 ###      CRAFTING
 ###############################
+put #tvar char.craft.count 5
+put #tvar char.craft.design 0
 put #tvar char.craft.item crown
+put #tvar char.craft.workorder.item crown
 put #tvar char.inv.container.craft workbag
 put #tvar char.inv.container.craftTool workbag
-put #tvar char.craft.workorder.item crown
 
 
 ###############################

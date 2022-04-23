@@ -11,7 +11,7 @@ include libmaster.cmd
 ###      IDLE ACTION TRIGGERS
 ###############################
 action var sellgem.bagContents $1 when ^In .* you see (.*)\.$
-
+action goto sellgem-errornpc when ^There doesn't seem to be anyone around\.
 
 ###############################
 ###      VARIABLES
@@ -106,7 +106,7 @@ sellgem-checkLocation:
 
     if ("$zoneid" <> "150") then {
         put #echo >Log [sellgem] Not in Fang Cove, exiting.
-        goto sellgem.exit
+        goto sellgem-exit
     } else {
         if ("$roomid" <> "127") then {
             gosub automove gem
@@ -128,6 +128,12 @@ sellgem-clearHands:
 sellgem-deposit:
     gosub runScript deposit
     gosub sellgem-exit
+
+
+sellgem-errornpc:
+    put #echo >Log [sellgem] No NPC currently in the shop.  Roomobjs: ($roomobjs)
+    gosub sellgem-clearHands
+    goto sellgem-exit
 
 
 sellgem-exit:

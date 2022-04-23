@@ -65,6 +65,7 @@ action var boxDisarmed 1 ; goto box-pickId when While examining the (.*) for tra
 action var boxDisarmed 1 ; goto box-pickId when You notice a sphere with some type of lacing around it\.  It seems a small portion of the trap has been removed\.
 action var boxDisarmed 1 ; goto box-pickId when You notice a tiny hole near the lock which has been stuffed with dirt rendering the trap harmless\.
 action var boxDisarmed 1 ; goto box-pickId when You see a glowing rune pushed deep within the (.*)\.  It seems far enough away from the lock to be harmless\.
+action var boxDisarmed 1 ; goto box-pickId when You see a lumpy green rune pushed deep within the coffer\.  It seems far enough away from the lock to be harmless\.
 action var boxDisarmed 1 ; goto box-pickId when You see a pin and shaft lodged into the frame of the (.*)\.  It looks safe enough\.
 action var boxDisarmed 1 ; goto box-pickId when You see a shattered glass tube with a tiny hammer inside the lock\.  You deem it quite safe\.
 action var boxDisarmed 1 ; goto box-pickId when You see nothing of interest in the (.*)\.  It seems harmless\.
@@ -73,7 +74,7 @@ action var boxDisarmed 1; var boxLocked 0 ; goto box-pickId when It is locked\.
 
 # - - Variables
 action var boxContent $1 when ^In the.*you see (.*)
-action var boxIsEmpty 1 when  but there is nothing in there\.|There is nothing in there\.
+action var boxIsEmpty 1 when  but there is nothing in there\.|There is nothing in there\.|There's nothing inside (.*)\.
 action var boxDiff 1 when The (.*)'s trap is a trivially constructed gadget which you can take down any time\.
 action var boxDiff 1 when The lock is a trivially constructed piece of junk barely worth your time\.
 action var boxDiff 1 when This (trap|lock) is a laughable matter(.*)you could do it blindfolded\!
@@ -125,7 +126,7 @@ var boxLocked 0
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|box
 var boxType brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden
 var componentList sealed vial|stoppered vial|capillary tube|short needle|broken needle|bronze seal|animal bladder|silver studs|sharp blade|curved blade|broken rune|coiled spring|metal spring|metal lever|tiny hammer|iron disc|bronze disc|glass reservoir|bronze face|steel pin|steel striker|chitinous leg|(?!cracked )black crystal|metal circle|brown clay|black cube|glass sphere
-var craftMaterial bar\b|nugget
+var craftMaterial brass bar|bronze bar|coal bar|copper bar|covellite bar|electrum bar|gold bar|iron bar|lead bar|nickel bar|pewter bar|platinum bar|silver bar|steel bar|oravir bar|zinc bar|brass nugget|bronze nugget|coal nugget|copper nugget|covellite nugget|electrum nugget|gold nugget|iron nugget|lead nugget|nickel nugget|pewter nugget|platinum nugget|silver nugget|steel nugget|oravir nugget|zinc nugget
 var dismantleType 0
 var guild 0
 var pouch pouch
