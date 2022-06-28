@@ -154,7 +154,7 @@ put #tvar char.cast.ss.minPrepTime 10
 ###############################
 ###      COMPENDIUM
 ###############################
-put #tvar char.compendium golden textbook
+put #tvar char.compendium textbook
 put #tvar char.compendiums 0
 put #tvar char.compendium.forceTurn 1
 
@@ -324,23 +324,24 @@ put #tvar guild Moon Mage
 put #tvar char.magic.train.almanac $char.trainer.almanac
 put #tvar char.magic.train.minimumConcentration 50
 put #tvar char.magic.train.useAlmanac 1
+put #tvar char.magic.train.useServant 1
 put #tvar char.magic.train.useShadowling 1
 put #tvar char.magic.train.useSymbiosis 1
 put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 18
+put #tvar char.magic.train.charge.Augmentation 20
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 18
+put #tvar char.magic.train.charge.Utility 20
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding tksh
 put #tvar char.magic.train.prep.Warding 30
-put #tvar char.magic.train.charge.Warding 7
+put #tvar char.magic.train.charge.Warding 10
 put #tvar char.magic.train.harness.Warding 0
 
 put #tvar char.magic.train.revSorcery 0

@@ -29,8 +29,7 @@ include args.cmd
 action var compendiumStage 0 when ^You begin|^You continue
 action var compendiumStage 1 when ^In a sudden|with sudden|^With a sudden|^You attempt
 action var compendiumStage 2 when ^Why do you
-
-action goto compendiumOpen when ^You carefully examine a.*but see nothing special\.$
+action goto compendiumOpen when ^You carefully examine a.*but see nothing special\.|You need to open the textbook to read it\.
 
 
 ###############################
@@ -68,18 +67,19 @@ var compendiumTurns 0
 ###############################
 compendium:
     gosub stow left
-    if ("$righthandnoun" != "compendium") then {
+    if ("$righthandnoun" != "%compendiumItem") then {
         gosub stow right
         gosub get my %compendiumItem
     }
-    if ("$righthandnoun" != "compendium") then goto compendiumError
+    if ("$righthandnoun" != "%compendiumItem") then goto compendiumError
+    gosub read my %compendiumItem
 
     compendiumLoop:
         var compendiumStage -1
         gosub study my %compendiumItem
 		if ($Scholarship.LearningRate > %targetLearningRate && $First_Aid.LearningRate > %targetLearningRate) then goto compendiumDone
         if (%compendiumStage = 1 || %compendiumForceTurn = 1) then {
-            gosub turn my compendium
+            gosub turn my %compendiumItem
             math compendiumTurns add 1
             if (%compendiumTurns > 9) then goto compendiumNext
             goto compendiumLoop
@@ -106,7 +106,7 @@ compendiumNext:
 ###    compendiumOpen
 ###############################
 compendiumOpen:
-	gosub open my compendium
+	gosub open my %compendiumItem
 	goto compendium
 
 

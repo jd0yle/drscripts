@@ -89,6 +89,11 @@ loop:
             gosub runScript cast shadowling
         }
     }
+    if ("$guild" = "Moon Mage" && $char.magic.train.useServant = 1) then {
+        if ($SpellTimer.ShadowServant.active = 0 || $SpellTimer.ShadowServant.duration < 5) then {
+            gosub release servant
+        }
+    }
 
     if ($char.magic.train.revSorcery = 1) then {
         if ($SpellTimer.Revelation.active != 1) then {
@@ -190,7 +195,9 @@ loop:
             gosub cast
         }
         if (%lastSpellBackfired = 1) then {
-            gosub release symbiosis
+            if ($lib.symbiosis = 1) then
+                gosub release symbiosis
+            }
             evalmath tmp ($char.magic.train.charge.%skill - 1)
             put #tvar char.magic.train.charge.%skill %tmp
             put #tvar char.magic.train.lastBackfireGametime.%skill $gametime

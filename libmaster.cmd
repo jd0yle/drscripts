@@ -2101,6 +2101,7 @@ read:
     matchre return ^On this page
     matchre return Page
     matchre return ^Roundtime
+    matchre return Several annotations of limb size and organ placements appear along the margins\.
     matchre return ^The writing is too small\.  You'll have to hold the scroll to read it\.
     matchre return ^You open your logbook
     matchre return ^You page through
@@ -2732,6 +2733,8 @@ study:
     matchre return ^Are you sure you want to do that
     matchre return ^But you aren't holding
     matchre return ^Roundtime
+    matchre return ^The text of the .* appears to be gibberish, and you would learn nothing from this .*\.
+    matchre return \[This silk-bound chronicle is only usable by a character with a Premium subscription\.\]
     matchre return ^Why do you need to study this chart again\?
     matchre return ^You are unable to sense additional information\.
     matchre return ^You attempt
