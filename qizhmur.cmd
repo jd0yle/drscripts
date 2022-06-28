@@ -17,6 +17,7 @@ action put #script abort all except qizhmur;goto logout when eval contains("$roo
 action (health) goto getHealedTrigger when eval $health < 85
 action (health) goto getHealedTrigger when eval $bleeding = 1
 action (health) goto getHealedTrigger when ^TESTHEAL
+action goto getHealedTrigger when ^And how were you planning to get in
 
 action (taisidonCheck) if (contains("$roomname", "A'baya") || contains("$roomobjs", "shimmering ocean-blue moongate")) then goto escapeTaisidon when eval $roomname
 
@@ -782,6 +783,10 @@ moveToHouse:
 
 enterHouse:
     gosub release eotb
+    gosub runScript house
+    return
+
+
     matchre enterHouseCont suddenly rattles
     matchre enterHouseCont suddenly opens
     put peer bothy
@@ -981,11 +986,10 @@ moveToWyvern:
 
     # Shard West Gate Area
     if ("$zoneid" = "69") then {
-        #if ($roomid >= 567 && $roomid <= 572 && "$roomplayers" = "") then return
-        #if ($roomid >= 480 && $roomid <= 487 && "$roomplayers" = "") then return
         if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
-        #if ( (($roomid >= 480 && $roomid <= 487) || ($roomid >= 567 && $roomid <= 572)) && "$roomplayers" = "") then return
-        gosub runScript findSpot juvenilewyvern
+        if ($roomid = 388 && "%stillWaiting" = "1") then put .qizhmur
+        var stillWaiting 1
+        gosub runScript findSpot juvenilewyvern nowait
         goto moveToWyvern
     }
 

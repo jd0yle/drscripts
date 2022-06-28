@@ -26,8 +26,8 @@ if ($SpellTimer.Shadowling.active = 0 || $SpellTimer.Shadowling.duration < 5) th
     gosub release shadowling
     gosub runScript cast shadowling
 }
-if ($SpellTimer.BraunsConjecture.active = 0 || $SpellTimer.BraunsConjecture.duration < 5) then gosub runScript cast bc
-if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 5) then gosub runScript cast dc
+#if ($SpellTimer.BraunsConjecture.active = 0 || $SpellTimer.BraunsConjecture.duration < 5) then gosub runScript cast bc
+#if ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 5) then gosub runScript cast dc
 if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 5) then gosub runScript cast aus
 if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 5) then gosub runScript cast pg
 
@@ -57,9 +57,14 @@ rtrObserve:
     matchre rtrPred ^Although you were nearly overwhelmed by some aspects of your observation, you still learned more of the future.
     matchre rtrPred ^You learned something useful from
     matchre rtrObserve ^You see nothing regarding the future.
+    matchre rtrObsNoTelescope ^You would probably need a periscope to do that.
     #put observe %object in sky
     put peer my telescope
     matchwait
+
+rtrObsNoTelescope:
+    gosub observe %object in sky
+    goto rtrWait
 
 
 rtrPred:

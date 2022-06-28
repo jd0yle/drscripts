@@ -261,7 +261,7 @@ put #tvar char.magic.train.cyclic.prep.Utility 20
 put #tvar char.magic.train.cyclic.useSymbiosis 1
 
 
-var tmp.charge.Augmentation 55
+var tmp.charge.Augmentation 56
 put #tvar char.magic.train.spell.Augmentation obf
 put #tvar char.magic.train.prep.Augmentation 30
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %tmp.charge.Augmentation
@@ -283,7 +283,7 @@ unvar tmp.charge.Augmentation
 
 
 
-var tmp.charge.Utility 55
+var tmp.charge.Utility 56
 put #tvar char.magic.train.spell.Utility gaf
 put #tvar char.magic.train.prep.Utility 30
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %tmp.charge.Utility
@@ -305,7 +305,7 @@ unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 55
+var tmp.charge.Warding 56
 put #tvar char.magic.train.spell.Warding maf
 put #tvar char.magic.train.prep.Warding 30
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding

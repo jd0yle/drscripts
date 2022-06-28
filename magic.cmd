@@ -79,10 +79,6 @@ loop:
 	if ($char.magic.train.usePom = 1 && ($SpellTimer.PersistenceofMana.active != 1 || $SpellTimer.PersistenceofMana.duration < 3)) then gosub runScript cast pom
 
     if ("$guild" = "Moon Mage") then {
-        #if ("$predictPool.defens" = "complete") then {
-        #    gosub runScript predict parry
-        #    gosub predict state all
-        #}
         if ($Astrology.LearningRate < 31) then gosub observe.onTimer
         if ($Astrology.LearningRate < 25) then gosub runScript predict
     }
@@ -106,13 +102,13 @@ loop:
                 put exp mods
                 pause 2
                 action (expMods) off
-                if (!contains("%debuffSkills", "Sorcery")) then {
+                #if (!contains("%debuffSkills", "Sorcery")) then {
                     gosub release cyclic
                     #gosub runScript cast rev
                     gosub invoke tattoo
                     gosub waitForPrep
                     gosub cast
-                }
+                #}
             }
         } else {
             var shouldReleaseRev 0
@@ -136,7 +132,7 @@ loop:
         if (%shouldCastRoc = 1) then {
             if ($char.magic.train.cyclic.useSymbiosis = 1) then gosub prep symbiosis
             gosub prep $char.magic.train.cyclic.spell.Utility $char.magic.train.cyclic.prep.Utility
-            gosub waitForPrep
+            gosub waitForPrep $char.magic.train.minPrepTime.Utility
             gosub cast
         }
 
@@ -180,7 +176,7 @@ loop:
                 gosub get my $char.cambrinth
             }
         }
-        gosub waitForPrep
+        gosub waitForPrep $char.magic.train.minPrepTime.%skill
         gosub waitForConcentration $char.magic.train.minimumConcentration
         if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
         if ("$char.magic.train.spell.%skill" = "col") then {

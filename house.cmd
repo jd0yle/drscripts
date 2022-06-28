@@ -91,7 +91,7 @@ house.main:
             var closeObj house
             if (contains("$roomobjs", "farmstead") then var closeObj farmstead
             if (contains("$roomobjs", "sandalwood door") then var closeObj door
-            if (contains("$roomobjs", "bothy") then var closeObj bothy
+            if (contains("$roomobjs", "bothy") then var closeObj fieldstone bothy
             gosub close %closeObj
             if (matchre("$charactername", "Selesthiel|Inauri")) then gosub lock %closeObj
         }

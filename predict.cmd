@@ -73,8 +73,8 @@ findSkillSet:
 
 
     findSkillSetLoop:
-        if ($predictPool.%skillsets(%index) = complete) then {
-        #if ("$predictPool.%skillsets(%index)" != "no") then {
+        #if ($predictPool.%skillsets(%index) = complete) then {
+        if ("$predictPool.%skillsets(%index)" != "no") then {
             var skillset %skillsets(%index)
             return
         }
