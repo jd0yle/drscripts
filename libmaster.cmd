@@ -754,6 +754,7 @@ charge:
     var todo $0
     charge1:
     matchre return ^Roundtime
+    matchre return ^How much
     matchre return ^I could not find
     matchre return ^You are in no condition to do that
     matchre return ^You strain, but lack the mental stamina to charge
@@ -2965,8 +2966,10 @@ touch:
     var todo $0
     touch1:
     if ("$charactername" = "Inauri") then put #echo >Log #FF0000 Psssst! I love you! -Justin
+    matchre return ^Touch what?
     matchre return ^You lay your hand on
     matchre return ^You lightly touch
+    matchre return ^You reach out and touch
     matchre return ^You reluctantly touch
     matchre return ^You rest your hand
     matchre return ^You rush around

@@ -168,6 +168,7 @@ loop:
                 gosub get my $char.cambrinth
             }
         }
+
         gosub charge my $char.cambrinth $char.magic.train.charge.%skill
         if ($char.magic.train.useInvokeSpell = 1) then {
             gosub invoke my $char.cambrinth $char.magic.train.charge.%skill spell
@@ -181,6 +182,7 @@ loop:
                 gosub get my $char.cambrinth
             }
         }
+
         gosub waitForPrep $char.magic.train.minPrepTime.%skill
         gosub waitForConcentration $char.magic.train.minimumConcentration
         if ($SpellTimer.Shear.active = 1 || $SpellTimer.Shear.duration > 0) then gosub release shear
@@ -194,8 +196,9 @@ loop:
         } else {
             gosub cast
         }
-        if (%lastSpellBackfired = 1) then {
-            if ($lib.symbiosis = 1) then
+        if ("%lastSpellBackfired" = "1") then {
+            put #echo >Log lastSpellBackfired = 1, reducing %skill
+            if ($lib.symbiosis = 1) then {
                 gosub release symbiosis
             }
             evalmath tmp ($char.magic.train.charge.%skill - 1)

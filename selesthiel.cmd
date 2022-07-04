@@ -1120,7 +1120,7 @@ resetState:
     gosub release cyclic
     gosub stow hhr'ata
     gosub stow bola
-    gosub stow pewter bar
+    #gosub stow pewter bar
     gosub retrieveBolts
     return
 

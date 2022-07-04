@@ -325,10 +325,10 @@ put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.revSorcery 1
 
-var tmp.charge.Augmentation 69
+var tmp.charge.Augmentation 80
 put #tvar char.magic.train.spell.Augmentation cv
-put #tvar char.magic.train.prep.Augmentation 30
-put #tvar char.magic.train.minPrepTime.Augmentation 18
+put #tvar char.magic.train.prep.Augmentation 20
+put #tvar char.magic.train.minPrepTime.Augmentation 15
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %tmp.charge.Augmentation
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -351,7 +351,7 @@ unvar tmp.charge.Augmentation
 var tmp.charge.Utility 75
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
-put #tvar char.magic.train.minPrepTime.Utility 18
+put #tvar char.magic.train.minPrepTime.Utility 15
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %tmp.charge.Utility
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -399,6 +399,7 @@ unvar tmp.charge.Warding
 put #tvar char.predict.tool divination bones
 put #tvar char.inv.container.predictTool telescope case
 
+put #tvar char.predict.useAus 0
 put #tvar char.predict.useDc 0
 
 put #tvar char.predict.preferred.skillset survival
