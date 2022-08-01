@@ -444,6 +444,11 @@ attackThrownWeapon:
 
         #if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata" || "$righthandnoun" = "pan" || "$righthandnoun" = "wand" || "$righthandnoun" = "naphtha") then {
         var fight.throwableItems bola|hammer|hhr'ata|pan|wand|naphtha|cuska
+        var fight.throwlessItems meteor hammer|smokewhorl whip
+        if (matchre("$righthand", "(%fight.throwlessItems)")) then {
+            gosub attack whip
+            gosub attack whip
+        }
         if (matchre("$righthandnoun", "(%fight.throwableItems)")) then {
             if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
             gosub attack %throwCommand

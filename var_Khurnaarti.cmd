@@ -331,12 +331,12 @@ put #tvar char.magic.train.useInvokeSpell 0
 
 put #tvar char.magic.train.spell.Augmentation seer
 put #tvar char.magic.train.prep.Augmentation 15
-put #tvar char.magic.train.charge.Augmentation 20
+put #tvar char.magic.train.charge.Augmentation 25
 put #tvar char.magic.train.harness.Augmentation 0
 
 put #tvar char.magic.train.spell.Utility seer
 put #tvar char.magic.train.prep.Utility 15
-put #tvar char.magic.train.charge.Utility 20
+put #tvar char.magic.train.charge.Utility 25
 put #tvar char.magic.train.harness.Utility 0
 
 put #tvar char.magic.train.spell.Warding tksh
@@ -380,7 +380,7 @@ put #tvar char.repair.forceFangCove true
 put #tvar char.repair.money 50
 put #tvar char.repair.armor kelp wrap|demonscale shield|moonsilk shirt|moonsilk pants|ka'hurst balaclava|ka'hurst gloves
 put #tvar char.repair.brawl elbow spikes|knee spikes|steelsilk footwraps|hand claws
-put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|frying pan|ka'hurst hhr'ata|flamewood riste|assassin's blade
+put #tvar char.repair.weapon diamondwood nightstick|smokewood pelletbow|smokewhorl whip|meteor hammer|flamewood riste|assassin's blade
 put #tvar char.repair.weapon2 executioner's broad-axe|duraka skefne|haralun broadsword|blue sling
 put #tvar char.repair.list $char.repair.armor|$char.repair.brawl|$char.repair.weapon|$char.repair.weapon2
 
