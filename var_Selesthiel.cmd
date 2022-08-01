@@ -189,8 +189,8 @@ put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_E
 put #tvar char.backtrain.items Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
 put #tvar char.backtrain.skills Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
 
-#put #tvar char.fight.weapons.items Empty|Imperial Spear
-#put #tvar char.fight.weapons.skills Outdoorsmanship|Polearms
+put #tvar char.fight.weapons.items smokewhorl whip|meteor hammer
+put #tvar char.fight.weapons.skills Light_Thrown|Heavy_Thrown
 
 put #tvar char.fight.trainOffhand 1
 
@@ -260,6 +260,9 @@ if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.useSls 0
 	put #tvar char.fight.weapons.items Empty|Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
 	put #tvar char.fight.weapons.skills First_Aid|Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
+
+    put #tvar char.fight.weapons.items smokewhorl whip|meteor hammer
+    put #tvar char.fight.weapons.skills Light_Thrown|Heavy_Thrown
 
 	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 0

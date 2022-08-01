@@ -442,6 +442,12 @@ attackCrossbow.aimPause:
 ###############################
 attackThrownWeapon:
     if ("%weapons.items(%weapons.index)" != "Empty") then { # Empty thrown weapons means using throwing blades
+        var fight.throwableItems bola|hammer|hhr'ata|pan|wand|naphtha|cuska
+        var fight.throwlessItems meteor hammer|smokewhorl whip
+
+        var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
+        var offhandWeaponsBlacklist meteor hammer
+
         if ("$righthand" != "%weapons.items(%weapons.index)" ) then {
             gosub stow right
             gosub stow left
@@ -453,9 +459,6 @@ attackThrownWeapon:
         gosub checkHide
 
 		var doOffhand 0
-		var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
-        var offhandWeaponsBlacklist meteor hammer
-
 
 		if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32 && $Offhand_Weapon.LearningRate <= $%weapons.skills(%weapons.index).LearningRate) then {
 			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") && !matchre("%weapons.items(%weapons.index)", "%offhandWeaponsBlacklist") then {
@@ -463,37 +466,22 @@ attackThrownWeapon:
 			}
 		}
 
-		var throwCommand throw
-		if (%doOffhand = 1) then var throwCommand throw left
+        # By default, lob any item. If the item is explicitly throwable and non-lodging (%fight.throwableItems), use 'throw'.
+        # If the item is a "throwless" thrown (the whip and meteor hammer), then use 'whip'
+		var throwCommand lob
+		if (matchre("$righthandnoun", "(%fight.throwableItems)")) then var throwCommand throw
+		if (matchre("$righthand", "(%fight.throwlessItems)")) then var throwCommand whip
 
-        #if ("$righthandnoun" = "bola" || "$righthandnoun" = "hammer" || "$righthandnoun" = "hhr'ata" || "$righthandnoun" = "pan" || "$righthandnoun" = "wand" || "$righthandnoun" = "naphtha") then {
-        var fight.throwableItems bola|hammer|hhr'ata|pan|wand|naphtha|cuska
-        var fight.throwlessItems meteor hammer|smokewhorl whip
-        if (matchre("$righthand", "(%fight.throwlessItems)")) then {
-            gosub attack whip
-            gosub attack whip
-        }
-        if (matchre("$righthandnoun", "(%fight.throwableItems)")) then {
-            if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
-            gosub attack %throwCommand
-            gosub get %weapons.items(%weapons.index)
+		if (%doOffhand = 1) then var throwCommand %throwCommand left
 
-            if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
-            gosub attack %throwCommand
-            gosub get %weapons.items(%weapons.index)
-        } else {
-            gosub attack lob
-            gosub get %weapons.items(%weapons.index)
-            gosub attack lob
-            gosub get %weapons.items(%weapons.index)
-        }
-        if ("$righthand" != "%weapons.items(%weapons.index)" ) then {
-            if ("$lefthand" = "%weapons.items(%weapons.index)") then {
-                gosub swap
-            } else {
-                gosub get my %weapons.items(%weapons.index)
-            }
-        }
+		if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
+        gosub attack %throwCommand
+        if (!matchre("%throwCommand", "whip")) then gosub get %weapons.items(%weapons.index)
+
+		if (%doOffhand = 1 && "$lefthand" = "Empty") then gosub swap
+        gosub attack %throwCommand
+        if (!matchre("%throwCommand", "whip")) then gosub get %weapons.items(%weapons.index)
+
     } else {
         if (!contains("$righthand", "throwing blade")) then gosub stow right
         gosub get throwing blades
