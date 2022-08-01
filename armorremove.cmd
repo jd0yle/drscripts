@@ -1,6 +1,6 @@
 include libmaster.cmd
 
-var armors armet|aventail|backplate|balaclava|breastplate|cap|cowl|cuirass|dress|fauld|gauntlets|gloves|gorget|greaves|hood|jerkin|plate|hauberk|helm|lorica|leathers|mail|mantle|mask|pants|robe|sallet|shirt|sleeves|tasset|vambraces|vest
+var armors armet|aventail|backplate|balaclava|breastplate|cap|cowl|cuirass|dress|fauld|gauntlets|gloves|gorget|greaves|hood|jerkin|\bplate|hauberk|helm|lorica|leathers|mail|mantle|mask|pants|robe|sallet|shirt|sleeves|tasset|vambraces|vest
 var shields aegis|buckler|shield|sipar|targe
 
 var wornItems null

@@ -151,6 +151,30 @@ if ("$charactername" = "%CHARACTER5") then {
     var skip NULL
 }
 
+# Zxi
+if ("$charactername" = "Zxi") then {
+    var eddy NULL
+    var pack pack
+    if ($Athletics.LearningRate > 2 && $Athletics.LearningRate > $Locksmithing.LearningRate) then {
+        var method LOCKPICK
+    } else {
+        var method ROPE
+    }
+
+    var method ROPE
+
+    var ringtype lockpick ring
+    var ropetype heavy rope
+    var worn NO
+    var travel NULL
+    var maxgrabs 5
+    var hideme NO
+    var pawn NO
+    var donotpawnthis keepsake box|memory orb|jewelry box|book
+    var trashall NO
+    var trashthings NULL
+    var skip NULL
+}
 
 ######### END USER VARIABLES DON'T TOUCH ANYTHING ELSE
 

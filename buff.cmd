@@ -9,7 +9,7 @@ var index 0
 eval numBuffs count("%buffs", "|")
 
 buffs.loop:
-	if ($SpellTimer.%spellNames(%index).active != 1 || $SpellTimer.%spellNames(%index).duration < 20) then {
+	if ($SpellTimer.%spellNames(%index).active != 1 || $SpellTimer.%spellNames(%index).duration < 10) then {
 	    if ($mana < 60) then {
             echo [buff] Waiting for mana (60)
             gosub waitForMana 60

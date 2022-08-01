@@ -8,9 +8,13 @@ put #tvar char.inv.container.appraise portal
 ###############################
 ###      ARMOR
 ###############################
-put #tvar char.armor demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|chain gloves|lamellar helm|plate mask
-put #tvar char.armor.light demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|moonsilk gloves|moonsilk hood|moonsilk mask
+#put #tvar char.armor demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|chain gloves|lamellar helm|plate mask
 put #tvar char.armor.wyvern demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|chain gloves|moonsilk hood|moonsilk mask
+
+put #tvar char.armor demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|ka'hurst gloves|indurium cap|agonite mask|agonite aventail
+put #tvar char.armor.light demonscale shield|pugilist's armguard|moonsilk pants|moonsilk shirt|moonsilk gloves|moonsilk hood|moonsilk mask
+put #tvar char.armor.brig demonscale shield|pugilist's armguard|indurium vest|indurium cap|indurium mask|indurium aventail|indurium tasset|indurium greaves|indurium gloves|indurium vambraces
+put #tvar char.armor.plate demonscale shield|pugilist's armguard|agonite greaves|agonite gauntlets|agonite vambraces|agonite mask|dome helm|agonite aventail|agonite backplate|agonite breastplate|agonite fauld
 
 
 ###############################
@@ -54,26 +58,26 @@ put #tvar char.cast.default.charge 70
 put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 1
 
-put #tvar char.cast.art.minPrepTime 12
-put #tvar char.cast.aus.minPrepTime 12
-put #tvar char.cast.col.minPrepTime 15
-put #tvar char.cast.cv.minPrepTime 12
-put #tvar char.cast.fm.minPrepTime 12
+put #tvar char.cast.art.minPrepTime 5
+put #tvar char.cast.aus.minPrepTime 10
+put #tvar char.cast.col.minPrepTime 12
+put #tvar char.cast.cv.minPrepTime 5
+put #tvar char.cast.fm.minPrepTime 5
 put #tvar char.cast.imbue.minPrepTime 12
 put #tvar char.cast.lgv.minPrepTime 15
 put #tvar char.cast.maf.minPrepTime 8
-put #tvar char.cast.moonblade.minPrepTime 8
+put #tvar char.cast.moonblade.minPrepTime 3
 put #tvar char.cast.mt.minPrepTime 8
-put #tvar char.cast.pg.minPrepTime 12
-put #tvar char.cast.psy.minPrepTime 8
+put #tvar char.cast.pg.minPrepTime 5
+put #tvar char.cast.psy.minPrepTime 5
 put #tvar char.cast.rf.minPrepTime 0
-put #tvar char.cast.seer.minPrepTime 15
+put #tvar char.cast.seer.minPrepTime 12
 put #tvar char.cast.shadowling.minPrepTime 15
-put #tvar char.cast.shadows.minPrepTime 8
+put #tvar char.cast.shadows.minPrepTime 3
 put #tvar char.cast.shear.minPrepTime 5
 put #tvar char.cast.tksh.minPrepTime 15
-put #tvar char.cast.ts.minPrepTime 8
-put #tvar char.cast.unleash.minPrepTime 15
+put #tvar char.cast.ts.minPrepTime 10
+put #tvar char.cast.unleash.minPrepTime 10
 
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
@@ -90,7 +94,7 @@ put #tvar char.cast.shw.minPrepTime 8
 
 put #tvar char.cast.sls.prep 33
 put #tvar char.cast.sls.charge 0
-put #tvar char.cast.sls.minPrepTime 10
+put #tvar char.cast.sls.minPrepTime 6
 
 put #tvar char.cast.suf.prep 100
 put #tvar char.cast.suf.charge 0
@@ -348,7 +352,7 @@ unvar tmp.charge.Augmentation
 
 
 
-var tmp.charge.Utility 75
+var tmp.charge.Utility 65
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
 put #tvar char.magic.train.minPrepTime.Utility 15
@@ -447,7 +451,7 @@ put #tvar char.research.useSanowret 1
 put #tvar char.tarantula.item harvester spider
 put #tvar char.inv.container.tarantula steelsilk backpack
 
-put #tvar char.tarantula.skillsetOrder Magic|Weapon|Armor|Survival|Lore
+put #tvar char.tarantula.skillsetOrder Armor|Weapon|Magic|Survival|Lore
 
 
 ###############################

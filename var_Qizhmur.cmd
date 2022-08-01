@@ -12,15 +12,19 @@ put #tvar char.inv.container.appraise portal
 #put #tvar char.armor demonscale leathers|ka'hurst gloves|demonscale shield|ka'hurst balaclava|calcified femur
 
 #put #tvar char.armor demonscale leathers|chain gloves|demonscale shield|chain balaclava|calcified femur
+
 put #tvar char.armor demonscale leathers|plate gauntlets|demonscale shield|scale helm|ring mask|calcified femur
+put #tvar char.armor.light demonscale shield|calcified femur|demonscale leathers|demonscale gloves|demonscale helm|demonscale mask
 
 
 ###############################
 ###      BUFFS
 ###############################
-put #tvar char.buffs.spells ks|bue|ivm|php
-put #tvar char.buffs.spellNames KuraSilma|ButchersEye|IvoryMask|PhilosophersPreservation
+#put #tvar char.buffs.spells ks|bue|ivm|php|ch
+#put #tvar char.buffs.spellNames KuraSilma|ButchersEye|IvoryMask|PhilosophersPreservation|CalcifiedHide
 
+put #tvar char.buffs.spells ks|ivm|php|ch
+put #tvar char.buffs.spellNames KuraSilma|IvoryMask|PhilosophersPreservation|CalcifiedHide
 
 ###############################
 ###      BURGLE
@@ -43,10 +47,10 @@ put #tvar char.wornFocus 0
 ###############################
 put #tvar char.cast.invokeSpell 1
 
-put #tvar char.cast.default.prep 20
+put #tvar char.cast.default.prep 40
 put #tvar char.cast.default.charge 20
 put #tvar char.cast.default.harness 0
-put #tvar char.cast.default.chargeTimes 4
+put #tvar char.cast.default.chargeTimes 3
 
 put #tvar char.cast.devour.prep 30
 put #tvar char.cast.devour.charge 70
@@ -57,9 +61,9 @@ put #tvar char.cast.eotb.charge 0
 put #tvar char.cast.eotb.chargeTimes 0
 put #tvar char.cast.eotb.minPrepTime 0
 
-put #tvar char.cast.nr.prep 20
-put #tvar char.cast.nr.charge 19
-put #tvar char.cast.nr.chargeTimes 4
+put #tvar char.cast.nr.prep 40
+put #tvar char.cast.nr.charge 20
+put #tvar char.cast.nr.chargeTimes 3
 
 put #tvar char.cast.php.prep 20
 put #tvar char.cast.php.charge 20

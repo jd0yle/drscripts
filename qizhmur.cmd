@@ -189,6 +189,7 @@ main:
         gosub waitForRepair
         put #echo >Log #838700 Going to main combat
         gosub moveToWyvern
+#	gosub moveToAdultWyverns
         gosub runScript tend
         put .fight
         gosub waitForMainCombat
@@ -973,6 +974,44 @@ moveToWarklin:
 
     echo No move target found, zoneid = $zoneid  zone = %zone
     goto moveToWarklin
+
+
+
+moveToAdultWyverns:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto moveToAdultWyverns
+    }
+
+    if ($SpellTimer.EyesoftheBlind.active = 0 || $SpellTimer.EyesoftheBlind.duration < 3) then gosub runScript cast eotb
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 468 && $roomid <= 479 && "$roomplayers" = "") then return
+        gosub runScript findSpot adultwyvern
+        goto moveToAdultWyverns
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto moveToAdultWyverns
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto moveToAdultWyverns
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToAdultWyverns
+    }
+
+    goto moveToAdultWyverns
 
 
 moveToWyvern:

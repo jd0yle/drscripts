@@ -7,6 +7,10 @@ var stackerTypes folio|worn book
 var spellNames
 action var spellNames %spellNames|$1 $2 when ^The (.*) section has (\d+) cop
 
+#var spellName Shatter
+var foundSpell 0
+action echo FOUND IT!;var foundSpell 1 when ^The %spellName section
+
 var index 0
 
 loop:
@@ -23,8 +27,9 @@ loop:
 	}
 	gosub open my %stackerTypes(%index)
 	put flip my %stackerTypes(%index)
-	pause .1
-	if (matchre("%spellNames", "%spellName")) then {
+	pause 1
+	#if (matchre("%spellNames", "%spellName")) then {
+	if (%foundSpell = 1) then {
 	    echo FOUND THE SPELL
 	    exit
 	}

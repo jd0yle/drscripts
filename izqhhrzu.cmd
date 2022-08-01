@@ -108,9 +108,9 @@ main:
 			if ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 30) then gosub runScript cast mpp
         }
         put #echo >Log #838700 Going to main combat
-        gosub train.moveToWyverns
+        #gosub train.moveToWyverns
         #gosub train.moveToJuvenileWyverns
-        #gosub train.moveToTelgas
+        gosub train.moveToTelgas
         put .fight
         gosub waitForMainCombat
         goto main

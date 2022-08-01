@@ -17,9 +17,12 @@ moblistChange:
 	if (contains("$monsterlist", "immobilized")) then {
 		action (mobchange) off
 		#gosub target blb 20
-		gosub target blb 40
-		gosub perform cut
-		pause 4
+		#gosub target blb 40
+		#gosub perform cut
+		#pause 4
+		#gosub cast
+		gosub target acs 50
+		pause 5
 		gosub cast
 		action (mobchange) on
 		goto moblistChange

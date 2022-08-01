@@ -454,11 +454,11 @@ attackThrownWeapon:
 
 		var doOffhand 0
 		var offhandWeapons Small_Edged|Small_Blunt|Staves|Heavy_Thrown|Light_Thrown
-
+        var offhandWeaponsBlacklist meteor hammer
 
 
 		if ($char.fight.trainOffhand = 1 && $Offhand_Weapon.LearningRate < 32 && $Offhand_Weapon.LearningRate <= $%weapons.skills(%weapons.index).LearningRate) then {
-			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)")) then {
+			if (matchre("%weapons.skills(%weapons.index)", "(%offhandWeapons)") && !matchre("%weapons.items(%weapons.index)", "%offhandWeaponsBlacklist") then {
 				var doOffhand 1
 			}
 		}

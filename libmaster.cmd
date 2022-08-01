@@ -123,9 +123,13 @@ action var weapon_hand he when ^With one superbly balanced motion, you shift you
 action var weapon_hand he when ^You shift your.*to a heavy edged grip while quietly paying homage to the war gods\.$
 action var weapon_hand he when ^You effortlessly switch to a grip for using your.*as a heavy edged weapon\.$
 
+action var weapon_hand he when can use it as a heavy edged weapon.$
+
 action var weapon_hand hb when ^You effortlessly switch to a grip for using your.*as a heavy blunt weapon\.$
+action var weapon_hand hb when ^use it as a heavy blunt weapon.$
 
 action var weapon_hand Thb when ^You turn your .* easily in your hands and end with it in position to be used as a two-handed blunt weapon\.$
+action var weapon_hand Thb when use it as a two-handed blunt weapon.$
 
 var weapon_hand NONERIGHTNOW
 
@@ -2012,6 +2016,7 @@ prepare:
     matchre return ^You mutter incoherently to yourself
     matchre return ^You raise one hand before you and concentrate
     matchre return ^You raise your arms skyward, chanting
+    matchre return ^You raise your hands skyward
     matchre return ^You raise your head skyward
     matchre return ^You recall the exact details of the Chaos
     matchre return ^Your skin briefly withers and tightens, becoming gaunt
@@ -2058,6 +2063,7 @@ push:
     matchre return ^You wave the loop near
     matchre return ^Roundtime
     matchre return ^You push
+    matchre return ^You don't have any
     matchre return ^What are you
     put push %todo
     goto retry
@@ -2206,6 +2212,7 @@ remove:
     matchre return ^You pull
     matchre return ^You remove
     matchre return ^You slide
+    matchre return ^You slip
     matchre return ^You sling
     matchre return ^You take
     matchre return ^You work your way out of
