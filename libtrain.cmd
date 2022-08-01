@@ -209,15 +209,19 @@ train.compendium.done:
 ###    train.enterHouse
 ###############################
 train.enterHouse:
+    gosub runScript house
+    return
+
     matchre train.enterHouseCont suddenly rattles
     matchre train.enterHouseCont suddenly opens
     put peer bothy
-    matchwait 5
+    matchwait 20
     gosub collect rock
     gosub kick pile
     gosub stow right
     gosub open bothy
     gosub move go bothy
+    gosub move move bothy
     return
 
 
@@ -226,10 +230,7 @@ train.enterHouse:
 ###    train.enterHouseCont
 ###############################
 train.enterHouseCont:
-    gosub open bothy
-    gosub move go bothy
-    gosub close door
-    gosub lock door
+    gosub runScript house
     return
 
 
@@ -261,6 +262,7 @@ train.escapeTaisidon:
 train.getHealed:
     gosub train.checkHealth
     if (%injured = 1) then {
+    #if ($bleeding = 1 || $health < 70) then {
         put #echo >Log #FF8fF7 Getting healed
         gosub train.moveToHouse
 
@@ -270,11 +272,11 @@ train.getHealed:
         }
 
         if (!($lastHealedGametime > -1)) then put #var lastHealedGametime 0
-        eval nextHealTime (300 + $lastHealedGametime)
+        eval nextHealTime (600 + $lastHealedGametime)
 
         #if ($bleeding = 1) then {
         gosub train.checkHealth
-        if (%injured = 1) then {
+        if ($health < 100 || (%injured = 1 && $gametime > %nextHealTime%)) then {
             if ("$roomname" = "Private Home Interior") then gosub runScript house
 
             gosub automove heal
@@ -1484,6 +1486,44 @@ train.moveToStompers:
 
 
 ###############################
+###    train.moveToTelgas
+###############################
+train.moveToTelgas:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToTelgas
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 515 && $roomid <= 525 && "$roomplayers" = "") then return
+        gosub runScript findSpot telga
+        goto train.moveToTelgas
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto train.moveToTelgas
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto train.moveToTelgas
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto train.moveToTelgas
+    }
+
+    goto train.moveToTelgas
+
+
+###############################
 ###    train.moveToYellowGremlins
 ###############################
 train.moveToYellowGremlins:
@@ -1587,6 +1627,83 @@ train.moveToWarklin:
 
     echo No move target found, zoneid = $zoneid  zone = %zone
     goto train.moveToWarklin
+
+
+###############################
+###    train.moveToJuvenileWyverns
+###############################
+train.moveToJuvenileWyverns:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToJuvenileWyverns
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
+        gosub runScript findSpot juvenilewyvern
+        goto train.moveToJuvenileWyverns
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto train.moveToJuvenileWyverns
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto train.moveToJuvenileWyverns
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto train.moveToJuvenileWyverns
+    }
+
+    goto train.moveToJuvenileWyverns
+
+
+###############################
+###    train.moveToWyverns
+###############################
+train.moveToWyverns:
+    if ("$roomname" = "Private Home Interior") then {
+        gosub runScript house
+        goto train.moveToWyverns
+    }
+
+    # Shard West Gate Area
+    if ("$zoneid" = "69") then {
+        if ($roomid >= 480 && $roomid <= 487 && "$roomplayers" = "") then return
+        if ($roomid >= 567 && $roomid <= 572 && "$roomplayers" = "") then return
+        gosub runScript findSpot wyvern
+        goto train.moveToWyverns
+    }
+
+    # Shard East Gate Area
+    if ("$zoneid" = "66") then {
+        gosub automove w gate
+        goto train.moveToWyverns
+    }
+
+    # Shard
+    if ("$zoneid" = "67") then {
+        gosub automove 132
+        goto train.moveToWyverns
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto train.moveToWyverns
+    }
+
+    goto train.moveToWyverns
 
 
 ###############################

@@ -4,6 +4,7 @@ action send retreat when ^You are far too occupied
 action var needPredict true when ^Too many futures cloud your mind - you learn nothing\.
 action var tooInjured true when ^You are unable to hold the
 action var tooInjured true when ^The pain is too much
+action goto doneAddCd when ^That's a bit tough to do when you can't see the sky\.
 
 var force false
 if_1 then {
@@ -49,6 +50,9 @@ if (%timeSinceLastObserve > 240) then var force true
 ###############################
 main:
     if (%force = false && $isObsOnCd = true) then goto done
+
+    if (matchre("$roomname", "Li Surmi Gelv")) then goto doneAddCd
+
     gosub checkPredState
     gosub findSkillSet
 

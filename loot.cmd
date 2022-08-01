@@ -21,7 +21,7 @@ var boxtype brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|stee
 var boxes coffer|crate|strongbox|caddy|casket|skippet|trunk|chest|\bbox
 var miscKeep crumpled page|singed page|book spine|shattered bloodlock|front cover|kirmhiro draught
 var craftMaterial bar|nugget
-var ammo sphere|bone shard|doorknob|candle stub|brick clump|cougar-claw arrow|boar-tusk arrow|basilisk arrow|barbed arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock|frying pan|naphtha|wand|spear
+var ammo sphere|bone shard|doorknob|candle stub|brick clump|cougar-claw arrow|boar-tusk arrow|basilisk arrow|barbed arrow|drake-fang arrow|bolt|stone|rock\b|throwing blade|quadrello|blowgun dart|throwing hammer|hhr'ata|bola|boomerang|small rock|frying pan|naphtha|wand|spear
 var coin coin|coins
 
 var gems %gems1|%gems2|%gems3|%gems4

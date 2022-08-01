@@ -99,7 +99,8 @@ main:
 
         if ($SpellTimer.InvocationoftheSpheres.active != 1) then {
             gosub release rf
-            gosub runScript iots ref
+            #gosub runScript iots ref
+            gosub runScript iots dis
         }
 
         gosub prep rf
@@ -227,6 +228,10 @@ main:
     # If main combats are low or less than backtrain, do main
     if (%lowestMainCombatSkillRate < 10 || %lowestMainCombatSkillRate < %lowestBacktrainCombatSkillRate) then var shouldDoBacktrain 0
 
+    if ($First_Aid.LearningRate < 5) then var shouldDoBacktrain 1
+
+    if ($Targeted_Magic.LearningRate < 5) then var shouldDoBacktrain 0
+
     # If backtrain is low, do backtrain
     if ("%shouldDoBacktrain" = "null" && %lowestBacktrainCombatSkillRate < 10) then var shouldDoBacktrain 1
 
@@ -234,20 +239,24 @@ main:
     if ("%shouldDoBacktrain" = "null" && %lowestMainCombatSkillRate < 30) then var shouldDoBacktrain 0
 
     # if backtrain is not maxed, do backtrain
-    if ("%shouldDoBacktrain" = "null" && %lowestBacktrainCombatSkillRate < 33) then var shouldDoBacktrain 1
+    #if ("%shouldDoBacktrain" = "null" && %lowestBacktrainCombatSkillRate < 33) then var shouldDoBacktrain 1
 
     # Default to main combat if none of the previous apply
     if ("%shouldDoBacktrain" = "null") then var shouldDoBacktrain 0
 
+    # 4/15 Commented this out because FA was never getting trained
     if ("%shouldDoBacktrain" = 1) then {
-        goto startBacktrain
+        #goto startBacktrain
     } else {
-        goto startFight
+        #goto startFight
     }
+
+    if ($Targeted_Magic.LearningRate < 5) then goto startFight
+    if ($First_Aid > 5) then goto startFight
 
     # Backtrain
     startBacktrain:
-    if ($First_Aid.LearningRate < 10) then {
+    if ($First_Aid.LearningRate < 5) then {
         put #echo >Log #838700 Moving to backtrain
         gosub moveToWyverns
         put #tvar char.fight.backtrain 1
@@ -260,10 +269,12 @@ main:
 	# Main Combat
     startFight:
     if (%tmpLowestLearningRate < 25) then {
+
     }
 
 	    put #echo >Log #838700 Moving to combat
-	    gosub moveToAdultWyverns
+	    #gosub moveToAdultWyverns
+	    gosub moveToFuliginMoths
 	    #if ("$predictPool.$char.predict.preferred.skillset" = "complete") then gosub runScript predict
 	    put #tvar char.fight.backtrain 0
 	    put .fight
@@ -317,13 +328,18 @@ checkTeaching:
 		pause 6
 		if (%isInClass != 1) then {
 			if (contains("$roomplayers", "Inauri") then {
-		        if ($Enchanting.LearningRate < 30) then {
+		        if ($Enchanting.LearningRate < 10) then {
 		            gosub whisper inauri teach enchanting
 		        } else {
-		            gosub stop teach
-		            gosub stop listen
-		            gosub teach tm to inauri
+                    gosub whisper inauri teach forging
 		        }
+		        #if ($Enchanting.LearningRate < 30) then {
+		        #    gosub whisper inauri teach enchanting
+		        #} else {
+		        #    gosub stop teach
+		        #    gosub stop listen
+		        #    gosub teach tm to inauri
+		        #}
 		        gosub listen to Inauri
 		        pause 2
 	        }
@@ -575,9 +591,7 @@ moveToBurgle:
     }
 
     if ($SpellTimer.RefractiveField.duration < 2) then {
-        gosub prep rf
-        pause 3
-        gosub cast
+        gosub runScript cast rf
     }
 
 
@@ -607,7 +621,10 @@ moveToBurgle:
         goto moveToBurgle
     }
 
+    put #echo >Log #FFFF00 UNKNOWN START, USING TRAVEL TO RUN TO SHARD FOR BURGLING
+    gosub runScript travel shard
     goto moveToBurgle
+
 
 
 
@@ -631,9 +648,7 @@ moveToMagic:
     }
 
     if ($SpellTimer.RefractiveField.duration < 2) then {
-        gosub prep rf
-        pause 3
-        gosub cast
+        gosub runScript cast rf
     }
 
     # FC
@@ -666,7 +681,91 @@ moveToMagic:
         goto moveToMagic
     }
 
+    if ("$zoneid" = "1") then {
+        gosub automove portal
+        gosub release rf
+        gosub move go meeting portal
+        goto moveToMagic
+    }
+
+    if ("$zoneid" = "6") then {
+        gosub automove crossing
+        goto moveToMagic
+    }
+
+    if ("$zoneid" = "7") then {
+        gosub automove n gate
+        goto moveToMagic
+    }
+
+    if ("$zoneid" = "13") then {
+        gosub automove ntr
+        goto moveToMagic
+    }
+
     goto moveToMagic
+
+
+
+moveToFuliginMoths:
+    if ("$roomname" = "Private Home Interior") then {
+        if ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 10) then gosub runScript cast seer
+        if ($char.fight.useCol = 1 && ($SpellTimer.CageofLight.active = 0 || $SpellTimer.CageofLight.duration < 10)) then gosub runScript cast col
+        if ($char.fight.useTksh = 1 && ($SpellTimer.TelekineticShield.active = 0 || $SpellTimer.TelekineticShield.duration < 10)) then gosub runScript cast tksh
+        if ($char.fight.useLgv = 1 && ($SpellTimer.LastGiveofVithwokIV.active = 0 || $SpellTimer.LastGiveofVithwokIV.duration < 10)) then gosub runScript cast lgv
+        gosub runScript house
+        if ($SpellTimer.InvocationoftheSpheres.active != 1 || $SpellTimer.InvocationoftheSpheres.duration < 20) then {
+            gosub release iots
+            #gosub runScript iots ref
+            gosub runScript iots dis
+        }
+        goto moveToFuliginMoths
+    }
+
+    if ($SpellTimer.TenebrousSense.duration < 2) then {
+        gosub runScript cast ts
+        goto moveToFuliginMoths
+    }
+
+    if ($SpellTimer.RefractiveField.duration < 2) then {
+        gosub runScript cast rf
+    }
+
+
+    # Crossing
+    if ("$zoneid" = "1") then {
+        gosub automove n gate
+        goto moveToFuliginMoths
+    }
+
+    # Crossing North Gate
+    if ("$zoneid" = "6") then {
+        gosub automove ntr
+        goto moveToFuliginMoths
+    }
+
+    # NTR
+    if ("$zoneid" = "7") then {
+        gosub automove 147
+        goto moveToFuliginMoths
+    }
+
+    if ("$zoneid" = "13") then {
+        if ($roomid >= 213 && $roomid <= 219 && "$roomplayers" = "") then return
+        gosub runScript findSpot fuliginmoth
+        goto moveToFuliginMoths
+    }
+
+    # FC
+    if ("$zoneid" = "150") then {
+        gosub automove portal
+        gosub move go exit portal
+        goto moveToFuliginMoths
+    }
+
+    put #echo >Log #FFFF00 UNKNOWN START, USING TRAVEL TO RUN TO CROSSING FOR MOTHS
+    gosub runScript travel crossing
+    goto moveToFuliginMoths
 
 
 
@@ -724,7 +823,8 @@ moveToAdultWyverns:
         gosub runScript house
         if ($SpellTimer.InvocationoftheSpheres.active != 1 || $SpellTimer.InvocationoftheSpheres.duration < 20) then {
             gosub release iots
-            gosub runScript iots ref
+            #gosub runScript iots ref
+            gosub runScript iots dis
         }
         goto moveToAdultWyverns
     }
@@ -791,6 +891,15 @@ moveToWyverns:
         goto moveToWyverns
     }
 
+    # Shard West Gate Area
+#    if ("$zoneid" = "69") then {
+#        if ($roomid >= 454 && $roomid <= 463 && "$roomplayers" = "") then return
+#        if ($roomid = 388 && "%stillWaiting" = "1") then put .selesthiel
+#        var stillWaiting 1
+#        gosub runScript findSpot juvenilewyvern nowait
+#        goto moveToWyverns
+#    }
+
     # Shard East Gate Area
     if ("$zoneid" = "66") then {
         gosub automove w gate
@@ -810,6 +919,8 @@ moveToWyverns:
         goto moveToWyverns
     }
 
+    put #echo >Log #FFFF00 UNKNOWN START, USING TRAVEL TO RUN TO SHARD FOR WYVERNS
+    gosub runScript travel shard
     goto moveToWyverns
     
     
@@ -1009,6 +1120,7 @@ resetState:
     gosub release cyclic
     gosub stow hhr'ata
     gosub stow bola
+    #gosub stow pewter bar
     gosub retrieveBolts
     return
 
@@ -1122,7 +1234,7 @@ waitForMagicLoop:
 
 waitForMainCombat:
     pause 2
-    if ("$zoneid" != "69") then put .selesthiel
+    #if ("$zoneid" != "69") then put .selesthiel
     put #script abort all except selesthiel
     put .reconnect
     put .afk
@@ -1152,7 +1264,13 @@ waitForMainCombatLoop:
 		put #echo >Log #FF0000 ROOM OCCUPIED, FORCING MAINCOMBAT END
 	}
 
-    if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29 && $Twohanded_Blunt.LearningRate > 29 && $Staves.LearningRate > 29)) then {
+    gosub getLowestLearningRateFromList $char.fight.weapons.skills|Evasion|Parry_Ability|Shield_Usage|Light_Armor|Defending
+    var lowestMainCombatSkillRate %returnVal
+
+    #echo [selesthiel] Lowest main combat learning rate is %lowestMainCombatSkillRate
+
+    #if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || ($Crossbow.LearningRate > 29 && $Small_Edged.LearningRate > 29 && $Brawling.LearningRate > 29 && $Light_Thrown.LearningRate > 29 && $Parry_Ability.LearningRate > 29 && $Shield_Usage.LearningRate > 29 && $Targeted_Magic.LearningRate > 29 && $Evasion.LearningRate > 29 && $Twohanded_Blunt.LearningRate > 29 && $Staves.LearningRate > 29)) then {
+    if ($lib.timers.nextBurgleAt < $gametime || %forceEndCombat = 1 || %lowestMainCombatSkillRate > 32) then {
         gosub resetState
         if ($bleeding = 1) then goto moveToHeal
         return

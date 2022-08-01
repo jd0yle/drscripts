@@ -8,6 +8,10 @@ if_1 then {
     goto doneFail
 }
 
+if_2 then {
+    var nowait 1
+}
+
 
 init:
 
@@ -65,6 +69,13 @@ if ("%mob" = "eel") then {
     var minRoomId 234
     var maxRoomId 237
     var waitroomid 220
+}
+
+if ("%mob" = "fuliginmoth") then {
+    var minRoomId 213
+    var maxRoomId 219
+    var waitroomid 185
+    var preferredRoomId 217
 }
 
 if ("%mob" = "gargoyle") then {
@@ -214,6 +225,7 @@ waitForRoom:
     evalmath waitForRoomUntilTime ($gametime + 120)
     gosub waitForRoomLoop
     gosub shiver
+    if ("%nowait" = "1") then goto done
     if ("%mob" = "wyvern2") then put .findSpot wyvern
 
     goto init

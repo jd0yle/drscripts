@@ -19,7 +19,7 @@ if_2 then {
 ###############################
 ###      Main
 ###############################
-if ($monstercount = 0 && $char.predict.useDc = 1 && ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2)) then {
+if ($monstercount = 0 && $char.predict.useDc != 0 && ($SpellTimer.DestinyCipher.active = 0 || $SpellTimer.DestinyCipher.duration < 2)) then {
       if ($monstercount > 0) then {
           gosub stance shield
           gosub stow right
@@ -28,10 +28,7 @@ if ($monstercount = 0 && $char.predict.useDc = 1 && ($SpellTimer.DestinyCipher.a
       gosub runScript cast dc
 }
 
-# Pretty sure PG doesn't need to be up for predictions...
-#if ($SpellTimer.PiercingGaze.active = 0 || $SpellTimer.PiercingGaze.duration < 2) then gosub runScript cast pg
-
-if ($SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then gosub runScript cast aus
+if ($char.predict.useAus != 0 && $SpellTimer.AuraSight.active = 0 || $SpellTimer.AuraSight.duration < 2) then gosub runScript cast aus
 
 # If no skill or skillset was specified, find a skillset with full pool then use these specified skills for each skillset
 if (%skillset = null) then gosub findSkillSet
@@ -73,8 +70,8 @@ findSkillSet:
 
 
     findSkillSetLoop:
-        if ($predictPool.%skillsets(%index) = complete) then {
-        #if ("$predictPool.%skillsets(%index)" != "no") then {
+        #if ($predictPool.%skillsets(%index) = complete) then {
+        if ("$predictPool.%skillsets(%index)" != "no") then {
             var skillset %skillsets(%index)
             return
         }

@@ -1,6 +1,8 @@
 #include libmaster.cmd
 include libtrain.cmd
 
+action put .izqhhrzu when ^A guard appears and says
+
 gosub awake
 var useBurgle 1
 put #tvar powerwalk 0
@@ -45,10 +47,11 @@ main:
 
     if (%useBurgle = 1 &&  $lib.timers.nextBurgleAt < $gametime) then {
 		gosub train.burgle
-		gosub train.getHealed
+		gosub runScript getClericTools
+        gosub train.getHealed
 		gosub runScript house
 		#gosub runScript repair --noWait=1
-		gosub runScript getClericTools
+
         gosub clericRituals
         gosub train.moveToHouse
         gosub train.performance 5
@@ -78,7 +81,10 @@ main:
     var useBacktrain 1
 
     startFight:
-    if (%useBacktrain = 0 || $Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+    #if (%useBacktrain = 0 || $Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25 || $Parry_Ability.LearningRate < 25) then {
+    # NO Parry
+    #if (%useBacktrain = 0 || $Targeted_Magic.LearningRate < 25 || $Brawling.LearningRate < 25 || $Polearms.LearningRate < 25 || $Large_Edged.LearningRate < 25 || $Crossbow.LearningRate < 25 || $Heavy_Thrown.LearningRate < 25 || $Light_Thrown.LearningRate < 25 || $Slings.LearningRate < 25 || $Evasion.LearningRate < 25 || $Shield_Usage.LearningRate < 25) then {
+    if (%useBacktrain = 0 || $Targeted_Magic.LearningRate < 20 || $Brawling.LearningRate < 20 || $Polearms.LearningRate < 20 || $Large_Edged.LearningRate < 20 || $Crossbow.LearningRate < 20 || $Heavy_Thrown.LearningRate < 20 || $Light_Thrown.LearningRate < 20 || $Slings.LearningRate < 20 || $Evasion.LearningRate < 20 || $Shield_Usage.LearningRate < 20) then {
         put #echo >Log #0033CC Start combat
         gosub train.getHealed
         if ("$roomname" = "Private Home Interior" || $zoneid = 150) then {
@@ -102,7 +108,9 @@ main:
 			if ($SpellTimer.MinorPhysicalProtection.active != 1 || $SpellTimer.MinorPhysicalProtection.duration < 30) then gosub runScript cast mpp
         }
         put #echo >Log #838700 Going to main combat
-        gosub train.moveToShardBulls
+        gosub train.moveToWyverns
+        #gosub train.moveToJuvenileWyverns
+        #gosub train.moveToTelgas
         put .fight
         gosub waitForMainCombat
         goto main
@@ -116,8 +124,8 @@ main:
     startBacktrain:
     #if ($First_Aid.LearningRate < 30) then {
         put #echo >Log #838700 Moving to backtrain
-        #gosub train.moveToYellowGremlins
-        gosub train.moveToCloudRats
+        #gosub train.moveToCloudRats
+        gosub train.moveToShardBulls
         put #tvar char.fight.backtrain 1
         put .fight backtrain
         gosub waitForBacktrain
@@ -286,7 +294,9 @@ waitForMainCombat:
     pause 1
 
 waitForMainCombatLoop:
-    gosub getLowestLearningRateFromList $char.fight.weapons.skills|Evasion|Parry_Ability|Shield_Usage
+    #gosub getLowestLearningRateFromList $char.fight.weapons.skills|Evasion|Parry_Ability|Shield_Usage
+    # NO PARRY
+    gosub getLowestLearningRateFromList $char.fight.weapons.skills|Evasion|Shield_Usage
     var tmpLowestLearningRate %returnVal
 
     #if ($lib.timers.nextBurgleAt < $gametime || ($Targeted_Magic.LearningRate > 25 && $Polearms.LearningRate > 30 && $Brawling.LearningRate > 30 && $Large_Edged.LearningRate > 30 && $Crossbow.LearningRate > 30 && $Heavy_Thrown.LearningRate > 30 && $Light_Thrown.LearningRate > 30 && $Slings.LearningRate > 30 && $Evasion.LearningRate > 30 && $Shield_Usage.LearningRate > 30 && $Parry_Ability.LearningRate > 30)) then {

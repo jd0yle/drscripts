@@ -62,7 +62,7 @@ put #tvar char.cast.default.harness 0
 put #tvar char.cast.default.chargeTimes 4
 
 put #tvar char.cast.useOm 1
-put #tvar char.cast.omSpells auspice|benediction|centering|dr|gg|mapp|mpp|sol|sos|pfe
+put #tvar char.cast.omSpells auspice|benediction|centering|dr|gg|mapp|mpp|sol|sos|pfe|mf|pom
 
 put #tvar char.cast.benediction.prep 20
 put #tvar char.cast.benediction.charge 25
@@ -73,7 +73,7 @@ put #tvar char.cast.centering.prep 20
 put #tvar char.cast.centering.charge 20
 put #tvar char.cast.centering.chargeTimes 4
 
-put #tvar char.cast.ghs.prep 23
+put #tvar char.cast.ghs.prep 25
 put #tvar char.cast.ghs.charge 0
 put #tvar char.cast.ghs.harness 0
 
@@ -81,7 +81,7 @@ put #tvar char.cast.halo.prep 30
 put #tvar char.cast.halo.charge 20
 put #tvar char.cast.halo.chargeTimes 2
 
-put #tvar char.cast.hyh.prep 21
+put #tvar char.cast.hyh.prep 23
 put #tvar char.cast.hyh.charge 0
 put #tvar char.cast.hyh.harness 0
 
@@ -95,7 +95,7 @@ put #tvar char.cast.mpp.charge 20
 put #tvar char.cast.mpp.harness 0
 put #tvar char.cast.mpp.chargeTimes 4
 
-put #tvar char.cast.mf.prep 700
+put #tvar char.cast.mf.prep 800
 
 put #tvar char.cast.om.prep 70
 put #tvar char.cast.om.charge 20
@@ -108,7 +108,7 @@ put #tvar char.cast.rejuv.charge 25
 put #tvar char.cast.rejuv.harness 20
 put #tvar char.cast.rejuv.chargeTimes 3
 
-put #tvar char.cast.rev.prep 23
+put #tvar char.cast.rev.prep 25
 put #tvar char.cast.rev.charge 0
 put #tvar char.cast.rev.harness 0
 
@@ -166,10 +166,11 @@ put #tvar char.fight.arrangeFull 0
 
 #***** DEBLITATION *****
 put #tvar char.fight.debil.use 1
-put #tvar char.fight.debilPauseTime 8
+put #tvar char.fight.debilPauseTime 5
 
 # The debilitation spell to use
 put #tvar char.fight.debil.spell sick
+#put #tvar char.fight.debil.spell ps
 
 # The amount of mana to prep debilitation at
 put #tvar char.fight.debil.prepAt 13
@@ -191,11 +192,12 @@ put #tvar char.fight.opts null
 
 #***** TM *****
 # Spell to use for TM
+#put #tvar char.fight.tmSpell he
 put #tvar char.fight.tmSpell horn
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 23
+put #tvar char.fight.tmPrep 30
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 7
@@ -216,7 +218,7 @@ put #tvar char.fight.weapons.skills Targeted_Magic|Polearms|Brawling|Crossbow|He
 
 put #tvar char.fight.trainOffhand 1
 
-put #tvar char.fight.aimPauseMin 1
+put #tvar char.fight.aimPauseMin 4
 
 #***** ARMOR *****
 put #tvar char.fight.armor.skills Chain_Armor|Brigandine|Plate_Armor
@@ -226,7 +228,7 @@ put #tvar char.fight.useArmor 0
 #***** USE *****
 # Use vars are all "Do this thing or not"
 # All default to 0
-put #tvar char.fight.useAlmanac 1
+put #tvar char.fight.useAlmanac 0
 put #tvar char.fight.useAppraise 1
 put #tvar char.fight.useBuffs 1
 put #tvar char.fight.useDissect 0
@@ -296,6 +298,15 @@ if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.weapons.items Empty|bastard sword|kertig maul|steel hanger|tyrium cuska|competition shortbow|white nightstick
     put #tvar char.fight.weapons.skills Outdoorsmanship|Twohanded_Edged|Twohanded_Blunt|Small_Edged|Small_Blunt|Bow|Staves
 
+    put #tvar char.fight.debil.spell sick
+    put #tvar char.fight.debil.prepAt 13
+    put #tvar char.fight.debilPauseTime 8
+
+    put #tvar char.fight.tmSpell horn
+    put #tvar char.fight.tmPrep 25
+
+    put #tvar char.fight.useBless 0
+
 	put #tvar char.fight.arrangeForPart 0
     put #tvar char.fight.debil.use 0
     put #tvar char.fight.useDissect 1
@@ -340,7 +351,7 @@ put #tvar char.inv.container.default wyvern skull
 put #tvar char.inv.container.emptyGemPouch $char.inv.container.default
 put #tvar char.inv.container.fullGemPouch portal
 put #tvar char.inv.container.gemPouch gem pouch
-put #tvar char.inv.container.holdAnything hip pouch
+put #tvar char.inv.container.holdAnything thornweave bag
 put #tvar char.inv.container.memoryOrb 0
 put #tvar char.inv.container.secondary canvas backpack
 put #tvar char.inv.container.sellGemBag 0
@@ -358,7 +369,7 @@ if (!($char.loot.untiedGemPouch >0)) then put #tvar char.loot.untiedGemPouch 0
 ###      MAGIC
 ###############################
 put #tvar char.magic.train.minimumConcentration 30
-put #tvar char.magic.train.useAlmanac 1
+put #tvar char.magic.train.useAlmanac 0
 put #tvar char.magic.train.usePom 1
 put #tvar char.magic.train.useShadowling 0
 put #tvar char.magic.train.useSymbiosis 0

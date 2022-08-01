@@ -16,8 +16,9 @@ put #tvar char.armor.wyvern demonscale shield|pugilist's armguard|moonsilk pants
 ###############################
 ###      ASTRAL
 ###############################
-put #tvar char.astral.manaPerHarness 50
-put #tvar char.astral.timesToHarness 3
+put #tvar char.astral.manaPerHarness 75
+put #tvar char.astral.timesToHarness 2
+put #tvar char.astral.useBc 0
 
 
 ###############################
@@ -71,6 +72,8 @@ put #tvar char.cast.shadowling.minPrepTime 15
 put #tvar char.cast.shadows.minPrepTime 8
 put #tvar char.cast.shear.minPrepTime 5
 put #tvar char.cast.tksh.minPrepTime 15
+put #tvar char.cast.ts.minPrepTime 8
+put #tvar char.cast.unleash.minPrepTime 15
 
 put #tvar char.cast.rev.prep 20
 put #tvar char.cast.rev.charge 0
@@ -94,6 +97,10 @@ put #tvar char.cast.suf.charge 0
 
 put #tvar char.cast.sr.prep 100
 put #tvar char.cast.sr.charge 0
+
+put #tvar char.cast.ts.prep 30
+put #tvar char.cast.ts.charge 70
+put #tvar char.cast.ts.chargeTimes 1
 
 put #tvar char.cast.bc.prep 700
 put #tvar char.cast.dc.prep 600
@@ -163,7 +170,7 @@ put #tvar char.fight.tmSpell pd
 
 #Amount to prep tm spell at
 # (NOTE: tm defaults to waiting 5 seconds after targeting to cast!)
-put #tvar char.fight.tmPrep 30
+put #tvar char.fight.tmPrep 40
 
 # How long to pause before casting.
 put #tvar char.fight.tmPause 5
@@ -172,8 +179,8 @@ put #tvar char.fight.tmPause 5
 #put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|iron greatsword
 #put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Twohanded_Edged
 
-put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata|flamewood riste|iron greatsword
-put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown|Twohanded_Blunt|Twohanded_Edged
+put #tvar char.fight.weapons.items Empty|Empty|hunting bola|haralun scimitar|smokewood pelletbow|Imperial spear|ka'hurst hhr'ata
+put #tvar char.fight.weapons.skills Targeted_Magic|Brawling|Light_Thrown|Small_Edged|Crossbow|Polearms|Heavy_Thrown
 
 put #tvar char.backtrain.items Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
 put #tvar char.backtrain.skills Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
@@ -183,7 +190,7 @@ put #tvar char.backtrain.skills Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Sm
 
 put #tvar char.fight.trainOffhand 1
 
-put #tvar char.fight.aimPauseMin 5
+put #tvar char.fight.aimPauseMin 7
 
 #***** ARMOR *****
 put #tvar char.fight.useArmor 0
@@ -220,6 +227,7 @@ put #tvar char.fight.useShadows 0
 put #tvar char.fight.useShw 1
 put #tvar char.fight.useSls 1
 put #tvar char.fight.useTksh 1
+put #tvar char.fight.useTs 1
 
 #***** NECRO *****
 # The necro ritual to use for training
@@ -235,7 +243,7 @@ put #tvar char.fight.useQe 0
 put #tvar char.fight.useUsol 0
 
 #***** PALADIN *****
-put #tvar char.fight.useSr 1
+put #tvar char.fight.useSr 0
 
 #***** TRADER *****
 put #tvar char.fight.useLgv 0
@@ -246,16 +254,17 @@ put #tvar char.fight.useSuf 1
 
 if ($char.fight.backtrain = 1) then {
     put #tvar char.fight.useSls 0
-	put #tvar char.fight.weapons.items Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
-	put #tvar char.fight.weapons.skills Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
+	put #tvar char.fight.weapons.items Empty|Empty|competition shortbow|diamondwood nightstick|blue sling|ka'hurst hhr'ata|hunting bola|iron greatsword|Imperial spear|flamewood riste|darkstone longsword
+	put #tvar char.fight.weapons.skills First_Aid|Outdoorsmanship|Bow|Staves|Slings|Large_Blunt|Small_Blunt|Twohanded_Edged|Polearms|Twohanded_Blunt|Large_Edged
 
 	put #tvar char.fight.arrangeForPart 0
-    put #tvar char.fight.debil.use 1
+    put #tvar char.fight.debil.use 0
     put #tvar char.fight.useShw 0
     put #tvar char.fight.useDissect 1
     put #tvar char.fight.useHunt 1
     put #tvar char.fight.useShadows 0
     put #tvar char.fight.useStealth 0
+    put #tvar char.fight.useTs 0
 }
 
 
@@ -289,7 +298,7 @@ put #tvar char.inv.container.fullGemPouch portal
 put #tvar char.inv.container.gemPouch gem pouch
 put #tvar char.inv.container.holdAnything firesilk rucksack
 put #tvar char.inv.container.memoryOrb portal
-put #tvar char.inv.container.scroll shadows
+put #tvar char.inv.container.scroll steelsilk backpack
 put #tvar char.inv.container.scrollStackers shadows
 put #tvar char.inv.container.scrollTemp duffel
 put #tvar char.inv.container.secondary shadows
@@ -316,9 +325,10 @@ put #tvar char.magic.train.useInvokeSpell 1
 
 put #tvar char.magic.train.revSorcery 1
 
-var tmp.charge.Augmentation 70
+var tmp.charge.Augmentation 80
 put #tvar char.magic.train.spell.Augmentation cv
-put #tvar char.magic.train.prep.Augmentation 30
+put #tvar char.magic.train.prep.Augmentation 20
+put #tvar char.magic.train.minPrepTime.Augmentation 15
 if (!($char.magic.train.charge.Augmentation > -1)) then put #tvar char.magic.train.charge.Augmentation %tmp.charge.Augmentation
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -338,9 +348,10 @@ unvar tmp.charge.Augmentation
 
 
 
-var tmp.charge.Utility 80
+var tmp.charge.Utility 75
 put #tvar char.magic.train.spell.Utility sm
 put #tvar char.magic.train.prep.Utility 20
+put #tvar char.magic.train.minPrepTime.Utility 15
 if (!($char.magic.train.charge.Utility > -1)) then put #tvar char.magic.train.charge.Utility %tmp.charge.Utility
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -360,9 +371,10 @@ unvar tmp.charge.Utility
 
 
 # Temporary holding var so that we can "reset" long enough after a backfire
-var tmp.charge.Warding 47
+var tmp.charge.Warding 50
 put #tvar char.magic.train.spell.Warding shear
 put #tvar char.magic.train.prep.Warding 10
+put #tvar char.magic.train.minPrepTime.Warding 8
 if (!($char.magic.train.charge.Warding > -1)) then put #tvar char.magic.train.charge.Warding %tmp.charge.Warding
 
 # Once enough time has passed since the last backfire for this skill, raise the charge amount by 1 without exceeding the original value
@@ -387,6 +399,7 @@ unvar tmp.charge.Warding
 put #tvar char.predict.tool divination bones
 put #tvar char.inv.container.predictTool telescope case
 
+put #tvar char.predict.useAus 0
 put #tvar char.predict.useDc 0
 
 put #tvar char.predict.preferred.skillset survival

@@ -62,20 +62,8 @@ if ($char.wornCambrinth != 1 && "$righthand" != "Empty" && "$lefthand" != "Empty
 
 if ("$preparedspell" != "None") then gosub release spell
 
-if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom" || "%spell" = "mf") then goto ritualSpell
-if ("%spell" = "col") then {
-    # Replacing moons with ambient all the time because of the inaccuracy of the Genie time plugin - JD
-    #gosub checkMoons
-    #if ("%target" = "$charactername") then var target $moon
-    #if ("$moon" = "null") then var target ambient
 
-    var target ambient
 
-}
-
-if ("%spell" = "om") then {
-	var target orb
-}
 
 # Init to character spell defaults
 var prepAt $char.cast.default.prep
@@ -105,6 +93,31 @@ if ($char.cast.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && matchre("%spel
 
 	echo USING OM, prepAt %prepAt, charge %charge, chargeTimes %chargeTimes
 }
+
+if ("%spell" = "bc" || "%spell" = "dc" || "%spell" = "pop" || "%spell" = "pom" || "%spell" = "mf") then goto ritualSpell
+if ("%spell" = "col") then {
+    # Replacing moons with ambient all the time because of the inaccuracy of the Genie time plugin - JD
+    #gosub checkMoons
+    #if ("%target" = "$charactername") then var target $moon
+    #if ("$moon" = "null") then var target ambient
+
+    var target ambient
+
+}
+
+if ("%spell" = "om") then {
+	var target orb
+}
+
+#echo $char.cast.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && matchre("%spell", "($char.cast.omSpells)")
+#if ($char.cast.useOm = 1 && $SpellTimer.OsrelMeraud.active = 1 && matchre("%spell", "($char.cast.omSpells)")) then {
+#	evalmath prepAt (%prepAt + (%charge * %chargeTimes))
+#	var charge 0
+#	var chargeTimes 0
+#	var useCambrinth 0
+#
+#	echo USING OM, prepAt %prepAt, charge %charge, chargeTimes %chargeTimes
+#}
 
 if ("%spell" = "$char.cast.tattoo.spellName") then {
 	gosub invoke tattoo
@@ -162,15 +175,7 @@ gosub waitForPrep %minPrepTime
 
 if ("%spell" = "devour") then gosub get my material
 
-if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)") && $SpellTimer.OsrelMeraud.active = 1) then {
-	gosub touch orb
-} else {
-	if ("%target" != "0arget" && !(matchre("%spell", "(%noTargetSpells)")) then {
-	    gosub cast %target
-	} else {
-	    gosub cast
-	}
-}
+gosub castOrTouch
 
 goto done
 
@@ -204,7 +209,7 @@ ritualSpell:
     gosub prep %spell $char.cast.%spell.prep
     gosub invoke my $char.ritualFocus
     if (%isFullyPrepped != 1) then gosub waitForPrep
-    gosub cast
+    gosub castOrTouch
     if ($char.wornFocus = 1) then {
         gosub wear my $char.ritualFocus
         gosub wear my $char.ritualFocus
@@ -213,6 +218,24 @@ ritualSpell:
         gosub put my $char.ritualFocus in my $char.inv.container.focus
     }
     goto done
+
+
+
+###############################
+###      castOrTouch
+###############################
+castOrTouch:
+    if ($char.cast.useOm = 1 && matchre("%spell", "($char.cast.omSpells)") && $SpellTimer.OsrelMeraud.active = 1) then {
+        #gosub touch orb
+        gosub touch my orb
+    } else {
+        if ("%target" != "0arget" && !(matchre("%spell", "(%noTargetSpells)")) then {
+            gosub cast %target
+        } else {
+            gosub cast
+        }
+    }
+    return
 
 
 ###############################

@@ -274,6 +274,16 @@ action put #var lib.topic $1 when ^You are teaching a class on (.+?) which.*$
 action put #var lib.topic $1 when .* know\) (.*) which is .*\.  You are in this class\!
 action put #var lib.topic 0 when No one seems to be teaching\.
 
+
+###############################
+###    TIME
+###############################
+var time.dayTimes dawn|early morning|mid-morning|late morning|midday|early afternoon|mid-afternoon|dusk|sunset
+var time.nightTimes early evening|evening|late evening|night|approaching sunrise
+
+action (checkTime) put #var time.current $2;put #var time.isDay 1; if (matchre("$time.current", "%time.nightTimes")) then put #var time.isDay 0 when ^It is currently (\S+) and it is (.*)\.$
+
+
 ###############################
 ###    WAIT FOR PREP
 ###############################
@@ -744,6 +754,7 @@ charge:
     var todo $0
     charge1:
     matchre return ^Roundtime
+    matchre return ^How much
     matchre return ^I could not find
     matchre return ^You are in no condition to do that
     matchre return ^You strain, but lack the mental stamina to charge
@@ -1377,6 +1388,7 @@ invoke:
     matchre return ^You're not sure what would happen
     matchre return ^You must be able to handle your (.*) with both hands to use it for a ritual.
     matchre invoke ^You reach for its center, attempting
+    gosub checkLatencyStart
     put invoke %todo
     goto retry
 
@@ -1463,6 +1475,7 @@ kick:
     matchre return Bringing your foot
     matchre return ^I could not find what you were referring to\.
     matchre return ^You take a step back and run up to the
+    gosub checkLatencyStart
     put kick pile
     goto retry
 
@@ -1563,6 +1576,7 @@ load:
     matchre return ^You don't have the proper ammunition
     matchre return ^You need to hold the
     matchre return ^Your .+ is already loaded
+    gosub checkLatencyStart
     put load %todo
     goto retry
 
@@ -1617,6 +1631,7 @@ loot:
     matchre return ^You search
     matchre return already been searched
     matchre return ^You should
+    gosub checkLatencyStart
     put loot %todo
     goto retry
 
@@ -1680,6 +1695,7 @@ observe:
     matchre return ^You observe your surroundings
     matchre return ^You scan the skies for a few moments\.
     matchre return ^Your search for the constellation
+    gosub checkLatencyStart
     put observe %todo
     goto retry
 
@@ -1787,6 +1803,7 @@ power:
     matchre return ^You're not ready to do that again, yet\.
     matchre return ^Your focus expires
     matchre return ^Your resolve collapses
+    gosub checkLatencyStart
     put PERCEIVE %todo
     goto retry
 
@@ -1868,6 +1885,7 @@ play:
     matchre return ^You struggle
     matchre return ^You're already playing a song
     matchre return ^What type
+    gosub checkLatencyStart
     put play %todo
     goto retry
 
@@ -1948,6 +1966,7 @@ predict:
     matchre return ^The future, however, remains a dark mystery to you\.
     matchre return ^You must be a real expert to predict the weather indoors\.
     matchre return ^You see nothing else\.
+    gosub checkLatencyStart
     put predict %todo
     goto retry
 
@@ -2152,6 +2171,7 @@ release:
     matchre return ^You release
     matchre return ^You release the mana you were holding\.
     matchre return ^Your corruption fades
+    gosub checkLatencyStart
     put release %todo
     goto retry
 
@@ -2240,6 +2260,7 @@ retreat:
     matchre return ^You are already as far away as you can get\!
     matchre return ^You try to back away from
     matchre return revealing your hiding place\!
+    gosub checkLatencyStart
     put retreat
     goto retry
 
@@ -2920,6 +2941,15 @@ tie:
     goto retry
 
 
+time:
+    var location time1
+    var todo $0
+    time1:
+    matchre return ^It is currently
+    gosub checkLatencyStart
+    put time %todo
+    goto retry
+
 throw:
     var location throw1
     var todo $0
@@ -2936,8 +2966,10 @@ touch:
     var todo $0
     touch1:
     if ("$charactername" = "Inauri") then put #echo >Log #FF0000 Psssst! I love you! -Justin
+    matchre return ^Touch what?
     matchre return ^You lay your hand on
     matchre return ^You lightly touch
+    matchre return ^You reach out and touch
     matchre return ^You reluctantly touch
     matchre return ^You rest your hand
     matchre return ^You rush around
@@ -3250,7 +3282,7 @@ perc.onTimer:
 
 	evalmath nextPercGametime $lastPercGametime + 61
 
-	if ($gametime > %nextPercGametime) then {
+	if ($gametime > %nextPercGametime && $Attunement.Ranks < 1750) then {
 	    if ("$guild" = "Moon Mage") then {
 	        gosub perc mana
         } else {
@@ -3554,6 +3586,22 @@ checkMoons:
     if ($Time.isKatambaUp = 1) then {
         put #var moon katamba
     }
+    return
+
+
+checkTime:
+    action (checkTime) on
+    if (!($lib.timers.lastCheckTime > -1)) then put #tvar lib.timers.lastCheckTime 1
+    evalmath tmpNextCheckTime ($lib.timers.lastCheckTime + 600)
+    if ($gametime > %tmpNextCheckTime) then {
+        gosub time
+        put #tvar lib.timers.lastCheckTime $gametime
+    } else {
+        evalmath tmpCheckTimeWait (%tmpNextCheckTime - $gametime)
+        echo [checkTime] Waiting %tmpCheckTimeWait seconds to check time
+    }
+    unvar tmpNextCheckTime
+    unvar tmpCheckTimeWait
     return
 
 

@@ -242,13 +242,16 @@ loop:
             pause 4
         }
 
-        if (contains("$roomobjs", "a pile of")) then {
+        if (matchre("$roomobjs", "a pile of (\S+)")) then {
+            var tmpPileObject $1
             gosub kick pile
+            gosub kick %tmpPileObject
+            unvar tmpPileObject
         }
         var attackContinue 0
     }
 
-    if (%attackContinue = 1 && %numMobs = 1 && ($Evasion.LearningRate = 0 || $Parry_Ability.LearningRate = 0 || $Shield_Usage.LearningRate = 0 )) then {
+    if (%attackContinue = 1 && %numMobs = 1 && ($Evasion.LearningRate = 0 || $Parry_Ability.LearningRate = 0 || $Shield_Usage.LearningRate = 0 ) && "%weapons.skills(%weapons.index)" != "Outdoorsmanship") then {
         gosub attack circle
         gosub attack bob
         var attackContinue 0
@@ -293,6 +296,21 @@ loop:
                 gosub collect dirt
                 gosub kick pile
                 gosub kick dirt
+            }
+            var continue 0
+        }
+
+        if (%continue = 1 && "%weapons.skills(%weapons.index)" = "First_Aid") then {
+            if ($mana > 80) then {
+                #if (!matchre("$roomobjs", "pewter bar")) then {
+                #    gosub get my pewter bar
+                #    gosub drop my bar
+                #}
+                gosub target pd 40
+                pause 3
+                gosub cast
+            } else {
+                gosub attack circle
             }
             var continue 0
         }
@@ -378,7 +396,13 @@ attackCrossbow:
 
     if %crossbowRetreat = 1 then gosub retreat
     gosub aim
-    gosub debil
+
+    if ("$charactername" = "Selesthiel" && "%weapons.skills(%weapons.index)" = "Bow") then {
+        gosub debil force
+    } else {
+        gosub debil
+    }
+
     if (%crossbowRetreat = 1) then {
         gosub retreat
         pause 2
@@ -505,7 +529,10 @@ attackTm:
 ###      buffs
 ###############################
 buffs:
-    if (%useBuffs = 0) then return
+    if (%useBuffs = 0) then {
+        echo SKIPPING BUFFS BECAUSE USEBUFFS 0
+        return
+    }
     if ($mana < 30) then return
 
     # GENERAL
@@ -576,6 +603,10 @@ buffs:
     }
 
     # MOON MAGE
+    if ($char.fight.useTs = 1 && ($SpellTimer.TenebrousSense.active = 0 || $SpellTimer.TenebrousSense.duration < 3)) then {
+        gosub runScript cast ts
+        return
+    }
     if ($char.fight.useSeer = 1 && ($SpellTimer.SeersSense.active = 0 || $SpellTimer.SeersSense.duration < 3)) then {
         gosub runScript cast seer
         return
@@ -672,6 +703,8 @@ buffCol:
         waitforre ^CAST DONE
         return
     }
+
+    gosub runScript cast col
     return
 
 
@@ -753,6 +786,10 @@ checkWeaponSkills:
         var useTmCyclic 0
         if (%useUsol = 1) then var useTmCyclic 1
         if (%useSls = 1 && $Time.isDay = 0) then var useTmCyclic 1
+        #if (%useSls = 1) then {
+        #    gosub checkTime
+        #    if ($time.isDay = 1) then var useTmCyclic 1
+        #}
 
         if (%useTmCyclic = 1) then gosub checkWeaponSkills.nextWeapon
     }
@@ -993,6 +1030,8 @@ debil:
     var force 0
     if ("$1" = "force" || $char.fight.forceDebil = 1) then var force 1
 
+    if ("%weapons.skills(%weapons.index)" = "Bow") then var force 1
+
     if (%debil.use = 1 && $mana > 80 && (%force = 1 || $Debilitation.LearningRate < 34) && (%force = 1 || !matchre("$monsterlist", "(%debilConditions)"))) then {
         gosub prep %debil.spell %debil.prepAt
         if (!($char.fight.debilPauseTime > -1)) then put #tvar char.fight.debilPauseTime 4
@@ -1065,7 +1104,7 @@ makeNewBundle:
         gosub get my %skinType
         if ("$lefthand" = "throwing blades") then gosub stow my blades
         if ("$lefthand" = "Empty") then gosub get my horn
-        if ("$lefthand" = "Empty") then gosub get my claw
+        if ("$lefthand" = "Empty") then gosub get my wyvern claw
         gosub bundle
         gosub tie bundle
         gosub tie bundle
@@ -1149,7 +1188,8 @@ manageCyclics.moonMage:
 	var shouldCastSls 1
 	var shouldReleaseSls 0
 	if (%useSls != 1) then var shouldCastSls 0
-	if (%slsIsActive = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 27 || $Time.isDay != 0) then var shouldCastSls 0
+	if (%slsIsActive = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 30 || $Time.isDay != 0) then var shouldCastSls 0
+	#if (%slsIsActive = 1 || $mana < 80 || $Targeted_Magic.LearningRate > 30 || $time.isDay != 0) then var shouldCastSls 0
 	if (%slsIsActive = 1 && ($Targeted_Magic.LearningRate > 33 || $mana < 60) then var shouldReleaseSls 1
 
 	# SHW
@@ -1497,7 +1537,7 @@ fight.tarantula:
 
         ## If we don't have a preferred skillset order:
         if (!contains("$char.tarantula.lastSkillset", "Magic")) then {
-            if ("%fight.tmp.tarantulaSkill" = "null" && $Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
+            #if ("%fight.tmp.tarantulaSkill" = "null" && $Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
             if ("%fight.tmp.tarantulaSkill" = "null" && $Arcana.LearningRate > 20) then var fight.tmp.tarantulaSkill Arcana
             if ("%fight.tmp.tarantulaSkill" = "null" && $Primary_Magic.LearningRate > 20 && $Primary_Magic.LearningRate > $Arcana.LearningRate) then var fight.tmp.tarantulaSkill Primary Magic
         }
@@ -1522,7 +1562,7 @@ fight.tarantula.setSkill:
     if (!(%tarantulaSkillsetIndex > -1)) then var tarantulaSkillsetIndex 0
     if (!contains("$char.tarantula.lastSkillset", "$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)") then {
         if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Magic") then {
-            if ($Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
+            #if ($Astrology.LearningRate > $Arcana.LearningRate && $Astrology.LearningRate > 10) then var fight.tmp.tarantulaSkill Astrology
             if ("%fight.tmp.tarantulaSkill" = "null" && $Arcana.LearningRate > 20) then var fight.tmp.tarantulaSkill Arcana
             if ("%fight.tmp.tarantulaSkill" = "null" && $Primary_Magic.LearningRate > 20 && $Primary_Magic.LearningRate > $Arcana.LearningRate) then var fight.tmp.tarantulaSkill Primary Magic
         }
@@ -1530,19 +1570,20 @@ fight.tarantula.setSkill:
         if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Weapon") then {
             if ("%fight.tmp.tarantulaSkill" = "null" && $Missile_Mastery.LearningRate > 20 && $Missile_Mastery.LearningRate > $Melee_Mastery.LearningRate) then var fight.tmp.tarantulaSkill missile
             if ("%fight.tmp.tarantulaSkill" = "null" && $Melee_Mastery.LearningRate > 20 && $Melee_Mastery.LearningRate > $Missile_Mastery.LearningRate) then var fight.tmp.tarantulaSkill melee
-            if ("%fight.tmp.tarantulaSkill" = "null" && $Parry_Ability.LearningRate > 20) then var fight.tmp.tarantulaSkill parry
+            #if ("%fight.tmp.tarantulaSkill" = "null" && $Parry_Ability.LearningRate > 20) then var fight.tmp.tarantulaSkill parry
             if ("%fight.tmp.tarantulaSkill" = "null" && $Offhand_Weapon.LearningRate > 20) then var fight.tmp.tarantulaSkill offhand
         }
 
         if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Armor") then {
             if ("%fight.tmp.tarantulaSkill" = "null" && $Light_Armor.LearningRate > 20) then var fight.tmp.tarantulaSkill light armor
+            if ("%fight.tmp.tarantulaSkill" = "null" && $Chain_Armor.LearningRate > 20) then var fight.tmp.tarantulaSkill chain armor
             if ("%fight.tmp.tarantulaSkill" = "null" && $Defending.LearningRate > 20) then var fight.tmp.tarantulaSkill defending
         }
 
         if ("$char.tarantula.skillsetOrder(%tarantulaSkillsetIndex)" = "Survival") then {
             if ("%fight.tmp.tarantulaSkill" = "null" && $Perception.LearningRate > 20) then var fight.tmp.tarantulaSkill perception
             if ("%fight.tmp.tarantulaSkill" = "null" && $Skinning.LearningRate > 20) then var fight.tmp.tarantulaSkill skinning
-            if ("%fight.tmp.tarantulaSkill" = "null" && $Evasion.LearningRate > 20) then var fight.tmp.tarantulaSkill evasion
+            #if ("%fight.tmp.tarantulaSkill" = "null" && $Evasion.LearningRate > 20) then var fight.tmp.tarantulaSkill evasion
         }
     }
     math tarantulaSkillsetIndex add 1
