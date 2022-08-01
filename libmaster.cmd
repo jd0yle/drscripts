@@ -526,11 +526,13 @@ attack:
     matchre return ^How can you snipe if you are not hidden\?
     matchre return ^I could not find what you were referring to\.
     matchre return is already quite dead\.
+    matchre return ^Probably not\.  Maybe try to WHIP it\.?
     matchre return ^\[Roundtime
     matchre return ^Roundtime:
     matchre return sphere
     matchre return ^The .* is already debilitated\!
     matchre return ^The khuj is too heavy for you to use like that\.
+    matchre return ^The meteor hammer is too heavy for you to wield in your offhand\.
     matchre return ^There is nothing else to face
     matchre return ^What are you trying to
     matchre return ^Wouldn't it be better
